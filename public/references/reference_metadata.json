@@ -1,0 +1,493 @@
+{
+  "landingpage": {
+    "filename": "Landingpage.png",
+    "source_size": [
+      1536,
+      1024
+    ],
+    "num_panels": 3,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          499,
+          979
+        ],
+        "size": [
+          499,
+          979
+        ],
+        "file": "landingpage_a.png"
+      },
+      "b": {
+        "box": [
+          520,
+          0,
+          1018,
+          979
+        ],
+        "size": [
+          498,
+          979
+        ],
+        "file": "landingpage_b.png"
+      },
+      "c": {
+        "box": [
+          1039,
+          0,
+          1536,
+          979
+        ],
+        "size": [
+          497,
+          979
+        ],
+        "file": "landingpage_c.png"
+      }
+    }
+  },
+  "studenthome": {
+    "filename": "studenthome.png",
+    "source_size": [
+      1536,
+      1024
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          760,
+          979
+        ],
+        "size": [
+          760,
+          979
+        ],
+        "file": "studenthome_a.png"
+      },
+      "b": {
+        "box": [
+          775,
+          0,
+          1536,
+          979
+        ],
+        "size": [
+          761,
+          979
+        ],
+        "file": "studenthome_b.png"
+      }
+    }
+  },
+  "studentjourney": {
+    "filename": "studentjourney.png",
+    "source_size": [
+      1851,
+      850
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          921,
+          805
+        ],
+        "size": [
+          921,
+          805
+        ],
+        "file": "studentjourney_a.png"
+      },
+      "b": {
+        "box": [
+          932,
+          0,
+          1851,
+          805
+        ],
+        "size": [
+          919,
+          805
+        ],
+        "file": "studentjourney_b.png"
+      }
+    }
+  },
+  "learningunit": {
+    "filename": "learningunit.png",
+    "source_size": [
+      1983,
+      793
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          982,
+          748
+        ],
+        "size": [
+          982,
+          748
+        ],
+        "file": "learningunit_a.png"
+      },
+      "b": {
+        "box": [
+          1000,
+          0,
+          1983,
+          748
+        ],
+        "size": [
+          983,
+          748
+        ],
+        "file": "learningunit_b.png"
+      }
+    }
+  },
+  "simulation": {
+    "filename": "simulation.png",
+    "source_size": [
+      1983,
+      793
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          982,
+          748
+        ],
+        "size": [
+          982,
+          748
+        ],
+        "file": "simulation_a.png"
+      },
+      "b": {
+        "box": [
+          1000,
+          0,
+          1983,
+          748
+        ],
+        "size": [
+          983,
+          748
+        ],
+        "file": "simulation_b.png"
+      }
+    }
+  },
+  "studentprogress": {
+    "filename": "studentprogress.png",
+    "source_size": [
+      1536,
+      1024
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          761,
+          979
+        ],
+        "size": [
+          761,
+          979
+        ],
+        "file": "studentprogress_a.png"
+      },
+      "b": {
+        "box": [
+          775,
+          0,
+          1536,
+          979
+        ],
+        "size": [
+          761,
+          979
+        ],
+        "file": "studentprogress_b.png"
+      }
+    }
+  },
+  "teacherdashboard": {
+    "filename": "teacherdashboard.png",
+    "source_size": [
+      1774,
+      887
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          885,
+          842
+        ],
+        "size": [
+          885,
+          842
+        ],
+        "file": "teacherdashboard_a.png"
+      },
+      "b": {
+        "box": [
+          890,
+          0,
+          1774,
+          842
+        ],
+        "size": [
+          884,
+          842
+        ],
+        "file": "teacherdashboard_b.png"
+      }
+    }
+  },
+  "teacherlibrary": {
+    "filename": "teacherlibrary.png",
+    "source_size": [
+      1916,
+      821
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          958,
+          776
+        ],
+        "size": [
+          958,
+          776
+        ],
+        "file": "teacherlibrary_a.png"
+      },
+      "b": {
+        "box": [
+          964,
+          0,
+          1916,
+          776
+        ],
+        "size": [
+          952,
+          776
+        ],
+        "file": "teacherlibrary_b.png"
+      }
+    }
+  },
+  "lessonbuilder": {
+    "filename": "lessonbuilder.png",
+    "source_size": [
+      1918,
+      820
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          953,
+          775
+        ],
+        "size": [
+          953,
+          775
+        ],
+        "file": "lessonbuilder_a.png"
+      },
+      "b": {
+        "box": [
+          967,
+          0,
+          1918,
+          775
+        ],
+        "size": [
+          951,
+          775
+        ],
+        "file": "lessonbuilder_b.png"
+      }
+    }
+  },
+  "liveclass": {
+    "filename": "liveclass.png",
+    "source_size": [
+      1983,
+      793
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          961,
+          748
+        ],
+        "size": [
+          961,
+          748
+        ],
+        "file": "liveclass_a.png"
+      },
+      "b": {
+        "box": [
+          966,
+          0,
+          1983,
+          748
+        ],
+        "size": [
+          1017,
+          748
+        ],
+        "file": "liveclass_b.png"
+      }
+    }
+  },
+  "presentation": {
+    "filename": "presentation.png",
+    "source_size": [
+      2172,
+      724
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          1079,
+          679
+        ],
+        "size": [
+          1079,
+          679
+        ],
+        "file": "presentation_a.png"
+      },
+      "b": {
+        "box": [
+          1093,
+          0,
+          2172,
+          679
+        ],
+        "size": [
+          1079,
+          679
+        ],
+        "file": "presentation_b.png"
+      }
+    }
+  },
+  "sessionresults": {
+    "filename": "sessionresults.png",
+    "source_size": [
+      1774,
+      887
+    ],
+    "num_panels": 2,
+    "variants": {
+      "a": {
+        "box": [
+          0,
+          0,
+          885,
+          842
+        ],
+        "size": [
+          885,
+          842
+        ],
+        "file": "sessionresults_a.png"
+      },
+      "b": {
+        "box": [
+          889,
+          0,
+          1774,
+          842
+        ],
+        "size": [
+          885,
+          842
+        ],
+        "file": "sessionresults_b.png"
+      }
+    }
+  },
+  "joinclass": {
+    "filename": "joinclass.png",
+    "source_size": [
+      1586,
+      992
+    ],
+    "num_panels": 1,
+    "variants": {
+      "single": {
+        "box": [
+          0,
+          0,
+          1586,
+          992
+        ],
+        "size": [
+          1586,
+          992
+        ],
+        "file": "joinclass_single.png"
+      }
+    }
+  },
+  "login": {
+    "filename": "login.png",
+    "source_size": [
+      1586,
+      992
+    ],
+    "num_panels": 1,
+    "variants": {
+      "single": {
+        "box": [
+          0,
+          0,
+          1586,
+          992
+        ],
+        "size": [
+          1586,
+          992
+        ],
+        "file": "login_single.png"
+      }
+    }
+  }
+}

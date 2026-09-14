@@ -1,0 +1,28 @@
+<USER_REQUEST>
+Ocean — Web Showcase / Implementation & Visual Loop
+Bạn đang tiếp tục dự án Ocean trong workspace hiện tại. Hãy thực thi đến khi có một WEB SHOWCASE thật, đầy đủ và kiểm chứng được. Đây là nhiệm vụ implementation có vòng tự kiểm tra và sửa, không phải yêu cầu chỉ lập plan.
+1. Mục tiêu và phạm vi đã được quyết định
+Làm showcase để người dùng tham quan từng trang, thử tương tác và so sánh các phương án trước khi chọn thiết kế sản phẩm cuối.
+CHƯA chốt concept A/B cho từng trang. Phải giữ đủ 14 loại trang, 27 phương án. Không yêu cầu người dùng chọn concept để bạn mới triển khai. Không chọn hộ, gộp, bỏ hoặc làm sơ sài các phương án còn lại.
+Mỗi phương án là giao diện HTML/CSS/component thật, có nội dung và tương tác. Không dùng một ảnh mockup toàn trang, các lát screenshot hoặc hotspot phủ lên screenshot để giả giao diện.
+Ảnh phong cảnh, sinh vật, thumbnail, minh họa là asset hợp lệ. Navigation, chữ, form, table, tab, control, progress và phần mềm được preview phải được dựng bằng UI thật.
+Ưu tiên độ bám mockup, sự phong phú, nhịp bố cục, tính liên kết và khả năng tham quan. Motion điện ảnh sẽ làm ở nhiệm vụ sau. Lượt này vẫn phải có trạng thái hover/focus/pressed/loading hợp lý và chuyển động cần thiết để mô phỏng hoạt động chạy được.
+Kiến trúc module hóa, đúng vai trò, dễ debug/maintain/thay concept. Không dựng framework tổng quát hoặc backend production chỉ để làm showcase.
+Tiếp tục code hiện có sau khi kiểm tra. Không mặc định workspace trống. Screenshot hiện trạng từng có landing tại localhost:4173/?concept=b và thanh chọn A/B/C, so sánh, xem mockup; đây là thông tin tham khảo, phải kiểm tra server và repo th
+<truncated 27219 bytes>
+uct.
+Báo cáo ngắn: URL và lệnh chạy; coverage 14/14 và 27/27 thực tế; những luồng đã thử; mức độ đạt TARGET/BASELINE; vấn đề còn lại nếu có; các module sửa chính. Đường dẫn evidence phải mở được.
+Không cần yêu cầu chọn A/B để bàn giao: mục tiêu chính là cho người dùng tham quan các phương án rồi mới quyết định.
+BẮT ĐẦU: kiểm tra repo, reference và workflow hiện có; lập plan ngắn; sau đó implement và tự chạy các vòng kiểm chứng theo contract này.
+Nguồn kỹ thuật để tra khi cần
+Phần trên là contract riêng cho Ocean. Những ngưỡng điểm và giới hạn vòng sửa là đề xuất quản lý nhiệm vụ, không phải tiêu chuẩn do các nguồn dưới công bố.
+Playwright — Visual comparisons: [https://playwright.dev/docs/test-snapshots](https://playwright.dev/docs/test-snapshots)
+Playwright — Screenshot API: [https://playwright.dev/docs/api/class-page#page-screenshot](https://playwright.dev/docs/api/class-page#page-screenshot)
+Playwright — Screenshot assertions and thresholds: [https://playwright.dev/docs/api/class-pageassertions#page-assertions-to-have-screenshot-1](https://playwright.dev/docs/api/class-pageassertions#page-assertions-to-have-screenshot-1)
+Google Antigravity — Workflows: [https://antigravity.google/docs/ide/workflows/](https://antigravity.google/docs/ide/workflows/)
+Google Antigravity — Slash commands: [https://antigravity.google/docs/slash-commands/](https://antigravity.google/docs/slash-commands/)
+Không suy ra /loop là command tích hợp có một cú pháp cố định từ các tài liệu này. Dùng định nghĩa thực tế trong môi trường của người dùng. File này là nội dung nhiệm vụ để attach/đọc, không phải yêu cầu chép toàn bộ vào một workflow có giới hạn kích thước.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-09-13T21:51:16+07:00.
+</ADDITIONAL_METADATA>

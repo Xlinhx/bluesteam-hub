@@ -1,0 +1,98 @@
+{
+  "version": 2,
+  "style": "Living Ocean",
+  "baseDirectory": "public/assets/bluesteam",
+  "totalAssets": 15,
+  "assets": [
+    {
+      "file": "public/assets/bluesteam/bs-atlas-horizontal-bg-v01.jpg",
+      "filename": "bs-atlas-horizontal-bg-v01.jpg",
+      "sizeBytes": 992962,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-atlas-vertical-bg-v01.jpg",
+      "filename": "bs-atlas-vertical-bg-v01.jpg",
+      "sizeBytes": 572100,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-habitat-abyss-bg-v01.jpg",
+      "filename": "bs-habitat-abyss-bg-v01.jpg",
+      "sizeBytes": 637819,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-habitat-mangrove-bg-v01.jpg",
+      "filename": "bs-habitat-mangrove-bg-v01.jpg",
+      "sizeBytes": 1159558,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-habitat-seagrass-bg-v01.jpg",
+      "filename": "bs-habitat-seagrass-bg-v01.jpg",
+      "sizeBytes": 1099034,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-home-journey-bg-v01.jpg",
+      "filename": "bs-home-journey-bg-v01.jpg",
+      "sizeBytes": 685774,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-home-mascot-turtle-v01.jpg",
+      "filename": "bs-home-mascot-turtle-v01.jpg",
+      "sizeBytes": 359980,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-landing-ocean-bg-v01.jpg",
+      "filename": "bs-landing-ocean-bg-v01.jpg",
+      "sizeBytes": 890359,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-sim-plastic-bag-v01.jpg",
+      "filename": "bs-sim-plastic-bag-v01.jpg",
+      "sizeBytes": 615363,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-sim-plastic-bottle-v01.jpg",
+      "filename": "bs-sim-plastic-bottle-v01.jpg",
+      "sizeBytes": 288949,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-sim-rescue-net-v01.jpg",
+      "filename": "bs-sim-rescue-net-v01.jpg",
+      "sizeBytes": 784051,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-specimen-clownfish-v01.jpg",
+      "filename": "bs-specimen-clownfish-v01.jpg",
+      "sizeBytes": 915756,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-specimen-lanternfish-v01.jpg",
+      "filename": "bs-specimen-lanternfish-v01.jpg",
+      "sizeBytes": 760537,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-specimen-turtle-v01.jpg",
+      "filename": "bs-specimen-turtle-v01.jpg",
+      "sizeBytes": 1041482,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/bluesteam/bs-specimen-whale-v01.jpg",
+      "filename": "bs-specimen-whale-v01.jpg",
+      "sizeBytes": 674054,
+      "status": "INTEGRATED"
+    }
+  ]
+}
