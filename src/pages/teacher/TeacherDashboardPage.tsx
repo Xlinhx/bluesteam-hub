@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from '../../app/router';
 import { TeacherShell } from '../../shells/TeacherShell';
+import { OceanMotesCanvas } from '../../shared/components/OceanMotesCanvas';
+import { OceanCausticsOverlay } from '../../shared/components/OceanCausticsOverlay';
 import {
   Play,
   FileText,
@@ -99,6 +101,11 @@ export function TeacherDashboardPage() {
                   backgroundImage: `url('/assets/hero_buoy_waterline.jpg'), url('/assets/card_seagrass.jpg')`,
                 }}
               />
+              {/* Living Ocean caustics overlay & drifting motes */}
+              <OceanCausticsOverlay opacity={0.35} />
+              <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                <OceanMotesCanvas count={20} color="rgba(46, 230, 202, 0.40)" />
+              </div>
               <div className="absolute inset-0 bg-gradient-to-r from-[#072435]/95 via-[#072435]/75 to-transparent pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#072435]/90 via-transparent to-[#072435]/40 pointer-events-none" />
 
@@ -188,7 +195,7 @@ export function TeacherDashboardPage() {
                 <button
                   type="button"
                   onClick={() => navigate('/teacher/live')}
-                  className="px-6 py-3 rounded-2xl bg-[#0B3B59] hover:bg-[#124e70] text-white font-bold text-sm shadow-md flex items-center gap-2 border border-sky-400/30 transition-all cursor-pointer hover:shadow-lg active:scale-95"
+                  className="px-6 py-3 rounded-2xl bg-[#0B3B59] hover:bg-[#124e70] text-white font-bold text-sm shadow-md flex items-center gap-2 border border-sky-400/30 transition-all cursor-pointer hover:shadow-lg active:scale-95 btn-shimmer-sweep"
                 >
                   <Play className="w-4 h-4 fill-white" />
                   <span>Mở lớp</span>

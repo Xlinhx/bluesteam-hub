@@ -4,6 +4,8 @@ import { LearnerShell } from '../../shells/LearnerShell';
 import { demoStore, BlueSteamProgressV2 } from '../../demo/storage/demoStore';
 import { ArrowRight, Volume2, Check } from 'lucide-react';
 import { oceanAudio } from '../../shared/sound/oceanAudio';
+import { TiltCard } from '../../shared/components/TiltCard';
+import { OceanMotesCanvas } from '../../shared/components/OceanMotesCanvas';
 
 export function LearnerHomePage() {
   const { navigate } = useRouter();
@@ -36,6 +38,11 @@ export function LearnerHomePage() {
 
           {/* Top Gradient Overlay for Text Contrast */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/25 pointer-events-none" />
+
+          {/* Under-waterline living bioluminescent motes */}
+          <div className="absolute inset-x-0 bottom-0 top-[38%] overflow-hidden pointer-events-none z-10">
+            <OceanMotesCanvas count={22} color="rgba(46, 230, 202, 0.40)" />
+          </div>
 
           {/* Top-Left Title & Audio Button (Two-line clear hierarchy, min 56px touch target for V01-04) */}
           <div className="absolute top-6 left-6 lg:top-8 lg:left-12 z-20 flex items-start gap-4">
@@ -136,7 +143,7 @@ export function LearnerHomePage() {
               <button
                 type="button"
                 onClick={() => navigate('/3dmodel/turtle')}
-                className="mt-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#F26440] to-[#E05330] hover:from-[#E05330] hover:to-[#D95D39] text-white font-extrabold text-base lg:text-lg shadow-[0_10px_25px_rgba(242,100,64,0.45)] border-2 border-white/60 flex items-center gap-2.5 cursor-pointer active:scale-95 transition-all"
+                className="mt-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#F26440] to-[#E05330] hover:from-[#E05330] hover:to-[#D95D39] text-white font-extrabold text-base lg:text-lg shadow-[0_10px_25px_rgba(242,100,64,0.45)] border-2 border-white/60 flex items-center gap-2.5 cursor-pointer active:scale-95 transition-all btn-shimmer-sweep"
               >
                 <ArrowRight className="w-5 h-5 stroke-[2.5]" />
                 <span>Tiếp tục</span>
@@ -238,56 +245,68 @@ export function LearnerHomePage() {
           </div>
         </section>
 
-        {/* Tier 4: Bottom Two Tactile Wooden Craft Desk Cards - Full photo cards with compact frosted blur badge */}
+        {/* Tier 4: Bottom Two Tactile Wooden Craft Desk Cards with 3D Tilt & Specular Glare */}
         <section className="w-full max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 py-7 lg:py-9 pb-24 md:pb-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-7">
             {/* Card 1: Xưởng sáng tạo */}
-            <button
-              type="button"
-              onClick={() => navigate('/creative')}
-              className="relative rounded-[22px] lg:rounded-[26px] overflow-hidden shadow-[0_4px_20px_rgba(18,56,75,0.08)] hover:shadow-xl hover:scale-[1.008] transition-all duration-300 cursor-pointer group text-left h-40 sm:h-44 lg:h-48 border border-white/60"
+            <TiltCard
+              maxTilt={5}
+              glare={true}
+              className="rounded-[22px] lg:rounded-[26px] overflow-hidden shadow-[0_4px_20px_rgba(18,56,75,0.08)] border border-white/60 h-40 sm:h-44 lg:h-48 group cursor-pointer"
             >
-              {/* Full background image spanning whole card */}
-              <img
-                src="/assets/generated/craft/craft_desk_art.jpg"
-                alt="Xưởng sáng tạo"
-                className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-              />
+              <button
+                type="button"
+                onClick={() => navigate('/creative')}
+                className="w-full h-full relative text-left cursor-pointer"
+              >
+                {/* Full background image spanning whole card */}
+                <img
+                  src="/assets/generated/craft/craft_desk_art.jpg"
+                  alt="Xưởng sáng tạo"
+                  className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                />
 
-              {/* Compact frosted glass badge: text on top, arrow below, minimal spacing, no line-wrap */}
-              <div className="absolute right-3.5 sm:right-5 lg:right-6 top-1/2 -translate-y-1/2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-white/80 backdrop-blur-md border border-white/90 shadow-[0_4px_16px_rgba(18,56,75,0.12)] flex flex-col items-center justify-center gap-1.5 group-hover:bg-white/90 group-hover:scale-105 transition-all duration-300">
-                <span className="font-sans font-bold text-sm sm:text-[15px] text-[#0A354D] tracking-tight whitespace-nowrap group-hover:text-[#F26440] transition-colors">
-                  Xưởng sáng tạo
-                </span>
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-[#0A354D] shadow-xs border border-stone-200/80 flex items-center justify-center group-hover:bg-[#0A354D] group-hover:text-white transition-all duration-300">
-                  <ArrowRight className="w-4 h-4 stroke-[2.4]" />
+                {/* Compact frosted glass badge */}
+                <div className="absolute right-3.5 sm:right-5 lg:right-6 top-1/2 -translate-y-1/2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-white/80 backdrop-blur-md border border-white/90 shadow-[0_4px_16px_rgba(18,56,75,0.12)] flex flex-col items-center justify-center gap-1.5 group-hover:bg-white/90 group-hover:scale-105 transition-all duration-300">
+                  <span className="font-sans font-bold text-sm sm:text-[15px] text-[#0A354D] tracking-tight whitespace-nowrap group-hover:text-[#F26440] transition-colors">
+                    Xưởng sáng tạo
+                  </span>
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-[#0A354D] shadow-xs border border-stone-200/80 flex items-center justify-center group-hover:bg-[#0A354D] group-hover:text-white transition-all duration-300">
+                    <ArrowRight className="w-4 h-4 stroke-[2.4]" />
+                  </div>
                 </div>
-              </div>
-            </button>
+              </button>
+            </TiltCard>
 
             {/* Card 2: Vào lớp */}
-            <button
-              type="button"
-              onClick={() => navigate('/entry')}
-              className="relative rounded-[22px] lg:rounded-[26px] overflow-hidden shadow-[0_4px_20px_rgba(18,56,75,0.08)] hover:shadow-xl hover:scale-[1.008] transition-all duration-300 cursor-pointer group text-left h-40 sm:h-44 lg:h-48 border border-white/60"
+            <TiltCard
+              maxTilt={5}
+              glare={true}
+              className="rounded-[22px] lg:rounded-[26px] overflow-hidden shadow-[0_4px_20px_rgba(18,56,75,0.08)] border border-white/60 h-40 sm:h-44 lg:h-48 group cursor-pointer"
             >
-              {/* Full background image spanning whole card */}
-              <img
-                src="/assets/generated/craft/classroom_desk_study.jpg"
-                alt="Vào lớp"
-                className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-              />
+              <button
+                type="button"
+                onClick={() => navigate('/entry')}
+                className="w-full h-full relative text-left cursor-pointer"
+              >
+                {/* Full background image spanning whole card */}
+                <img
+                  src="/assets/generated/craft/classroom_desk_study.jpg"
+                  alt="Vào lớp"
+                  className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                />
 
-              {/* Compact frosted glass badge: text on top, arrow below, minimal spacing, no line-wrap */}
-              <div className="absolute right-3.5 sm:right-5 lg:right-6 top-1/2 -translate-y-1/2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-white/80 backdrop-blur-md border border-white/90 shadow-[0_4px_16px_rgba(18,56,75,0.12)] flex flex-col items-center justify-center gap-1.5 group-hover:bg-white/90 group-hover:scale-105 transition-all duration-300">
-                <span className="font-sans font-bold text-sm sm:text-[15px] text-[#0A354D] tracking-tight whitespace-nowrap group-hover:text-[#17657A] transition-colors">
-                  Vào lớp
-                </span>
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-[#0A354D] shadow-xs border border-stone-200/80 flex items-center justify-center group-hover:bg-[#17657A] group-hover:text-white transition-all duration-300">
-                  <ArrowRight className="w-4 h-4 stroke-[2.4]" />
+                {/* Compact frosted glass badge */}
+                <div className="absolute right-3.5 sm:right-5 lg:right-6 top-1/2 -translate-y-1/2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-white/80 backdrop-blur-md border border-white/90 shadow-[0_4px_16px_rgba(18,56,75,0.12)] flex flex-col items-center justify-center gap-1.5 group-hover:bg-white/90 group-hover:scale-105 transition-all duration-300">
+                  <span className="font-sans font-bold text-sm sm:text-[15px] text-[#0A354D] tracking-tight whitespace-nowrap group-hover:text-[#17657A] transition-colors">
+                    Vào lớp
+                  </span>
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-[#0A354D] shadow-xs border border-stone-200/80 flex items-center justify-center group-hover:bg-[#17657A] group-hover:text-white transition-all duration-300">
+                    <ArrowRight className="w-4 h-4 stroke-[2.4]" />
+                  </div>
                 </div>
-              </div>
-            </button>
+              </button>
+            </TiltCard>
           </div>
         </section>
       </div>

@@ -3,6 +3,7 @@ import { useRouter } from '../../app/router';
 import { demoStore } from '../../demo/storage/demoStore';
 import { BlueSteamLogo } from '../../shared/components/BlueSteamLogo';
 import { LanguageToggle } from '../../shared/components/LanguageToggle';
+import { OceanMotesCanvas } from '../../shared/components/OceanMotesCanvas';
 import {
   Mail,
   Lock,
@@ -10,6 +11,7 @@ import {
   EyeOff,
   ArrowRight,
   ArrowLeft,
+  Loader2,
 } from 'lucide-react';
 
 export function TeacherLoginPage() {
@@ -39,13 +41,16 @@ export function TeacherLoginPage() {
       {/* ========================================================= */}
       <div className="relative w-full lg:w-1/2 min-h-[380px] lg:min-h-screen flex flex-col justify-start p-8 sm:p-12 overflow-hidden">
         {/* Full Bleed Background Image */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 overflow-hidden">
           <img
             src="/assets/generated/backgrounds/field_journal_coastal_rocks.jpg"
             alt="Sổ tay thực địa đại dương bên ghềnh đá"
             className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+          {/* Subtle coastal sunbeams and floating spray motes */}
+          <div className="absolute inset-0 ocean-sunbeams pointer-events-none opacity-30" />
+          <OceanMotesCanvas count={16} color="rgba(255, 255, 255, 0.40)" />
         </div>
 
         {/* Top Brand Logo matching Mockup (Ảnh 1) */}
@@ -143,16 +148,25 @@ export function TeacherLoginPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 rounded-xl bg-[#DC6B52] hover:bg-[#C95A42] text-white font-bold text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.98]"
+                className="w-full py-3.5 rounded-xl bg-[#DC6B52] hover:bg-[#C95A42] text-white font-bold text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.97] btn-shimmer-sweep"
               >
-                <span>{isSubmitting ? 'Đang xác thực...' : 'Đăng nhập'}</span>
-                <ArrowRight className="w-4 h-4" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    <span>Đang xác thực...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Đăng nhập</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
 
               <button
                 type="button"
                 onClick={() => navigate('/entry')}
-                className="w-full py-3.5 rounded-xl bg-white/60 hover:bg-white border border-[#102A38] text-[#102A38] font-bold text-sm shadow-2xs flex items-center justify-center cursor-pointer transition-all active:scale-[0.98]"
+                className="w-full py-3.5 rounded-xl bg-white/60 hover:bg-white border border-[#102A38] text-[#102A38] font-bold text-sm shadow-2xs flex items-center justify-center cursor-pointer transition-all active:scale-[0.97]"
               >
                 Tạo tài khoản
               </button>
@@ -185,7 +199,7 @@ export function TeacherLoginPage() {
             />
           </div>
 
-          {/* Fluid Ocean Waves SVG */}
+          {/* Fluid Ocean Waves SVG with Living Wave Undulation */}
           <svg
             className="absolute inset-0 w-full h-full object-cover z-10"
             viewBox="0 0 700 220"
@@ -198,11 +212,13 @@ export function TeacherLoginPage() {
               d="M0 175C130 140 260 195 440 160C560 135 630 145 700 135V220H0V175Z"
               fill="#E1ECE8"
               fillOpacity="0.85"
+              className="wave-sway-1"
             />
             {/* Foreground Wave Layer */}
             <path
               d="M0 192C150 165 290 205 470 170C570 150 645 155 700 150V220H0V192Z"
               fill="#CADBD4"
+              className="wave-sway-2"
             />
           </svg>
         </div>

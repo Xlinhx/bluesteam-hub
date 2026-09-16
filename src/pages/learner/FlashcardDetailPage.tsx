@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from '../../app/router';
 import { LearnerShell } from '../../shells/LearnerShell';
 import { oceanAudio } from '../../shared/sound/oceanAudio';
+import { OceanMotesCanvas } from '../../shared/components/OceanMotesCanvas';
 import {
   Volume2,
   ChevronLeft,
@@ -39,6 +40,26 @@ export function FlashcardDetailPage() {
   const [activeTab, setActiveTab] = useState<'trait' | 'habitat' | 'diet' | 'threat'>('trait');
   const [currentSpeciesIndex, setCurrentSpeciesIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [cardTilt, setCardTilt] = useState({ rotX: 0, rotY: 0, glareX: 50, glareY: 50, glareOpacity: 0 });
+  const [isCardHovered, setIsCardHovered] = useState(false);
+
+  const handleCardPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+    const y = Math.min(Math.max((e.clientY - rect.top) / rect.height, 0), 1);
+    const maxTilt = 8;
+    const rotX = Number(((0.5 - y) * maxTilt * 2).toFixed(2));
+    const rotY = Number(((x - 0.5) * maxTilt * 2).toFixed(2));
+    setCardTilt({ rotX, rotY, glareX: x * 100, glareY: y * 100, glareOpacity: 0.35 });
+    setIsCardHovered(true);
+  };
+
+  const handleCardPointerLeave = () => {
+    setCardTilt({ rotX: 0, rotY: 0, glareX: 50, glareY: 50, glareOpacity: 0 });
+    setIsCardHovered(false);
+  };
 
   const speciesList: SpeciesDetail[] = [
     {
@@ -313,6 +334,9 @@ export function FlashcardDetailPage() {
       <div className="relative min-h-[calc(100vh-72px)] bg-gradient-to-b from-[#F2F8F9] via-[#FAF8F5] to-[#EBF5F8] text-[#102A38] font-sans select-none px-6 lg:px-12 py-8 overflow-hidden">
         {/* AMBIENT OCEAN DECORATIONS (Outside Cards - 2 Sides & Bottom) */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden z-0">
+          {/* Bioluminescent ambient ocean bubbles and motes drifting up */}
+          <OceanMotesCanvas count={24} color="rgba(46, 230, 202, 0.35)" />
+
           {/* Left ambient: Sea-kelp silhouette & gentle water currents */}
           <div className="absolute left-0 top-1/4 -translate-x-8 opacity-15 text-[#17657A]">
             <svg className="w-56 h-96" viewBox="0 0 120 220" fill="currentColor">
@@ -386,15 +410,25 @@ export function FlashcardDetailPage() {
             <div className="lg:col-span-5 space-y-4">
               {/* 3D Perspective Card Wrapper */}
               <div
-                className="w-full h-[460px] cursor-pointer relative"
+                className="w-full h-[460px] cursor-pointer relative select-none"
                 style={{ perspective: '1200px' }}
                 onClick={handleFlip}
+                onPointerMove={handleCardPointerMove}
+                onPointerLeave={handleCardPointerLeave}
               >
                 <div
-                  className="w-full h-full relative rounded-[32px] shadow-[0_12px_36px_rgba(18,56,75,0.12)] border border-[#17657A]/15 transition-transform duration-700 ease-out"
+                  className="w-full h-full relative rounded-[32px] shadow-[0_16px_40px_rgba(18,56,75,0.14)] border border-[#17657A]/15"
                   style={{
                     transformStyle: 'preserve-3d',
-                    transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                    transform: isCardHovered
+                      ? (isFlipped
+                          ? `rotateY(${180 + cardTilt.rotY}deg) rotateX(${cardTilt.rotX}deg) scale3d(1.02, 1.02, 1)`
+                          : `rotateY(${cardTilt.rotY}deg) rotateX(${cardTilt.rotX}deg) scale3d(1.02, 1.02, 1)`)
+                      : (isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'),
+                    transition: isCardHovered
+                      ? 'transform 0.12s ease-out'
+                      : 'transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    willChange: 'transform',
                   }}
                 >
                   {/* FRONT FACE */}
@@ -402,14 +436,24 @@ export function FlashcardDetailPage() {
                     className="absolute inset-0 w-full h-full rounded-[32px] overflow-hidden bg-white flex flex-col justify-between"
                     style={{ backfaceVisibility: 'hidden' }}
                   >
+                    {/* Dynamic Specular Glass Glare */}
+                    <div
+                      className="absolute inset-0 rounded-[inherit] pointer-events-none transition-opacity duration-300 overflow-hidden mix-blend-screen z-10"
+                      style={{
+                        opacity: cardTilt.glareOpacity,
+                        background: `radial-gradient(circle at ${cardTilt.glareX}% ${cardTilt.glareY}%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 65%)`,
+                      }}
+                      aria-hidden="true"
+                    />
+
                     {/* Big Hero Image */}
                     <div className="relative h-[320px] bg-sky-950 overflow-hidden">
                       <img
                         src={currentSpecies.heroImage}
                         alt={currentSpecies.name}
-                        className="w-full h-full object-cover object-center"
+                        className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute top-4 left-4">
+                      <div className="absolute top-4 left-4 z-20">
                         <span className="px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-[11px] font-black text-[#17657A] shadow-md flex items-center gap-1.5">
                           <Sparkles className="w-3.5 h-3.5 text-[#F67650]" />
                           <span>Sinh vật biển kỳ thú</span>
@@ -436,7 +480,17 @@ export function FlashcardDetailPage() {
                       transform: 'rotateY(180deg)',
                     }}
                   >
-                    <div className="space-y-4">
+                    {/* Dynamic Specular Glass Glare for Back Face */}
+                    <div
+                      className="absolute inset-0 rounded-[inherit] pointer-events-none transition-opacity duration-300 overflow-hidden mix-blend-screen z-10"
+                      style={{
+                        opacity: cardTilt.glareOpacity * 0.7,
+                        background: `radial-gradient(circle at ${100 - cardTilt.glareX}% ${cardTilt.glareY}%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 65%)`,
+                      }}
+                      aria-hidden="true"
+                    />
+
+                    <div className="space-y-4 relative z-20">
                       <div className="flex items-center justify-between border-b border-white/15 pb-3">
                         <div>
                           <h3 className="font-serif font-black text-2xl text-white">
@@ -490,7 +544,7 @@ export function FlashcardDetailPage() {
                       </div>
                     </div>
 
-                    <div className="text-center text-[11px] text-white/60 font-bold">
+                    <div className="text-center text-[11px] text-white/60 font-bold relative z-20">
                       Nhấn vào thẻ hoặc nút "Lật thẻ" để quay lại mặt trước
                     </div>
                   </div>
@@ -502,7 +556,7 @@ export function FlashcardDetailPage() {
                 <button
                   type="button"
                   onClick={handleSpeak}
-                  className="px-7 py-3.5 min-h-[56px] min-w-[56px] rounded-full bg-[#17657A] hover:bg-[#125061] text-white font-black text-sm shadow-md flex items-center gap-2.5 cursor-pointer transition-all active:scale-95"
+                  className="px-7 py-3.5 min-h-[56px] min-w-[56px] rounded-full bg-[#17657A] hover:bg-[#125061] text-white font-black text-sm shadow-md flex items-center gap-2.5 cursor-pointer transition-all active:scale-95 btn-shimmer-sweep"
                 >
                   <Volume2 className="w-5 h-5" />
                   <span>Nghe tên</span>
@@ -511,7 +565,7 @@ export function FlashcardDetailPage() {
                 <button
                   type="button"
                   onClick={handleFlip}
-                  className="px-7 py-3.5 min-h-[56px] min-w-[56px] rounded-full bg-white hover:bg-slate-50 border-2 border-[#17657A]/25 text-[#102A38] font-black text-sm shadow-xs flex items-center gap-2.5 cursor-pointer transition-all active:scale-95"
+                  className="px-7 py-3.5 min-h-[56px] min-w-[56px] rounded-full bg-white hover:bg-slate-50 border-2 border-[#17657A]/25 text-[#102A38] font-black text-sm shadow-xs flex items-center gap-2.5 cursor-pointer transition-all active:scale-95 btn-shimmer-sweep"
                 >
                   {/* Card Flip Icon per V11-05 */}
                   <svg className="w-5 h-5 text-[#17657A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
@@ -639,7 +693,7 @@ export function FlashcardDetailPage() {
                       setIsFlipped(false);
                       oceanAudio.playChime(500 + idx * 30, 0.1);
                     }}
-                    className={`p-3 rounded-2xl bg-white shadow-xs border transition-all cursor-pointer flex flex-col items-center gap-2 hover:-translate-y-1 ${
+                    className={`p-3 rounded-2xl bg-white shadow-xs border transition-all duration-200 cursor-pointer flex flex-col items-center gap-2 hover:-translate-y-1.5 hover:shadow-md active:scale-95 group/species ${
                       currentSpeciesIndex === idx
                         ? 'border-2 border-[#17657A] ring-2 ring-[#17657A]/20 shadow-md bg-sky-50/20'
                         : 'border-slate-200 hover:border-slate-300'
@@ -649,7 +703,7 @@ export function FlashcardDetailPage() {
                       <img
                         src={item.isolatedImage}
                         alt={item.name}
-                        className="w-full h-full object-contain filter drop-shadow-sm"
+                        className="w-full h-full object-contain filter drop-shadow-sm group-hover/species:scale-110 transition-transform duration-300"
                       />
                     </div>
                     <span className="text-xs font-black text-[#102A38]">
