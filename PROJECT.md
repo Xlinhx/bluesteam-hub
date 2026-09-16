@@ -14,7 +14,7 @@
   - Typography: Noto Serif / Playfair Display headings (`letter-spacing: -0.02em`), Be Vietnam Pro body (no system font fallbacks).
   - Tactile seaside studio materials, 3D aquatic glassmorphism, soft multi-layer diffuse shadows, 28px–32px Apple/iPadOS standard rounded corners.
 - **Verification Engine**:
-  - 39 records in `docs/design/bluesteam-v2/visual-review-manifest.json` mapped to 35 scenes in `scene-manifest.json` and 32 reference mockups in `C:/Users/ADMIN/Downloads/ocean/`.
+  - 39 records in `docs/12-VERIFICATION/visual-review-manifest.json` mapped to 35 scenes in `scene-manifest.json` and 32 reference mockups in `C:/Users/ADMIN/Downloads/ocean/`.
   - Continuous validation via `npm test` (12 suites, 60 tests) and `npm run validate:visual` enforcing Rules K, L, M.
 
 ---
@@ -131,10 +131,10 @@ Every screen and cross-cutting requirement is enumerated below with its assigned
   - Creative Studio: `CreativeStudioPage.tsx`, `CreativeDrawingPage.tsx`, `HabitatStudioPage.tsx`.
   - Teacher Suite: `TeacherDashboardPage.tsx`, `TeacherLibraryPage.tsx`, `TeacherLessonBuilderPage.tsx`, `TeacherLiveConsolePage.tsx`.
   - Presentation & Profile: `LearnerProfilePage.tsx`, `PresentationPage.tsx`, `SessionResultsPage.tsx`.
-- `docs/design/bluesteam-v2/`:
+- `docs/12-VERIFICATION/`:
   - `visual-review-manifest.json`: Authoritative 39-record review manifest.
   - `scene-manifest.json`: Authoritative scene ground truth.
   - `REFERENCE_RULES.md`: Rules K, L, M specification.
   - `REFERENCE_CORRECTIONS.md`: Documented mockup defects to override.
-- `artifacts/bluesteam-v2/verification/`: Directory of captured screen evidence PNGs.
+- `artifacts/verification/`: Directory of captured screen evidence PNGs.
 - `tests/`: 12 Vitest regression test suites guarding domain logic, shells, storage, and manifest integrity.

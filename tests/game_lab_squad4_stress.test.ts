@@ -148,18 +148,11 @@ describe('Squad 4 Game Lab Empirical & Adversarial Stress Suite', () => {
       expect(html).toContain('Tiếp tục');
     });
 
-    it('strictly enforces bespoke SVG reef & fish silhouettes with zero literal emojis', () => {
+    it('strictly enforces authentic layered ocean waves footer banner with zero literal emojis', () => {
       const html = renderWithProviders(React.createElement(GameLabPage));
 
-      // Coral vector paths
-      expect(html).toContain('fill="#F67650"');
-      expect(html).toContain('fill="#E5A93C"');
-
-      // Seaweed tendril
-      expect(html).toContain('stroke="#2EE6CA"');
-
-      // Brand note
-      expect(html).toContain('BlueSTEAM Living Ocean Game Lab');
+      // Authentic ocean waves footer banner
+      expect(html).toContain('gamelab_footer_waves.png');
 
       // Adversarial Check: No emojis in rendered HTML
       const emojiRegex = /[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u;

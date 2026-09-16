@@ -424,8 +424,8 @@ describe('Squad 9 Empirical Stress Test Suite (M5 Challenger 2)', () => {
     it('CRITICAL DATA PIPELINE: Dynamic artwork loading from creativeStorage with fallback', async () => {
       // 1. Initial State: Empty storage -> renders fallback reference crayon artwork
       let html = renderWithProviders(React.createElement(LearnerProfilePage), '/profile');
-      expect(html).toContain('child_crayon_turtle.jpg');
-      expect(html).toContain('Bé An vẽ rùa biển bơi');
+      expect(html).toContain('child_crayon_turtle');
+      expect(html).toContain('Bức tranh của An');
 
       // 2. Save a custom artwork in creativeStorage
       const newArtwork: CreativeArtwork = {
@@ -552,16 +552,15 @@ describe('Squad 9 Empirical Stress Test Suite (M5 Challenger 2)', () => {
       expect(html).toContain('Về Trang chủ');
     });
 
-    it('INTEGRATION: LearnerHomePage gracefully renders SystemLoadingRetry when loading=true', () => {
+    it('RETIRED LOADING SCREEN: LearnerHomePage no longer intercepts loading=true as requested', () => {
       const html = renderWithProviders(
         React.createElement(LearnerHomePage),
         '/home',
         '?loading=true'
       );
 
-      expect(html).toContain('Đang chuẩn bị chuyến hải trình');
-      expect(html).toContain('Thử lại');
-      expect(html).toContain('turtle_isolated.png');
+      expect(html).toContain('Hành trình Đại dương');
+      expect(html).not.toContain('Đang chuẩn bị chuyến hải trình');
     });
   });
 

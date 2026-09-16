@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 
-const sceneManifestPath = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'scene-manifest.json');
+const sceneManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'scene-manifest.json');
 const sceneManifest = JSON.parse(fs.readFileSync(sceneManifestPath, 'utf8'));
 
 const currentRevision = 'd5a60ba+dirty';
@@ -15,7 +15,7 @@ const verificationDir = path.join(REPO_ROOT, 'artifacts', 'bluesteam-v2', 'verif
 function getExistingScreenshot(filename) {
   const fullPath = path.join(verificationDir, filename);
   if (fs.existsSync(fullPath)) {
-    return `artifacts/bluesteam-v2/verification/${filename}`;
+    return `artifacts/verification/${filename}`;
   }
   return null;
 }
@@ -25,7 +25,7 @@ const records = [
   {
     reviewId: 'learner-home-overview-desktop-vi',
     referenceId: 'learner-home-overview',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-learner-home-overview.png',
+    referencePath: 'docs/mockups/03-home.png',
     basis: 'REFERENCE',
     route: '/home',
     state: 'default-journey-overview',
@@ -150,7 +150,7 @@ const records = [
   {
     reviewId: 'resources-catalog-desktop-vi',
     referenceId: 'resources-catalog',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-resources-catalog.png',
+    referencePath: 'docs/mockups/05-resources-catalog.png',
     basis: 'REFERENCE',
     route: '/resources',
     state: 'catalog-grid-view',
@@ -202,7 +202,7 @@ const records = [
   {
     reviewId: 'public-landing-overview-desktop-vi',
     referenceId: 'public-landing-overview',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-public-landing-overview.png',
+    referencePath: 'docs/mockups/01-landing.png',
     basis: 'REFERENCE',
     route: '/',
     state: 'hero-beat1-viewport',
@@ -273,7 +273,7 @@ const records = [
   {
     reviewId: 'public-landing-beat2-beat3-desktop-vi',
     referenceId: 'public-landing-overview',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-public-landing-overview.png',
+    referencePath: 'docs/mockups/01-landing.png',
     basis: 'REFERENCE',
     route: '/',
     state: 'beat-2-and-3-depths',
@@ -329,7 +329,7 @@ const records = [
   {
     reviewId: 'public-landing-beat3-3d-turtle-desktop-vi',
     referenceId: 'public-landing-overview',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-public-landing-overview.png',
+    referencePath: 'docs/mockups/01-landing.png',
     basis: 'REFERENCE',
     route: '/',
     state: 'beat-3-3d-turtle-interactive',
@@ -430,7 +430,7 @@ const records = [
   {
     reviewId: 'public-role-and-access-desktop-vi',
     referenceId: 'public-role-and-access',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-public-role-and-access.png',
+    referencePath: 'docs/mockups/02-entry.png',
     basis: 'REFERENCE',
     route: '/entry',
     state: 'role-selection-default',
@@ -480,7 +480,7 @@ const records = [
   {
     reviewId: 'public-adult-login-desktop-vi',
     referenceId: 'public-adult-login',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-public-adult-login.png',
+    referencePath: 'docs/mockups/27-login.png',
     basis: 'REFERENCE',
     route: '/login',
     state: 'teacher-login-form',
@@ -530,7 +530,7 @@ const records = [
   {
     reviewId: 'resources-library-overview-desktop-vi',
     referenceId: 'resources-library-overview',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-resources-library-overview.png',
+    referencePath: 'docs/mockups/06-resources-library-overview.png',
     basis: 'REFERENCE',
     route: '/resources',
     state: 'curated-collections-overview',
@@ -580,7 +580,7 @@ const records = [
   {
     reviewId: 'resources-flashcard-detail-desktop-vi',
     referenceId: 'resources-flashcard-detail',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-resources-flashcard-detail.png',
+    referencePath: 'docs/mockups/07-resources-flashcard.png',
     basis: 'REFERENCE',
     route: '/resources/flashcard',
     state: 'flashcard-green-turtle-front',
@@ -632,7 +632,7 @@ const records = [
   {
     reviewId: 'resources-media-player-desktop-vi',
     referenceId: 'resources-media-player',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-resources-media-player.png',
+    referencePath: 'docs/mockups/08-resources-media.png',
     basis: 'REFERENCE',
     route: '/resources/media',
     state: 'player-ocean-currents',
@@ -683,7 +683,7 @@ const records = [
   {
     reviewId: 'resources-print-preview-desktop-vi',
     referenceId: 'resources-print-preview',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-resources-print-preview.png',
+    referencePath: 'docs/mockups/09-resources-print.png',
     basis: 'REFERENCE',
     route: '/resources/print',
     state: 'turtle-coloring-preview',
@@ -733,7 +733,7 @@ const records = [
   {
     reviewId: 'ocean-horizontal-atlas-desktop-vi',
     referenceId: 'ocean-horizontal-atlas',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-ocean-horizontal-atlas.png',
+    referencePath: 'docs/mockups/10-learn-atlas-horizontal.png',
     basis: 'REFERENCE',
     route: '/learn/atlas',
     state: 'horizontal-panoramic-view',
@@ -800,7 +800,7 @@ const records = [
   {
     reviewId: 'ocean-vertical-atlas-desktop-vi',
     referenceId: 'ocean-vertical-atlas',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-ocean-vertical-atlas.png',
+    referencePath: 'docs/mockups/11-learn-atlas-vertical.png',
     basis: 'REFERENCE',
     route: '/learn/atlas',
     state: 'vertical-5-layers-depth',
@@ -859,7 +859,7 @@ const records = [
   {
     reviewId: 'ocean-creature-viewer-desktop-vi',
     referenceId: 'ocean-creature-viewer',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-ocean-creature-viewer.png',
+    referencePath: 'docs/mockups/12-learn-turtle.png',
     basis: 'REFERENCE',
     route: '/learn/turtle',
     state: 'interactive-3d-sea-turtle',
@@ -926,7 +926,7 @@ const records = [
   {
     reviewId: 'game-lab-overview-desktop-vi',
     referenceId: 'game-lab-overview',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-game-lab-overview.png',
+    referencePath: 'docs/mockups/13-interactive.png',
     basis: 'REFERENCE',
     route: '/interactive',
     state: 'game-modes-selection',
@@ -977,7 +977,7 @@ const records = [
   {
     reviewId: 'game-lab-recognition-round-desktop-vi',
     referenceId: 'game-lab-recognition-round',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-game-lab-recognition-round.png',
+    referencePath: 'docs/mockups/14-interactive-habitat-recognition.png',
     basis: 'REFERENCE',
     route: '/interactive/habitat-placement',
     state: 'recognition-round-options',
@@ -1028,7 +1028,7 @@ const records = [
   {
     reviewId: 'game-habitat-placement-desktop-vi',
     referenceId: 'game-lab-habitat-placement',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-game-lab-habitat-placement.png',
+    referencePath: 'docs/mockups/15-interactive-habitat-placement.png',
     basis: 'REFERENCE',
     route: '/interactive/habitat-placement',
     state: 'round-1-before-placement',
@@ -1101,7 +1101,7 @@ const records = [
   {
     reviewId: 'game-habitat-feedback-desktop-vi',
     referenceId: 'game-lab-habitat-feedback',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-game-lab-habitat-feedback.png',
+    referencePath: 'docs/mockups/16-interactive-habitat-feedback.png',
     basis: 'REFERENCE',
     route: '/interactive/habitat-placement',
     state: 'round-1-after-placement-feedback',
@@ -1160,7 +1160,7 @@ const records = [
   {
     reviewId: 'simulations-catalog-desktop-vi',
     referenceId: 'simulations-catalog',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-simulations-catalog.png',
+    referencePath: 'docs/mockups/17-interactive-simulations.png',
     basis: 'REFERENCE',
     route: '/interactive/simulations',
     state: 'simulations-list',
@@ -1211,7 +1211,7 @@ const records = [
   {
     reviewId: 'simulations-my-action-choice-desktop-vi',
     referenceId: 'simulations-my-action-choice',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-simulations-my-action-choice.png',
+    referencePath: 'docs/mockups/18-interactive-my-action-choice.png',
     basis: 'REFERENCE',
     route: '/interactive/my-action',
     state: 'step-1-choice-point',
@@ -1261,7 +1261,7 @@ const records = [
   {
     reviewId: 'simulations-my-action-compare-desktop-vi',
     referenceId: 'simulations-my-action-compare',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-simulations-my-action-compare.png',
+    referencePath: 'docs/mockups/19-interactive-my-action-compare.png',
     basis: 'REFERENCE',
     route: '/interactive/my-action',
     state: 'step-2-compare-consequences',
@@ -1311,7 +1311,7 @@ const records = [
   {
     reviewId: 'simulations-plastic-journey-desktop-vi',
     referenceId: 'simulations-plastic-journey',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-simulations-plastic-journey.png',
+    referencePath: 'docs/mockups/20-interactive-plastic-journey.png',
     basis: 'REFERENCE',
     route: '/interactive/plastic-journey',
     state: 'journey-5-stages-interactive',
@@ -1362,7 +1362,7 @@ const records = [
   {
     reviewId: 'simulations-rescue-mission-desktop-vi',
     referenceId: 'simulations-rescue-mission',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-simulations-rescue-mission.png',
+    referencePath: 'docs/mockups/21-interactive-rescue-mission.png',
     basis: 'REFERENCE',
     route: '/interactive/rescue-mission',
     state: 'rescue-sea-turtle-net',
@@ -1413,7 +1413,7 @@ const records = [
   {
     reviewId: 'creative-studio-desktop-vi',
     referenceId: 'creative-studio',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-creative-studio.png',
+    referencePath: 'docs/mockups/23-creative.png',
     basis: 'REFERENCE',
     route: '/creative',
     state: 'studio-overview-shelves',
@@ -1464,7 +1464,7 @@ const records = [
   {
     reviewId: 'creative-drawing-desktop-vi',
     referenceId: 'creative-drawing',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-creative-drawing.png',
+    referencePath: 'docs/mockups/24-creative-drawing.png',
     basis: 'REFERENCE',
     route: '/creative/drawing',
     state: 'drawing-canvas-active',
@@ -1531,7 +1531,7 @@ const records = [
   {
     reviewId: 'creative-habitat-build-desktop-vi',
     referenceId: 'creative-habitat-build',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-creative-habitat-build.png',
+    referencePath: 'docs/mockups/25-creative-habitat-build.png',
     basis: 'REFERENCE',
     route: '/creative/habitat',
     state: 'build-mode-placing-elements',
@@ -1582,7 +1582,7 @@ const records = [
   {
     reviewId: 'creative-habitat-run-desktop-vi',
     referenceId: 'creative-habitat-run',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-creative-habitat-run.png',
+    referencePath: 'docs/mockups/26-creative-habitat-run.png',
     basis: 'REFERENCE',
     route: '/creative/habitat',
     state: 'run-mode-simulation-active',
@@ -1633,7 +1633,7 @@ const records = [
   {
     reviewId: 'profile-learner-profile-desktop-vi',
     referenceId: 'profile-learner-profile',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-profile-learner-profile.png',
+    referencePath: 'docs/mockups/04-profile.png',
     basis: 'REFERENCE',
     route: '/profile',
     state: 'learner-achievements-and-gallery',
@@ -1683,7 +1683,7 @@ const records = [
   {
     reviewId: 'teacher-dashboard-desktop-vi',
     referenceId: 'teacher-dashboard',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-dashboard.png',
+    referencePath: 'docs/mockups/28-teacher.png',
     basis: 'REFERENCE',
     route: '/teacher',
     state: 'teacher-workspace-overview',
@@ -1734,7 +1734,7 @@ const records = [
   {
     reviewId: 'teacher-resource-library-desktop-vi',
     referenceId: 'teacher-resource-library',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-resource-library.png',
+    referencePath: 'docs/mockups/29-teacher-library.png',
     basis: 'REFERENCE',
     route: '/teacher/library',
     state: 'teacher-materials-catalog',
@@ -1784,7 +1784,7 @@ const records = [
   {
     reviewId: 'teacher-lesson-plan-desktop-vi',
     referenceId: 'teacher-lesson-plan',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-lesson-plan.png',
+    referencePath: 'docs/mockups/31-teacher-builder-plan.png',
     basis: 'REFERENCE',
     route: '/teacher/builder',
     state: 'lesson-plan-detail-view',
@@ -1834,7 +1834,7 @@ const records = [
   {
     reviewId: 'teacher-lesson-builder-desktop-vi',
     referenceId: 'teacher-lesson-builder',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-lesson-builder.png',
+    referencePath: 'docs/mockups/30-teacher-builder.png',
     basis: 'REFERENCE',
     route: '/teacher/builder',
     state: 'builder-editing-flow',
@@ -1884,7 +1884,7 @@ const records = [
   {
     reviewId: 'teacher-live-console-desktop-vi',
     referenceId: 'teacher-live-console',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-live-console.png',
+    referencePath: 'docs/mockups/32-teacher-live.png',
     basis: 'REFERENCE',
     route: '/teacher/live',
     state: 'live-control-session',
@@ -1934,7 +1934,7 @@ const records = [
   {
     reviewId: 'teacher-presentation-desktop-vi',
     referenceId: 'teacher-presentation',
-    referencePath: 'C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-presentation.png',
+    referencePath: 'docs/mockups/33-presentation.png',
     basis: 'REFERENCE',
     route: '/presentation',
     state: 'fullscreen-class-presentation',
@@ -2098,8 +2098,8 @@ const manifestData = {
   title: 'BlueSTEAM v2 Visual Review Manifest (Reference vs Implementation)',
   updatedAt: new Date().toISOString(),
   sourceRevision: currentRevision,
-  referenceDirectory: 'C:/Users/ADMIN/Downloads/ocean',
-  verificationDirectory: 'artifacts/bluesteam-v2/verification',
+  referenceDirectory: 'docs/mockups',
+  verificationDirectory: 'artifacts/verification',
   rubricCriteria: {
     layout: { maxPoints: 20, description: 'Bố cục, căn lề, lưới, tỷ lệ các khối, đáp ứng viewport' },
     assetsAndLayers: { maxPoints: 20, description: 'Chất lượng sinh vật, asset Living Ocean, tách lớp z-index' },
@@ -2110,6 +2110,6 @@ const manifestData = {
   records
 };
 
-const targetFile = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'visual-review-manifest.json');
+const targetFile = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'visual-review-manifest.json');
 fs.writeFileSync(targetFile, JSON.stringify(manifestData, null, 2), 'utf8');
 console.log('✅ Generated visual-review-manifest.json with', records.length, 'records.');

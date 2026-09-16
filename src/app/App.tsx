@@ -22,7 +22,6 @@ import { TeacherLoginPage } from '../pages/public/TeacherLoginPage';
 
 // BlueSTEAM v2 Learner Pages
 import { LearnerHomePage } from '../pages/learner/LearnerHomePage';
-import { OceanAtlasPage } from '../pages/learner/OceanAtlasPage';
 import { OceanCreatureViewerPage } from '../pages/learner/OceanCreatureViewerPage';
 import { HabitatPlacementGamePage } from '../pages/learner/HabitatPlacementGamePage';
 import { GameLabPage } from '../pages/learner/GameLabPage';
@@ -38,6 +37,7 @@ import { RescueMissionSimulationPage } from '../pages/learner/RescueMissionSimul
 import { CreativeStudioPage } from '../pages/learner/CreativeStudioPage';
 import { CreativeDrawingPage } from '../pages/learner/CreativeDrawingPage';
 import { HabitatStudioPage } from '../pages/learner/HabitatStudioPage';
+import { Ocean3DExplorePage } from '../pages/learner/Ocean3DExplorePage';
 
 // Auxiliary Pages
 import { RoleGatewayPage } from '../pages/public/RoleGatewayPage';
@@ -82,13 +82,20 @@ export function App() {
 
     // BlueSTEAM v2 Canonical Learner Routes
     if (cleanPath === '/home') return <LearnerHomePage />;
-    if (cleanPath === '/learn/atlas' || cleanPath === '/learn') return <OceanAtlasPage />;
-    if (cleanPath === '/learn/turtle') return <OceanCreatureViewerPage />;
+    if (cleanPath === '/learn/atlas' || cleanPath === '/learn') return <GameLabPage />;
+    if (cleanPath.startsWith('/3dmodel') || matchRoute('/3dmodel/:creature', cleanPath).matches) return <OceanCreatureViewerPage />;
+    if (cleanPath === '/learn/turtle') {
+      if (typeof window !== 'undefined') {
+        window.history.replaceState({}, '', '/3dmodel/turtle');
+      }
+      return <OceanCreatureViewerPage />;
+    }
     if (cleanPath === '/interactive/habitat-placement') return <HabitatPlacementGamePage />;
     if (cleanPath === '/interactive/my-action') return <MyActionSimulationPage />;
     if (cleanPath === '/interactive/plastic-journey') return <PlasticJourneySimulationPage />;
     if (cleanPath === '/interactive/rescue-mission') return <RescueMissionSimulationPage />;
     if (cleanPath === '/interactive/simulations') return <SimulationsCatalogPage />;
+    if (cleanPath === '/interactive/3d' || cleanPath === '/interactive/explore-3d' || cleanPath === '/3d') return <Ocean3DExplorePage />;
     if (cleanPath === '/interactive') return <GameLabPage />;
     if (matchRoute('/resources/flashcard/:cardId', cleanPath).matches || cleanPath === '/resources/flashcard') return <FlashcardDetailPage />;
     if (matchRoute('/resources/print/:printId', cleanPath).matches || cleanPath === '/resources/print') return <PrintPreviewPage />;
@@ -134,8 +141,12 @@ export function App() {
       return <TeacherResourceLibraryPage />;
     }
 
-    // 09. Teacher Lesson Builder
-    if (cleanPath === '/teacher/builder' || matchRoute('/teacher/lesson/:lessonId', cleanPath).matches) {
+    // 09. Teacher Lesson Builder & Plan
+    if (
+      cleanPath === '/teacher/plan' ||
+      cleanPath === '/teacher/builder' ||
+      matchRoute('/teacher/lesson/:lessonId', cleanPath).matches
+    ) {
       return <TeacherLessonBuilderPage />;
     }
 

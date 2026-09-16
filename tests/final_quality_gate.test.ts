@@ -11,8 +11,8 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 
 describe('Milestone 6 Final Quality Gate & Master Audit Verification', () => {
   const appTsxPath = path.join(REPO_ROOT, 'src', 'app', 'App.tsx');
-  const visualManifestPath = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'visual-review-manifest.json');
-  const sceneManifestPath = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'scene-manifest.json');
+  const visualManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'visual-review-manifest.json');
+  const sceneManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'scene-manifest.json');
 
   // =========================================================================
   // GATE 1: App.tsx Canonical V2 Wiring & Routing Architecture

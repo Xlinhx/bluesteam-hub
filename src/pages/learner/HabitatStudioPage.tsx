@@ -12,6 +12,7 @@ import {
   DEFAULT_HABITAT_ITEMS,
 } from './habitatTypes';
 import { Habitat3DCanvas } from './Habitat3DCanvas';
+import { UnderwaterCausticsLayer } from './components/UnderwaterCausticsLayer';
 import {
   Undo2,
   Redo2,
@@ -31,14 +32,15 @@ import {
   X,
   Info,
   CheckCircle2,
+  GripVertical,
 } from 'lucide-react';
 
 export function HabitatStudioPage() {
-  const { navigate } = useRouter();
+  const { navigate, query } = useRouter();
   const { locale } = useI18n();
 
-  // Mode detection from URL (?mode=run)
-  const isInitialRun = typeof window !== 'undefined' && window.location.search.includes('mode=run');
+  // Mode detection from router query (?mode=run)
+  const isInitialRun = query.mode === 'run' || (typeof window !== 'undefined' && window.location.search.includes('mode=run'));
   const [mode, setMode] = useState<'build' | 'run'>(isInitialRun ? 'run' : 'build');
 
   // Shared 3D Scene Items State (CRITICAL: Preserved across mode switches!)
@@ -80,21 +82,11 @@ export function HabitatStudioPage() {
   const [isInspectPanelOpen, setIsInspectPanelOpen] = useState<boolean>(true);
   const [inspectCategory, setInspectCategory] = useState<'rocks' | 'seagrass'>('rocks');
 
-  // Sync mode with URL search params on mount & popstate
+  // Sync mode whenever router query changes
   useEffect(() => {
-    const checkMode = () => {
-      const search = window.location.search;
-      if (search.includes('mode=run')) {
-        setMode('run');
-      } else {
-        setMode('build');
-      }
-    };
-
-    checkMode();
-    window.addEventListener('popstate', checkMode);
-    return () => window.removeEventListener('popstate', checkMode);
-  }, []);
+    const isRun = query.mode === 'run' || (typeof window !== 'undefined' && window.location.search.includes('mode=run'));
+    setMode(isRun ? 'run' : 'build');
+  }, [query.mode]);
 
   // Save active draft to sessionStorage
   useEffect(() => {
@@ -107,20 +99,12 @@ export function HabitatStudioPage() {
   const handleSwitchToRun = () => {
     setMode('run');
     setSelectedItemId(null);
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      url.searchParams.set('mode', 'run');
-      window.history.pushState({}, '', url.toString());
-    }
+    navigate('/creative/habitat?mode=run');
   };
 
   const handleSwitchToBuild = () => {
     setMode('build');
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      url.searchParams.delete('mode');
-      window.history.pushState({}, '', url.toString());
-    }
+    navigate('/creative/habitat');
   };
 
   // Update items with history recording
@@ -189,158 +173,137 @@ export function HabitatStudioPage() {
     setCompassAngle(targetAngle);
   };
 
-  // 5 Canonical nav items for dark header
-  const navItems = [
-    { key: 'resources', label: locale === 'vi' ? 'Học liệu' : 'Resources', path: '/resources' },
-    { key: 'learn', label: locale === 'vi' ? 'Học tập' : 'Learn', path: '/learn' },
-    { key: 'interactive', label: locale === 'vi' ? 'Tương tác' : 'Interactive', path: '/interactive' },
-    { key: 'creative', label: locale === 'vi' ? 'Sáng tạo' : 'Creative', path: '/creative' },
-    { key: 'profile', label: locale === 'vi' ? 'Hồ sơ' : 'Profile', path: '/profile' },
-  ];
-
   return (
     <ActivityShell
-      title={mode === 'build' ? 'Nơi sống của An' : 'Quan sát môi trường của An'}
-      showLogo={false}
+      title={mode === 'build' ? (locale === 'vi' ? 'Nơi sống của An' : "An's Ocean Habitat") : (locale === 'vi' ? 'Quan sát môi trường của An' : "Observing An's Environment")}
+      variant="light"
       onBack={() => navigate('/creative')}
-      headerCenter={
-        <nav className="hidden md:flex items-center gap-1 sm:gap-2">
-          {navItems.map(item => {
-            const isActive = item.key === 'creative';
-            return (
-              <button
-                key={item.key}
-                type="button"
-                onClick={() => navigate(item.path)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                  isActive
-                    ? 'bg-[#2EE6CA]/20 text-[#2EE6CA] border border-[#2EE6CA]/40 shadow-sm'
-                    : 'text-white/80 hover:text-white hover:bg-white/10'
-                }`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
-      }
-      headerRight={
-        <div className="flex items-center gap-3">
-          {/* Kid Profile Pill */}
-          <button
-            type="button"
-            onClick={() => navigate('/profile')}
-            className="flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 transition-all text-xs font-bold text-white cursor-pointer"
-          >
-            <div className="w-6 h-6 rounded-full bg-[#2EE6CA] flex items-center justify-center text-[#12384B] font-black text-[10px]">
-              An
-            </div>
-            <span className="hidden sm:inline">An</span>
-            <span className="text-white/50 text-[10px]">▾</span>
-          </button>
-        </div>
-      }
+      onHint={() => setShowAlertModal(true)}
+      isPaused={isPaused}
+      onTogglePause={() => setIsPaused(!isPaused)}
+      showLogo={true}
     >
-      <div className="w-full h-full min-h-[calc(100vh-72px)] bg-[#f7f5ef] flex flex-col justify-between p-3 sm:p-5 space-y-3">
-        {/* Floating Sub-Header */}
-        <div className="flex items-center justify-between bg-white rounded-2xl px-5 py-2.5 shadow-sm border border-black/5">
-          {/* Left Title & Back Breadcrumb */}
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => navigate('/creative')}
-              className="text-xs font-bold text-[#17657A] hover:text-[#12384B] flex items-center gap-1 cursor-pointer transition-colors"
-            >
-              <span className="text-base font-black">‹</span>
-              <span>{locale === 'vi' ? 'Sáng tạo' : 'Creative'}</span>
-            </button>
-
-            <h1 className="text-lg sm:text-xl font-serif font-black text-[#12384B] flex items-center gap-2 tracking-[-0.02em]">
-              {mode === 'build' ? (
-                <>
-                  <span>{locale === 'vi' ? 'Nơi sống của An' : "An's Ocean Habitat"}</span>
-                  <Edit3 className="w-4 h-4 text-gray-400" />
-                </>
-              ) : (
-                <span>{locale === 'vi' ? 'Quan sát môi trường của An' : "Observing An's Environment"}</span>
+      <div className="w-full h-[calc(100vh-68px)] max-h-[calc(100vh-68px)] flex flex-col justify-between p-3 sm:p-4 space-y-2 relative overflow-hidden font-sans bg-gradient-to-b from-[#F2F6FA] via-[#EBF1F7] to-[#E5ECF2]">
+        {/* Soft Ambient Underwater Caustics & Light Beams Layer */}
+        <UnderwaterCausticsLayer
+          className="absolute inset-0 pointer-events-none opacity-20 z-0"
+          showFish={false}
+          showBubbles={true}
+          showRays={true}
+          showCaustics={true}
+        />
+        {/* Sub-Header: Project Title & Tactile Actions */}
+        <div className="flex items-center justify-between px-1 sm:px-3 py-0.5 relative z-20">
+          {/* Left Sub-Header Indicator */}
+          <div className="flex items-center gap-2.5">
+            <div className="px-3.5 py-1.5 rounded-full bg-white/90 border border-[#12384B]/10 shadow-2xs flex items-center gap-2 text-xs font-bold text-[#102A38]">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-serif font-bold text-sm tracking-tight text-[#102A38]">
+                {mode === 'build'
+                  ? (locale === 'vi' ? 'Nơi sống của An' : "An's Ocean Habitat")
+                  : (locale === 'vi' ? 'Quan sát môi trường của An' : "Observing An's Environment")}
+              </span>
+              {mode === 'build' && (
+                <button
+                  type="button"
+                  title={locale === 'vi' ? 'Đổi tên dự án' : 'Rename project'}
+                  className="text-gray-400 hover:text-gray-600 transition-colors p-0.5 cursor-pointer"
+                >
+                  <Edit3 className="w-3.5 h-3.5" />
+                </button>
               )}
-            </h1>
+            </div>
           </div>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Undo / Redo */}
-            <button
-              type="button"
-              onClick={handleUndo}
-              disabled={historyIndexRef.current === 0 || mode === 'run'}
-              className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
-              title="Undo"
-              aria-label="Hoàn tác"
-            >
-              <Undo2 className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              onClick={handleRedo}
-              disabled={historyIndexRef.current >= historyRef.current.length - 1 || mode === 'run'}
-              className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
-              title="Redo"
-              aria-label="Làm lại"
-            >
-              <Redo2 className="w-4 h-4" />
-            </button>
-
-            {/* Save */}
-            <button
-              type="button"
-              onClick={handleSaveArtwork}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 text-xs font-bold text-[#12384B] shadow-xs cursor-pointer transition-all active:scale-95"
-            >
-              <Save className="w-3.5 h-3.5" />
-              <span>{locale === 'vi' ? 'Lưu' : 'Save'}</span>
-            </button>
-
-            {/* Mode Specific Buttons */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
             {mode === 'build' ? (
-              <button
-                type="button"
-                onClick={handleSwitchToRun}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl bg-[#12384B] hover:bg-[#16455c] text-white font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer"
-              >
-                <Play className="w-3.5 h-3.5 fill-current text-[#2EE6CA]" />
-                <span>{locale === 'vi' ? 'Chạy thử' : 'Test Run'}</span>
-              </button>
+              <>
+                {/* Undo / Redo */}
+                <button
+                  type="button"
+                  onClick={handleUndo}
+                  disabled={historyIndexRef.current === 0}
+                  className="p-2.5 rounded-xl bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 shadow-2xs disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                  title="Undo"
+                  aria-label="Hoàn tác"
+                >
+                  <Undo2 className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleRedo}
+                  disabled={historyIndexRef.current >= historyRef.current.length - 1}
+                  className="p-2.5 rounded-xl bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 shadow-2xs disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                  title="Redo"
+                  aria-label="Làm lại"
+                >
+                  <Redo2 className="w-4 h-4" />
+                </button>
+
+                {/* Save */}
+                <button
+                  type="button"
+                  onClick={handleSaveArtwork}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-gray-200 hover:bg-gray-50 text-xs font-bold text-[#12384B] shadow-2xs cursor-pointer transition-all active:scale-95"
+                >
+                  <Save className="w-4 h-4 text-gray-700" />
+                  <span>{locale === 'vi' ? 'Lưu' : 'Save'}</span>
+                </button>
+
+                {/* Run Mode CTA: Chạy thử */}
+                <button
+                  type="button"
+                  onClick={handleSwitchToRun}
+                  className="flex items-center gap-2 px-4.5 py-2.5 rounded-xl bg-[#15586E] hover:bg-[#124556] text-white text-xs font-bold shadow-xs cursor-pointer transition-all active:scale-95"
+                >
+                  <Play className="w-3.5 h-3.5 fill-current text-[#2EE6CA]" />
+                  <span>{locale === 'vi' ? 'Chạy thử' : 'Test Run'}</span>
+                </button>
+              </>
             ) : (
               <>
-                {/* Simulation Pause / Resume */}
-                <button
-                  type="button"
-                  onClick={() => setIsPaused(!isPaused)}
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#17657A] text-xs font-bold text-[#17657A] shadow-xs cursor-pointer hover:bg-teal-50/50 transition-all"
-                >
-                  {isPaused ? <Play className="w-3.5 h-3.5 text-[#17657A]" /> : <Pause className="w-3.5 h-3.5 text-[#17657A]" />}
-                  <span>{isPaused ? (locale === 'vi' ? 'Tiếp tục' : 'Resume') : (locale === 'vi' ? 'Tạm dừng' : 'Pause')}</span>
-                </button>
-
-                {/* Simulation Restart */}
-                <button
-                  type="button"
-                  onClick={() => setResetTrigger(prev => prev + 1)}
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-gray-200 text-xs font-bold text-[#12384B] shadow-xs cursor-pointer hover:bg-gray-50 transition-all"
-                >
-                  <RotateCcw className="w-3.5 h-3.5 text-gray-600" />
-                  <span>{locale === 'vi' ? 'Chạy lại' : 'Restart'}</span>
-                </button>
-
-                {/* Return to Edit CTA */}
+                {/* Mode switch back CTA: Sửa thiết kế (Coral button #F67650) */}
                 <button
                   type="button"
                   onClick={handleSwitchToBuild}
-                  className="flex items-center gap-2 px-5 py-2 rounded-xl bg-[#F67650] hover:bg-[#e06540] text-white font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#F67650] hover:bg-[#e06540] text-white text-xs font-bold shadow-md cursor-pointer transition-all active:scale-95"
                 >
-                  <Edit3 className="w-3.5 h-3.5 text-white" />
+                  <Edit3 className="w-4 h-4" />
                   <span>{locale === 'vi' ? 'Sửa thiết kế' : 'Edit Design'}</span>
+                </button>
+
+                {/* Simulation runtime controls: Tạm dừng / Tiếp tục */}
+                <button
+                  type="button"
+                  onClick={() => setIsPaused(!isPaused)}
+                  className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 text-xs font-bold text-[#12384B] shadow-2xs cursor-pointer hover:bg-gray-50 transition-all active:scale-95"
+                >
+                  {isPaused ? <Play className="w-4 h-4 text-[#15586E]" /> : <Pause className="w-4 h-4 text-[#15586E]" />}
+                  <span>{isPaused ? (locale === 'vi' ? 'Tiếp tục' : 'Resume') : (locale === 'vi' ? 'Tạm dừng' : 'Pause')}</span>
+                </button>
+
+                {/* Simulation runtime controls: Chạy lại */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsPaused(false);
+                    setResetTrigger(prev => prev + 1);
+                  }}
+                  className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 text-xs font-bold text-[#12384B] shadow-2xs cursor-pointer hover:bg-gray-50 transition-all active:scale-95"
+                >
+                  <RotateCcw className="w-4 h-4 text-gray-600" />
+                  <span>{locale === 'vi' ? 'Chạy lại' : 'Restart'}</span>
+                </button>
+
+                {/* Reset Camera View */}
+                <button
+                  type="button"
+                  onClick={() => setResetTrigger(prev => prev + 1)}
+                  className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white border border-gray-200 text-xs font-bold text-[#12384B] shadow-2xs cursor-pointer hover:bg-gray-50 transition-all active:scale-95"
+                >
+                  <RotateCcw className="w-4 h-4 text-gray-600" />
+                  <span>{locale === 'vi' ? 'Đặt lại góc nhìn' : 'Reset View'}</span>
                 </button>
               </>
             )}
@@ -348,38 +311,38 @@ export function HabitatStudioPage() {
         </div>
 
         {/* Center Workspace Stage */}
-        <div className="flex-1 flex gap-3 min-h-[460px] relative">
+        <div className="flex-1 min-h-0 flex gap-3 relative z-10">
           {/* Left Vertical 3D Controls */}
           <div className="w-16 flex flex-col justify-between items-center py-2 shrink-0">
             {/* 4 Core Tools Card */}
-            <div className="bg-white rounded-2xl p-2 shadow-sm border border-black/5 flex flex-col items-center gap-2">
+            <div className="bg-white/95 backdrop-blur-xl rounded-2xl p-2 shadow-lg border border-white/70 flex flex-col items-center gap-2">
               <button
                 type="button"
                 onClick={() => setActiveLeftTool('move')}
-                className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold cursor-pointer transition-all ${
+                className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold cursor-pointer transition-all ${
                   activeLeftTool === 'move'
-                    ? 'bg-[#2EE6CA]/30 text-[#12384B] ring-2 ring-[#2EE6CA]'
+                    ? 'bg-[#E8F8F6] text-[#12384B] ring-2 ring-[#2EE6CA]'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 title="Di chuyển"
                 aria-label="Công cụ di chuyển"
               >
-                <Move className="w-4 h-4" />
+                <Move className="w-4 h-4 mb-0.5" />
                 <span>Di chuyển</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveLeftTool('rotate')}
-                className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold cursor-pointer transition-all ${
+                className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold cursor-pointer transition-all ${
                   activeLeftTool === 'rotate'
-                    ? 'bg-[#2EE6CA]/30 text-[#12384B] ring-2 ring-[#2EE6CA]'
+                    ? 'bg-[#E8F8F6] text-[#12384B] ring-2 ring-[#2EE6CA]'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 title="Xoay"
                 aria-label="Công cụ xoay"
               >
-                <RotateCw className="w-4 h-4" />
+                <RotateCw className="w-4 h-4 mb-0.5" />
                 <span>Xoay</span>
               </button>
 
@@ -389,15 +352,15 @@ export function HabitatStudioPage() {
                   setActiveLeftTool('zoom');
                   setZoomTrigger(prev => prev + 1);
                 }}
-                className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold cursor-pointer transition-all ${
+                className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold cursor-pointer transition-all ${
                   activeLeftTool === 'zoom'
-                    ? 'bg-[#2EE6CA]/30 text-[#12384B] ring-2 ring-[#2EE6CA]'
+                    ? 'bg-[#E8F8F6] text-[#12384B] ring-2 ring-[#2EE6CA]'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 title="Phóng to"
                 aria-label="Công cụ phóng to"
               >
-                <ZoomIn className="w-4 h-4" />
+                <ZoomIn className="w-4 h-4 mb-0.5" />
                 <span>Phóng to</span>
               </button>
 
@@ -405,7 +368,7 @@ export function HabitatStudioPage() {
                 <button
                   type="button"
                   onClick={() => setActiveLeftTool('delete')}
-                  className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold cursor-pointer transition-all ${
+                  className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold cursor-pointer transition-all ${
                     activeLeftTool === 'delete'
                       ? 'bg-[#F67650]/20 text-[#F67650] ring-2 ring-[#F67650]'
                       : 'text-gray-600 hover:bg-gray-100'
@@ -413,22 +376,22 @@ export function HabitatStudioPage() {
                   title="Xóa đối tượng"
                   aria-label="Công cụ xóa"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-4 h-4 mb-0.5" />
                   <span>Xóa</span>
                 </button>
               ) : (
                 <div
-                  className="w-11 h-11 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold text-gray-300 pointer-events-none"
+                  className="w-12 h-12 rounded-xl flex flex-col items-center justify-center text-[10px] font-bold text-gray-300 pointer-events-none"
                   title="Chế độ chạy ẩn công cụ xóa"
                 >
-                  <Trash2 className="w-4 h-4 opacity-30" />
+                  <Trash2 className="w-4 h-4 opacity-30 mb-0.5" />
                   <span className="opacity-30">Xóa</span>
                 </div>
               )}
             </div>
 
             {/* Bottom 3D Compass Widget */}
-            <div className="w-14 h-14 rounded-full bg-white shadow-sm border border-black/5 flex items-center justify-center relative select-none">
+            <div className="w-14 h-14 rounded-full bg-white/95 backdrop-blur-xl shadow-lg border border-white/70 flex items-center justify-center relative select-none">
               <button
                 type="button"
                 onClick={() => handleCompassClick(0)}
@@ -465,13 +428,13 @@ export function HabitatStudioPage() {
                 className="w-7 h-7 rounded-full bg-[#17657A]/10 flex items-center justify-center transition-transform duration-300"
                 style={{ transform: `rotate(${-compassAngle}rad)` }}
               >
-                <div className="w-3 h-3 border-t-2 border-l-2 border-[#17657A] -rotate-45" />
+                <div className="w-3.5 h-3.5 border-t-2 border-l-2 border-[#17657A] -rotate-45" />
               </div>
             </div>
           </div>
 
           {/* Center 3D Isometric Viewport Container */}
-          <div className="flex-1 bg-white rounded-3xl shadow-sm border border-black/5 relative overflow-hidden flex items-center justify-center">
+          <div className="flex-1 bg-transparent rounded-3xl relative overflow-hidden flex items-center justify-center border border-white/20 shadow-inner">
             {/* Real Three.js Canvas */}
             <Habitat3DCanvas
               mode={mode}
@@ -490,25 +453,77 @@ export function HabitatStudioPage() {
               className="absolute inset-0"
             />
 
-            {/* Run Mode Motion Spline Trajectory Overlay */}
+            {/* Run Mode Motion Spline Trajectory Overlay matching mockup */}
             {mode === 'run' && (
               <div className="absolute inset-0 pointer-events-none">
                 <svg className="w-full h-full" viewBox="0 0 1000 600" preserveAspectRatio="none">
+                  <defs>
+                    <marker
+                      id="arrow-cyan"
+                      viewBox="0 0 10 10"
+                      refX="5"
+                      refY="5"
+                      markerWidth="6"
+                      markerHeight="6"
+                      orient="auto-start-reverse"
+                    >
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2EE6CA" />
+                    </marker>
+                    <marker
+                      id="arrow-white"
+                      viewBox="0 0 10 10"
+                      refX="5"
+                      refY="5"
+                      markerWidth="6"
+                      markerHeight="6"
+                      orient="auto-start-reverse"
+                    >
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="#FFFFFF" />
+                    </marker>
+                    <marker
+                      id="arrow-yellow"
+                      viewBox="0 0 10 10"
+                      refX="5"
+                      refY="5"
+                      markerWidth="6"
+                      markerHeight="6"
+                      orient="auto-start-reverse"
+                    >
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="#F6E05E" />
+                    </marker>
+                  </defs>
+
+                  {/* Turtle motion path (cyan dotted with arrowhead) */}
                   <path
-                    d="M 320 380 Q 480 320, 620 350 T 840 430"
+                    d="M 330 480 Q 450 440, 520 455 T 670 480"
                     fill="none"
                     stroke="#2EE6CA"
-                    strokeWidth="2.5"
+                    strokeWidth="2.8"
                     strokeDasharray="8 6"
-                    className="opacity-75"
+                    markerEnd="url(#arrow-cyan)"
+                    className="opacity-90"
                   />
+
+                  {/* Silver fish motion path (white dotted with arrowhead) */}
                   <path
-                    d="M 580 240 Q 680 220, 780 280"
+                    d="M 680 270 Q 750 280, 830 320"
+                    fill="none"
+                    stroke="#ffffff"
+                    strokeWidth="2.2"
+                    strokeDasharray="6 4"
+                    markerEnd="url(#arrow-white)"
+                    className="opacity-85"
+                  />
+
+                  {/* Yellow reef fish motion path (yellow dotted with arrowhead) */}
+                  <path
+                    d="M 600 540 Q 690 535, 780 570"
                     fill="none"
                     stroke="#f6e05e"
                     strokeWidth="2"
-                    strokeDasharray="5 5"
-                    className="opacity-70"
+                    strokeDasharray="5 4"
+                    markerEnd="url(#arrow-yellow)"
+                    className="opacity-80"
                   />
                 </svg>
               </div>
@@ -518,7 +533,7 @@ export function HabitatStudioPage() {
           {/* Right Panel */}
           {mode === 'build' ? (
             /* Build Mode: Cảnh trong dự án */
-            <div className="w-72 bg-white rounded-3xl p-4 shadow-sm border border-black/5 flex flex-col justify-between space-y-3 shrink-0">
+            <div className="w-72 bg-white/95 backdrop-blur-xl rounded-3xl p-4 shadow-lg border border-white/70 flex flex-col justify-between space-y-3 shrink-0">
               <div className="space-y-3">
                 <div
                   onClick={() => setIsScenesPanelOpen(!isScenesPanelOpen)}
@@ -538,15 +553,19 @@ export function HabitatStudioPage() {
                       <div
                         key={preset.id}
                         onClick={() => handleSelectScene(preset.id)}
-                        className={`flex items-center justify-between p-2.5 rounded-2xl border transition-all cursor-pointer ${
+                        className={`flex items-center justify-between p-2 rounded-2xl border transition-all cursor-pointer ${
                           activeSceneId === preset.id
-                            ? 'border-[#17657A] bg-[#17657A]/5 shadow-xs'
-                            : 'border-gray-200 hover:bg-gray-50'
+                            ? 'border-[#2EE6CA] bg-[#E8F8F6] shadow-2xs ring-1 ring-[#2EE6CA]'
+                            : 'border-gray-200 bg-white hover:bg-gray-50'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-lg">
-                            {preset.icon}
+                          <div className="w-12 h-10 rounded-xl overflow-hidden bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0">
+                            {preset.thumbnailUrl ? (
+                              <img src={preset.thumbnailUrl} alt={preset.nameVi} className="w-full h-full object-cover" />
+                            ) : (
+                              <span className="text-lg">{preset.icon}</span>
+                            )}
                           </div>
                           <div>
                             <h4 className="text-xs font-bold text-[#12384B]">{preset.nameVi}</h4>
@@ -571,6 +590,7 @@ export function HabitatStudioPage() {
                     subTitleVi: 'Cảnh tùy chỉnh',
                     subTitleEn: 'Custom Scene',
                     icon: '🌊',
+                    thumbnailUrl: '/assets/habitat/scene-sand.png',
                     items: [...items],
                   };
                   HABITAT_SCENE_PRESETS.push(newPreset);
@@ -584,7 +604,7 @@ export function HabitatStudioPage() {
             </div>
           ) : (
             /* Run Mode: Con muốn đổi điều gì? */
-            <div className="w-72 bg-white rounded-3xl p-4 shadow-sm border border-black/5 flex flex-col space-y-3 shrink-0">
+            <div className="w-72 bg-white/95 backdrop-blur-xl rounded-3xl p-4 shadow-lg border border-white/70 flex flex-col space-y-3 shrink-0">
               <div className="space-y-1">
                 <div
                   onClick={() => setIsInspectPanelOpen(!isInspectPanelOpen)}
@@ -613,8 +633,8 @@ export function HabitatStudioPage() {
                       onClick={() => setInspectCategory('rocks')}
                       className={`flex-1 py-1.5 rounded-xl font-bold text-xs text-center cursor-pointer transition-colors ${
                         inspectCategory === 'rocks'
-                          ? 'bg-[#2EE6CA]/20 text-[#12384B] border border-[#2EE6CA]/40'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                          ? 'bg-[#E8F8F6] text-[#12384B] border border-[#2EE6CA]'
+                          : 'bg-white border border-gray-200 hover:bg-gray-50 text-gray-600'
                       }`}
                     >
                       {locale === 'vi' ? 'Đá & địa hình' : 'Rocks'}
@@ -624,25 +644,41 @@ export function HabitatStudioPage() {
                       onClick={() => setInspectCategory('seagrass')}
                       className={`flex-1 py-1.5 rounded-xl font-bold text-xs text-center cursor-pointer transition-colors ${
                         inspectCategory === 'seagrass'
-                          ? 'bg-[#2EE6CA]/20 text-[#12384B] border border-[#2EE6CA]/40'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                          ? 'bg-[#E8F8F6] text-[#12384B] border border-[#2EE6CA]'
+                          : 'bg-white border border-gray-200 hover:bg-gray-50 text-gray-600'
                       }`}
                     >
                       {locale === 'vi' ? 'Cỏ biển' : 'Seagrass'}
                     </button>
                   </div>
 
-                  {/* Quick Inspect Cards */}
+                  {/* Quick Inspect Cards with 6-dot handle and 3D thumbnail */}
                   <div className="grid grid-cols-2 gap-2 flex-1 overflow-y-auto max-h-[380px] pr-1">
                     {HABITAT_ASSET_PALETTE[inspectCategory].map(item => (
                       <div
                         key={item.id}
                         onClick={handleSwitchToBuild}
-                        className="p-3 rounded-2xl bg-gray-50 hover:bg-white border border-gray-200 hover:border-[#17657A] shadow-xs flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all group"
+                        className="relative p-2.5 rounded-2xl bg-white hover:bg-[#F8FDFA] border border-gray-200 hover:border-[#2EE6CA] hover:shadow-sm flex flex-col items-center justify-between gap-1 cursor-pointer transition-all group"
                         title="Bấm để chuyển về bàn sửa và đặt đối tượng này"
                       >
-                        <span className="text-2xl group-hover:scale-110 transition-transform">{item.icon}</span>
-                        <span className="text-[10px] font-bold text-[#12384B] text-center leading-tight">
+                        {/* 6-dot drag grip handle in upper right */}
+                        <div className="absolute top-1.5 right-1.5 text-gray-300 group-hover:text-gray-500">
+                          <GripVertical className="w-3.5 h-3.5" />
+                        </div>
+
+                        <div className="w-14 h-14 flex items-center justify-center pt-1">
+                          {item.thumbnailUrl ? (
+                            <img
+                              src={item.thumbnailUrl}
+                              alt={item.nameVi}
+                              className="max-w-full max-h-full object-contain drop-shadow-2xs group-hover:scale-105 transition-transform"
+                            />
+                          ) : (
+                            <span className="text-2xl group-hover:scale-110 transition-transform">{item.icon}</span>
+                          )}
+                        </div>
+
+                        <span className="text-[11px] font-bold text-[#12384B] text-center leading-tight">
                           {item.nameVi}
                         </span>
                       </div>
@@ -656,15 +692,15 @@ export function HabitatStudioPage() {
 
         {/* Bottom Asset Tray (Only in Build Mode) */}
         {mode === 'build' && (
-          <div className="bg-white rounded-3xl p-4 shadow-sm border border-black/5 space-y-3">
+          <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-3.5 shadow-lg border border-white/70 space-y-2.5 relative z-20">
             {/* Category Tabs */}
-            <div className="flex items-center gap-2 border-b border-gray-100 pb-2.5">
+            <div className="flex items-center gap-2 border-b border-gray-100 pb-2">
               {(['sand', 'rocks', 'seagrass', 'creatures'] as HabitatCategory[]).map(cat => {
-                const labels: Record<HabitatCategory, { vi: string; en: string }> = {
-                  sand: { vi: 'Cát', en: 'Sand' },
-                  rocks: { vi: 'Đá', en: 'Rocks' },
-                  seagrass: { vi: 'Cỏ biển', en: 'Seagrass' },
-                  creatures: { vi: 'Sinh vật', en: 'Creatures' },
+                const tabData: Record<HabitatCategory, { vi: string; en: string; icon: string }> = {
+                  sand: { vi: 'Cát', en: 'Sand', icon: '🏖️' },
+                  rocks: { vi: 'Đá', en: 'Rocks', icon: '⛰️' },
+                  seagrass: { vi: 'Cỏ biển', en: 'Seagrass', icon: '🌿' },
+                  creatures: { vi: 'Sinh vật', en: 'Creatures', icon: '🐟' },
                 };
                 const isActive = activeTab === cat;
                 return (
@@ -672,20 +708,21 @@ export function HabitatStudioPage() {
                     key={cat}
                     type="button"
                     onClick={() => setActiveTab(cat)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold cursor-pointer transition-all ${
+                    className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold cursor-pointer transition-all ${
                       isActive
-                        ? 'bg-[#2EE6CA]/30 text-[#12384B] ring-2 ring-[#2EE6CA]'
+                        ? 'bg-[#E8F8F6] text-[#12384B] ring-2 ring-[#2EE6CA] border border-[#2EE6CA]/40 shadow-2xs'
                         : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
                     }`}
                   >
-                    {locale === 'vi' ? labels[cat].vi : labels[cat].en}
+                    <span>{tabData[cat].icon}</span>
+                    <span>{locale === 'vi' ? tabData[cat].vi : tabData[cat].en}</span>
                   </button>
                 );
               })}
             </div>
 
             {/* Asset Carousel & Helper Tip */}
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5 overflow-x-auto py-1 flex-1">
                 {HABITAT_ASSET_PALETTE[activeTab].map(asset => {
                   const isSelected = selectedAssetId === asset.id;
@@ -694,14 +731,30 @@ export function HabitatStudioPage() {
                       key={asset.id}
                       type="button"
                       onClick={() => setSelectedAssetId(asset.id)}
-                      className={`min-w-[108px] p-2.5 rounded-2xl border flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                      className={`relative min-w-[112px] h-[104px] p-2 rounded-2xl border flex flex-col items-center justify-between cursor-pointer transition-all group ${
                         isSelected
-                          ? 'border-[#2EE6CA] bg-[#2EE6CA]/15 ring-2 ring-[#2EE6CA]/50 shadow-xs'
+                          ? 'border-2 border-[#2EE6CA] bg-[#E8F8F6] ring-2 ring-[#2EE6CA]/40 shadow-xs'
                           : 'border-gray-200 bg-white hover:bg-gray-50'
                       }`}
                     >
-                      <span className="text-2xl">{asset.icon}</span>
-                      <span className="text-[11px] font-bold text-[#12384B] truncate w-full text-center">
+                      {/* 6-dot drag grip handle in upper right */}
+                      <div className="absolute top-1.5 right-1.5 text-gray-300 group-hover:text-gray-500">
+                        <GripVertical className="w-3.5 h-3.5" />
+                      </div>
+
+                      <div className="w-14 h-14 flex items-center justify-center pt-1">
+                        {asset.thumbnailUrl ? (
+                          <img
+                            src={asset.thumbnailUrl}
+                            alt={asset.nameVi}
+                            className="max-w-full max-h-full object-contain drop-shadow-2xs group-hover:scale-105 transition-transform"
+                          />
+                        ) : (
+                          <span className="text-2xl">{asset.icon}</span>
+                        )}
+                      </div>
+
+                      <span className="text-[11px] font-bold text-[#12384B] truncate w-full text-center pb-0.5">
                         {asset.nameVi}
                       </span>
                     </button>
@@ -710,9 +763,9 @@ export function HabitatStudioPage() {
               </div>
 
               {/* Right Drag/Drop Instruction */}
-              <div className="hidden lg:flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-gray-50 border border-gray-200 shrink-0">
-                <MousePointer2 className="w-4 h-4 text-[#17657A]" />
-                <span className="text-xs text-gray-600 max-w-[190px] leading-tight">
+              <div className="hidden lg:flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#F8FAFC] border border-gray-200/80 shrink-0">
+                <MousePointer2 className="w-5 h-5 text-[#17657A] -rotate-12" />
+                <span className="text-xs font-medium text-gray-600 max-w-[180px] leading-snug">
                   {locale === 'vi'
                     ? 'Kéo thả đối tượng vào vùng hợp lệ trên mô hình'
                     : 'Drag and drop items onto valid model spots'}

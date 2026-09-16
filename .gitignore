@@ -1,28 +1,63 @@
-# Logs
-logs
-*.log
+﻿# Dependencies & Package Managers
+node_modules/
+.pnpm-store/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Production Build Outputs & Cache
+dist/
+dist-ssr/
+build/
+.vite/
+*.tsbuildinfo
 
-# Editor directories and files
+# Environment & Credentials
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Editor & IDE Configuration
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+!.vscode/settings.json
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
+# OS Generated Files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+desktop.ini
+.DS_Store
+._*
+
+# Testing, Coverage & Playwright
+coverage/
+test-results/
+playwright-report/
+.playwright-mcp/
+
+# Agent Scratch & Temporary Folders
+.agents/
+tmp/
+temp/
+*.tmp
+renders/
+dev/
+*.log
+logs/
+
 # Worktrees
 astra/
-
+proteus/

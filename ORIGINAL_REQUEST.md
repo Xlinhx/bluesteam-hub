@@ -13,8 +13,8 @@ Integrity mode: development
 
 Reference material:
 - Reference Mockups: `C:/Users/ADMIN/Downloads/ocean/`
-- Progress & Visual Manifest: `docs/design/bluesteam-v2/visual-review-manifest.json`
-- Scene Ground Truth: `docs/design/bluesteam-v2/scene-manifest.json`
+- Progress & Visual Manifest: `docs/12-VERIFICATION/visual-review-manifest.json`
+- Scene Ground Truth: `docs/12-VERIFICATION/scene-manifest.json`
 - Local Vite Server: `http://localhost:5173`
 
 ## Requirements
@@ -54,9 +54,9 @@ Refine and polish all 39 application screens categorized across the functional s
 ## Acceptance Criteria
 
 ### Visual Parity & Rubric Score
-- [ ] All 34 REFERENCE screens in `docs/design/bluesteam-v2/visual-review-manifest.json` have high-resolution captured screenshots under `artifacts/bluesteam-v2/verification/`.
+- [ ] All 34 REFERENCE screens in `docs/12-VERIFICATION/visual-review-manifest.json` have high-resolution captured screenshots under `artifacts/verification/`.
 - [ ] Every reference screen achieves a rubric total score >= 95/100 with zero blocking (P0) issues.
-- [ ] All 39 records in `docs/design/bluesteam-v2/visual-review-manifest.json` are transitioned to `VERIFIED` status with valid evidence paths.
+- [ ] All 39 records in `docs/12-VERIFICATION/visual-review-manifest.json` are transitioned to `VERIFIED` status with valid evidence paths.
 
 ### Code & Test Integrity
 - [ ] All tests pass: `npm test` exits 0 with 6Pass / 0 Fail across all test suites.

@@ -4,7 +4,6 @@ import { LearnerShell } from '../../shells/LearnerShell';
 import { oceanAudio } from '../../shared/sound/oceanAudio';
 import {
   Volume2,
-  RotateCw,
   ChevronLeft,
   ChevronRight,
   Sprout,
@@ -148,7 +147,7 @@ export function FlashcardDetailPage() {
       id: 'crab',
       name: 'Cua biển',
       scientificName: 'Scylla serrata',
-      heroImage: '/assets/bluesteam/bs-habitat-mangrove-bg-v01.jpg',
+      heroImage: '/assets/ocean/habitat-mangrove-bg.jpg',
       isolatedImage: '/assets/generated/creatures/crab_isolated.png',
       audioPronunciation: 'Cua biển. Sở hữu chiếc mai cứng cáp cùng đôi càng to khỏe để tự vệ.',
       depth: 'Rừng ngập mặn & bãi triều (0 - 10m)',
@@ -162,7 +161,7 @@ export function FlashcardDetailPage() {
           detail: 'Đôi càng chắc khỏe dùng để kẹp thức ăn và báo hiệu cho đồng loại khi có kẻ thù.',
         },
         habitat: {
-          image: '/assets/bluesteam/bs-habitat-mangrove-bg-v01.jpg',
+          image: '/assets/ocean/habitat-mangrove-bg.jpg',
           quote: 'Rừng đước ngập mặn và bãi bùn.',
           detail: 'Rễ cây đước chằng chịt tạo thành tổ trú ẩn an toàn cho cua con lớn lên.',
         },
@@ -310,8 +309,45 @@ export function FlashcardDetailPage() {
 
   return (
     <LearnerShell activeNav="resources">
-      <div className="min-h-[calc(100vh-72px)] bg-[#FAF8F5] text-[#102A38] font-sans select-none px-6 lg:px-12 py-8">
-        <div className="max-w-6xl mx-auto space-y-8">
+      {/* Main Page Container with Ocean Ambient Atmosphere */}
+      <div className="relative min-h-[calc(100vh-72px)] bg-gradient-to-b from-[#F2F8F9] via-[#FAF8F5] to-[#EBF5F8] text-[#102A38] font-sans select-none px-6 lg:px-12 py-8 overflow-hidden">
+        {/* AMBIENT OCEAN DECORATIONS (Outside Cards - 2 Sides & Bottom) */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden z-0">
+          {/* Left ambient: Sea-kelp silhouette & gentle water currents */}
+          <div className="absolute left-0 top-1/4 -translate-x-8 opacity-15 text-[#17657A]">
+            <svg className="w-56 h-96" viewBox="0 0 120 220" fill="currentColor">
+              <path d="M25 220 C 15 160, 50 130, 30 80 C 18 45, 40 15, 25 0 C 10 20, 2 55, 8 95 C 15 140, -2 170, 25 220 Z" />
+              <path d="M60 220 C 50 150, 85 110, 68 55 C 55 20, 72 5, 60 0 C 48 18, 38 50, 44 88 C 50 130, 32 170, 60 220 Z" opacity="0.7" />
+              <path d="M95 220 C 88 175, 110 140, 98 90 C 85 55, 102 22, 92 0 C 80 20, 68 55, 75 98 C 82 140, 65 180, 95 220 Z" opacity="0.5" />
+            </svg>
+          </div>
+          {/* Left floating bubbles */}
+          <div className="absolute left-12 top-48 w-4 h-4 rounded-full border-2 border-[#17657A]/20 bg-white/30 backdrop-blur-xs animate-pulse" />
+          <div className="absolute left-24 top-80 w-2.5 h-2.5 rounded-full border border-[#2EE6CA]/35 bg-teal-100/20" />
+          <div className="absolute left-8 bottom-32 w-6 h-6 rounded-full border-2 border-[#17657A]/15 bg-white/20" />
+
+          {/* Right ambient: Coral reef silhouettes & schooling fish */}
+          <div className="absolute right-0 bottom-0 translate-x-6 opacity-15 text-[#17657A]">
+            <svg className="w-64 h-80" viewBox="0 0 180 220" fill="currentColor">
+              <path d="M45 220 C 50 175, 35 145, 55 100 C 68 80, 50 45, 60 12 C 72 35, 90 55, 82 90 C 95 125, 72 155, 90 220 Z" />
+              <path d="M110 220 C 115 165, 100 130, 128 88 C 140 68, 122 35, 138 0 C 150 28, 160 55, 150 95 C 160 128, 138 165, 155 220 Z" opacity="0.8" />
+              <path d="M155 220 C 150 185, 165 155, 160 120 C 155 95, 170 68, 165 35 C 172 58, 175 90, 170 128 C 165 160, 175 188, 175 220 Z" opacity="0.6" />
+            </svg>
+          </div>
+          {/* Right swimming fish */}
+          <div className="absolute right-14 top-36 opacity-20 text-[#17657A]">
+            <svg className="w-28 h-16" viewBox="0 0 100 60" fill="currentColor">
+              <path d="M10 20 Q 30 10, 50 20 Q 30 30, 10 20 Z M 10 20 L 0 12 L 0 28 Z" />
+              <path d="M45 38 Q 60 30, 75 38 Q 60 46, 45 38 Z M 45 38 L 38 32 L 38 44 Z" opacity="0.8" />
+              <path d="M65 15 Q 78 7, 90 15 Q 78 23, 65 15 Z M 65 15 L 59 10 L 59 20 Z" opacity="0.6" />
+            </svg>
+          </div>
+          {/* Right floating bubbles */}
+          <div className="absolute right-16 top-24 w-5 h-5 rounded-full border-2 border-[#2EE6CA]/30 bg-teal-100/20" />
+          <div className="absolute right-28 bottom-72 w-3.5 h-3.5 rounded-full border border-[#17657A]/20 bg-white/40" />
+        </div>
+
+        <div className="relative z-10 max-w-6xl mx-auto space-y-8">
           {/* Top Bar: Breadcrumbs + Quay về danh sách */}
           <div className="flex items-center justify-between text-xs font-bold text-slate-500">
             <div className="flex items-center gap-2">
@@ -461,23 +497,27 @@ export function FlashcardDetailPage() {
                 </div>
               </div>
 
-              {/* Action Buttons Row: Nghe tên + Lật thẻ */}
+              {/* Action Buttons Row: Nghe tên + Lật thẻ (min 56px touch target per V11-05) */}
               <div className="flex items-center justify-center gap-4 pt-2">
                 <button
                   type="button"
                   onClick={handleSpeak}
-                  className="px-6 py-3 rounded-full bg-[#17657A] hover:bg-[#125061] text-white font-black text-xs shadow-md flex items-center gap-2 cursor-pointer transition-all active:scale-95"
+                  className="px-7 py-3.5 min-h-[56px] min-w-[56px] rounded-full bg-[#17657A] hover:bg-[#125061] text-white font-black text-sm shadow-md flex items-center gap-2.5 cursor-pointer transition-all active:scale-95"
                 >
-                  <Volume2 className="w-4 h-4" />
+                  <Volume2 className="w-5 h-5" />
                   <span>Nghe tên</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={handleFlip}
-                  className="px-6 py-3 rounded-full bg-white hover:bg-slate-50 border border-[#17657A]/25 text-[#102A38] font-black text-xs shadow-xs flex items-center gap-2 cursor-pointer transition-all active:scale-95"
+                  className="px-7 py-3.5 min-h-[56px] min-w-[56px] rounded-full bg-white hover:bg-slate-50 border-2 border-[#17657A]/25 text-[#102A38] font-black text-sm shadow-xs flex items-center gap-2.5 cursor-pointer transition-all active:scale-95"
                 >
-                  <RotateCw className="w-4 h-4 text-[#17657A]" />
+                  {/* Card Flip Icon per V11-05 */}
+                  <svg className="w-5 h-5 text-[#17657A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <rect x="2" y="5" width="14" height="15" rx="3" />
+                    <path d="M8 2h10a3 3 0 0 1 3 3v11" />
+                  </svg>
                   <span>{isFlipped ? 'Mặt trước' : 'Lật thẻ'}</span>
                 </button>
               </div>
@@ -512,10 +552,13 @@ export function FlashcardDetailPage() {
               </div>
             </div>
 
-            {/* Right Column: Biological Inspector (col-span-7) */}
-            <div className="lg:col-span-7 space-y-6">
+            {/* Right Column: Biological Inspector Panel - Unified matching Mockup */}
+            <div className="lg:col-span-7 rounded-2xl sm:rounded-3xl bg-white border border-[#17657A]/20 shadow-[0_12px_36px_rgba(18,56,75,0.08)] overflow-hidden p-6 lg:p-8 space-y-6 relative">
+              {/* Subtle top ocean strip on card */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#17657A] via-[#2EE6CA] to-[#17657A]" />
+
               {/* 4 Tabs: Đặc điểm, Nơi sống, Thức ăn, Mối đe dọa */}
-              <div className="flex items-center gap-6 border-b border-slate-200 pb-3 font-black text-xs text-slate-500">
+              <div className="flex items-center gap-6 border-b border-slate-100 pb-3 font-black text-xs text-slate-500">
                 {[
                   { key: 'trait', label: 'Đặc điểm', icon: Sprout },
                   { key: 'habitat', label: 'Nơi sống', icon: MapPin },
@@ -543,7 +586,7 @@ export function FlashcardDetailPage() {
               </div>
 
               {/* Large Macro Photo Detail */}
-              <div className="relative h-72 rounded-[28px] overflow-hidden shadow-[0_8px_30px_rgba(18,56,75,0.08)] border border-[#17657A]/15 bg-white">
+              <div className="relative h-72 rounded-2xl overflow-hidden border border-slate-100 bg-slate-100 shadow-inner">
                 <img
                   src={activeTabData.image}
                   alt={activeTabData.quote}
@@ -551,8 +594,8 @@ export function FlashcardDetailPage() {
                 />
               </div>
 
-              {/* Caption Callout Card */}
-              <div className="p-8 rounded-[28px] bg-white shadow-[0_4px_24px_rgba(18,56,75,0.06)] border border-[#17657A]/12 space-y-3">
+              {/* Dedicated Caption Callout Card matching Mockup */}
+              <div className="p-6 rounded-2xl bg-[#F4F9F8] border border-[#17657A]/15 space-y-2">
                 <h3 className="font-serif font-black text-2xl sm:text-3xl text-[#102A38] tracking-tight">
                   {activeTabData.quote}
                 </h3>
@@ -563,50 +606,58 @@ export function FlashcardDetailPage() {
             </div>
           </div>
 
-          {/* Bottom Section: Sinh vật liên quan */}
-          <div className="pt-8 space-y-4 border-t border-slate-200/80">
-            <div className="flex items-center justify-between text-xs font-black">
-              <h4 className="font-serif font-black text-lg text-[#102A38]">
-                Sinh vật liên quan
-              </h4>
-              <button
-                type="button"
-                onClick={() => navigate('/resources?view=catalog')}
-                className="text-[#17657A] hover:underline flex items-center gap-1 cursor-pointer font-bold"
-              >
-                <span>Xem thêm</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            {/* 7 Species Thumbnails Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
-              {speciesList.map((item, idx) => (
-                <div
-                  key={item.id}
-                  onClick={() => {
-                    setCurrentSpeciesIndex(idx);
-                    setIsFlipped(false);
-                    oceanAudio.playChime(500 + idx * 30, 0.1);
-                  }}
-                  className={`p-3 rounded-[24px] bg-white shadow-xs border transition-all cursor-pointer flex flex-col items-center gap-2 hover:-translate-y-1 ${
-                    currentSpeciesIndex === idx
-                      ? 'border-2 border-[#17657A] ring-2 ring-[#17657A]/20 shadow-md'
-                      : 'border-slate-200 hover:border-slate-300'
-                  }`}
-                >
-                  <div className="w-16 h-16 flex items-center justify-center overflow-hidden">
-                    <img
-                      src={item.isolatedImage}
-                      alt={item.name}
-                      className="w-full h-full object-contain filter drop-shadow-sm"
-                    />
-                  </div>
-                  <span className="text-xs font-black text-[#102A38]">
-                    {item.name}
+          {/* Bottom Section: Sinh vật liên quan (Ocean Dock) */}
+          <div className="pt-4 space-y-4">
+            <div className="p-6 rounded-2xl sm:rounded-3xl bg-white/80 backdrop-blur-xs border border-[#17657A]/15 shadow-xs space-y-4">
+              <div className="flex items-center justify-between text-xs font-black">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#2EE6CA] animate-pulse" />
+                  <h4 className="font-serif font-black text-xl text-[#102A38]">
+                    Sinh vật liên quan
+                  </h4>
+                  <span className="hidden sm:inline text-[11px] text-slate-500 font-medium">
+                    • Nhấn chọn từng loài để khám phá hồ sơ
                   </span>
                 </div>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => navigate('/resources?view=catalog')}
+                  className="text-[#17657A] hover:underline flex items-center gap-1 cursor-pointer font-bold"
+                >
+                  <span>Xem thêm</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* 7 Species Thumbnails Row */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+                {speciesList.map((item, idx) => (
+                  <div
+                    key={item.id}
+                    onClick={() => {
+                      setCurrentSpeciesIndex(idx);
+                      setIsFlipped(false);
+                      oceanAudio.playChime(500 + idx * 30, 0.1);
+                    }}
+                    className={`p-3 rounded-2xl bg-white shadow-xs border transition-all cursor-pointer flex flex-col items-center gap-2 hover:-translate-y-1 ${
+                      currentSpeciesIndex === idx
+                        ? 'border-2 border-[#17657A] ring-2 ring-[#17657A]/20 shadow-md bg-sky-50/20'
+                        : 'border-slate-200 hover:border-slate-300'
+                    }`}
+                  >
+                    <div className="w-16 h-16 flex items-center justify-center overflow-hidden">
+                      <img
+                        src={item.isolatedImage}
+                        alt={item.name}
+                        className="w-full h-full object-contain filter drop-shadow-sm"
+                      />
+                    </div>
+                    <span className="text-xs font-black text-[#102A38]">
+                      {item.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

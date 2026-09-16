@@ -33,11 +33,11 @@ export function TeacherLoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#FAF9F6] text-[#12384B] font-sans selection:bg-teal-100 selection:text-teal-900 select-none">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#FAF8F5] text-[#12384B] font-sans selection:bg-teal-100 selection:text-teal-900 select-none">
       {/* ========================================================= */}
       {/* LEFT PANEL: Naturalist Field Journal & Coastal Vista (50%)*/}
       {/* ========================================================= */}
-      <div className="relative w-full lg:w-1/2 min-h-[480px] lg:min-h-screen flex flex-col justify-between p-8 sm:p-12 overflow-hidden">
+      <div className="relative w-full lg:w-1/2 min-h-[380px] lg:min-h-screen flex flex-col justify-start p-8 sm:p-12 overflow-hidden">
         {/* Full Bleed Background Image */}
         <div className="absolute inset-0 z-0">
           <img
@@ -45,54 +45,46 @@ export function TeacherLoginPage() {
             alt="Sổ tay thực địa đại dương bên ghềnh đá"
             className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
         </div>
 
-        {/* Top-Left Brand Logo */}
-        <div className="relative z-10">
+        {/* Top Brand Logo matching Mockup (Ảnh 1) */}
+        <div className="relative z-10 w-full flex justify-center pt-4 sm:pt-8">
           <button
             type="button"
             onClick={() => navigate('/')}
-            className="cursor-pointer focus:outline-none flex flex-col items-start"
+            className="cursor-pointer focus:outline-none group transition-transform duration-200 active:scale-95 text-center flex flex-col items-center"
+            aria-label="Về trang chủ BlueSTEAM"
           >
-            <div className="bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-sm border border-white/80 mb-2 hover:bg-white transition-colors">
-              <BlueSteamLogo size="lg" />
-            </div>
-            <span className="text-xs font-black tracking-widest text-[#102A38] uppercase bg-white/85 backdrop-blur-sm px-3.5 py-1 rounded-full shadow-xs">
-              Học cùng đại dương
-            </span>
+            <BlueSteamLogo
+              size="lg"
+              variant="mockup"
+              showTagline={true}
+              className="drop-shadow-[0_2px_12px_rgba(255,255,255,0.85)] hover:opacity-95 transition-opacity"
+            />
           </button>
-        </div>
-
-        {/* Bottom pedagogical note */}
-        <div className="relative z-10">
-          <div className="max-w-xs p-4 rounded-2xl bg-white/85 backdrop-blur-md border border-white/80 shadow-md">
-            <p className="text-xs text-[#102A38] font-bold leading-relaxed">
-              Không gian quản lý bài giảng, giáo án tương tác và học liệu số dành cho giáo viên mầm non & tiểu học.
-            </p>
-          </div>
         </div>
       </div>
 
       {/* ========================================================= */}
       {/* RIGHT PANEL: Clean Adult Login Form (50%)                */}
       {/* ========================================================= */}
-      <div className="relative w-full lg:w-1/2 min-h-screen flex flex-col justify-between p-8 sm:p-14 lg:p-20 bg-[#FAF9F6] overflow-hidden">
-        {/* Top-Right Language Switcher */}
-        <div className="w-full flex justify-end">
-          <LanguageToggle />
+      <div className="relative w-full lg:w-1/2 min-h-screen flex flex-col justify-between p-8 sm:p-14 lg:p-16 bg-[#FAF8F5] overflow-hidden">
+        {/* Top-Right Language Switcher matching Mockup (Ảnh 3) */}
+        <div className="w-full flex justify-end relative z-20">
+          <LanguageToggle variant="dropdown" />
         </div>
 
-        {/* Centered Login Box */}
-        <div className="max-w-md w-full mx-auto my-auto py-8">
-          <h1 className="font-editorial font-black text-4xl sm:text-5xl text-[#102A38] tracking-[-0.02em] mb-8">
+        {/* Centered Login Box matching Mockup (Ảnh 5) */}
+        <div className="max-w-md w-full mx-auto my-auto py-6 sm:py-8 relative z-20">
+          <h1 className="font-editorial font-bold text-5xl sm:text-[56px] text-[#0A2540] tracking-tight mb-8 leading-none">
             Đăng nhập
           </h1>
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-4">
             {/* Email Field */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-[#102A38]">
+            <div className="space-y-1.5">
+              <label className="block text-xs sm:text-sm font-bold text-[#0A2540]">
                 Email
               </label>
               <div className="relative">
@@ -104,14 +96,14 @@ export function TeacherLoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Nhập email của bạn"
-                  className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border border-slate-300 text-sm font-semibold text-[#102A38] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#17657A] focus:border-transparent transition-all shadow-xs"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/90 border border-slate-200 text-sm font-semibold text-[#0A2540] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#17657A]/40 focus:border-[#17657A] transition-all shadow-xs"
                 />
               </div>
             </div>
 
             {/* Password Field */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-[#102A38]">
+            <div className="space-y-1.5">
+              <label className="block text-xs sm:text-sm font-bold text-[#0A2540]">
                 Mật khẩu
               </label>
               <div className="relative">
@@ -123,12 +115,13 @@ export function TeacherLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Nhập mật khẩu"
-                  className="w-full pl-11 pr-11 py-3.5 rounded-2xl bg-white border border-slate-300 text-sm font-semibold text-[#102A38] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#17657A] focus:border-transparent transition-all shadow-xs"
+                  className="w-full pl-11 pr-11 py-3.5 rounded-xl bg-white/90 border border-slate-200 text-sm font-semibold text-[#0A2540] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#17657A]/40 focus:border-[#17657A] transition-all shadow-xs"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
+                  aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -136,21 +129,21 @@ export function TeacherLoginPage() {
             </div>
 
             {/* Forgot Password Link */}
-            <div className="flex justify-end pt-1">
+            <div className="flex justify-end pt-0.5">
               <button
                 type="button"
-                className="text-xs font-bold text-[#102A38] hover:text-[#17657A] hover:underline cursor-pointer"
+                className="text-xs sm:text-[13px] font-semibold text-[#102A38] hover:text-[#17657A] hover:underline cursor-pointer"
               >
                 Quên mật khẩu?
               </button>
             </div>
 
             {/* Action Buttons */}
-            <div className="pt-2 space-y-3">
+            <div className="pt-3 space-y-3">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 rounded-2xl bg-[#F67650] hover:bg-[#E5633D] text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
+                className="w-full py-3.5 rounded-xl bg-[#DC6B52] hover:bg-[#C95A42] text-white font-bold text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.98]"
               >
                 <span>{isSubmitting ? 'Đang xác thực...' : 'Đăng nhập'}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -159,18 +152,18 @@ export function TeacherLoginPage() {
               <button
                 type="button"
                 onClick={() => navigate('/entry')}
-                className="w-full py-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-[#102A38]/30 text-[#102A38] font-bold text-sm shadow-xs flex items-center justify-center cursor-pointer transition-all active:scale-95"
+                className="w-full py-3.5 rounded-xl bg-white/60 hover:bg-white border border-[#102A38] text-[#102A38] font-bold text-sm shadow-2xs flex items-center justify-center cursor-pointer transition-all active:scale-[0.98]"
               >
                 Tạo tài khoản
               </button>
             </div>
 
             {/* Return to Home Link */}
-            <div className="pt-4 text-center">
+            <div className="pt-3 text-center">
               <button
                 type="button"
                 onClick={() => navigate('/')}
-                className="inline-flex items-center gap-2 text-xs font-extrabold text-[#17657A] hover:underline cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#102A38] hover:text-[#17657A] hover:underline cursor-pointer transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Về trang chủ</span>
@@ -179,16 +172,39 @@ export function TeacherLoginPage() {
           </form>
         </div>
 
-        {/* Bottom Right pedagogical tag */}
-        <div className="w-full flex justify-end items-end pt-6 relative">
-          <div className="text-right space-y-1">
-            <p className="text-[11px] font-black tracking-widest uppercase text-[#17657A]">
-              BlueSTEAM Education Suite
-            </p>
-            <p className="text-[10px] font-bold tracking-wider text-slate-500">
-              Hệ sinh thái học liệu & giáo cụ biển chuẩn mực
-            </p>
+        {/* ========================================================= */}
+        {/* BOTTOM DECORATION: Ocean Waves & Coral Reef (Ảnh 5)       */}
+        {/* ========================================================= */}
+        <div className="absolute inset-x-0 bottom-0 h-48 sm:h-56 pointer-events-none overflow-hidden z-10">
+          {/* Coral Reef Silhouette rising naturally behind foreground wave */}
+          <div className="absolute right-2 sm:right-6 bottom-0 z-0">
+            <img
+              src="/assets/generated/coral_branch.png"
+              alt="Rặng san hô"
+              className="w-32 sm:w-40 h-auto object-contain opacity-85 select-none"
+            />
           </div>
+
+          {/* Fluid Ocean Waves SVG */}
+          <svg
+            className="absolute inset-0 w-full h-full object-cover z-10"
+            viewBox="0 0 700 220"
+            preserveAspectRatio="none"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {/* Background Wave Layer */}
+            <path
+              d="M0 175C130 140 260 195 440 160C560 135 630 145 700 135V220H0V175Z"
+              fill="#E1ECE8"
+              fillOpacity="0.85"
+            />
+            {/* Foreground Wave Layer */}
+            <path
+              d="M0 192C150 165 290 205 470 170C570 150 645 155 700 150V220H0V192Z"
+              fill="#CADBD4"
+            />
+          </svg>
         </div>
       </div>
     </div>

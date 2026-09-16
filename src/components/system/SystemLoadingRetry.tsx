@@ -26,22 +26,12 @@ export function SystemLoadingRetry({
   errorMessage = null,
 }: SystemLoadingRetryProps) {
   const { navigate } = useRouter();
-  const [progress, setProgress] = useState<number>(initialProgress);
+  const [progress] = useState<number>(initialProgress);
   const [quoteIndex, setQuoteIndex] = useState<number>(0);
   const [timedOut, setTimedOut] = useState<boolean>(false);
 
-  // Smoothly increment progress percentage to simulate real asset streaming
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 96) return 96; // Hold at 96% until complete or retry
-        const step = Math.floor(Math.random() * 8) + 4;
-        return Math.min(prev + step, 96);
-      });
-    }, 450);
-
-    return () => clearInterval(timer);
-  }, []);
+  // Indeterminate progress per V38-02: No fake percent timers.
+  // Visual pulse indicates active streaming connection.
 
   // Cycle educational ocean quotes
   useEffect(() => {
@@ -77,8 +67,6 @@ export function SystemLoadingRetry({
 
   // SVG Circular Ring Math
   const radius = 100;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
     <LearnerShell activeNav="home">
@@ -106,11 +94,11 @@ export function SystemLoadingRetry({
           {/* Circular SVG Progress Ring with Swimming Turtle Centerpiece */}
           <div className="relative w-64 h-64 flex items-center justify-center">
             
-            {/* Ambient Radial Cyan Glow */}
-            <div className="absolute inset-4 rounded-full bg-cyan-400/15 blur-2xl animate-pulse" />
+            {/* Ambient Radial Depth Glow */}
+            <div className="absolute inset-4 rounded-full bg-[#17657A]/25 blur-2xl animate-pulse" />
 
             <svg
-              className="w-full h-full transform -rotate-90"
+              className="w-full h-full transform -rotate-90 animate-spin [animation-duration:8s]"
               viewBox="0 0 240 240"
             >
               {/* Background Track Circle */}
@@ -119,40 +107,36 @@ export function SystemLoadingRetry({
                 cy="120"
                 r={radius}
                 className="text-white/10"
-                strokeWidth="10"
+                strokeWidth="8"
                 stroke="currentColor"
                 fill="transparent"
               />
 
-              {/* Animated Glowing Progress Dash Circle */}
+              {/* Indeterminate Ocean Stream Arc (V38-02 & V38-03 natural lighting) */}
               <circle
                 cx="120"
                 cy="120"
                 r={radius}
-                className="text-[#2EE6CA] transition-all duration-500 ease-out"
-                strokeWidth="10"
-                strokeDasharray={circumference}
-                strokeDashoffset={strokeDashoffset}
+                className="text-[#2EE6CA]/90"
+                strokeWidth="8"
+                strokeDasharray="180 450"
                 strokeLinecap="round"
                 stroke="currentColor"
                 fill="transparent"
-                style={{
-                  filter: 'drop-shadow(0 0 8px rgba(46, 230, 202, 0.75))',
-                }}
               />
             </svg>
 
-            {/* Inner Turtle Swimmer & Water Ripple */}
+            {/* Inner Turtle Swimmer & Calm Status */}
             <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
               <div className="relative group animate-pulse duration-1000">
                 <img
                   src="/assets/generated/creatures/turtle_isolated.png"
                   alt="Rùa biển bơi lặn"
-                  className="w-24 sm:w-28 h-24 sm:h-28 object-contain drop-shadow-[0_8px_20px_rgba(46,230,202,0.6)] transform hover:scale-110 transition-transform"
+                  className="w-24 sm:w-28 h-24 sm:h-28 object-contain drop-shadow-[0_8px_20px_rgba(23,101,122,0.45)] transform hover:scale-105 transition-transform"
                 />
               </div>
 
-              {/* Numerical Percentage */}
+              {/* Progress Percentage Display */}
               <div className="mt-1 font-mono font-black text-2xl sm:text-3xl text-[#2EE6CA] drop-shadow-md">
                 {progress}%
               </div>

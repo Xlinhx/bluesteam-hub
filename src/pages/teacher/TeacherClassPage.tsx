@@ -1,5 +1,6 @@
 import { useRouter, matchRoute } from '../../app/router';
 import { useTheme } from '../../themes/ThemeProvider';
+import { TeacherShell } from '../../shells/TeacherShell';
 import { SEED_CLASSES } from '../../content/seed/classes';
 import { SEED_STUDENTS } from '../../content/seed/students';
 import { SEED_LESSONS } from '../../content/seed/lessons';
@@ -27,33 +28,34 @@ export function TeacherClassPage() {
   const activeLesson = SEED_LESSONS.find((l) => l.id === currentClass.activeLessonId) || SEED_LESSONS[0];
 
   return (
-    <div className="min-h-screen bg-surface text-ink-primary pb-28">
-      <header className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between border-b border-borderUi-soft/60">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate('/teacher')}
-            className="p-2 rounded-xl bg-surface-elevated hover:bg-surface-interactive border border-borderUi-soft text-ink-secondary hover:text-ink-primary transition-colors cursor-pointer"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div>
-            <span className="font-mono text-[11px] text-ink-muted uppercase tracking-wider block">
-              Class Roster & Schedule
-            </span>
-            <h1 className="font-serif font-bold text-base text-ink-primary">
-              {currentClass.name}
-            </h1>
+    <TeacherShell activeNav="live">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-200/80">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate('/teacher')}
+              className="p-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-[#102A38] transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div>
+              <span className="text-[11px] font-bold text-[#17657A] uppercase tracking-wider block">
+                Danh sách lớp & Thời khóa biểu
+              </span>
+              <h1 className="font-serif font-bold text-xl text-[#102A38]">
+                {currentClass.name}
+              </h1>
+            </div>
           </div>
-        </div>
 
-        <button
-          onClick={() => navigate('/teacher/session/demo-session')}
-          className="flex items-center gap-1.5 px-4 py-2 bg-brand-primary text-white text-xs font-mono font-bold rounded-xl shadow hover:opacity-90 transition-opacity cursor-pointer"
-        >
-          <Play className="w-4 h-4 fill-current" />
-          <span>Launch Class Session</span>
-        </button>
-      </header>
+          <button
+            onClick={() => navigate('/teacher/live')}
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#17657A] hover:bg-[#124e5f] text-white text-xs font-bold rounded-2xl shadow-sm hover:shadow transition-all cursor-pointer"
+          >
+            <Play className="w-4 h-4 fill-current" />
+            <span>Vào phiên học trực tiếp</span>
+          </button>
+        </div>
 
       <main className="max-w-7xl mx-auto px-6 pt-8 space-y-8">
         {/* Class Overview Banner */}
@@ -124,5 +126,6 @@ export function TeacherClassPage() {
         </div>
       </main>
     </div>
+    </TeacherShell>
   );
 }

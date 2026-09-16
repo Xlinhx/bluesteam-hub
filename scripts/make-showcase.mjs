@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 
-const manifestPath = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'visual-review-manifest.json');
+const manifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'visual-review-manifest.json');
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
 const SQUAD_MAP = {
@@ -118,7 +118,7 @@ const screens = manifest.records.map((r, i) => {
 });
 
 const content = `// BlueSTEAM v2 — 39 Screens Canonical Showcase Registry
-// Generated from docs/design/bluesteam-v2/visual-review-manifest.json
+// Generated from docs/12-VERIFICATION/visual-review-manifest.json
 
 export interface V2ScreenMeta {
   index: number;

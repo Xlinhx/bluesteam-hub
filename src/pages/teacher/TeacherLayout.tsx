@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from '../../app/router';
+import { BlueSteamLogo } from '../../shared/components/BlueSteamLogo';
 import {
   Home,
   BookOpen,
@@ -157,9 +158,10 @@ export function TeacherLayout({ activeTab, children, hideSidebar = false }: Teac
             <div className="flex items-center gap-2 px-2">
               <button
                 onClick={() => navigate('/')}
-                className="text-2xl font-bold font-serif text-sky-950 tracking-tight cursor-pointer hover:text-sky-700 transition"
+                className="cursor-pointer hover:opacity-90 transition p-1 -ml-1"
+                aria-label="Về trang chủ BlueSTEAM"
               >
-                Ocean
+                <BlueSteamLogo size="sm" />
               </button>
             </div>
 
@@ -278,9 +280,12 @@ export function TeacherLayout({ activeTab, children, hideSidebar = false }: Teac
                 className="flex items-center gap-2.5 pl-3 border-l border-sky-100 cursor-pointer hover:opacity-90 transition select-none"
               >
                 <img
-                  src="/assets/avatar_colinh.png"
+                  src="/assets/avatars/linh_teacher_headshot.png"
                   alt="Cô Linh"
                   className="w-9 h-9 rounded-full object-cover border-2 border-sky-400 shadow-sm"
+                  onError={(e) => {
+                    e.currentTarget.src = '/assets/avatar_colinh.png';
+                  }}
                 />
                 <div className="text-left hidden sm:block">
                   <span className="font-bold text-xs text-sky-950 block leading-tight">Cô Linh</span>

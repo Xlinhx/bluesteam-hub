@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from '../../app/router';
 import { demoStore } from '../../demo/storage/demoStore';
-import { BlueSteamLogo } from '../../shared/components/BlueSteamLogo';
 import {
   User,
   BookOpen,
@@ -25,7 +24,9 @@ export function RoleGatewayPage() {
       role: 'student',
       id: 'student-an',
       name: 'Bé An',
-      avatarKey: 'turtle',
+      avatarKey: '/assets/avatar_an.png',
+      gender: 'boy',
+      age: '5',
     });
     navigate('/home');
   };
@@ -35,6 +36,7 @@ export function RoleGatewayPage() {
       role: 'teacher',
       id: 'teacher-linh',
       name: 'Cô Linh',
+      avatarKey: '/assets/avatars/linh_teacher_headshot.png',
     });
     navigate('/teacher');
   };
@@ -52,32 +54,24 @@ export function RoleGatewayPage() {
 
   return (
     <div className="relative min-h-screen w-full flex flex-col justify-between overflow-x-hidden font-sans select-none bg-[#EAF2F6]">
-      {/* Background Image: Coastal Terrace Balcony */}
+      {/* Background Image: Coastal Study Desk Terrace */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/assets/generated/backgrounds/coastal_balcony_ocean.jpg"
-          alt="Coastal terrace overlooking ocean"
+          src="/assets/generated/backgrounds/coastal_balcony_study_entry.jpg"
+          alt="Coastal study terrace overlooking ocean"
           className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-white/10 backdrop-blur-[1px]" />
       </div>
 
       {/* Top Header */}
-      <header className="relative z-20 w-full px-6 sm:px-12 py-5 flex items-center justify-between">
-        <button
-          type="button"
-          onClick={() => navigate('/')}
-          className="cursor-pointer focus:outline-none"
-        >
-          <BlueSteamLogo size="lg" />
-        </button>
-
+      <header className="relative z-20 w-full px-6 sm:px-12 py-5 flex items-center justify-end">
         <button
           type="button"
           onClick={() => navigate('/login')}
-          className="px-5 py-2.5 rounded-full bg-white/90 hover:bg-white text-[#102A38] font-extrabold text-xs shadow-md border border-white/80 flex items-center gap-2 cursor-pointer transition-all active:scale-95"
+          className="px-6 py-2 rounded-full border border-[#102A38]/50 bg-white/40 hover:bg-white/70 backdrop-blur-md text-[#102A38] font-editorial font-semibold text-sm flex items-center gap-2 cursor-pointer transition-all active:scale-95 shadow-xs"
         >
-          <User className="w-4 h-4 text-[#17657A]" />
+          <User className="w-4 h-4 fill-[#102A38] text-[#102A38]" />
           <span>Đăng nhập</span>
         </button>
       </header>
@@ -89,9 +83,12 @@ export function RoleGatewayPage() {
           <h1 className="font-editorial font-black text-4xl sm:text-5xl text-[#102A38] drop-shadow-sm tracking-[-0.02em] mb-2">
             Bắt đầu cùng BlueSTEAM
           </h1>
-          <div className="flex justify-center text-[#17657A]">
-            <svg width="64" height="12" viewBox="0 0 64 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 6C8 2 14 10 20 6C26 2 32 10 38 6C44 2 50 10 56 6C59 4 61 5 62 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+          <div className="flex flex-col items-center gap-1 text-[#17657A]">
+            <svg width="64" height="8" viewBox="0 0 64 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 4C8 1 14 7 20 4C26 1 32 7 38 4C44 1 50 7 56 4C59 2.5 61 3.5 62 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+            <svg width="64" height="8" viewBox="0 0 64 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 4C8 1 14 7 20 4C26 1 32 7 38 4C44 1 50 7 56 4C59 2.5 61 3.5 62 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
             </svg>
           </div>
         </div>
@@ -110,34 +107,39 @@ export function RoleGatewayPage() {
             </div>
 
             {/* Overlapping Persona Badge */}
-            <div className="relative -mt-6 z-10 mx-auto px-6 py-2 rounded-full bg-white shadow-lg border border-slate-100 flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-full bg-[#17657A] text-white flex items-center justify-center font-black text-xs">
-                🌊
+            <div className="relative -mt-7 z-10 mx-auto px-5 py-2 rounded-full bg-white shadow-lg border border-slate-100 flex items-center gap-2.5 transition-transform hover:scale-105">
+              <img
+                src="/assets/avatars/an_student_avatar.png"
+                alt="Bé An - Học sinh"
+                className="w-10 h-10 rounded-full object-cover ring-2 ring-[#17657A]/20 shadow-xs shrink-0"
+              />
+              <div className="flex flex-col text-left">
+                <span className="font-editorial font-black text-base text-[#102A38] leading-tight">An</span>
+                <span className="text-[10px] font-bold text-[#17657A] leading-tight">Học sinh</span>
               </div>
-              <span className="font-editorial font-black text-base text-[#102A38]">An</span>
             </div>
 
-            {/* 5 Feature Icons */}
-            <div className="grid grid-cols-5 gap-1 my-5 text-center">
+            {/* 5 Feature Icons - enlarged 50% */}
+            <div className="grid grid-cols-5 gap-1 my-5 text-center items-end">
               <div className="flex flex-col items-center gap-1.5">
-                <BookOpen className="w-5 h-5 text-[#17657A]" />
-                <span className="text-[11px] font-bold text-slate-600">Học liệu</span>
+                <BookOpen className="w-[30px] h-[30px] text-[#17657A]" strokeWidth={1.8} />
+                <span className="text-[11px] font-bold text-slate-700">Học liệu</span>
               </div>
               <div className="flex flex-col items-center gap-1.5">
-                <GraduationCap className="w-5 h-5 text-[#17657A]" />
-                <span className="text-[11px] font-bold text-slate-600">Học tập</span>
+                <GraduationCap className="w-[30px] h-[30px] text-[#17657A]" strokeWidth={1.8} />
+                <span className="text-[11px] font-bold text-slate-700">Học tập</span>
               </div>
               <div className="flex flex-col items-center gap-1.5">
-                <MessageSquare className="w-5 h-5 text-[#17657A]" />
-                <span className="text-[11px] font-bold text-slate-600">Tương tác</span>
+                <MessageSquare className="w-[30px] h-[30px] text-[#17657A]" strokeWidth={1.8} />
+                <span className="text-[11px] font-bold text-slate-700">Tương tác</span>
               </div>
               <div className="flex flex-col items-center gap-1.5">
-                <Lightbulb className="w-5 h-5 text-[#17657A]" />
-                <span className="text-[11px] font-bold text-slate-600">Sáng tạo</span>
+                <Lightbulb className="w-[30px] h-[30px] text-[#17657A]" strokeWidth={1.8} />
+                <span className="text-[11px] font-bold text-slate-700">Sáng tạo</span>
               </div>
               <div className="flex flex-col items-center gap-1.5">
-                <User className="w-5 h-5 text-[#17657A]" />
-                <span className="text-[11px] font-bold text-slate-600">Hồ sơ</span>
+                <User className="w-[30px] h-[30px] text-[#17657A]" strokeWidth={1.8} />
+                <span className="text-[11px] font-bold text-slate-700">Hồ sơ</span>
               </div>
             </div>
 
@@ -164,34 +166,42 @@ export function RoleGatewayPage() {
             </div>
 
             {/* Overlapping Persona Badge */}
-            <div className="relative -mt-6 z-10 mx-auto px-6 py-2 rounded-full bg-white shadow-lg border border-slate-100 flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-full bg-[#102A38] text-white flex items-center justify-center font-black text-xs">
-                🌊
+            <div className="relative -mt-7 z-10 mx-auto px-5 py-2 rounded-full bg-white shadow-lg border border-slate-100 flex items-center gap-2.5 transition-transform hover:scale-105">
+              <img
+                src="/assets/avatars/linh_teacher_headshot.png"
+                alt="Cô Linh - Giáo viên"
+                className="w-10 h-10 rounded-full object-cover ring-2 ring-[#102A38]/20 shadow-xs shrink-0"
+                onError={(e) => {
+                  e.currentTarget.src = '/assets/avatar_colinh.png';
+                }}
+              />
+              <div className="flex flex-col text-left">
+                <span className="font-editorial font-black text-base text-[#102A38] leading-tight">Cô Linh</span>
+                <span className="text-[10px] font-bold text-[#102A38] leading-tight">Giáo viên</span>
               </div>
-              <span className="font-editorial font-black text-base text-[#102A38]">Cô Linh</span>
             </div>
 
-            {/* 5 Feature Icons */}
-            <div className="grid grid-cols-5 gap-1 my-5 text-center">
+            {/* 5 Feature Icons - enlarged 50% */}
+            <div className="grid grid-cols-5 gap-1 my-5 text-center items-end">
               <div className="flex flex-col items-center gap-1.5">
-                <Tv className="w-5 h-5 text-[#102A38]" />
-                <span className="text-[11px] font-bold text-slate-600">Bài giảng</span>
+                <Tv className="w-[30px] h-[30px] text-[#102A38]" strokeWidth={1.8} />
+                <span className="text-[11px] font-bold text-slate-700">Bài giảng</span>
               </div>
               <div className="flex flex-col items-center gap-1.5">
-                <FileText className="w-5 h-5 text-[#102A38]" />
-                <span className="text-[11px] font-bold text-slate-600">Giáo án</span>
+                <FileText className="w-[30px] h-[30px] text-[#102A38]" strokeWidth={1.8} />
+                <span className="text-[11px] font-bold text-slate-700">Giáo án</span>
               </div>
               <div className="flex flex-col items-center gap-1.5">
-                <Folder className="w-5 h-5 text-[#102A38]" />
-                <span className="text-[11px] font-bold text-slate-600">Học liệu</span>
+                <Folder className="w-[30px] h-[30px] text-[#102A38]" strokeWidth={1.8} />
+                <span className="text-[11px] font-bold text-slate-700">Học liệu</span>
               </div>
               <div className="flex flex-col items-center gap-1.5">
-                <Gamepad2 className="w-5 h-5 text-[#102A38]" />
-                <span className="text-[11px] font-bold text-slate-600">Game & Sim</span>
+                <Gamepad2 className="w-[30px] h-[30px] text-[#102A38]" strokeWidth={1.8} />
+                <span className="text-[11px] font-bold text-slate-700">Game & Sim</span>
               </div>
               <div className="flex flex-col items-center gap-1.5">
-                <User className="w-5 h-5 text-[#102A38]" />
-                <span className="text-[11px] font-bold text-slate-600">Hồ sơ</span>
+                <User className="w-[30px] h-[30px] text-[#102A38]" strokeWidth={1.8} />
+                <span className="text-[11px] font-bold text-slate-700">Hồ sơ</span>
               </div>
             </div>
 

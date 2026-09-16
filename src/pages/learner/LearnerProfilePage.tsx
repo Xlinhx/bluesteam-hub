@@ -16,6 +16,8 @@ import {
   CheckCircle2,
   Lock,
   ChevronRight,
+  User,
+  Check,
 } from 'lucide-react';
 import { oceanAudio } from '../../shared/sound/oceanAudio';
 
@@ -29,9 +31,67 @@ export function LearnerProfilePage() {
   const [selectedArtwork, setSelectedArtwork] = useState<CreativeArtwork | null>(null);
   const [isArtworkModalOpen, setIsArtworkModalOpen] = useState(false);
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
-  const [learnerName, setLearnerName] = useState('Bé An');
-  const [learnerAge, setLearnerAge] = useState('5');
-  const [learnerAvatar, setLearnerAvatar] = useState('🐢');
+
+  // Profile data initialized from demoStore
+  const initialProfile = demoStore.getProfile();
+  const resolveLearnerAvatar = (key?: string, gender?: 'boy' | 'girl') => {
+    if (key && (key.startsWith('/') || key.startsWith('http') || key.startsWith('data:'))) {
+      return key;
+    }
+    return gender === 'girl' ? '/assets/avatar_mai.png' : '/assets/avatar_an.png';
+  };
+
+  const [learnerName, setLearnerName] = useState(() =>
+    initialProfile.role === 'student' && initialProfile.name ? initialProfile.name : 'Bé An'
+  );
+  const [learnerAge, setLearnerAge] = useState(() => initialProfile.age || '5');
+  const [learnerGender, setLearnerGender] = useState<'boy' | 'girl'>(() => initialProfile.gender || 'boy');
+  const [learnerAvatar, setLearnerAvatar] = useState(() =>
+    resolveLearnerAvatar(initialProfile.avatarKey, initialProfile.gender || 'boy')
+  );
+
+  // Draft state for modal editing
+  const [draftName, setDraftName] = useState(learnerName);
+  const [draftAge, setDraftAge] = useState(learnerAge);
+  const [draftGender, setDraftGender] = useState(learnerGender);
+  const [draftAvatar, setDraftAvatar] = useState(learnerAvatar);
+
+  const handleOpenEditModal = () => {
+    setDraftName(learnerName);
+    setDraftAge(learnerAge);
+    setDraftGender(learnerGender);
+    setDraftAvatar(learnerAvatar);
+    setIsEditProfileModalOpen(true);
+  };
+
+  const handleSelectGender = (gender: 'boy' | 'girl') => {
+    setDraftGender(gender);
+    if (gender === 'boy') {
+      setDraftAvatar('/assets/avatar_an.png');
+      if (draftName === 'Bé Mai') setDraftName('Bé An');
+    } else {
+      setDraftAvatar('/assets/avatar_mai.png');
+      if (draftName === 'Bé An') setDraftName('Bé Mai');
+    }
+  };
+
+  const handleSaveProfile = () => {
+    const finalName = draftName.trim() || (draftGender === 'boy' ? 'Bé An' : 'Bé Mai');
+    setLearnerName(finalName);
+    setLearnerAge(draftAge);
+    setLearnerGender(draftGender);
+    setLearnerAvatar(draftAvatar);
+    demoStore.setProfile({
+      role: 'student',
+      id: 'student-demo',
+      name: finalName,
+      avatarKey: draftAvatar,
+      gender: draftGender,
+      age: draftAge,
+    });
+    setIsEditProfileModalOpen(false);
+    oceanAudio.playChime();
+  };
 
   useEffect(() => {
     setProgress(demoStore.getBlueSteamProgress());
@@ -99,11 +159,11 @@ export function LearnerProfilePage() {
     },
   ];
 
-  // Pick latest artwork or fallback to authentic reference crayon drawing
+  // Pick latest artwork or fallback to authentic reference crayon drawing from mockup
   const latestArtwork = artworks.length > 0 ? artworks[0] : null;
   const featuredArtworkSrc =
-    latestArtwork?.previewDataUrl || '/assets/generated/craft/child_crayon_turtle.jpg';
-  const featuredArtworkTitle = latestArtwork?.title || 'Bé An vẽ rùa biển bơi';
+    latestArtwork?.previewDataUrl || '/assets/generated/craft/child_crayon_turtle_mockup.png';
+  const featuredArtworkTitle = latestArtwork?.title || 'Bức tranh của An';
 
   const handleOpenArtworkModal = (artwork?: CreativeArtwork | null) => {
     setSelectedArtwork(artwork || latestArtwork);
@@ -123,7 +183,7 @@ export function LearnerProfilePage() {
   };
 
   return (
-    <LearnerShell activeNav="profile">
+    <LearnerShell activeNav="profile" learnerName={learnerName} learnerAvatar={learnerAvatar}>
       {/* 
         NO ad-hoc sidebar!
         As commanded by REFERENCE_CORRECTIONS.md line 26: "Bỏ sidebar không chuẩn; không dựng thành tích giả".
@@ -133,34 +193,61 @@ export function LearnerProfilePage() {
         
         {/* Page Top Heading & Edit Profile Action */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <h1 className="text-3xl sm:text-4xl font-serif font-black text-[#102A38] tracking-[-0.02em]">
-              Hồ sơ của {learnerName}
-            </h1>
-            <p className="text-sm sm:text-base text-neutral-600 font-sans">
-              Học, khám phá và sáng tạo cùng đại dương
-            </p>
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={handleOpenEditModal}
+              className="relative group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#17657A] rounded-full shrink-0"
+              aria-label="Đổi ảnh hồ sơ"
+            >
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-4 ring-white shadow-md border border-[#17657A]/20">
+                <img
+                  src={learnerAvatar}
+                  alt={learnerName}
+                  className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                  onError={(e) => {
+                    e.currentTarget.src = learnerGender === 'girl' ? '/assets/avatar_mai.png' : '/assets/avatar_an.png';
+                  }}
+                />
+              </div>
+              <div className="absolute inset-0 rounded-full bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-xs font-bold">
+                <Edit3 className="w-4 h-4" />
+              </div>
+            </button>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <h1 className="text-3xl sm:text-4xl font-serif font-black text-[#102A38] tracking-[-0.02em]">
+                  Hồ sơ của {learnerName}
+                </h1>
+                <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#E3F6F9] text-[#17657A] border border-[#17657A]/20 shadow-2xs">
+                  {learnerGender === 'girl' ? 'Bé Gái' : 'Bé Trai'} • {learnerAge === '3' ? '3-4 tuổi (Mầm)' : learnerAge === '4' ? '4-5 tuổi (Chồi)' : '5-6 tuổi (Lá)'}
+                </span>
+              </div>
+              <p className="text-sm sm:text-base text-neutral-600 font-sans">
+                Học, khám phá và sáng tạo cùng đại dương
+              </p>
+            </div>
           </div>
 
           <button
             type="button"
-            onClick={() => setIsEditProfileModalOpen(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-neutral-50 text-[#102A38] font-bold text-sm border border-neutral-200 shadow-2xs transition-all hover:shadow-xs active:scale-95 cursor-pointer self-start sm:self-auto"
+            onClick={handleOpenEditModal}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-neutral-50 text-[#102A38] font-bold text-sm border border-neutral-200 shadow-2xs transition-all hover:shadow-xs active:scale-95 cursor-pointer self-start sm:self-auto shrink-0"
           >
             <Edit3 className="w-4 h-4 text-[#17657A]" />
             <span>Chỉnh sửa hồ sơ</span>
           </button>
         </div>
 
-        {/* Master Hero Card: "Hành trình của An" (2-Column Architecture matching mockup) */}
-        <div className="bg-white rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 lg:p-10 shadow-[0_12px_40px_rgba(16,42,56,0.06)] border border-[#17657A]/15 space-y-6">
-          {/* Card Title & Link */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-100 pb-4">
+        {/* Master Hero Card: "Hành trình của An" (Matching Mockup Image 1) */}
+        <div className="bg-white rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 lg:p-10 shadow-[0_8px_30px_rgba(16,42,56,0.06)] border border-[#17657A]/15 space-y-6">
+          {/* Card Title & Link - Clean header without dividing border line */}
+          <div className="flex items-center justify-between gap-4">
             <div>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#102A38] tracking-[-0.02em]">
-                Hành trình của {learnerName}
+                Hành trình của {learnerName.replace('Bé ', '')}
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-500">
+              <p className="text-xs sm:text-sm text-neutral-500 mt-1">
                 Những khám phá, trải nghiệm và sáng tạo trong đại dương.
               </p>
             </div>
@@ -168,164 +255,136 @@ export function LearnerProfilePage() {
             <button
               type="button"
               onClick={() => navigate('/learn/atlas')}
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-[#17657A] hover:text-[#102A38] transition-colors cursor-pointer self-start sm:self-auto"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#17657A] hover:text-[#102A38] transition-colors cursor-pointer shrink-0"
             >
               <span>Xem tất cả hành trình</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
 
-          {/* 2-Column Split: Featured Artwork (Left) + 3-Step Journey Timeline (Right) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* 2-Column Split: Featured Artwork (Left) + 3 Action Badges Timeline (Right) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
-            {/* Left: Featured Artwork Card on Deckle Paper (5 cols) */}
-            <div className="lg:col-span-5 bg-[#F6F3EB] rounded-[24px] p-5 sm:p-6 border border-[#17657A]/15 flex flex-col justify-between space-y-4 shadow-inner">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white text-[#17657A] font-black text-xs border border-[#17657A]/20 shadow-2xs">
-                    <Palette className="w-3.5 h-3.5 text-[#F67650]" />
-                    <span>Tác phẩm mới nhất</span>
-                  </span>
-                  {artworks.length > 1 && (
-                    <span className="text-xs font-bold text-neutral-500">
-                      {artworks.length} tranh đã lưu
-                    </span>
-                  )}
-                </div>
+            {/* Left: Featured Artwork Card (7 cols) */}
+            <div className="lg:col-span-7 flex flex-col space-y-3">
+              {/* Drawing Container */}
+              <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-[#FAF8F5] border border-neutral-200/90 shadow-xs">
+                <img
+                  src={featuredArtworkSrc}
+                  alt={featuredArtworkTitle}
+                  className="w-full h-full object-cover"
+                />
 
-                {/* Textured Deckle Paper Frame */}
-                <div
+                {/* Action Button matching reference mockup [ Mở tác phẩm ] */}
+                <button
+                  type="button"
                   onClick={() => handleOpenArtworkModal()}
-                  className="relative group aspect-[4/3] rounded-2xl overflow-hidden bg-white shadow-md border border-neutral-200 cursor-pointer transition-transform hover:scale-[1.01]"
+                  className="absolute bottom-3 right-3 py-2 px-4 rounded-xl bg-[#0B4D57] hover:bg-[#146472] text-white font-bold text-xs sm:text-sm inline-flex items-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer z-10"
                 >
-                  <img
-                    src={featuredArtworkSrc}
-                    alt={featuredArtworkTitle}
-                    className="w-full h-full object-cover group-hover:brightness-105 transition-all"
-                  />
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="px-4 py-2 rounded-full bg-white/95 text-[#102A38] font-black text-xs shadow-lg flex items-center gap-2">
-                      <Eye className="w-4 h-4 text-[#17657A]" />
-                      <span>Phóng to tác phẩm</span>
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-base sm:text-lg font-serif font-bold text-[#102A38]">
-                    {featuredArtworkTitle}
-                  </h3>
-                  <p className="text-xs text-neutral-500 mt-0.5">
-                    {latestArtwork
-                      ? `Lưu ngày ${new Date(latestArtwork.createdAt).toLocaleDateString('vi-VN')}`
-                      : 'Tranh sáp màu rùa biển bơi qua rạn san hô · Tác phẩm tiêu biểu'}
-                  </p>
-                </div>
+                  <Eye className="w-4 h-4" />
+                  <span>Mở tác phẩm</span>
+                </button>
               </div>
 
-              {/* Action Button matching reference mockup [ Mở tác phẩm ] */}
-              <button
-                type="button"
-                onClick={() => handleOpenArtworkModal()}
-                className="w-full py-3 px-4 rounded-2xl bg-[#102A38] hover:bg-[#17657A] text-white font-black text-sm flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 cursor-pointer"
-              >
-                <Eye className="w-4 h-4" />
-                <span>Mở tác phẩm</span>
-              </button>
+              {/* Title & subtitle below drawing */}
+              <div>
+                <h3 className="text-base sm:text-lg font-serif font-bold text-[#102A38]">
+                  {featuredArtworkTitle}
+                </h3>
+                <p className="text-xs sm:text-sm text-neutral-500 mt-0.5">
+                  An vẽ chú rùa biển đang bơi dưới đại dương.
+                </p>
+              </div>
             </div>
 
-            {/* Right: 3-Step Interactive Timeline Roadmap (7 cols) */}
-            <div className="lg:col-span-7 flex flex-col justify-between py-2 space-y-4">
-              <div className="space-y-6 relative">
+            {/* Right: 3 Action Badges with Vertical Connecting Dots (5 cols) */}
+            <div className="lg:col-span-5 flex flex-col justify-center py-2">
+              <div className="space-y-0.5">
                 
                 {/* Step 1: Khám phá */}
                 <div
-                  onClick={() => navigate('/learn/turtle')}
-                  className="group flex items-start gap-4 p-4 rounded-2xl bg-neutral-50/80 hover:bg-[#E3F6F9]/40 border border-neutral-200/80 hover:border-[#17657A]/40 transition-all cursor-pointer"
+                  onClick={() => navigate('/3dmodel/turtle')}
+                  className="flex items-center gap-4 py-2 hover:bg-neutral-50/80 -mx-3 px-3 rounded-2xl transition-colors cursor-pointer group"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 font-black text-xl flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0">
-                    🐢
+                  {/* Large pastel circular badge */}
+                  <div className="w-[72px] h-[72px] sm:w-[80px] sm:h-[80px] rounded-full bg-[#B3EDE7] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                    <img
+                      src="/assets/generated/badges/badge_explore_action.png"
+                      alt="Khám phá"
+                      className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black uppercase tracking-wider text-emerald-700">
-                        Khám phá
-                      </span>
-                      <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:text-[#17657A] transition-colors" />
-                    </div>
-                    <h4 className="text-base sm:text-lg font-serif font-bold text-[#102A38] group-hover:text-[#17657A] transition-colors mt-0.5">
-                      Gặp gỡ rùa biển
+                    <h4 className="text-lg sm:text-xl font-serif font-bold text-[#102A38] group-hover:text-[#17657A] transition-colors">
+                      Khám phá
                     </h4>
-                    <p className="text-xs sm:text-sm text-neutral-600 mt-1 leading-relaxed">
-                      Quan sát giải phẫu 3D chân thực: mai rùa rẽ nước, vây chèo bơi lội và hô hấp bằng phổi.
+                    <p className="text-sm text-neutral-600 font-medium mt-0.5">
+                      Gặp gỡ rùa biển
                     </p>
                   </div>
+                  <ChevronRight className="w-5 h-5 text-[#102A38] shrink-0 group-hover:translate-x-0.5 transition-transform" />
                 </div>
 
-                {/* Vertical Dotted Connector */}
-                <div className="hidden sm:block absolute left-10 top-18 bottom-32 w-0.5 border-l-2 border-dashed border-[#17657A]/30 pointer-events-none" />
+                {/* 2 Vertical Connecting Dots between Step 1 and Step 2 */}
+                <div className="flex flex-col items-center w-[72px] sm:w-[80px] py-1.5 space-y-2">
+                  <span className="w-2 h-2 rounded-full bg-[#187588]" />
+                  <span className="w-2 h-2 rounded-full bg-[#187588]" />
+                </div>
 
                 {/* Step 2: Học tập */}
                 <div
                   onClick={() => navigate('/interactive/habitat-placement')}
-                  className="group flex items-start gap-4 p-4 rounded-2xl bg-neutral-50/80 hover:bg-[#E3F6F9]/40 border border-neutral-200/80 hover:border-[#17657A]/40 transition-all cursor-pointer"
+                  className="flex items-center gap-4 py-2 hover:bg-neutral-50/80 -mx-3 px-3 rounded-2xl transition-colors cursor-pointer group"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-sky-100 text-[#17657A] font-black text-xl flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0">
-                    🌿
+                  {/* Large pastel circular badge */}
+                  <div className="w-[72px] h-[72px] sm:w-[80px] sm:h-[80px] rounded-full bg-[#B6EFE3] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                    <img
+                      src="/assets/generated/badges/badge_learn_action.png"
+                      alt="Học tập"
+                      className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black uppercase tracking-wider text-[#17657A]">
-                        Học tập
-                      </span>
-                      <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:text-[#17657A] transition-colors" />
-                    </div>
-                    <h4 className="text-base sm:text-lg font-serif font-bold text-[#102A38] group-hover:text-[#17657A] transition-colors mt-0.5">
-                      Tìm hiểu nơi sống của rùa biển
+                    <h4 className="text-lg sm:text-xl font-serif font-bold text-[#102A38] group-hover:text-[#17657A] transition-colors">
+                      Học tập
                     </h4>
-                    <p className="text-xs sm:text-sm text-neutral-600 mt-1 leading-relaxed">
-                      Ghép đúng sinh vật với môi trường sống tự nhiên: thảm cỏ biển, bãi cát đẻ trứng và rạn san hô.
+                    <p className="text-sm text-neutral-600 font-medium mt-0.5">
+                      Tìm hiểu nơi sống của rùa biển
                     </p>
                   </div>
+                  <ChevronRight className="w-5 h-5 text-[#102A38] shrink-0 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+
+                {/* 2 Vertical Connecting Dots between Step 2 and Step 3 */}
+                <div className="flex flex-col items-center w-[72px] sm:w-[80px] py-1.5 space-y-2">
+                  <span className="w-2 h-2 rounded-full bg-[#187588]" />
+                  <span className="w-2 h-2 rounded-full bg-[#187588]" />
                 </div>
 
                 {/* Step 3: Sáng tạo */}
                 <div
                   onClick={() => navigate('/creative/drawing')}
-                  className="group flex items-start gap-4 p-4 rounded-2xl bg-neutral-50/80 hover:bg-orange-50/50 border border-neutral-200/80 hover:border-[#F67650]/40 transition-all cursor-pointer"
+                  className="flex items-center gap-4 py-2 hover:bg-neutral-50/80 -mx-3 px-3 rounded-2xl transition-colors cursor-pointer group"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-orange-100 text-[#F67650] font-black text-xl flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0">
-                    🎨
+                  {/* Large pastel circular badge */}
+                  <div className="w-[72px] h-[72px] sm:w-[80px] sm:h-[80px] rounded-full bg-[#FFD1C4] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                    <img
+                      src="/assets/generated/badges/badge_create_action.png"
+                      alt="Sáng tạo"
+                      className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black uppercase tracking-wider text-[#F67650]">
-                        Sáng tạo
-                      </span>
-                      <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:text-[#F67650] transition-colors" />
-                    </div>
-                    <h4 className="text-base sm:text-lg font-serif font-bold text-[#102A38] group-hover:text-[#F67650] transition-colors mt-0.5">
-                      Vẽ tranh về đại dương
+                    <h4 className="text-lg sm:text-xl font-serif font-bold text-[#102A38] group-hover:text-[#F67650] transition-colors">
+                      Sáng tạo
                     </h4>
-                    <p className="text-xs sm:text-sm text-neutral-600 mt-1 leading-relaxed">
-                      Sử dụng sáp màu mịn, cọ vẽ tự nhiên để tạo bức tranh biển sinh động và lưu vào bộ sưu tập.
+                    <p className="text-sm text-neutral-600 font-medium mt-0.5">
+                      Vẽ tranh về đại dương
                     </p>
                   </div>
+                  <ChevronRight className="w-5 h-5 text-[#102A38] shrink-0 group-hover:translate-x-0.5 transition-transform" />
                 </div>
 
-              </div>
-
-              {/* Shell currency tracker */}
-              <div className="flex items-center justify-between px-4 py-3 rounded-2xl bg-[#E3F6F9]/50 border border-[#17657A]/15 text-xs text-[#102A38]">
-                <span className="font-bold">Tiến trình hải trình:</span>
-                <div className="flex items-center gap-3">
-                  <span className="font-mono font-bold text-[#17657A]">
-                    {progress.completedStations.length}/5 trạm đã hoàn thành
-                  </span>
-                  <span className="font-bold text-[#F67650] flex items-center gap-1">
-                    🐚 120 vỏ sò
-                  </span>
-                </div>
               </div>
             </div>
 
@@ -634,82 +693,179 @@ export function LearnerProfilePage() {
         </div>
       )}
 
-      {/* Modal 2: Edit Profile */}
+      {/* Modal 2: Edit Profile (Elevated Craft with Gender & Detailed Cartoon Avatars) */}
       {isEditProfileModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="relative w-full max-w-md bg-white rounded-[28px] overflow-hidden shadow-2xl border border-neutral-200 p-6 space-y-4 animate-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
-              <h3 className="font-serif font-bold text-lg text-[#102A38]">
-                Chỉnh sửa thông tin bé
-              </h3>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B1E28]/60 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => setIsEditProfileModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-md bg-gradient-to-b from-white via-white to-[#F6FBFC] rounded-[32px] overflow-hidden shadow-[0_25px_60px_rgba(16,42,56,0.25)] border border-slate-100 p-6 sm:p-7 space-y-5 animate-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Ambient subtle glow decorations */}
+            <div className="pointer-events-none absolute -top-20 -right-20 w-44 h-44 bg-[#17657A]/10 rounded-full blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-20 -left-20 w-44 h-44 bg-amber-200/20 rounded-full blur-3xl" />
+
+            {/* Header */}
+            <div className="relative flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#17657A]/10 flex items-center justify-center text-[#17657A] shadow-2xs">
+                  <User className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-serif font-bold text-xl text-[#102A38] leading-tight">
+                    Chỉnh sửa thông tin bé
+                  </h3>
+                  <p className="text-[11px] text-neutral-500 font-sans mt-0.5">
+                    Chọn nhân vật và cập nhật thông tin học sinh
+                  </p>
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={() => setIsEditProfileModalOpen(false)}
-                className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-600 transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
+                aria-label="Đóng popup"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="space-y-3 text-xs">
+            {/* Form Fields */}
+            <div className="space-y-4 text-xs relative">
+              {/* Gender & Avatar Selection (2 Cards) */}
               <div>
-                <label className="block font-bold text-[#102A38] mb-1">Tên của bé</label>
+                <label className="block font-bold text-[#102A38] mb-2 text-xs">
+                  Nhân vật đại diện (Nam / Nữ)
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  {/* Option 1: Bé Trai (An) */}
+                  <button
+                    type="button"
+                    onClick={() => handleSelectGender('boy')}
+                    className={`relative p-3 rounded-2xl border-2 text-left flex items-center gap-3 transition-all duration-150 cursor-pointer ${
+                      draftGender === 'boy'
+                        ? 'border-[#17657A] bg-[#F0F9FB] shadow-[0_4px_16px_rgba(23,101,122,0.12)] scale-[1.01]'
+                        : 'border-slate-200/80 bg-white hover:border-slate-300 hover:bg-slate-50/50'
+                    }`}
+                  >
+                    <div className="relative shrink-0">
+                      <img
+                        src="/assets/avatars/student_boy.png"
+                        alt="Bé Trai"
+                        className="w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-xs"
+                        onError={(e) => {
+                          e.currentTarget.src = '/assets/avatar_an.png';
+                        }}
+                      />
+                      {draftGender === 'boy' && (
+                        <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#17657A] text-white flex items-center justify-center shadow-xs">
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="font-bold text-sm text-[#102A38] leading-tight truncate">
+                        Bé Trai
+                      </div>
+                      <div className="text-[11px] text-neutral-500 font-medium truncate mt-0.5">
+                        Học sinh nam
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Option 2: Bé Gái (Mai) */}
+                  <button
+                    type="button"
+                    onClick={() => handleSelectGender('girl')}
+                    className={`relative p-3 rounded-2xl border-2 text-left flex items-center gap-3 transition-all duration-150 cursor-pointer ${
+                      draftGender === 'girl'
+                        ? 'border-[#17657A] bg-[#F0F9FB] shadow-[0_4px_16px_rgba(23,101,122,0.12)] scale-[1.01]'
+                        : 'border-slate-200/80 bg-white hover:border-slate-300 hover:bg-slate-50/50'
+                    }`}
+                  >
+                    <div className="relative shrink-0">
+                      <img
+                        src="/assets/avatars/student_girl.png"
+                        alt="Bé Gái"
+                        className="w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-xs"
+                        onError={(e) => {
+                          e.currentTarget.src = '/assets/avatar_mai.png';
+                        }}
+                      />
+                      {draftGender === 'girl' && (
+                        <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#17657A] text-white flex items-center justify-center shadow-xs">
+                          <Check className="w-2.5 h-2.5 stroke-[3]" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="font-bold text-sm text-[#102A38] leading-tight truncate">
+                        Bé Gái
+                      </div>
+                      <div className="text-[11px] text-neutral-500 font-medium truncate mt-0.5">
+                        Học sinh nữ
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              {/* Name Input */}
+              <div>
+                <label className="block font-bold text-[#102A38] mb-1.5 text-xs">
+                  Tên của bé
+                </label>
                 <input
                   type="text"
-                  value={learnerName}
-                  onChange={(e) => setLearnerName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#17657A]"
+                  value={draftName}
+                  onChange={(e) => setDraftName(e.target.value)}
+                  placeholder="Nhập tên bé..."
+                  className="w-full px-4 py-2.5 rounded-2xl border border-slate-200 bg-white text-sm font-semibold text-[#102A38] placeholder:text-slate-400 focus:outline-none focus:border-[#17657A] focus:ring-3 focus:ring-[#17657A]/15 transition-all shadow-2xs"
                 />
               </div>
 
+              {/* Age Select */}
               <div>
-                <label className="block font-bold text-[#102A38] mb-1">Tuổi (Lớp mầm non)</label>
-                <select
-                  value={learnerAge}
-                  onChange={(e) => setLearnerAge(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#17657A]"
-                >
-                  <option value="3">3-4 tuổi (Mầm)</option>
-                  <option value="4">4-5 tuổi (Chồi)</option>
-                  <option value="5">5-6 tuổi (Lá)</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block font-bold text-[#102A38] mb-1">Biểu tượng yêu thích</label>
-                <div className="flex items-center gap-2">
-                  {['🐢', '🐬', '🐠', '🦀', '⭐', '🐙'].map((em) => (
-                    <button
-                      key={em}
-                      type="button"
-                      onClick={() => setLearnerAvatar(em)}
-                      className={`w-10 h-10 rounded-xl text-xl flex items-center justify-center border transition-all cursor-pointer ${
-                        learnerAvatar === em
-                          ? 'border-[#17657A] bg-[#E3F6F9] scale-110 shadow-2xs'
-                          : 'border-neutral-200 hover:bg-neutral-50'
-                      }`}
-                    >
-                      {em}
-                    </button>
-                  ))}
+                <label className="block font-bold text-[#102A38] mb-1.5 text-xs">
+                  Độ tuổi (Lớp mầm non)
+                </label>
+                <div className="relative">
+                  <select
+                    value={draftAge}
+                    onChange={(e) => setDraftAge(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-2xl border border-slate-200 bg-white text-sm font-semibold text-[#102A38] focus:outline-none focus:border-[#17657A] focus:ring-3 focus:ring-[#17657A]/15 transition-all shadow-2xs appearance-none cursor-pointer pr-10"
+                  >
+                    <option value="3">3-4 tuổi (Lớp Mầm)</option>
+                    <option value="4">4-5 tuổi (Lớp Chồi)</option>
+                    <option value="5">5-6 tuổi (Lớp Lá)</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                    <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-neutral-100 flex justify-end gap-2">
+            {/* Footer Buttons */}
+            <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5 relative">
               <button
                 type="button"
                 onClick={() => setIsEditProfileModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold text-xs cursor-pointer"
+                className="px-5 py-2.5 rounded-full text-slate-600 hover:text-[#102A38] hover:bg-slate-100 text-xs font-bold transition-all cursor-pointer"
               >
                 Hủy
               </button>
               <button
                 type="button"
-                onClick={() => setIsEditProfileModalOpen(false)}
-                className="px-5 py-2 rounded-xl bg-[#17657A] hover:bg-[#102A38] text-white font-bold text-xs cursor-pointer"
+                onClick={handleSaveProfile}
+                className="px-6 py-2.5 rounded-full bg-[#17657A] hover:bg-[#102A38] text-white text-xs font-bold shadow-md shadow-[#17657A]/20 hover:shadow-lg hover:shadow-[#17657A]/30 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
               >
-                Lưu thay đổi
+                <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span>Lưu thay đổi</span>
               </button>
             </div>
           </div>

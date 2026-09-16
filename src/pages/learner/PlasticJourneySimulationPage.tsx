@@ -88,11 +88,13 @@ export function PlasticJourneySimulationPage() {
   return (
     <ActivityShell
       title={locale === 'vi' ? 'Hành trình mảnh nhựa' : 'Plastic Journey'}
+      variant="light"
       currentStep={currentWaypoint + 1}
       totalSteps={5}
       onBack={() => navigate('/interactive/simulations')}
       isPaused={!isPlaying}
       onTogglePause={() => setIsPlaying(!isPlaying)}
+      showLogo={true}
     >
       <div className="relative w-full h-[calc(100vh-72px)] flex flex-col justify-between overflow-hidden">
         {/* Panoramic Split-level Nature Background */}
@@ -123,15 +125,16 @@ export function PlasticJourneySimulationPage() {
 
           {/* Interactive Trajectory Layer across the 3D scene (5 Stages) */}
           <div className="relative flex-1 min-h-[380px] my-2">
-            {/* SVG Curved Dashed Trajectory Line connecting all 5 stages */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" viewBox="0 0 1400 600" preserveAspectRatio="none">
+            {/* SVG Curved Dashed Trajectory Line connecting all 5 stages smoothly */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
               <path
-                d="M 220 190 C 380 250, 480 280, 530 290 C 650 320, 750 370, 810 390 C 920 420, 1010 440, 1050 450 C 1140 470, 1210 495, 1240 500"
+                d="M 16 32 C 24 38, 30 44, 38 48 C 46 52, 51 58, 58 62 C 64 66, 70 70, 75 72 C 80 74, 84 78, 88 82"
                 fill="none"
                 stroke="white"
                 strokeWidth="3"
+                vectorEffect="non-scaling-stroke"
                 strokeDasharray="8 8"
-                className="opacity-75 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+                className="opacity-80 drop-shadow-[0_2px_4px_rgba(0,0,0,0.35)]"
               />
             </svg>
 

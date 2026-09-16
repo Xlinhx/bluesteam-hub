@@ -19,6 +19,8 @@ export interface StoredUserProfile {
   id: string;
   name: string;
   avatarKey?: string;
+  gender?: 'boy' | 'girl';
+  age?: string;
 }
 
 export interface StoredPreferences {
@@ -157,7 +159,13 @@ export const demoStore = {
   },
 
   getProfile(): StoredUserProfile {
-    return safeGet(KEYS.PROFILE, getDefaultProfile());
+    const prof = safeGet(KEYS.PROFILE, getDefaultProfile());
+    if (prof.role === 'student') {
+      if (!prof.avatarKey || (!prof.avatarKey.startsWith('/') && !prof.avatarKey.startsWith('http') && !prof.avatarKey.startsWith('data:'))) {
+        prof.avatarKey = prof.gender === 'girl' ? '/assets/avatar_mai.png' : '/assets/avatar_an.png';
+      }
+    }
+    return prof;
   },
   setProfile(profile: Omit<StoredUserProfile, 'schemaVersion'>): void {
     safeSet(KEYS.PROFILE, { schemaVersion: SCHEMA_VERSION, ...profile });

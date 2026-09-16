@@ -1,4 +1,5 @@
 import { useRouter } from '../../app/router';
+import { BlueSteamLogo } from '../../shared/components/BlueSteamLogo';
 import { getStoredConcept, ConceptKey } from '../../showcase/registry';
 import { oceanAudio } from '../../shared/sound/oceanAudio';
 import {
@@ -28,9 +29,10 @@ export function StudentJourneyPage() {
           <div className="flex items-center gap-8">
             <button
               onClick={() => navigate('/')}
-              className="text-2xl font-bold font-serif text-sky-950 tracking-tight flex items-center gap-1 cursor-pointer"
+              className="cursor-pointer hover:opacity-90 transition p-1 -ml-1 flex items-center"
+              aria-label="Về trang chủ BlueSTEAM"
             >
-              Ocean
+              <BlueSteamLogo size="sm" />
             </button>
 
             <nav className="hidden md:flex items-center gap-1">

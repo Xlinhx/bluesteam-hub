@@ -1,0 +1,98 @@
+{
+  "version": 2,
+  "style": "Living Ocean",
+  "baseDirectory": "public/assets/bluesteam",
+  "totalAssets": 15,
+  "assets": [
+    {
+      "file": "public/assets/ocean/atlas-horizontal-bg.jpg",
+      "filename": "atlas-horizontal-bg.jpg",
+      "sizeBytes": 992962,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/atlas-vertical-bg.jpg",
+      "filename": "atlas-vertical-bg.jpg",
+      "sizeBytes": 572100,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/habitat-abyss-bg.jpg",
+      "filename": "habitat-abyss-bg.jpg",
+      "sizeBytes": 637819,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/habitat-mangrove-bg.jpg",
+      "filename": "habitat-mangrove-bg.jpg",
+      "sizeBytes": 1159558,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/habitat-seagrass-bg.jpg",
+      "filename": "habitat-seagrass-bg.jpg",
+      "sizeBytes": 1099034,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/home-journey-bg.jpg",
+      "filename": "home-journey-bg.jpg",
+      "sizeBytes": 685774,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/home-mascot-turtle.jpg",
+      "filename": "home-mascot-turtle.jpg",
+      "sizeBytes": 359980,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/landing-ocean-bg.jpg",
+      "filename": "landing-ocean-bg.jpg",
+      "sizeBytes": 890359,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/sim-plastic-bag.jpg",
+      "filename": "sim-plastic-bag.jpg",
+      "sizeBytes": 615363,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/sim-plastic-bottle.jpg",
+      "filename": "sim-plastic-bottle.jpg",
+      "sizeBytes": 288949,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/sim-rescue-net.jpg",
+      "filename": "sim-rescue-net.jpg",
+      "sizeBytes": 784051,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/specimen-clownfish.jpg",
+      "filename": "specimen-clownfish.jpg",
+      "sizeBytes": 915756,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/specimen-lanternfish.jpg",
+      "filename": "specimen-lanternfish.jpg",
+      "sizeBytes": 760537,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/specimen-turtle.jpg",
+      "filename": "specimen-turtle.jpg",
+      "sizeBytes": 1041482,
+      "status": "INTEGRATED"
+    },
+    {
+      "file": "public/assets/ocean/specimen-whale.jpg",
+      "filename": "specimen-whale.jpg",
+      "sizeBytes": 674054,
+      "status": "INTEGRATED"
+    }
+  ]
+}

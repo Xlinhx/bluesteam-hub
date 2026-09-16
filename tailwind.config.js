@@ -66,10 +66,10 @@ export default {
       },
       fontFamily: {
         sans: ['"Be Vietnam Pro"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        editorial: ['"Noto Serif"', '"Playfair Display"', 'Georgia', 'serif'],
-        serif: ['"Noto Serif"', '"Playfair Display"', 'Georgia', 'serif'],
-        playfair: ['"Playfair Display"', 'Georgia', 'serif'],
-        display: ['"Playfair Display"', '"Noto Serif"', 'Georgia', 'serif'],
+        editorial: ['"Newsreader"', '"Noto Serif"', 'Georgia', 'serif'],
+        serif: ['"Newsreader"', '"Noto Serif"', 'Georgia', 'serif'],
+        playfair: ['"Playfair Display"', '"Newsreader"', 'Georgia', 'serif'],
+        display: ['"Newsreader"', '"Playfair Display"', '"Noto Serif"', 'Georgia', 'serif'],
         mono: ['var(--font-mono)', 'monospace'],
       },
       letterSpacing: {

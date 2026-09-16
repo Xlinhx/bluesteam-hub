@@ -53,10 +53,10 @@ export function AudioControlButton({
       aria-label={isMuted ? 'Bật âm thanh' : 'Tắt âm thanh'}
       className={`relative inline-flex items-center justify-center rounded-full transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#17657A]/40 active:scale-95 ${
         isMuted
-          ? 'bg-[#EAE4D5] text-[#12384B]/50 border border-[#12384B]/20'
+          ? 'bg-[#EFEAE1]/90 text-[#12384B]/40 border border-[#12384B]/10 shadow-2xs'
           : isSpeaking
           ? 'bg-[#17657A] text-white shadow-[0_4px_16px_rgba(23,101,122,0.45)] ring-4 ring-[#2EE6CA]/50'
-          : 'bg-[#F6F3EB] hover:bg-white text-[#12384B] border-2 border-[#17657A]/30 shadow-[0_2px_8px_rgba(18,56,75,0.1)]'
+          : 'bg-white/90 hover:bg-white text-[#12384B] border border-[#12384B]/10 shadow-[0_2px_8px_rgba(18,56,75,0.06),inset_0_1px_0_rgba(255,255,255,0.95)] hover:border-[#12384B]/20 hover:shadow-xs'
       } ${dimensions[size]} ${className}`}
     >
       {/* Sound waves animation while speaking */}

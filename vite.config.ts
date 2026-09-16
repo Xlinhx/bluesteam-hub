@@ -22,9 +22,18 @@ export default defineConfig({
           next();
         });
         server.middlewares.use('/mockups', (req, res, next) => {
-          const safeUrl = req.url ? req.url.split('?')[0] : '';
-          const mockupsDir = 'C:/Users/ADMIN/Downloads/ocean';
-          const filePath = path.join(mockupsDir, safeUrl);
+          const safeUrl = req.url ? req.url.split('?')[0].replace(/^\//, '') : '';
+          const mockupsDir = path.join(process.cwd(), 'docs', 'mockups');
+          let filePath = path.join(mockupsDir, safeUrl);
+          if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
+            if (fs.existsSync(mockupsDir)) {
+              const files = fs.readdirSync(mockupsDir);
+              const found = files.find((f) => f === safeUrl || f.endsWith('-' + safeUrl));
+              if (found) {
+                filePath = path.join(mockupsDir, found);
+              }
+            }
+          }
           if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
             res.setHeader('Content-Type', 'image/png');
             return fs.createReadStream(filePath).pipe(res);

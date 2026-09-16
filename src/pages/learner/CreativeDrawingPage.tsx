@@ -14,7 +14,6 @@ import {
   Point
 } from './drawing_engine';
 import { 
-  ArrowLeft, 
   Undo2, 
   Redo2, 
   Save, 
@@ -429,19 +428,19 @@ export function CreativeDrawingPage() {
     showToast(locale === 'vi' ? '📥 Đang tải ảnh về máy...' : '📥 Downloading image...');
   };
 
-  // Custom right controls inside ActivityShell header
-  const customHeaderRight = (
-    <div className="flex items-center gap-2 sm:gap-3">
-      {/* Undo Button - >= 48px on mobile, >= 56px touch target compliant */}
+  // Canvas action controls (Tactile Light Theme)
+  const canvasActionControls = (
+    <div className="flex items-center gap-2 sm:gap-2.5">
+      {/* Undo Button */}
       <button
         type="button"
         onClick={handleUndo}
         disabled={!canUndo}
         aria-label="Undo"
-        className={`p-2.5 rounded-2xl flex items-center justify-center min-w-[48px] min-h-[48px] sm:min-w-[56px] sm:min-h-[56px] transition-all cursor-pointer ${
+        className={`min-w-[48px] min-h-[48px] sm:min-w-[56px] sm:min-h-[56px] rounded-2xl flex items-center justify-center transition-all cursor-pointer ${
           canUndo
-            ? 'bg-white/10 hover:bg-white/20 text-white active:scale-95'
-            : 'bg-white/5 text-white/30 cursor-not-allowed'
+            ? 'bg-white border border-slate-200/90 text-[#102A38] shadow-xs hover:bg-slate-50 active:scale-95'
+            : 'bg-white/60 border border-slate-200/50 text-[#102A38]/30 cursor-not-allowed'
         }`}
         title={locale === 'vi' ? 'Hoàn tác' : 'Undo'}
       >
@@ -454,10 +453,10 @@ export function CreativeDrawingPage() {
         onClick={handleRedo}
         disabled={!canRedo}
         aria-label="Redo"
-        className={`p-2.5 rounded-2xl flex items-center justify-center min-w-[48px] min-h-[48px] sm:min-w-[56px] sm:min-h-[56px] transition-all cursor-pointer ${
+        className={`min-w-[48px] min-h-[48px] sm:min-w-[56px] sm:min-h-[56px] rounded-2xl flex items-center justify-center transition-all cursor-pointer ${
           canRedo
-            ? 'bg-white/10 hover:bg-white/20 text-white active:scale-95'
-            : 'bg-white/5 text-white/30 cursor-not-allowed'
+            ? 'bg-white border border-slate-200/90 text-[#102A38] shadow-xs hover:bg-slate-50 active:scale-95'
+            : 'bg-white/60 border border-slate-200/50 text-[#102A38]/30 cursor-not-allowed'
         }`}
         title={locale === 'vi' ? 'Làm lại' : 'Redo'}
       >
@@ -469,10 +468,10 @@ export function CreativeDrawingPage() {
         type="button"
         onClick={handleClearCanvas}
         aria-label="Clear Canvas"
-        className="p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center min-w-[48px] min-h-[48px] sm:min-w-[56px] sm:min-h-[56px] transition-all active:scale-95 cursor-pointer"
+        className="min-w-[48px] min-h-[48px] sm:min-w-[56px] sm:min-h-[56px] rounded-2xl bg-white border border-slate-200/90 text-amber-600 flex items-center justify-center shadow-xs hover:bg-amber-50 active:scale-95 transition-all cursor-pointer"
         title={locale === 'vi' ? 'Vẽ lại từ đầu' : 'Start Over'}
       >
-        <RotateCcw className="w-5 h-5 text-amber-300" />
+        <RotateCcw className="w-5 h-5" />
       </button>
 
       {/* Download PNG Button */}
@@ -480,10 +479,10 @@ export function CreativeDrawingPage() {
         type="button"
         onClick={handleDownloadPNG}
         aria-label="Download PNG"
-        className="p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center min-w-[48px] min-h-[48px] sm:min-w-[56px] sm:min-h-[56px] transition-all active:scale-95 cursor-pointer"
+        className="min-w-[48px] min-h-[48px] sm:min-w-[56px] sm:min-h-[56px] rounded-2xl bg-white border border-slate-200/90 text-[#102A38] flex items-center justify-center shadow-xs hover:bg-slate-50 active:scale-95 transition-all cursor-pointer"
         title={locale === 'vi' ? 'Tải ảnh PNG' : 'Download PNG'}
       >
-        <Download className="w-5 h-5 text-[#2EE6CA]" />
+        <Download className="w-5 h-5" />
       </button>
 
       {/* Save Button */}
@@ -491,10 +490,10 @@ export function CreativeDrawingPage() {
         type="button"
         onClick={handleSaveArtwork}
         disabled={isSaving}
-        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#125345] hover:bg-[#0e4237] text-white font-extrabold text-sm shadow-md transition-all active:scale-95 cursor-pointer min-h-[48px] sm:min-h-[56px] border border-white/15"
+        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#15586E] hover:bg-[#124556] text-white font-bold text-xs sm:text-sm shadow-xs transition-all active:scale-95 cursor-pointer min-h-[48px] sm:min-h-[56px]"
       >
-        <Save className="w-4 h-4 text-[#2EE6CA]" />
-        <span className="hidden md:inline">{locale === 'vi' ? 'Lưu tác phẩm' : 'Save Artwork'}</span>
+        <Save className="w-5 h-5 text-[#2EE6CA]" />
+        <span className="hidden sm:inline">{locale === 'vi' ? 'Lưu tác phẩm' : 'Save Artwork'}</span>
       </button>
     </div>
   );
@@ -502,10 +501,11 @@ export function CreativeDrawingPage() {
   return (
     <ActivityShell
       title={locale === 'vi' ? 'Bức tranh của An' : "An's Drawing"}
+      variant="light"
       onBack={() => navigate('/creative')}
-      headerRight={customHeaderRight}
+      showLogo={true}
     >
-      <div className="w-full h-full flex flex-col justify-between p-3 sm:p-5 lg:p-6 select-none relative overflow-hidden bg-[#0B232F]/60">
+      <div className="w-full h-full flex flex-col justify-between p-3 sm:p-5 lg:p-6 select-none relative overflow-hidden bg-gradient-to-b from-[#F2F6FA] via-[#EBF1F7] to-[#E5ECF2]">
         {/* Toast Notification */}
         {toastMessage && (
           <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-2xl bg-[#12384B]/95 text-white border-2 border-[#2EE6CA] shadow-2xl backdrop-blur-md flex items-center gap-2.5 animate-in fade-in slide-in-from-top-4 duration-300">
@@ -514,60 +514,17 @@ export function CreativeDrawingPage() {
           </div>
         )}
 
-        {/* Desktop / Large Screen Workspace Card (1536x1024) */}
-        <div className="flex-1 flex flex-col bg-white rounded-[28px] p-4 sm:p-6 shadow-[0_12px_40px_rgba(0,0,0,0.25)] border border-[#17657A]/20 gap-4 overflow-hidden">
-          {/* Sub-Header inside Card (strictly matching bluesteam-v2-creative-drawing.png) */}
-          <div className="hidden lg:flex items-center justify-between bg-white rounded-2xl px-6 py-3 shadow-xs border border-black/5">
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => navigate('/creative')}
-                className="p-2 rounded-full hover:bg-gray-100 text-[#12384B] transition-colors cursor-pointer"
-                title="Quay lại"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </button>
-              <h1 className="text-xl font-black text-[#102A38] font-serif tracking-[-0.02em]">
-                {locale === 'vi' ? 'Bức tranh của An' : "An's Drawing"}
-              </h1>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={handleUndo}
-                disabled={!canUndo}
-                className={`p-2.5 rounded-xl transition-colors ${
-                  canUndo ? 'text-gray-700 hover:bg-gray-100 cursor-pointer' : 'text-gray-300 cursor-not-allowed'
-                }`}
-                title="Undo"
-              >
-                <Undo2 className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                onClick={handleRedo}
-                disabled={!canRedo}
-                className={`p-2.5 rounded-xl transition-colors ${
-                  canRedo ? 'text-gray-700 hover:bg-gray-100 cursor-pointer' : 'text-gray-300 cursor-not-allowed'
-                }`}
-                title="Redo"
-              >
-                <Redo2 className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                onClick={handleSaveArtwork}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#125345] hover:bg-[#0e4237] text-white font-extrabold text-xs shadow-xs transition-all cursor-pointer min-h-[44px]"
-              >
-                <Save className="w-4 h-4" />
-                <span>{locale === 'vi' ? 'Lưu tác phẩm' : 'Save Artwork'}</span>
-              </button>
-            </div>
+        {/* Main Canvas Workspace (Single Canonical Toolbar via ActivityShell) */}
+        <div className="flex-1 flex flex-col bg-white rounded-[28px] p-3 sm:p-4 shadow-[0_12px_40px_rgba(0,0,0,0.25)] border border-[#17657A]/20 gap-3 overflow-hidden">
+          {/* Top Sub-Bar: Canvas Actions */}
+          <div className="flex items-center justify-between px-2 pb-2 border-b border-gray-100/80">
+            <span className="text-xs sm:text-sm font-bold text-[#102A38]/70">
+              {locale === 'vi' ? 'Bé hãy chọn màu và tô điểm cho tác phẩm nhé' : 'Color and decorate your masterpiece'}
+            </span>
+            {canvasActionControls}
           </div>
-
           {/* Main Stage: Left Tool Dock + Canvas Stage + Right Suggestions Panel */}
-          <div className="flex-1 flex gap-4 min-h-[420px] overflow-hidden">
+          <div className="flex-1 flex gap-3 min-h-[420px] overflow-hidden">
             {/* Left Vertical Tool Dock (Hidden on mobile/tablet where bottom dock is active) */}
             <div className="hidden lg:flex w-20 bg-white rounded-3xl p-3 shadow-xs border border-black/5 flex-col items-center gap-4 shrink-0">
               {/* Cọ vẽ sáp (Crayon Brush) */}
@@ -649,38 +606,39 @@ export function CreativeDrawingPage() {
               )}
             </div>
 
-            {/* Center Canvas Work Area (Responsive auto-resize with paper texture) */}
+            {/* Center Canvas Work Area (Authentic Paper Canvas without nested wrappers) */}
             <div 
               ref={containerRef}
-              className="flex-1 bg-white rounded-3xl shadow-xs border border-black/5 overflow-hidden flex items-center justify-center p-2 sm:p-4 relative min-w-0"
+              className="flex-1 rounded-3xl overflow-hidden border-2 border-[#17657A]/20 shadow-md flex items-center justify-center bg-[#FAF7F0] relative cursor-crosshair touch-none min-w-0"
             >
-              <div className="w-full h-full rounded-2xl overflow-hidden border border-black/10 shadow-inner flex items-center justify-center bg-[#FAF7F0] relative cursor-crosshair touch-none">
-                <canvas
-                  ref={canvasRef}
-                  onPointerDown={handlePointerDown}
-                  onPointerMove={handlePointerMove}
-                  onPointerUp={handlePointerUp}
-                  onPointerCancel={handlePointerUp}
-                  className="w-full h-full block touch-none"
-                  style={{ touchAction: 'none' }}
-                />
-              </div>
+              <canvas
+                ref={canvasRef}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerUp}
+                className="w-full h-full block touch-none"
+                style={{ touchAction: 'none' }}
+              />
             </div>
 
-            {/* Right Suggestions / Templates Panel ("Mẫu gợi ý") */}
-            <div className={`w-72 bg-white rounded-3xl p-4 shadow-xs border border-black/5 flex-col space-y-3 shrink-0 ${
-              isGuideOpen ? 'flex' : 'hidden lg:flex lg:w-16'
+            {/* Right Suggestions / Templates Panel ("Mẫu gợi ý" - Collapsible for tablet) */}
+            <div className={`bg-white rounded-3xl shadow-xs border border-black/5 flex-col space-y-3 shrink-0 transition-all duration-300 ${
+              isGuideOpen ? 'w-72 p-4 flex' : 'w-14 p-2 hidden sm:flex items-center'
             }`}>
-              <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-                <span className="font-bold text-sm text-[#102A38]">
-                  {locale === 'vi' ? 'Mẫu gợi ý' : 'Suggestions'}
-                </span>
+              <div className={`flex items-center justify-between pb-2 border-b border-gray-100 ${isGuideOpen ? 'w-full' : 'flex-col gap-2'}`}>
+                {isGuideOpen && (
+                  <span className="font-bold text-sm text-[#102A38]">
+                    {locale === 'vi' ? 'Mẫu gợi ý' : 'Suggestions'}
+                  </span>
+                )}
                 <button
                   type="button"
                   onClick={() => setIsGuideOpen(!isGuideOpen)}
-                  className="text-gray-400 hover:text-gray-600 p-1 cursor-pointer"
+                  className="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-[#17657A] cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center transition-colors"
+                  title={isGuideOpen ? 'Thu gọn panel' : 'Mở mẫu gợi ý'}
                 >
-                  <ChevronUp className={`w-4 h-4 transition-transform ${isGuideOpen ? '' : 'rotate-180'}`} />
+                  <ChevronUp className={`w-4 h-4 transition-transform ${isGuideOpen ? 'rotate-90' : '-rotate-90'}`} />
                 </button>
               </div>
 

@@ -12,8 +12,8 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const PNG_MAGIC = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
 describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenger 1)', () => {
-  const visualManifestPath = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'visual-review-manifest.json');
-  const sceneManifestPath = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'scene-manifest.json');
+  const visualManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'visual-review-manifest.json');
+  const sceneManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'scene-manifest.json');
   const appTsxPath = path.join(REPO_ROOT, 'src', 'app', 'App.tsx');
 
   const rawVisualManifest = fs.readFileSync(visualManifestPath, 'utf8');
@@ -167,12 +167,12 @@ describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenge
   // 4. SCREENSHOT PHYSICAL EVIDENCE STRESS AUDIT
   // =========================================================================
   describe('4. Physical Screenshot Files Empirical Stress Verification', () => {
-    it('all 39 records have valid non-null screenshotPath in artifacts/bluesteam-v2/verification/', () => {
+    it('all 39 records have valid non-null screenshotPath in artifacts/verification/', () => {
       for (const rec of visualManifest.records) {
         expect(rec.screenshotPath).toBeDefined();
         expect(rec.screenshotPath).not.toBeNull();
         expect(typeof rec.screenshotPath).toBe('string');
-        expect(rec.screenshotPath).toContain('artifacts/bluesteam-v2/verification/');
+        expect(rec.screenshotPath).toContain('artifacts/verification/');
         // Negative test: never reference raw mockup downloads
         expect(rec.screenshotPath).not.toContain('Downloads/ocean');
       }

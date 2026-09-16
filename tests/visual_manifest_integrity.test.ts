@@ -9,8 +9,8 @@ const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 
 describe('BlueSTEAM v2 — Visual Review Manifest Integrity (Rules K, L, M)', () => {
-  const sceneManifestPath = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'scene-manifest.json');
-  const visualManifestPath = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'visual-review-manifest.json');
+  const sceneManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'scene-manifest.json');
+  const visualManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'visual-review-manifest.json');
 
   it('should have visual-review-manifest.json present and readable', () => {
     expect(fs.existsSync(visualManifestPath)).toBe(true);

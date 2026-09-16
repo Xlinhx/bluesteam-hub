@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from '../../app/router';
+import { BlueSteamLogo } from '../../shared/components/BlueSteamLogo';
 import { getStoredConcept, ConceptKey } from '../../showcase/registry';
 import { OceanSimulationView } from '../../experiences/simulation/OceanSimulationView';
 import { oceanShowcaseStore } from '../../demo/storage/oceanShowcaseStore';
@@ -38,9 +39,10 @@ export function PresentationPage() {
         <div className="flex items-center gap-8">
           <button
             onClick={() => navigate('/teacher/live')}
-            className="text-2xl font-bold font-serif text-sky-950 tracking-tight cursor-pointer"
+            className="cursor-pointer hover:opacity-90 transition p-1 -ml-1"
+            aria-label="Về bàn làm việc giáo viên"
           >
-            Ocean
+            <BlueSteamLogo size="sm" />
           </button>
         </div>
 
@@ -156,9 +158,12 @@ export function PresentationPage() {
             {/* Right: Cô Linh đang điều khiển */}
             <div className="flex items-center gap-3">
               <img
-                src="/assets/avatar_colinh.png"
+                src="/assets/avatars/linh_teacher_headshot.png"
                 alt="Cô Linh"
                 className="w-12 h-12 rounded-2xl object-cover border-2 border-sky-300 shadow"
+                onError={(e) => {
+                  e.currentTarget.src = '/assets/avatar_colinh.png';
+                }}
               />
               <div>
                 <h4 className="font-bold text-xs text-neutral-500">Cô Linh</h4>
@@ -215,9 +220,12 @@ export function PresentationPage() {
               {/* Card 3: Cô Linh đang điều khiển */}
               <div className="p-4 rounded-2xl bg-sky-50 border border-sky-100 flex items-center gap-3">
                 <img
-                  src="/assets/avatar_colinh.png"
+                  src="/assets/avatars/linh_teacher_headshot.png"
                   alt="Cô Linh"
                   className="w-12 h-12 rounded-2xl object-cover border-2 border-sky-300"
+                  onError={(e) => {
+                    e.currentTarget.src = '/assets/avatar_colinh.png';
+                  }}
                 />
                 <div>
                   <h4 className="font-bold text-sm text-sky-950">Cô Linh đang điều khiển</h4>

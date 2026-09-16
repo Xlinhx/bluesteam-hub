@@ -54,7 +54,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/learner-home-desktop-1536x1024.png",
+    "screenshotPath": "artifacts/verification/learner-home-desktop-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-learner-home-overview.png",
     "setupSteps": [
       "Chọn hồ sơ học sinh bé An",
@@ -85,7 +85,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": null,
     "basis": "RESPONSIVE_SPEC",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/learner-home-mobile-390x844.png",
+    "screenshotPath": "artifacts/verification/learner-home-mobile-390x844.png",
     "referencePath": null,
     "setupSteps": [
       "Mở route /home trên viewport iPhone 12/13/14 (390x844)",
@@ -114,7 +114,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/resources-catalog-1536x1024.png",
+    "screenshotPath": "artifacts/verification/resources-catalog-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-resources-catalog.png",
     "setupSteps": [
       "Mở route /resources",
@@ -144,7 +144,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 99,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/landing-desktop-1536x1024.png",
+    "screenshotPath": "artifacts/verification/landing-desktop-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-public-landing-overview.png",
     "setupSteps": [
       "Mở route / ở chế độ khách chưa đăng nhập",
@@ -173,7 +173,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 96,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/landing-beat2-beat3-1536x1024.png",
+    "screenshotPath": "artifacts/verification/landing-beat2-beat3-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-public-landing-overview.png",
     "setupSteps": [
       "Mở route /",
@@ -201,7 +201,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/landing-beat3-3d-turtle-1536x1024.png",
+    "screenshotPath": "artifacts/verification/landing-beat3-3d-turtle-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-public-landing-overview.png",
     "setupSteps": [
       "Mở route /",
@@ -229,7 +229,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": null,
     "basis": "RESPONSIVE_SPEC",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/landing-mobile-390x844.png",
+    "screenshotPath": "artifacts/verification/landing-mobile-390x844.png",
     "referencePath": null,
     "setupSteps": [
       "Mở route / trên màn hình di động 390x844",
@@ -257,7 +257,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 96,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/public-role-and-access-1536x1024.png",
+    "screenshotPath": "artifacts/verification/public-role-and-access-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-public-role-and-access.png",
     "setupSteps": [
       "Mở route /entry",
@@ -285,7 +285,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 96,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/public-adult-login-1536x1024.png",
+    "screenshotPath": "artifacts/verification/public-adult-login-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-public-adult-login.png",
     "setupSteps": [
       "Mở route /login",
@@ -313,7 +313,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 96,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/resources-library-overview-1024x1536.png",
+    "screenshotPath": "artifacts/verification/resources-library-overview-1024x1536.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-resources-library-overview.png",
     "setupSteps": [
       "Mở route /resources",
@@ -341,7 +341,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/resources-flashcard-detail-1536x1024.png",
+    "screenshotPath": "artifacts/verification/resources-flashcard-detail-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-resources-flashcard-detail.png",
     "setupSteps": [
       "Mở route /resources/flashcard",
@@ -371,7 +371,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/resources-media-player-1536x1024.png",
+    "screenshotPath": "artifacts/verification/resources-media-player-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-resources-media-player.png",
     "setupSteps": [
       "Mở route /resources/media",
@@ -400,7 +400,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/resources-print-preview-1536x1024.png",
+    "screenshotPath": "artifacts/verification/resources-print-preview-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-resources-print-preview.png",
     "setupSteps": [
       "Mở route /resources/print",
@@ -428,7 +428,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/ocean-atlas-horizontal-1536x1024.png",
+    "screenshotPath": "artifacts/verification/ocean-atlas-horizontal-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-ocean-horizontal-atlas.png",
     "setupSteps": [
       "Mở route /learn/atlas",
@@ -458,7 +458,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/ocean-atlas-vertical-1536x1024.png",
+    "screenshotPath": "artifacts/verification/ocean-atlas-vertical-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-ocean-vertical-atlas.png",
     "setupSteps": [
       "Mở route /learn/atlas",
@@ -487,7 +487,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/viewer-3d-turtle-1536x1024.png",
+    "screenshotPath": "artifacts/verification/viewer-3d-turtle-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-ocean-creature-viewer.png",
     "setupSteps": [
       "Mở route /learn/turtle",
@@ -517,7 +517,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/game-lab-overview-1024x1536.png",
+    "screenshotPath": "artifacts/verification/game-lab-overview-1024x1536.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-game-lab-overview.png",
     "setupSteps": [
       "Mở route /interactive",
@@ -546,7 +546,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/game-lab-recognition-round-1536x1024.png",
+    "screenshotPath": "artifacts/verification/game-lab-recognition-round-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-game-lab-recognition-round.png",
     "setupSteps": [
       "Mở trò chơi nhận biết sinh vật biển",
@@ -575,7 +575,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/game-habitat-placement-1536x1024.png",
+    "screenshotPath": "artifacts/verification/game-habitat-placement-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-game-lab-habitat-placement.png",
     "setupSteps": [
       "Mở hoạt động với phiên chơi mới tại route /interactive/habitat-placement",
@@ -605,7 +605,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/game-habitat-feedback-1536x1024.png",
+    "screenshotPath": "artifacts/verification/game-habitat-feedback-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-game-lab-habitat-feedback.png",
     "setupSteps": [
       "Kéo/thả Rùa Xanh vào Thảm cỏ biển nông",
@@ -634,7 +634,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/simulations-catalog-1536x1024.png",
+    "screenshotPath": "artifacts/verification/simulations-catalog-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-simulations-catalog.png",
     "setupSteps": [
       "Mở route /interactive/simulations",
@@ -663,7 +663,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/simulations-my-action-choice-1536x1024.png",
+    "screenshotPath": "artifacts/verification/simulations-my-action-choice-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-simulations-my-action-choice.png",
     "setupSteps": [
       "Mở route /interactive/my-action",
@@ -691,7 +691,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/simulations-my-action-compare-1536x1024.png",
+    "screenshotPath": "artifacts/verification/simulations-my-action-compare-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-simulations-my-action-compare.png",
     "setupSteps": [
       "Hoàn thành 2 lần lựa chọn",
@@ -719,7 +719,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/simulations-plastic-journey-1536x1024.png",
+    "screenshotPath": "artifacts/verification/simulations-plastic-journey-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-simulations-plastic-journey.png",
     "setupSteps": [
       "Mở route /interactive/plastic-journey",
@@ -748,7 +748,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/simulations-rescue-mission-1536x1024.png",
+    "screenshotPath": "artifacts/verification/simulations-rescue-mission-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-simulations-rescue-mission.png",
     "setupSteps": [
       "Mở route /interactive/rescue-mission",
@@ -777,7 +777,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/creative-studio-1536x1024.png",
+    "screenshotPath": "artifacts/verification/creative-studio-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-creative-studio.png",
     "setupSteps": [
       "Mở route /creative",
@@ -806,7 +806,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/creative-drawing-1536x1024.png",
+    "screenshotPath": "artifacts/verification/creative-drawing-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-creative-drawing.png",
     "setupSteps": [
       "Mở route /creative/drawing",
@@ -836,7 +836,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/creative-habitat-build-1536x1024.png",
+    "screenshotPath": "artifacts/verification/creative-habitat-build-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-creative-habitat-build.png",
     "setupSteps": [
       "Mở route /creative/habitat ở chế độ Dựng (Build Mode)",
@@ -865,7 +865,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 99,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/creative-habitat-run-1536x1024.png",
+    "screenshotPath": "artifacts/verification/creative-habitat-run-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-creative-habitat-run.png",
     "setupSteps": [
       "Nhấn nút \"Chạy thử sinh cảnh\"",
@@ -894,7 +894,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/profile-learner-profile-1536x1024.png",
+    "screenshotPath": "artifacts/verification/profile-learner-profile-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-profile-learner-profile.png",
     "setupSteps": [
       "Mở route /profile",
@@ -922,7 +922,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/teacher-dashboard-1536x1024.png",
+    "screenshotPath": "artifacts/verification/teacher-dashboard-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-dashboard.png",
     "setupSteps": [
       "Đăng nhập tài khoản giáo viên Cô Linh",
@@ -951,7 +951,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 98,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/teacher-resource-library-1536x1024.png",
+    "screenshotPath": "artifacts/verification/teacher-resource-library-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-resource-library.png",
     "setupSteps": [
       "Mở route /teacher/library",
@@ -979,7 +979,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/teacher-lesson-plan-1536x1024.png",
+    "screenshotPath": "artifacts/verification/teacher-lesson-plan-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-lesson-plan.png",
     "setupSteps": [
       "Mở chi tiết giáo án Khám phá Rạn san hô",
@@ -1007,7 +1007,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 97,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/teacher-lesson-builder-1536x1024.png",
+    "screenshotPath": "artifacts/verification/teacher-lesson-builder-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-lesson-builder.png",
     "setupSteps": [
       "Mở trình soạn bài giảng /teacher/builder",
@@ -1035,7 +1035,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 99,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/teacher-live-console-1536x1024.png",
+    "screenshotPath": "artifacts/verification/teacher-live-console-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-live-console.png",
     "setupSteps": [
       "Mở bàn điều khiển tiết học trực tiếp /teacher/live",
@@ -1063,7 +1063,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": 99,
     "basis": "REFERENCE",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/teacher-presentation-1536x1024.png",
+    "screenshotPath": "artifacts/verification/teacher-presentation-1536x1024.png",
     "referencePath": "C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-presentation.png",
     "setupSteps": [
       "Mở màn trình chiếu /presentation trên tab riêng",
@@ -1092,7 +1092,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": null,
     "basis": "SPEC_ONLY",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/teacher-session-results-1536x1024.png",
+    "screenshotPath": "artifacts/verification/teacher-session-results-1536x1024.png",
     "referencePath": null,
     "setupSteps": [
       "Mở route /teacher/results sau khi kết thúc buổi dạy",
@@ -1120,7 +1120,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": null,
     "basis": "SPEC_ONLY",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/system-loading-retry-1536x1024.png",
+    "screenshotPath": "artifacts/verification/system-loading-retry-1536x1024.png",
     "referencePath": null,
     "setupSteps": [
       "Kích hoạt trạng thái tải chậm > 300ms hoặc ngắt kết nối WebGL",
@@ -1148,7 +1148,7 @@ export const BLUESTEAM_V2_SCREENS: V2ScreenMeta[] = [
     "score": null,
     "basis": "RESPONSIVE_SPEC",
     "status": "VERIFIED",
-    "screenshotPath": "artifacts/bluesteam-v2/verification/responsive-tablet-creative-1024x768.png",
+    "screenshotPath": "artifacts/verification/responsive-tablet-creative-1024x768.png",
     "referencePath": null,
     "setupSteps": [
       "Mở /creative/drawing trên tablet 1024x768",

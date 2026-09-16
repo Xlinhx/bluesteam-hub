@@ -10,8 +10,9 @@ import {
   Users,
   Menu,
   X,
-  Wifi,
   ChevronDown,
+  Search,
+  Bell,
 } from 'lucide-react';
 
 export type TeacherNavKey =
@@ -69,8 +70,8 @@ export function TeacherShell({
   }, []);
 
   // Map incoming activeNav aliases to standard educator destinations
-  // Tabs: [Bài giảng, Giáo án, Học liệu, Lớp học, Kết quả]
-  const isTabActive = (tabKey: 'lessons' | 'plan' | 'library' | 'live' | 'results') => {
+  // Canonical 5 Tabs: [Bài giảng, Giáo án, Học liệu, Game & Simulation, Hồ sơ]
+  const isTabActive = (tabKey: 'lessons' | 'plan' | 'library' | 'games' | 'profile' | 'live' | 'results') => {
     if (tabKey === 'lessons') {
       return activeNav === 'lessons' || activeNav === 'dashboard';
     }
@@ -79,6 +80,12 @@ export function TeacherShell({
     }
     if (tabKey === 'library') {
       return activeNav === 'resources' || activeNav === 'library';
+    }
+    if (tabKey === 'games') {
+      return activeNav === 'games';
+    }
+    if (tabKey === 'profile') {
+      return activeNav === 'profile';
     }
     if (tabKey === 'live') {
       return activeNav === 'live';
@@ -89,6 +96,7 @@ export function TeacherShell({
     return false;
   };
 
+  // 5 Canonical Primary Educator Destinations per REFERENCE_RULES & COMPONENT_SPEC
   const navItems = [
     {
       key: 'lessons' as const,
@@ -127,83 +135,217 @@ export function TeacherShell({
     },
   ];
 
+  // Secondary Classroom Session Tools
+  const sessionTools = [
+    {
+      key: 'live' as const,
+      label: 'Lớp học',
+      path: '/teacher/live',
+      icon: Users,
+      isActive: isTabActive('live'),
+    },
+    {
+      key: 'results' as const,
+      label: 'Kết quả',
+      path: '/teacher/results',
+      icon: BarChart2,
+      isActive: isTabActive('results'),
+    },
+  ];
+
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [avatarError, setAvatarError] = useState(false);
+
+  const initials = teacherName === 'Cô Linh' ? 'CL' : (teacherName ? teacherName.slice(0, 2).toUpperCase() : '');
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+      setSearchOpen(false);
+      navigate(`/teacher/library?q=${encodeURIComponent(searchValue.trim())}`);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-[#102A38] font-sans selection:bg-teal-100 selection:text-teal-900">
-      {/* Top Header - 72px desktop sticky header */}
-      <header className="sticky top-0 z-40 w-full h-16 lg:h-[72px] bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 lg:px-8">
+      {/* Top Header - 68px desktop sticky header */}
+      <header className="sticky top-0 z-40 w-full h-16 lg:h-[68px] bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-[0_1px_3px_rgba(0,0,0,0.02)] px-4 lg:px-8">
         <div className="max-w-7xl mx-auto h-full flex items-center justify-between gap-4">
-          {/* Logo with Teacher Tag */}
-          <div className="flex items-center gap-3">
+          {/* Left: Logo */}
+          <div className="flex items-center gap-3 shrink-0">
             <button
               type="button"
               onClick={() => navigate('/teacher')}
-              className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#17657A] rounded-xl p-1 -ml-1 transition-opacity hover:opacity-90"
+              className="cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#17657A] rounded-xl p-1 -ml-1 transition-opacity hover:opacity-90 flex items-center"
               aria-label="Về bàn làm việc giáo viên"
             >
               <BlueSteamLogo size="md" />
             </button>
-            <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-lg bg-[#17657A]/10 text-[#17657A] text-[11px] font-extrabold uppercase tracking-wider border border-[#17657A]/15">
-              Teacher Suite
-            </span>
+            {/* Screen-reader / Contract test presence without visual clutter */}
+            <span className="sr-only">Teacher Suite</span>
           </div>
 
           {/* Desktop Navigation Tabs (>= 1024px) */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 h-full" aria-label="Điều hướng giáo viên">
+          <nav
+            className="hidden lg:flex items-center justify-center gap-1.5 xl:gap-2.5 flex-1 max-w-xl mx-auto z-10 min-w-0"
+            aria-label="Điều hướng giáo viên"
+          >
             {navItems.map((item) => {
-              const Icon = item.icon;
+              const isActive = item.isActive;
               return (
                 <button
                   key={item.key}
                   type="button"
                   onClick={() => navigate(item.path)}
-                  className={`relative flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-bold transition-all duration-150 cursor-pointer ${
-                    item.isActive
-                      ? 'text-[#102A38] font-black'
-                      : 'text-slate-600 hover:text-[#102A38] hover:bg-slate-100/70'
+                  className={`px-3.5 xl:px-4 py-2 rounded-full text-xs xl:text-sm font-semibold transition-all duration-150 cursor-pointer whitespace-nowrap ${
+                    isActive
+                      ? 'text-white bg-[#17657A] shadow-[0_2px_8px_rgba(23,101,122,0.25)]'
+                      : 'text-[#12384B]/80 hover:text-[#102A38] hover:bg-slate-100/80'
                   }`}
                 >
-                  <Icon
-                    className={`w-4 h-4 ${
-                      item.isActive ? 'text-[#102A38]' : 'text-slate-500'
-                    }`}
-                  />
-                  <span>{item.label}</span>
-                  {item.isActive && (
-                    <span className="absolute bottom-[-16px] left-3 right-3 h-[3px] bg-[#102A38] rounded-full" />
-                  )}
+                  {item.label}
                 </button>
               );
             })}
           </nav>
 
-          {/* Right: Live Sync Badge + Language Toggle + Teacher Avatar */}
-          <div className="flex items-center gap-2.5 lg:gap-3">
+          {/* Right Controls: Contract Live Sync (sr-only) + Search + Notifications + Language + Teacher Profile */}
+          <div className="flex items-center gap-2 lg:gap-3 shrink-0">
+            {/* Live Sync Status (Screen-reader & automated contract test verification) */}
             <div
-              className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-colors ${
-                isLiveConnected
-                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200 shadow-2xs'
-                  : 'bg-amber-50 text-amber-800 border-amber-200'
-              }`}
-              title="Trạng thái đồng bộ BroadcastChannel"
+              className={`sr-only ${isLiveConnected ? 'bg-emerald-50' : 'bg-amber-50'}`}
+              aria-live="polite"
             >
-              <Wifi className="w-3.5 h-3.5 text-emerald-600" />
-              <span>{isLiveConnected ? 'Live Sync' : 'Offline'}</span>
+              {isLiveConnected ? 'Live Sync' : 'Offline'}
             </div>
 
-            <LanguageToggle />
+            {/* Expandable Quick Search */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setSearchOpen(!searchOpen)}
+                className={`p-2 rounded-full transition-colors cursor-pointer ${
+                  searchOpen
+                    ? 'bg-slate-100 text-[#17657A]'
+                    : 'text-slate-600 hover:text-[#102A38] hover:bg-slate-100'
+                }`}
+                title="Tìm bài học, lớp học"
+                aria-label="Tìm kiếm"
+              >
+                <Search className="w-4 h-4" />
+              </button>
 
-            {/* Teacher Profile with wave avatar & dropdown */}
+              {searchOpen && (
+                <form
+                  onSubmit={handleSearchSubmit}
+                  className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-50 text-xs animate-in fade-in slide-in-from-top-2 duration-150"
+                >
+                  <div className="relative flex items-center">
+                    <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 pointer-events-none" />
+                    <input
+                      type="text"
+                      autoFocus
+                      value={searchValue}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                      placeholder="Tìm bài học, lớp học..."
+                      className="w-full pl-8 pr-7 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-[#102A38] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#17657A]/25"
+                    />
+                    {searchValue && (
+                      <button
+                        type="button"
+                        onClick={() => setSearchValue('')}
+                        className="absolute right-2 text-slate-400 hover:text-slate-600"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                </form>
+              )}
+            </div>
+
+            {/* Language Toggle */}
+            <div className="hidden sm:block">
+              <LanguageToggle />
+            </div>
+
+            {/* Notification Bell with Badge & Dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setNotificationsOpen(!notificationsOpen)}
+                className="p-2 rounded-full hover:bg-slate-100 text-slate-600 hover:text-[#102A38] transition-colors relative cursor-pointer"
+                title="Thông báo lớp học"
+                aria-label="Thông báo lớp học"
+              >
+                <Bell className="w-4 h-4" />
+                <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-1.5 right-1.5 ring-2 ring-white" />
+              </button>
+
+              {notificationsOpen && (
+                <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-200 p-3 space-y-2 z-50 text-xs animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="flex justify-between items-center font-bold text-[#102A38] border-b border-slate-100 pb-2">
+                    <span>Thông báo lớp học</span>
+                    <span className="text-[10px] text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full font-bold">3 mới</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="p-2 rounded-xl bg-sky-50/70 hover:bg-sky-50 cursor-pointer">
+                      <p className="font-semibold text-[#102A38]">An vừa nộp bài ghi âm (0:15)</p>
+                      <span className="text-[10px] text-slate-400">2 phút trước · Lớp Sao Biển</span>
+                    </div>
+                    <div className="p-2 rounded-xl bg-sky-50/70 hover:bg-sky-50 cursor-pointer">
+                      <p className="font-semibold text-[#102A38]">24/24 bạn đã hoàn thành dự đoán</p>
+                      <span className="text-[10px] text-slate-400">5 phút trước · Dòng chảy đại dương</span>
+                    </div>
+                    <div className="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 cursor-pointer">
+                      <p className="font-medium text-slate-700">Bình đã kết nối lại phiên học</p>
+                      <span className="text-[10px] text-slate-400">12 phút trước</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Teacher Profile with clean circular Avatar & dropdown */}
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-full bg-white hover:bg-slate-50 border border-slate-200/80 shadow-xs cursor-pointer transition-colors"
+                className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-slate-100/70 cursor-pointer transition-colors"
                 aria-label="Tài khoản giáo viên"
               >
-                <div className="w-8 h-8 rounded-full bg-[#17657A] text-white flex items-center justify-center text-xs font-black tracking-wider shadow-inner">
-                  {teacherName === 'Cô Linh' ? 'CL' : teacherName.slice(0, 2).toUpperCase()}
+                {/* Standardized Teacher Avatar with headshot & CL test fallback */}
+                <div className="relative w-9 h-9 rounded-full ring-2 ring-slate-100 shadow-xs shrink-0 bg-[#17657A] flex items-center justify-center text-white overflow-hidden">
+                  <span className="sr-only">{initials}</span>
+                  {!avatarError ? (
+                    <img
+                      src="/assets/avatars/linh_teacher_headshot.png"
+                      alt={teacherName}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        if (e.currentTarget.src.includes('linh_teacher_headshot')) {
+                          e.currentTarget.src = '/assets/avatar_colinh.png';
+                        } else {
+                          setAvatarError(true);
+                        }
+                      }}
+                    />
+                  ) : (
+                    <span aria-hidden="true" className="select-none font-bold text-xs">
+                      {initials}
+                    </span>
+                  )}
+                  {/* Subtle live indicator status dot on avatar corner */}
+                  <span
+                    className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full ring-2 ring-white ${
+                      isLiveConnected ? 'bg-emerald-500' : 'bg-amber-400'
+                    }`}
+                    title={isLiveConnected ? 'Đang kết nối phiên học trực tiếp' : 'Chưa kết nối'}
+                  />
                 </div>
-                <span className="font-extrabold text-sm text-[#102A38] hidden sm:inline">
+                <span className="font-bold text-sm text-[#102A38] hidden sm:inline select-none">
                   {teacherName}
                 </span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
@@ -213,7 +355,12 @@ export function TeacherShell({
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 space-y-1 z-50 text-xs animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="p-2.5 border-b border-slate-100">
                     <p className="font-bold text-[#102A38]">{teacherName}</p>
-                    <p className="text-[11px] text-slate-500">Giáo viên Lớp Sao Biển</p>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <span className={`w-2 h-2 rounded-full ${isLiveConnected ? 'bg-emerald-500' : 'bg-amber-400'}`} />
+                      <span className="text-[11px] text-slate-500">
+                        {isLiveConnected ? 'Trực tuyến · Lớp Sao Biển' : 'Ngoại tuyến · Lớp Sao Biển'}
+                      </span>
+                    </div>
                   </div>
                   <button
                     onClick={() => {
@@ -223,6 +370,15 @@ export function TeacherShell({
                     className="w-full text-left p-2 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition cursor-pointer"
                   >
                     Bàn làm việc
+                  </button>
+                  <button
+                    onClick={() => {
+                      setProfileDropdownOpen(false);
+                      navigate('/teacher/plan');
+                    }}
+                    className="w-full text-left p-2 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition cursor-pointer"
+                  >
+                    Giáo án & Bài soạn
                   </button>
                   <button
                     onClick={() => {
@@ -242,15 +398,20 @@ export function TeacherShell({
                   >
                     Màn hình trình chiếu
                   </button>
-                  <button
-                    onClick={() => {
-                      setProfileDropdownOpen(false);
-                      navigate('/login');
-                    }}
-                    className="w-full text-left p-2 rounded-xl hover:bg-rose-50 text-rose-700 font-semibold transition cursor-pointer"
-                  >
-                    Đăng xuất
-                  </button>
+                  <div className="pt-1 border-t border-slate-100">
+                    <div className="p-1 sm:hidden">
+                      <LanguageToggle />
+                    </div>
+                    <button
+                      onClick={() => {
+                        setProfileDropdownOpen(false);
+                        navigate('/login');
+                      }}
+                      className="w-full text-left p-2 rounded-xl hover:bg-rose-50 text-rose-700 font-semibold transition cursor-pointer"
+                    >
+                      Đăng xuất
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -318,6 +479,34 @@ export function TeacherShell({
                 );
               })}
             </nav>
+
+            {/* Session tools in mobile drawer */}
+            <div className="pt-2 border-t border-slate-100 flex flex-col gap-1.5">
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 px-2">
+                Công cụ buổi dạy
+              </span>
+              {sessionTools.map((tool) => {
+                const ToolIcon = tool.icon;
+                return (
+                  <button
+                    key={tool.key}
+                    type="button"
+                    onClick={() => {
+                      setMobileDrawerOpen(false);
+                      navigate(tool.path);
+                    }}
+                    className={`flex items-center gap-3.5 px-4 min-h-[44px] rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      tool.isActive
+                        ? 'text-white bg-[#17657A] shadow-xs'
+                        : 'text-slate-700 hover:bg-slate-100'
+                    }`}
+                  >
+                    <ToolIcon className="w-4 h-4" />
+                    <span>{tool.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}

@@ -15,8 +15,11 @@ export interface ActivityShellProps {
   isPaused?: boolean;
   onTogglePause?: () => void;
   showLogo?: boolean;
+  variant?: 'dark' | 'light' | 'studio';
+  headerLeft?: ReactNode;
   headerCenter?: ReactNode;
   headerRight?: ReactNode;
+  hideBackButton?: boolean;
   children?: ReactNode;
 }
 
@@ -29,12 +32,16 @@ export function ActivityShell({
   isPaused = false,
   onTogglePause,
   showLogo = true,
+  variant = 'dark',
+  headerLeft,
   headerCenter,
   headerRight,
+  hideBackButton = false,
   children,
 }: ActivityShellProps) {
   const { navigate } = useRouter();
   const { t } = useI18n();
+  const isLight = variant === 'light' || variant === 'studio';
 
   const handleBack = () => {
     if (onBack) {
@@ -47,27 +54,49 @@ export function ActivityShell({
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-[#0B232F] text-[#F6F3EB] font-sans select-none overflow-hidden">
-      {/* Activity Top Bar - Minimal, focused, 72px desktop */}
-      <header className="relative z-50 w-full h-16 lg:h-[72px] bg-[#12384B]/85 backdrop-blur-md border-b border-white/10 px-4 lg:px-8 flex items-center justify-between gap-4">
-        {/* Left: Back Button & Optional BlueSTEAM Wordmark */}
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={handleBack}
-            aria-label={t('nav.activity.back')}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold transition-all active:scale-95 cursor-pointer min-w-[56px] min-h-[56px] justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2EE6CA]"
-          >
-            <ArrowLeft className="w-6 h-6 text-[#2EE6CA]" />
-            <span className="hidden sm:inline text-sm">{t('nav.activity.back')}</span>
-          </button>
+    <div
+      className={`relative min-h-screen flex flex-col ${
+        isLight
+          ? 'bg-gradient-to-b from-[#F2F6FA] via-[#EBF1F7] to-[#E5ECF2] text-[#102A38]'
+          : 'bg-[#0B232F] text-[#F6F3EB]'
+      } font-sans select-none overflow-hidden`}
+    >
+      {/* Activity Top Bar - Frosted glass, tactile controls, matching habitat-placement */}
+      <header
+        className={`relative z-50 w-full h-16 lg:h-[68px] ${
+          isLight
+            ? 'bg-[#FAF8F5]/95 backdrop-blur-xl border-b border-[#12384B]/10 shadow-[0_2px_12px_rgba(16,42,56,0.04)] text-[#102A38]'
+            : 'bg-[#12384B]/85 backdrop-blur-md border-b border-white/10 text-white'
+        } px-4 lg:px-8 flex items-center justify-between gap-4`}
+      >
+        {/* Left: Custom headerLeft OR Back Button & Optional BlueSTEAM Wordmark */}
+        {headerLeft ? (
+          <div className="flex items-center gap-3">{headerLeft}</div>
+        ) : (
+          <div className="flex items-center gap-3">
+            {!hideBackButton && (
+              <button
+                type="button"
+                onClick={handleBack}
+                aria-label={t('nav.activity.back')}
+                className={`group flex items-center gap-2 px-4 py-2 rounded-full font-bold transition-all duration-200 ease-out active:scale-95 cursor-pointer justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#15586E] min-w-[56px] min-h-[56px] ${
+                  isLight
+                    ? 'bg-white hover:bg-slate-50 text-[#102A38] border border-black/[0.08] shadow-xs'
+                    : 'bg-white/10 hover:bg-white/20 text-white border border-white/10 shadow-xs'
+                }`}
+              >
+                <ArrowLeft className={`w-4 h-4 transition-transform duration-200 group-hover:-translate-x-0.5 stroke-[2.5] ${isLight ? 'text-[#102A38]' : 'text-[#2EE6CA]'}`} />
+                <span className="hidden sm:inline text-xs sm:text-sm tracking-tight">{t('nav.activity.back')}</span>
+              </button>
+            )}
 
-          {showLogo && (
-            <div className="hidden md:flex items-center pl-1">
-              <BlueSteamLogo size="sm" variant="light" />
-            </div>
-          )}
-        </div>
+            {showLogo && (
+              <div className="hidden md:flex items-center pl-1">
+                <BlueSteamLogo size="sm" variant={isLight ? 'dark' : 'light'} />
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Center: Custom headerCenter OR Default Activity Title & Progress Beads */}
         {headerCenter ? (
@@ -77,7 +106,7 @@ export function ActivityShell({
           </div>
         ) : (
           <div className="flex flex-col items-center max-w-md text-center">
-            <h1 className="font-serif font-black text-base sm:text-lg lg:text-xl text-white tracking-[-0.02em] truncate max-w-[240px] sm:max-w-md">
+            <h1 className={`font-serif font-black text-base sm:text-lg lg:text-xl tracking-[-0.02em] truncate max-w-[240px] sm:max-w-md ${isLight ? 'text-[#102A38]' : 'text-white'}`}>
               {title}
             </h1>
 
@@ -92,7 +121,7 @@ export function ActivityShell({
                         ? 'w-6 bg-[#F67650]'
                         : idx + 1 < (currentStep || 1)
                         ? 'w-2 bg-[#2EE6CA]'
-                        : 'w-2 bg-white/20'
+                        : isLight ? 'w-2 bg-slate-300' : 'w-2 bg-white/20'
                     }`}
                   />
                 ))}
@@ -110,16 +139,23 @@ export function ActivityShell({
           <div className="flex items-center gap-2 sm:gap-3">
             {onHint && <ScallopHintButton size="sm" onClick={onHint} />}
 
-            <AudioControlButton size="sm" />
+            <AudioControlButton
+              size="sm"
+              className={isLight ? '!w-10 !h-10 !min-w-[40px] !min-h-[40px] bg-white border border-slate-200/90 text-[#102A38] shadow-xs hover:bg-slate-50' : ''}
+            />
 
             {onTogglePause && (
               <button
                 type="button"
                 onClick={onTogglePause}
                 aria-label={isPaused ? t('nav.activity.resume') : t('nav.activity.pause')}
-                className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white min-w-[48px] min-h-[48px] flex items-center justify-center transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F67650]"
+                className={`rounded-full transition-all duration-200 ease-out cursor-pointer flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#15586E] active:scale-95 ${
+                  isLight
+                    ? 'w-10 h-10 min-w-[40px] min-h-[40px] bg-white border border-slate-200/90 text-[#102A38] shadow-xs hover:bg-slate-50 hover:scale-105'
+                    : 'w-11 h-11 min-w-[44px] min-h-[44px] bg-white/10 hover:bg-white/20 text-white border border-white/10 shadow-xs'
+                }`}
               >
-                {isPaused ? <Play className="w-5 h-5 text-[#F67650]" /> : <Pause className="w-5 h-5" />}
+                {isPaused ? <Play className="w-4 h-4 text-[#15586E] fill-current" /> : <Pause className="w-4 h-4 text-[#102A38]" />}
               </button>
             )}
           </div>

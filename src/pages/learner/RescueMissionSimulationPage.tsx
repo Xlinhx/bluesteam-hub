@@ -43,9 +43,11 @@ export function RescueMissionSimulationPage() {
   return (
     <ActivityShell
       title={locale === 'vi' ? 'Nhiệm vụ giải cứu sinh vật biển' : 'Marine Rescue Mission'}
+      variant="light"
       currentStep={currentStep}
       totalSteps={4}
       onBack={() => navigate('/interactive/simulations')}
+      showLogo={true}
     >
       <div className="relative w-full h-[calc(100vh-72px)] flex flex-col justify-between overflow-hidden">
         {/* Full Bleed Realistic Nature Photography */}
@@ -112,11 +114,12 @@ export function RescueMissionSimulationPage() {
 
           {/* Interactive Scene Middle Layer */}
           <div className="relative flex-1 min-h-[360px] flex items-center justify-center">
-            {/* Pulsing Target Pin on the Tangled Ghost Net on rocks */}
+            {/* Pulsing Target Pin on the Tangled Ghost Net on rocks (Lower-Left Rocky Shore) */}
             {currentStep <= 2 && (
               <div
                 onClick={() => setCurrentStep(3)}
-                className="absolute top-[48%] left-[58%] -translate-x-1/2 -translate-y-1/2 group cursor-pointer"
+                className="absolute top-[62%] left-[28%] -translate-x-1/2 -translate-y-1/2 group cursor-pointer"
+                title={locale === 'vi' ? 'Lưới ma mắc kẹt trên ghềnh đá' : 'Ghost net trapped on rocks'}
               >
                 {/* Outer pulsing ripple */}
                 <div className="absolute -inset-3 rounded-full bg-[#F67650]/30 animate-ping pointer-events-none" />
@@ -190,8 +193,13 @@ export function RescueMissionSimulationPage() {
             )}
 
             {/* Right Spiral-Bound Field Notebook: Sổ nhiệm vụ */}
-            <div className="absolute top-0 right-2 w-80 bg-[#faf8f2] rounded-[28px] shadow-2xl border border-amber-900/10 overflow-hidden flex flex-col transition-all duration-300">
-              {/* Spiral rings effect on left edge */}
+            <div className="absolute top-0 right-2 w-80 bg-[#faf8f2] rounded-[28px] shadow-2xl border border-amber-900/10 overflow-hidden flex flex-col transition-all duration-300 pl-3">
+              {/* Spiral rings effect on left spine edge */}
+              <div className="absolute left-1.5 top-4 bottom-4 flex flex-col justify-around pointer-events-none z-10">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="w-3.5 h-1.5 rounded-full bg-slate-400/70 border border-slate-500/50 shadow-xs -rotate-6" />
+                ))}
+              </div>
               <div className="p-4 border-b border-amber-900/10 flex items-center justify-between bg-amber-50/50">
                 <div className="flex items-center gap-2 text-sm font-bold text-[#102A38]">
                   <BookOpen className="w-4 h-4 text-[#17657A]" />

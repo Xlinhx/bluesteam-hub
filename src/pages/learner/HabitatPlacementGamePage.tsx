@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import type React from 'react';
 import { useRouter } from '../../app/router';
 import { ActivityShell } from '../../shells/ActivityShell';
 import {
   Eye,
   Hand,
-  Sparkles,
   RotateCcw,
   Compass,
   Search,
@@ -12,9 +12,13 @@ import {
   Edit3,
   Volume2,
   Award,
+  Glasses,
+  Sprout,
+  Play,
 } from 'lucide-react';
 import { oceanAudio } from '../../shared/sound/oceanAudio';
 import { demoStore } from '../../demo/storage/demoStore';
+import { UnderwaterCausticsLayer } from './components/UnderwaterCausticsLayer';
 
 export function HabitatPlacementGamePage() {
   const { query, navigate } = useRouter();
@@ -28,9 +32,113 @@ export function HabitatPlacementGamePage() {
 
   const [isPaused, setIsPaused] = useState(false);
   const [selectedPlacement, setSelectedPlacement] = useState<'sand' | 'seagrass' | 'coral' | null>(null);
+  const [isTurtlePlaced, setIsTurtlePlaced] = useState(false);
   const [isCrabPlaced, setIsCrabPlaced] = useState(false);
   const [showBioModal, setShowBioModal] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [celebrationMessage, setCelebrationMessage] = useState('Tuyệt vời lắm bé ơi!');
+
+  // =========================================================================
+  // DRAG & DROP STATE ENGINE (Hỗ trợ kéo thả sinh vật mượt mà)
+  // =========================================================================
+  const [isDragging, setIsDragging] = useState<'turtle' | 'crab' | null>(null);
+  const [dragCoord, setDragCoord] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [hoveredZone, setHoveredZone] = useState<'sand' | 'seagrass' | 'coral' | null>(null);
+
+  // Zone DOM References for physical collision detection
+  const sandZoneRef = useRef<HTMLDivElement>(null);
+  const seagrassZoneRef = useRef<HTMLDivElement>(null);
+  const coralZoneRef = useRef<HTMLDivElement>(null);
+
+  // Helper to detect which zone a coordinate falls into
+  const checkHitZone = useCallback((clientX: number, clientY: number): 'sand' | 'seagrass' | 'coral' | null => {
+    const checkRect = (el: HTMLElement | null) => {
+      if (!el) return false;
+      const rect = el.getBoundingClientRect();
+      return (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
+    };
+
+    if (checkRect(seagrassZoneRef.current)) return 'seagrass';
+    if (checkRect(sandZoneRef.current)) return 'sand';
+    if (checkRect(coralZoneRef.current)) return 'coral';
+    return null;
+  }, []);
+
+  // Global pointer move & up handlers during active drag
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handlePointerMove = (e: PointerEvent) => {
+      setDragCoord({ x: e.clientX, y: e.clientY });
+      const zone = checkHitZone(e.clientX, e.clientY);
+      setHoveredZone(zone);
+    };
+
+    const handlePointerUp = (e: PointerEvent) => {
+      const zone = checkHitZone(e.clientX, e.clientY);
+
+      if (isDragging === 'turtle') {
+        if (zone === 'seagrass') {
+          // Success drop into seagrass!
+          setSelectedPlacement('seagrass');
+          setIsTurtlePlaced(true);
+          speakInstruction('Chính xác! Rùa biển xanh bơi lội và ăn cỏ biển xanh mướt!');
+          setCelebrationMessage('Rùa xanh đã về thảm cỏ biển!');
+          setShowCelebration(true);
+          demoStore.completeActivity('game-habitat-placement');
+          setTimeout(() => {
+            setShowCelebration(false);
+            changeStep('feedback');
+          }, 1200);
+        } else if (zone === 'sand') {
+          setSelectedPlacement('sand');
+          speakInstruction('Bãi cát ven bờ là nơi rùa mẹ lên đẻ trứng, nhưng thức ăn chính của rùa xanh là cỏ biển cơ! Bé thử kéo rùa vào thảm cỏ nhé!');
+        } else if (zone === 'coral') {
+          setSelectedPlacement('coral');
+          speakInstruction('Rạn san hô là nhà của cá hề và cá bướm, rùa xanh thích ăn cỏ biển hơn! Bé kéo rùa vào thảm cỏ xanh nhé!');
+        }
+      } else if (isDragging === 'crab') {
+        if (zone === 'sand') {
+          setIsCrabPlaced(true);
+          speakInstruction('Chính xác! Cua biển đào hang trên bãi cát ven bờ và kiếm ăn ở khe đá!');
+          setCelebrationMessage('Cua biển đã về bãi cát ven bờ!');
+          setShowCelebration(true);
+          setTimeout(() => setShowCelebration(false), 1400);
+        } else if (zone) {
+          speakInstruction('Bạn cua cần bờ cát ẩm để đào hang! Bé thử thả cua vào bãi cát bên trái nhé!');
+        }
+      }
+
+      setIsDragging(null);
+      setHoveredZone(null);
+    };
+
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+    };
+  }, [isDragging, checkHitZone]);
+
+  // Start dragging turtle
+  const startDragTurtle = (e: React.PointerEvent) => {
+    e.preventDefault();
+    setIsDragging('turtle');
+    setDragCoord({ x: e.clientX, y: e.clientY });
+  };
+
+  // Start dragging crab (in feedback step)
+  const startDragCrab = (e: React.PointerEvent) => {
+    e.preventDefault();
+    setIsDragging('crab');
+    setDragCoord({ x: e.clientX, y: e.clientY });
+  };
 
   // Synchronize state with URL query parameters deterministically
   useEffect(() => {
@@ -62,53 +170,99 @@ export function HabitatPlacementGamePage() {
     }
   };
 
-  // Custom Header Stepper for ActivityShell matching bluesteam-v2-game-lab-habitat-placement.png
-  const customHeaderCenter = (
-    <div className="flex items-center p-1 rounded-full bg-white/90 backdrop-blur-md shadow-md border border-white/80 select-none">
-      <button
-        type="button"
-        onClick={() => changeStep('recognition')}
-        className={`px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs font-black flex items-center gap-2 cursor-pointer transition-all duration-150 ${
-          step === 'recognition'
-            ? 'bg-[#15586E] text-white shadow-md'
-            : 'text-[#102A38]/80 hover:text-[#102A38] hover:bg-black/5'
-        }`}
-      >
-        <Eye className={`w-4 h-4 ${step === 'recognition' ? 'text-[#2EE6CA]' : 'text-[#15586E]'}`} />
-        <span>Quan sát</span>
-      </button>
+  // Custom Header Stepper for ActivityShell matching both Mockup 2 & Mockup 3
+  const customHeaderCenter =
+    step === 'feedback' ? (
+      <div className="p-1 sm:p-1.5 rounded-full bg-[#EAE5DA]/70 border border-[#12384B]/10 shadow-[inset_0_1px_2px_rgba(16,42,56,0.06)] backdrop-blur-xs flex items-center gap-1.5 sm:gap-2.5 select-none">
+        <button
+          type="button"
+          onClick={() => changeStep('recognition')}
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 border border-slate-200/90 text-xs font-bold text-[#102A38] shadow-2xs hover:bg-white hover:border-[#12384B]/20 hover:shadow-xs transition-all duration-150 active:scale-95 cursor-pointer"
+        >
+          <Glasses className="w-3.5 h-3.5 text-[#15586E]" />
+          <span>Quan sát</span>
+        </button>
 
-      <button
-        type="button"
-        onClick={() => changeStep('placement')}
-        className={`px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs font-black flex items-center gap-2 cursor-pointer transition-all duration-150 ${
-          step === 'placement'
-            ? 'bg-[#15586E] text-white shadow-md'
-            : 'text-[#102A38]/80 hover:text-[#102A38] hover:bg-black/5'
-        }`}
-      >
-        <Hand className={`w-4 h-4 ${step === 'placement' ? 'text-[#2EE6CA]' : 'text-[#15586E]'}`} />
-        <span>Thử đặt</span>
-      </button>
+        <div className="w-2.5 sm:w-4 h-[1.5px] bg-[#12384B]/20 rounded-full" />
 
-      <button
-        type="button"
-        onClick={() => changeStep('feedback')}
-        className={`px-5 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs font-black flex items-center gap-2 cursor-pointer transition-all duration-150 ${
-          step === 'feedback'
-            ? 'bg-[#15586E] text-white shadow-md'
-            : 'text-[#102A38]/80 hover:text-[#102A38] hover:bg-black/5'
-        }`}
-      >
-        <Sparkles className={`w-4 h-4 ${step === 'feedback' ? 'text-[#2EE6CA]' : 'text-emerald-600'}`} />
-        <span>Khám phá</span>
-      </button>
-    </div>
-  );
+        <button
+          type="button"
+          onClick={() => changeStep('placement')}
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 border border-slate-200/90 text-xs font-bold text-[#102A38] shadow-2xs hover:bg-white hover:border-[#12384B]/20 hover:shadow-xs transition-all duration-150 active:scale-95 cursor-pointer"
+        >
+          <Hand className="w-3.5 h-3.5 text-[#15586E]" />
+          <span>Sắp xếp</span>
+        </button>
+
+        <div className="w-2.5 sm:w-4 h-[1.5px] bg-[#12384B]/20 rounded-full" />
+
+        <div className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#15586E] text-white text-xs font-black shadow-md border border-[#104354] shadow-[0_3px_10px_rgba(21,88,110,0.35)] scale-102">
+          <Play className="w-3 h-3 text-[#2EE6CA] fill-current" />
+          <span>Thử</span>
+        </div>
+
+        <div className="w-2.5 sm:w-4 h-[1.5px] bg-[#12384B]/20 rounded-full" />
+
+        <button
+          type="button"
+          onClick={() => navigate('/resources')}
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 border border-slate-200/90 text-xs font-bold text-[#102A38] shadow-2xs hover:bg-white hover:border-[#12384B]/20 hover:shadow-xs transition-all duration-150 active:scale-95 cursor-pointer"
+        >
+          <Sprout className="w-3.5 h-3.5 text-emerald-600" />
+          <span>Khám phá tiếp</span>
+        </button>
+      </div>
+    ) : (
+      <div className="p-1 sm:p-1.5 rounded-full bg-[#EAE5DA]/70 border border-[#12384B]/10 shadow-[inset_0_1px_2px_rgba(16,42,56,0.06)] backdrop-blur-xs flex items-center gap-1.5 sm:gap-2.5 select-none">
+        <button
+          type="button"
+          onClick={() => changeStep('recognition')}
+          className={`px-4 sm:px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 cursor-pointer transition-all duration-150 active:scale-95 border shadow-2xs ${
+            step === 'recognition'
+              ? 'bg-[#15586E] text-white shadow-md border-[#15586E] shadow-[0_3px_10px_rgba(21,88,110,0.35)] scale-102'
+              : 'bg-white/95 text-[#102A38] border-slate-200/80 hover:bg-white hover:border-[#12384B]/20 hover:shadow-xs'
+          }`}
+        >
+          <Glasses className={`w-4 h-4 ${step === 'recognition' ? 'text-[#2EE6CA]' : 'text-[#15586E]'}`} />
+          <span>Quan sát</span>
+        </button>
+
+        <div className="w-3 sm:w-6 h-[1.5px] bg-[#12384B]/20 rounded-full" />
+
+        <button
+          type="button"
+          onClick={() => changeStep('placement')}
+          className={`px-4 sm:px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 cursor-pointer transition-all duration-150 active:scale-95 border shadow-2xs ${
+            step === 'placement'
+              ? 'bg-[#15586E] text-white shadow-md border-[#15586E] shadow-[0_3px_10px_rgba(21,88,110,0.35)] scale-102'
+              : 'bg-white/95 text-[#102A38] border-slate-200/80 hover:bg-white hover:border-[#12384B]/20 hover:shadow-xs'
+          }`}
+        >
+          <Hand className={`w-4 h-4 ${step === 'placement' ? 'text-[#2EE6CA]' : 'text-[#15586E]'}`} />
+          <span>Thử đặt</span>
+        </button>
+
+        <div className="w-3 sm:w-6 h-[1.5px] bg-[#12384B]/20 rounded-full" />
+
+        <button
+          type="button"
+          onClick={() => changeStep('feedback')}
+          className={`px-4 sm:px-5 py-2 rounded-full text-xs font-bold flex items-center gap-2 cursor-pointer transition-all duration-150 active:scale-95 border shadow-2xs ${
+            (step as string) === 'feedback'
+              ? 'bg-[#15586E] text-white shadow-md border-[#15586E] shadow-[0_3px_10px_rgba(21,88,110,0.35)] scale-102'
+              : 'bg-white/95 text-[#102A38] border-slate-200/80 hover:bg-white hover:border-[#12384B]/20 hover:shadow-xs'
+          }`}
+        >
+          <Sprout className={`w-4 h-4 ${(step as string) === 'feedback' ? 'text-[#2EE6CA]' : 'text-emerald-600'}`} />
+          <span>Khám phá</span>
+        </button>
+      </div>
+    );
 
   return (
     <ActivityShell
       title="Ghép Nơi Sống"
+      variant="light"
       onBack={() => navigate('/interactive')}
       onHint={handleHint}
       isPaused={isPaused}
@@ -269,28 +423,46 @@ export function HabitatPlacementGamePage() {
         {/* ========================================================================= */}
         {step === 'placement' && (
           <div className="relative w-full h-full flex flex-col justify-between overflow-hidden">
-            {/* Split-View Panoramic 3-Habitat Background */}
+            {/* Split-View Panoramic 3-Habitat Background with Living Caustics & Fish */}
             <div className="absolute inset-0 z-0">
               <img
                 src="/assets/generated/backgrounds/habitat_placement_bg.jpg"
                 alt="3 vùng môi trường sống biển: Bãi cát, Cỏ biển, San hô"
                 className="w-full h-full object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+
+              {/* Underwater Caustics & Surface God Rays & Swimming Reef Fish */}
+              <UnderwaterCausticsLayer
+                waterLineRatio={0.335}
+                showFish={true}
+                showBubbles={true}
+                showRays={true}
+                showCaustics={true}
+              />
             </div>
 
-            {/* Challenge Title Banner with Voiceover Trigger */}
-            <div className="relative z-20 flex items-center justify-center gap-4 pt-6">
+            {/* Challenge Title Banner with Voiceover Trigger & Physical Soundwave Arcs */}
+            <div className="relative z-20 flex items-center justify-center gap-3.5 pt-6">
               <h2 className="font-serif font-black text-4xl sm:text-5xl lg:text-6xl text-[#102A38] drop-shadow-sm tracking-[-0.02em]">
                 Tìm nơi sống cho rùa
               </h2>
               <button
                 type="button"
-                onClick={() => speakInstruction('Tìm nơi sống cho rùa. Bé hãy chạm rùa, rồi chạm thảm cỏ biển xanh mướt nhé!')}
-                className="w-12 h-12 rounded-full bg-[#15586E] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer ring-4 ring-white/70"
+                onClick={() =>
+                  speakInstruction(
+                    'Tìm nơi sống cho rùa. Bé hãy kéo hoặc chạm bạn rùa vào thảm cỏ biển xanh mướt nhé!'
+                  )
+                }
+                className="relative w-12 h-12 rounded-full bg-[#1c6b8c] hover:bg-[#15586E] text-white flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer ring-4 ring-white/70 group shrink-0"
                 aria-label="Nghe lại câu hỏi"
               >
                 <Volume2 className="w-6 h-6 text-[#2EE6CA]" />
+                <div className="absolute -right-3 top-2 flex flex-col gap-1 pointer-events-none">
+                  <span className="w-2 h-1 rounded-full bg-[#1c6b8c] rotate-45 transform origin-left" />
+                  <span className="w-2.5 h-1 rounded-full bg-[#1c6b8c] origin-left" />
+                  <span className="w-2 h-1 rounded-full bg-[#1c6b8c] -rotate-45 transform origin-left" />
+                </div>
               </button>
             </div>
 
@@ -298,13 +470,14 @@ export function HabitatPlacementGamePage() {
             <div className="relative z-10 w-full flex-1 min-h-[360px]">
               {/* Zone 1: Bãi Cát (Sand / Coastal Shoreline) */}
               <div
+                ref={sandZoneRef}
                 onClick={() => {
                   setSelectedPlacement('sand');
                   speakInstruction('Bãi cát ven bờ là nơi rùa mẹ lên đẻ trứng, nhưng thức ăn chính của rùa xanh là cỏ biển cơ!');
                 }}
                 className={`absolute left-[16%] top-[55%] -translate-x-1/2 -translate-y-1/2 w-64 h-28 rounded-[50%] border-2 border-dashed transition-all cursor-pointer flex items-center justify-center group ${
-                  selectedPlacement === 'sand'
-                    ? 'border-amber-400 bg-amber-400/20 shadow-[0_0_30px_rgba(251,191,36,0.8)]'
+                  hoveredZone === 'sand' || selectedPlacement === 'sand'
+                    ? 'border-amber-400 bg-amber-400/25 shadow-[0_0_35px_rgba(251,191,36,0.9)] scale-105'
                     : 'border-white/90 shadow-[0_0_25px_rgba(255,255,255,0.7)] hover:border-white hover:scale-105'
                 }`}
               >
@@ -315,8 +488,10 @@ export function HabitatPlacementGamePage() {
 
               {/* Zone 2: Thảm Cỏ Biển (Seagrass Meadow) - Scientifically Correct! */}
               <div
+                ref={seagrassZoneRef}
                 onClick={() => {
                   setSelectedPlacement('seagrass');
+                  setIsTurtlePlaced(true);
                   speakInstruction('Chính xác! Rùa biển xanh bơi lội và ăn cỏ biển xanh mướt!');
                   setShowCelebration(true);
                   demoStore.completeActivity('game-habitat-placement');
@@ -326,25 +501,26 @@ export function HabitatPlacementGamePage() {
                   }, 1200);
                 }}
                 className={`absolute left-[49%] top-[55%] -translate-x-1/2 -translate-y-1/2 w-76 h-32 rounded-[50%] border-2 border-dashed transition-all cursor-pointer flex items-center justify-center group ${
-                  selectedPlacement === 'seagrass'
-                    ? 'border-emerald-400 bg-emerald-400/25 shadow-[0_0_35px_rgba(52,211,153,0.9)]'
+                  hoveredZone === 'seagrass' || selectedPlacement === 'seagrass'
+                    ? 'border-emerald-300 bg-emerald-400/30 shadow-[0_0_40px_rgba(52,211,153,0.95)] scale-105 animate-pulse'
                     : 'border-white/95 shadow-[0_0_30px_rgba(255,255,255,0.8)] hover:border-white hover:scale-105'
                 }`}
               >
                 <span className="opacity-0 group-hover:opacity-100 text-xs font-black text-white bg-black/60 px-3 py-1 rounded-full transition-opacity">
-                  Thảm cỏ biển nông
+                  {hoveredZone === 'seagrass' ? '✨ Thả vào đây nhé! ✨' : 'Thảm cỏ biển nông'}
                 </span>
               </div>
 
               {/* Zone 3: Rạn San Hô (Coral Reef) */}
               <div
+                ref={coralZoneRef}
                 onClick={() => {
                   setSelectedPlacement('coral');
                   speakInstruction('Rạn san hô rực rỡ là nhà của cá hề và cá bướm, rùa xanh hay ghé qua nhưng thích cỏ biển hơn!');
                 }}
                 className={`absolute left-[84%] top-[54%] -translate-x-1/2 -translate-y-1/2 w-64 h-28 rounded-[50%] border-2 border-dashed transition-all cursor-pointer flex items-center justify-center group ${
-                  selectedPlacement === 'coral'
-                    ? 'border-amber-400 bg-amber-400/20 shadow-[0_0_30px_rgba(251,191,36,0.8)]'
+                  hoveredZone === 'coral' || selectedPlacement === 'coral'
+                    ? 'border-amber-400 bg-amber-400/25 shadow-[0_0_35px_rgba(251,191,36,0.9)] scale-105'
                     : 'border-white/90 shadow-[0_0_25px_rgba(255,255,255,0.7)] hover:border-white hover:scale-105'
                 }`}
               >
@@ -352,22 +528,38 @@ export function HabitatPlacementGamePage() {
                   Rạn san hô
                 </span>
               </div>
+
+              {/* Placed Turtle Animation in Center Seagrass */}
+              {isTurtlePlaced && (
+                <div className="absolute left-[49%] top-[55%] -translate-x-1/2 -translate-y-1/2 w-56 h-36 pointer-events-none animate-in zoom-in-75 duration-500">
+                  <img
+                    src="/assets/generated/creatures/turtle_isolated.png"
+                    alt="Rùa xanh đang bơi trong thảm cỏ"
+                    className="w-full h-full object-contain filter drop-shadow-[0_12px_20px_rgba(0,0,0,0.35)]"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Bottom Dock Tray matching bluesteam-v2-game-lab-habitat-placement.png */}
             <div className="relative z-30 w-full bg-[#FAF8F5] rounded-t-[40px] shadow-[0_-10px_35px_rgba(0,0,0,0.12)] border-t border-white/80 px-8 sm:px-12 py-5 flex flex-col gap-3">
               <div className="flex items-center justify-between">
-                {/* Left: Turtle Sticker with Coral Outline & Name */}
+                {/* Left: Turtle Sticker with Coral Outline & Name - DRAGGABLE */}
                 <div className="flex items-center gap-6">
                   <div
-                    onClick={() => speakInstruction('Bé hãy chạm vào thảm cỏ biển ở giữa để đặt bạn rùa về nhà nhé!')}
-                    className="relative -mt-16 sm:-mt-20 group cursor-pointer transition-transform hover:scale-105 active:scale-95"
+                    onPointerDown={startDragTurtle}
+                    onClick={() => speakInstruction('Bé hãy kéo bạn rùa hoặc chạm vào thảm cỏ biển ở giữa để đặt bạn rùa về nhà nhé!')}
+                    className={`relative -mt-16 sm:-mt-20 group cursor-grab active:cursor-grabbing transition-transform select-none ${
+                      isDragging === 'turtle' ? 'opacity-30 scale-95' : 'hover:scale-105 active:scale-95'
+                    }`}
+                    title="Kéo hoặc chạm bạn rùa thả vào nơi sống"
                   >
                     <div className="p-2.5 rounded-3xl bg-white shadow-2xl border-[3.5px] border-[#F67650] transform -rotate-6">
                       <img
                         src="/assets/generated/creatures/turtle_isolated.png"
                         alt="Rùa xanh biển"
-                        className="w-36 h-24 object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)]"
+                        draggable={false}
+                        className="w-36 h-24 object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] pointer-events-none"
                       />
                     </div>
                     <div className="text-center font-serif font-black text-2xl text-[#102A38] mt-2 tracking-tight">
@@ -380,7 +572,7 @@ export function HabitatPlacementGamePage() {
                 </div>
 
                 {/* Center-Left: Hand Tap Instruction Pill */}
-                <div className="px-8 py-3.5 rounded-full bg-[#EAF3F7] border border-[#D5E6EE] shadow-sm flex items-center gap-3 text-sm font-bold text-[#102A38]">
+                <div className="px-8 py-3.5 rounded-full bg-[#EAF3F7] border border-[#D5E6EE] shadow-xs flex items-center gap-3 text-sm font-bold text-[#102A38]">
                   <Hand className="w-5 h-5 text-[#15586E]" />
                   <span>Chạm rùa, rồi chạm nơi sống</span>
                 </div>
@@ -392,23 +584,40 @@ export function HabitatPlacementGamePage() {
                     type="button"
                     disabled={!selectedPlacement}
                     onClick={() => changeStep('recognition')}
-                    className={`px-8 py-3.5 rounded-full text-sm font-extrabold flex items-center gap-2.5 shadow-sm transition-all ${
+                    className={`px-8 py-3.5 rounded-full text-sm font-extrabold flex items-center gap-2.5 shadow-xs transition-all ${
                       selectedPlacement
                         ? 'bg-[#15586E] text-white hover:bg-[#102A38] cursor-pointer active:scale-95'
                         : 'bg-[#ACB8C0] text-white/80 cursor-not-allowed opacity-80'
                     }`}
                   >
-                    <Eye className="w-5 h-5" />
+                    <Glasses className="w-5 h-5" />
                     <span>Quan sát</span>
                   </button>
 
-                  {/* "Gợi ý" Scallop Shell Button */}
+                  {/* "Gợi ý" Scallop Shell Button matching Mockup 2 */}
                   <button
                     type="button"
                     onClick={handleHint}
-                    className="px-8 py-3.5 rounded-full bg-gradient-to-r from-[#D7EEF8] to-[#C2E8F5] hover:from-[#CBE8F5] hover:to-[#B5E1F0] border border-[#B5E2F2] text-[#0D5C75] text-sm font-black flex items-center gap-2.5 shadow-sm cursor-pointer transition-all active:scale-95"
+                    className="px-7 py-3 rounded-full bg-gradient-to-r from-[#FFFDF8] to-[#FFF8E7] hover:from-white hover:to-[#FFF4D4] border-2 border-[#E5A93C] text-[#B87D1A] text-sm font-black flex items-center gap-2.5 shadow-[0_4px_12px_rgba(229,169,60,0.2)] cursor-pointer transition-all active:scale-95 min-h-[56px]"
                   >
-                    <span className="text-lg">🐚</span>
+                    <svg
+                      className="w-6 h-6 shrink-0"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M16 4C9 4 4 10 5 18C5.5 22 8 26 13 28L14 27C14.5 25.5 15.2 24.5 16 24.5C16.8 24.5 17.5 25.5 18 27L19 28C24 26 26.5 22 27 18C28 10 23 4 16 4Z"
+                        fill="#FFF4D4"
+                        stroke="#E5A93C"
+                        strokeWidth="2.2"
+                        strokeLinejoin="round"
+                      />
+                      <path d="M16 6V24" stroke="#E5A93C" strokeWidth="1.8" strokeLinecap="round" />
+                      <path d="M11 9C12.5 14 13.5 19 14.5 24" stroke="#E5A93C" strokeWidth="1.5" strokeLinecap="round" />
+                      <path d="M21 9C19.5 14 18.5 19 17.5 24" stroke="#E5A93C" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
                     <span>Gợi ý</span>
                   </button>
                 </div>
@@ -429,14 +638,23 @@ export function HabitatPlacementGamePage() {
         {/* ========================================================================= */}
         {step === 'feedback' && (
           <div className="relative w-full h-full flex flex-col justify-between overflow-hidden">
-            {/* Split Ocean Background */}
+            {/* Split Ocean Background with Living Caustics & Fish */}
             <div className="absolute inset-0 z-0">
               <img
                 src="/assets/generated/backgrounds/habitat_placement_bg.jpg"
                 alt="Điều chỉnh nơi sống sinh vật"
                 className="w-full h-full object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+
+              {/* Underwater Caustics & Fish */}
+              <UnderwaterCausticsLayer
+                waterLineRatio={0.335}
+                showFish={true}
+                showBubbles={true}
+                showRays={true}
+                showCaustics={true}
+              />
             </div>
 
             {/* Title & Question */}
@@ -488,6 +706,7 @@ export function HabitatPlacementGamePage() {
                 <div
                   onClick={() => setShowBioModal(true)}
                   className="absolute left-[16%] top-[56%] -translate-x-1/2 -translate-y-1/2 w-40 h-28 cursor-pointer group transition-all"
+                  title="Bấm để xem giải thích sinh thái"
                 >
                   <img
                     src="/assets/generated/creatures/crab_isolated.png"
@@ -500,18 +719,23 @@ export function HabitatPlacementGamePage() {
                 </div>
               ) : (
                 <div
+                  onPointerDown={startDragCrab}
                   onClick={() => {
-                    speakInstruction('Bé hãy bấm vào bãi cát ven bờ bên trái để đưa cua về nhà nhé!');
+                    speakInstruction('Bé hãy kéo bạn cua hoặc bấm vào bãi cát ven bờ bên trái để đưa cua về nhà nhé!');
                   }}
-                  className="absolute left-[62%] top-[34%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center animate-bounce cursor-pointer"
+                  className={`absolute left-[62%] top-[34%] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center cursor-grab active:cursor-grabbing select-none ${
+                    isDragging === 'crab' ? 'opacity-30 scale-95' : 'hover:scale-105 transition-transform'
+                  }`}
+                  title="Kéo hoặc chạm bạn cua về bãi cát"
                 >
-                  <div className="w-9 h-9 rounded-full bg-white/95 text-[#102A38] font-serif font-black text-xl flex items-center justify-center shadow-lg border-2 border-slate-200 mb-1.5 ring-2 ring-white/60">
+                  <div className="w-9 h-9 rounded-full bg-white/95 text-[#102A38] font-serif font-black text-xl flex items-center justify-center shadow-lg border-2 border-slate-200 mb-1.5 ring-2 ring-white/60 animate-bounce">
                     ?
                   </div>
                   <img
                     src="/assets/generated/creatures/crab_isolated.png"
                     alt="Cua cần tìm nơi sống"
-                    className="w-40 h-28 object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.45)]"
+                    draggable={false}
+                    className="w-40 h-28 object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.45)] pointer-events-none"
                   />
                 </div>
               )}
@@ -519,16 +743,21 @@ export function HabitatPlacementGamePage() {
               {/* Left Sand Drop Target for Crab */}
               {!isCrabPlaced && (
                 <div
+                  ref={sandZoneRef}
                   onClick={() => {
                     setIsCrabPlaced(true);
                     speakInstruction('Chính xác! Cua biển đào hang trên bãi cát ven bờ và kiếm ăn ở khe đá!');
                     setShowCelebration(true);
                     setTimeout(() => setShowCelebration(false), 1500);
                   }}
-                  className="absolute left-[16%] top-[55%] -translate-x-1/2 -translate-y-1/2 w-64 h-28 rounded-[50%] border-2 border-dashed border-white/90 hover:border-white shadow-[0_0_25px_rgba(255,255,255,0.7)] hover:scale-105 transition-all cursor-pointer flex items-center justify-center group"
+                  className={`absolute left-[16%] top-[55%] -translate-x-1/2 -translate-y-1/2 w-64 h-28 rounded-[50%] border-2 border-dashed transition-all cursor-pointer flex items-center justify-center group ${
+                    hoveredZone === 'sand'
+                      ? 'border-emerald-300 bg-emerald-400/30 shadow-[0_0_35px_rgba(52,211,153,0.95)] scale-105 animate-pulse'
+                      : 'border-white/90 shadow-[0_0_25px_rgba(255,255,255,0.7)] hover:border-white hover:scale-105'
+                  }`}
                 >
                   <span className="text-xs font-black text-white bg-black/60 px-3.5 py-1.5 rounded-full">
-                    Chạm để đặt Cua vào Bãi cát
+                    {hoveredZone === 'sand' ? '✨ Thả Cua vào đây! ✨' : 'Chạm để đặt Cua vào Bãi cát'}
                   </span>
                 </div>
               )}
@@ -550,7 +779,7 @@ export function HabitatPlacementGamePage() {
                   <img
                     src="/assets/generated/creatures/crab_isolated.png"
                     alt="Cua biển"
-                    className="w-full h-full object-contain filter drop-shadow-sm"
+                    className="w-full h-full object-contain filter drop-shadow-xs"
                   />
                 </div>
                 <span className="text-[11px] font-extrabold text-[#102A38]">
@@ -595,6 +824,7 @@ export function HabitatPlacementGamePage() {
                 onClick={() => {
                   setSelectedPlacement(null);
                   setIsCrabPlaced(false);
+                  setIsTurtlePlaced(false);
                   changeStep('placement');
                 }}
                 className="px-12 py-3.5 rounded-full bg-[#15586E] hover:bg-[#102A38] text-white font-black text-base shadow-xl flex items-center gap-3 cursor-pointer transition-all active:scale-95"
@@ -606,13 +836,42 @@ export function HabitatPlacementGamePage() {
           </div>
         )}
 
+        {/* ========================================================================= */}
+        {/* ACTIVE DRAGGING FLOATING GHOST (Theo sát con trỏ khi đang kéo)             */}
+        {/* ========================================================================= */}
+        {isDragging && (
+          <div
+            className="fixed pointer-events-none z-50 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-75"
+            style={{ left: `${dragCoord.x}px`, top: `${dragCoord.y}px` }}
+          >
+            {isDragging === 'turtle' && (
+              <div className="p-3 rounded-3xl bg-white/90 shadow-2xl border-4 border-[#F67650] transform scale-110 -rotate-3 backdrop-blur-xs">
+                <img
+                  src="/assets/generated/creatures/turtle_isolated.png"
+                  alt="Kéo rùa xanh"
+                  className="w-36 h-24 object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)]"
+                />
+              </div>
+            )}
+            {isDragging === 'crab' && (
+              <div className="p-2 rounded-2xl bg-white/90 shadow-2xl border-4 border-[#2EE6CA] transform scale-110 rotate-3 backdrop-blur-xs">
+                <img
+                  src="/assets/generated/creatures/crab_isolated.png"
+                  alt="Kéo cua biển"
+                  className="w-32 h-22 object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.35)]"
+                />
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Celebration Particle Overlay */}
         {showCelebration && (
           <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center">
             <div className="p-8 rounded-3xl bg-white/95 backdrop-blur-md shadow-2xl border border-emerald-200 flex flex-col items-center gap-3 animate-in zoom-in-95 duration-300">
               <span className="text-5xl animate-bounce">🌟 🐢 🌿</span>
               <span className="font-serif font-black text-2xl text-[#102A38]">
-                Tuyệt vời lắm bé ơi!
+                {celebrationMessage}
               </span>
             </div>
           </div>

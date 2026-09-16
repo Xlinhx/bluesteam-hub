@@ -193,14 +193,26 @@ export function TeacherLiveConsolePage() {
           <div className="lg:col-span-7 bg-white rounded-[28px] p-4 sm:p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between">
             <div className="relative rounded-[22px] overflow-hidden bg-sky-950 aspect-[16/10] flex flex-col justify-between p-4 shadow-inner text-white select-none">
               <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url('/assets/card_seagrass.jpg')` }}
+                className="absolute inset-0 bg-cover bg-center transition-all duration-500"
+                style={{
+                  backgroundImage: `url(${
+                    syncState.activeStep === 1
+                      ? '/assets/generated/creatures/green_turtle_hero.jpg'
+                      : syncState.activeStep === 2
+                      ? '/assets/card_turtle.jpg'
+                      : syncState.activeStep === 3
+                      ? '/assets/generated/backgrounds/habitat_placement_bg.jpg'
+                      : syncState.activeStep === 4
+                      ? '/assets/card_kelp.jpg'
+                      : '/assets/generated/craft/ocean_diorama_wood_tray_craft.jpg'
+                  })`,
+                }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-sky-950/70 via-transparent to-black/20" />
+              <div className="absolute inset-0 bg-gradient-to-t from-sky-950/75 via-transparent to-black/30" />
 
               {/* Top status tag */}
               <div className="relative z-10 flex items-center justify-between">
-                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-white text-xs font-bold border border-white/20">
+                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-white text-xs font-bold border border-white/20">
                   <span
                     className={`w-2 h-2 rounded-full ${
                       sessionState.isSimulationRunning
@@ -213,7 +225,7 @@ export function TeacherLiveConsolePage() {
                   </span>
                 </span>
 
-                <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-white text-xs font-bold border border-white/20">
+                <span className="px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-white text-xs font-bold border border-white/20">
                   Mã lớp: {sessionState.classCode}
                 </span>
               </div>
@@ -221,7 +233,11 @@ export function TeacherLiveConsolePage() {
               {/* Bottom tag & Fullscreen button */}
               <div className="relative z-10 flex items-center justify-between pt-2">
                 <span className="px-3 py-1.5 rounded-xl bg-black/50 backdrop-blur-md text-xs font-bold text-white border border-white/20">
-                  📍 Thảm cỏ biển ven bờ
+                  {syncState.activeStep === 1 && '📍 Bước 1: Khởi động & Quan sát rùa'}
+                  {syncState.activeStep === 2 && '📍 Bước 2: Quan sát 3D thích nghi'}
+                  {syncState.activeStep === 3 && '📍 Bước 3: Thảm cỏ biển ven bờ'}
+                  {syncState.activeStep === 4 && '📍 Bước 4: Thử thách lớp học'}
+                  {syncState.activeStep === 5 && '📍 Bước 5: Vinh danh & Trao huy hiệu'}
                 </span>
 
                 <button

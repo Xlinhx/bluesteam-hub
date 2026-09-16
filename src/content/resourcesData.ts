@@ -62,7 +62,7 @@ export const OCEAN_RESOURCES: ResourceItem[] = [
     summaryEn: 'Large herbivorous sea turtle grazing on seagrass and migrating vast ocean basins.',
     durationMinutes: 3,
     accentColor: '#17657A',
-    thumbnailImage: '/assets/bluesteam/bs-specimen-turtle-v01.jpg',
+    thumbnailImage: '/assets/ocean/specimen-turtle.jpg',
     flashcardData: {
       scientificName: 'Chelonia mydas',
       depthVi: 'Tầng mặt đầy nắng (0 - 50m)',
@@ -87,7 +87,7 @@ export const OCEAN_RESOURCES: ResourceItem[] = [
     summaryEn: 'Vibrant orange reef dweller living in safe symbiosis with sea anemones.',
     durationMinutes: 2,
     accentColor: '#F67650',
-    thumbnailImage: '/assets/bluesteam/bs-specimen-clownfish-v01.jpg',
+    thumbnailImage: '/assets/ocean/specimen-clownfish.jpg',
     flashcardData: {
       scientificName: 'Amphiprion ocellaris',
       depthVi: 'Rạn san hô nước cạn (1 - 15m)',
@@ -112,7 +112,7 @@ export const OCEAN_RESOURCES: ResourceItem[] = [
     summaryEn: 'Bioluminescent fish of the twilight zone using light organs for counter-illumination.',
     durationMinutes: 3,
     accentColor: '#38BDF8',
-    thumbnailImage: '/assets/bluesteam/bs-specimen-lanternfish-v01.jpg',
+    thumbnailImage: '/assets/ocean/specimen-lanternfish.jpg',
     flashcardData: {
       scientificName: 'Myctophidae',
       depthVi: 'Tầng chạng vạng hoàng hôn (200 - 1,000m)',
@@ -137,7 +137,7 @@ export const OCEAN_RESOURCES: ResourceItem[] = [
     summaryEn: 'Iconic deep-sea predator carrying a bioluminescent dorsal lure in pitch darkness.',
     durationMinutes: 4,
     accentColor: '#1E293B',
-    thumbnailImage: '/assets/bluesteam/bs-habitat-abyss-bg-v01.jpg',
+    thumbnailImage: '/assets/ocean/habitat-abyss-bg.jpg',
     flashcardData: {
       scientificName: 'Melanocetus johnsonii',
       depthVi: 'Tầng nửa đêm & vực thẳm (1,000 - 3,000m)',
@@ -162,7 +162,7 @@ export const OCEAN_RESOURCES: ResourceItem[] = [
     summaryEn: 'The largest animal known to have ever existed, swimming peacefully across ocean basins.',
     durationMinutes: 4,
     accentColor: '#0E7490',
-    thumbnailImage: '/assets/bluesteam/bs-specimen-whale-v01.jpg',
+    thumbnailImage: '/assets/ocean/specimen-whale.jpg',
     flashcardData: {
       scientificName: 'Balaenoptera musculus',
       depthVi: 'Biển khơi từ mặt nước đến 500m',
@@ -189,7 +189,7 @@ export const OCEAN_RESOURCES: ResourceItem[] = [
     summaryEn: 'Explore how sunlight dims and deep-sea creatures adapt as a research submarine dives down.',
     durationMinutes: 5,
     accentColor: '#17657A',
-    thumbnailImage: '/assets/bluesteam/bs-atlas-vertical-bg-v01.jpg',
+    thumbnailImage: '/assets/ocean/atlas-vertical-bg.jpg',
     videoData: {
       archiveSource: 'Woods Hole Oceanographic Institution Scientific Archives',
       chapters: [

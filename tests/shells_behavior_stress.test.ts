@@ -114,10 +114,10 @@ describe('M1 Challenger 2: Adversarial Shells & Regression Test Suite', () => {
     });
   });
 
-  describe('3. LearnerShell 5-Item Mobile Bottom Nav & Layout Preservation', () => {
-    it('should preserve all 5 bottom nav items with min 56x56px touch targets and bottom clearance', () => {
+  describe('3. LearnerShell 4-Item Mobile Bottom Nav & Layout Preservation', () => {
+    it('should preserve all 4 bottom nav items with min 56x56px touch targets and bottom clearance', () => {
       const html = renderWithProviders(
-        React.createElement(LearnerShell, { activeNav: 'learn', learnerName: 'Bé An' },
+        React.createElement(LearnerShell, { activeNav: 'interactive', learnerName: 'Bé An' },
           React.createElement('div', null, 'Student Dashboard')
         )
       );
@@ -131,12 +131,12 @@ describe('M1 Challenger 2: Adversarial Shells & Regression Test Suite', () => {
       // Verify bottom clearance on root container
       expect(html).toContain('pb-20');
 
-      // Verify all 5 canonical items exist in output
+      // Verify all 4 canonical items exist in output
       expect(html).toContain('Học liệu');
-      expect(html).toContain('Học tập');
       expect(html).toContain('Tương tác');
       expect(html).toContain('Sáng tạo');
       expect(html).toContain('Hồ sơ');
+      expect(html).not.toContain('Học tập');
 
       // Verify minimum 56x56px touch target classes
       expect(html).toContain('min-w-[56px]');

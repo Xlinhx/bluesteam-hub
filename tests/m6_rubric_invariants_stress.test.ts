@@ -8,8 +8,8 @@ const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 
 // Authoritative file locations
-const SCENE_MANIFEST_PATH = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'scene-manifest.json');
-const VISUAL_MANIFEST_PATH = path.join(REPO_ROOT, 'docs', 'design', 'bluesteam-v2', 'visual-review-manifest.json');
+const SCENE_MANIFEST_PATH = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'scene-manifest.json');
+const VISUAL_MANIFEST_PATH = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'visual-review-manifest.json');
 
 // Standard Device Viewport Tiers (Width x Height)
 const STANDARD_DEVICE_TIERS = new Set([
@@ -367,11 +367,11 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
         }
 
         // Must reside in artifacts directory, not downloads or tmp
-        if (!rec.screenshotPath.startsWith('artifacts/bluesteam-v2/verification/')) {
+        if (!rec.screenshotPath.startsWith('artifacts/verification/')) {
           invalidScreenshots.push({
             reviewId: rec.reviewId,
             path: rec.screenshotPath,
-            reason: 'Screenshot path not in artifacts/bluesteam-v2/verification/'
+            reason: 'Screenshot path not in artifacts/verification/'
           });
           continue;
         }
@@ -699,12 +699,12 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
       expect(missingEvidencePaths).toHaveLength(0);
     });
 
-    it('should verify all 34 reference mockup files exist at C:/Users/ADMIN/Downloads/ocean with size > 1MB', () => {
+    it('should verify all 34 reference mockup files exist in docs/mockups with size > 1MB', () => {
       const referenceRecords = visualManifest.records.filter((r) => r.basis === 'REFERENCE');
 
       for (const rec of referenceRecords) {
         expect(rec.referencePath).not.toBeNull();
-        expect(rec.referencePath).toMatch(/Downloads[/\\]ocean/);
+        expect(rec.referencePath).toMatch(/docs[/\\]mockups/);
         expect(fs.existsSync(rec.referencePath!)).toBe(true);
 
         const stats = fs.statSync(rec.referencePath!);

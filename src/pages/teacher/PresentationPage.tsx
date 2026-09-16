@@ -135,7 +135,7 @@ export function PresentationPage() {
             {/* Cinematic Ocean Backdrop */}
             <div className="absolute inset-0 z-0">
               <img
-                src="/assets/bluesteam/bs-landing-ocean-bg-v01.jpg"
+                src="/assets/ocean/landing-ocean-bg.jpg"
                 alt="Đại dương bao la"
                 className="w-full h-full object-cover brightness-[0.65] contrast-[1.1]"
               />
@@ -440,7 +440,7 @@ export function PresentationPage() {
             {/* Background */}
             <div className="absolute inset-0 z-0">
               <img
-                src="/assets/bluesteam/bs-landing-ocean-bg-v01.jpg"
+                src="/assets/ocean/landing-ocean-bg.jpg"
                 alt="Đại dương bao la"
                 className="w-full h-full object-cover brightness-[0.45]"
               />
@@ -552,7 +552,7 @@ export function PresentationPage() {
             {/* Background with golden celebratory ocean lights */}
             <div className="absolute inset-0 z-0">
               <img
-                src="/assets/bluesteam/bs-landing-ocean-bg-v01.jpg"
+                src="/assets/ocean/landing-ocean-bg.jpg"
                 alt="Vinh danh lớp học"
                 className="w-full h-full object-cover brightness-[0.55]"
               />

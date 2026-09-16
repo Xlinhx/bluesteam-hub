@@ -341,7 +341,7 @@ Tổng số huy hiệu trao tặng: 54 huy hiệu`;
   };
 
   return (
-    <TeacherShell activeNav="dashboard">
+    <TeacherShell activeNav="results">
       <div className="space-y-6 pb-12">
         {/* Navigation & Action Header */}
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -354,9 +354,14 @@ Tổng số huy hiệu trao tặng: 54 huy hiệu`;
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Quay về bàn làm việc giáo viên</span>
             </button>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#102A38] tracking-[-0.02em]">
-              Báo Cáo Kết Quả Buổi Học
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#102A38] tracking-[-0.02em]">
+                Báo Cáo Kết Quả Buổi Học
+              </h1>
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                Phiên học mẫu · Quan sát sư phạm
+              </span>
+            </div>
             <p className="text-xs sm:text-sm text-neutral-600">
               Lớp: <span className="font-bold text-[#102A38]">Lớp Sao Biển</span> · 
               Chủ đề: <span className="font-bold text-[#102A38]">Rùa Biển & Nơi Sinh Sống Diệu Kỳ</span> · 
@@ -602,23 +607,29 @@ Tổng số huy hiệu trao tặng: 54 huy hiệu`;
               </div>
             </div>
 
-            {/* Badges Breakdown */}
+            {/* Badges Breakdown with Vector Icons (No raw emoji) */}
             <div className="pt-2 grid grid-cols-3 gap-2 text-center">
-              <div className="p-3 rounded-2xl bg-amber-50/70 border border-amber-200">
-                <span className="text-xl block">🐢</span>
-                <span className="font-bold text-xs text-[#102A38] block mt-1">Cứu Hộ Biển</span>
+              <div className="p-3 rounded-2xl bg-amber-50/70 border border-amber-200 flex flex-col items-center">
+                <div className="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mb-1">
+                  <Award className="w-4 h-4" />
+                </div>
+                <span className="font-bold text-xs text-[#102A38] block">Cứu Hộ Biển</span>
                 <span className="text-[11px] font-mono text-neutral-600">18 huy hiệu</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-rose-50/70 border border-rose-200">
-                <span className="text-xl block">🎨</span>
-                <span className="font-bold text-xs text-[#102A38] block mt-1">Họa Sĩ Biển</span>
+              <div className="p-3 rounded-2xl bg-rose-50/70 border border-rose-200 flex flex-col items-center">
+                <div className="w-8 h-8 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center mb-1">
+                  <Palette className="w-4 h-4" />
+                </div>
+                <span className="font-bold text-xs text-[#102A38] block">Họa Sĩ Biển</span>
                 <span className="text-[11px] font-mono text-neutral-600">21 huy hiệu</span>
               </div>
 
-              <div className="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-200">
-                <span className="text-xl block">🌿</span>
-                <span className="font-bold text-xs text-[#102A38] block mt-1">Người Giám Hộ</span>
+              <div className="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col items-center">
+                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mb-1">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <span className="font-bold text-xs text-[#102A38] block">Người Giám Hộ</span>
                 <span className="text-[11px] font-mono text-neutral-600">15 huy hiệu</span>
               </div>
             </div>

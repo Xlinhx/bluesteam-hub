@@ -26,7 +26,7 @@ export function ScallopHintButton({
   return (
     <button
       type="button"
-      className={`relative inline-flex items-center justify-center rounded-full bg-[#FFFDF8] border-2 border-[#E5A93C] text-[#E5A93C] shadow-[0_4px_12px_rgba(229,169,60,0.25)] hover:bg-[#FFF8E7] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#E5A93C]/40 ${
+      className={`relative inline-flex items-center justify-center rounded-full bg-gradient-to-b from-[#FFFDF8] to-[#FFF6E3] border border-[#E5A93C]/70 text-[#E5A93C] shadow-[0_2px_10px_rgba(229,169,60,0.22),inset_0_1px_0_rgba(255,255,255,0.95)] hover:bg-[#FFF8E7] hover:border-[#E5A93C] hover:shadow-[0_4px_16px_rgba(229,169,60,0.32)] hover:scale-105 active:scale-95 transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#E5A93C]/40 ${
         isPulsing ? 'animate-bounce' : ''
       } ${dimensions[size]} ${className}`}
       title="Gợi ý quan sát"

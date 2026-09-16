@@ -220,7 +220,7 @@ export function TeacherResourceLibraryPage() {
                       type="checkbox"
                       checked={selectedTypes.includes(t)}
                       onChange={() => toggleType(t)}
-                      className="w-4 h-4 rounded text-[#17657A] focus:ring-[#17657A] border-slate-300"
+                      className="w-4 h-4 rounded accent-[#17657A] focus:ring-[#17657A] border-slate-300 cursor-pointer"
                     />
                     <span>{t}</span>
                   </label>
@@ -259,7 +259,7 @@ export function TeacherResourceLibraryPage() {
                       type="checkbox"
                       checked={selectedThemes.includes(th)}
                       onChange={() => toggleTheme(th)}
-                      className="w-4 h-4 rounded text-[#17657A] focus:ring-[#17657A] border-slate-300"
+                      className="w-4 h-4 rounded accent-[#17657A] focus:ring-[#17657A] border-slate-300 cursor-pointer"
                     />
                     <span>{th}</span>
                   </label>
@@ -391,15 +391,21 @@ export function TeacherResourceLibraryPage() {
 
             {/* Interactive Habitat Target Zones & Creature Tokens Matching Mockup */}
             <div className="relative z-10 flex items-end justify-between gap-4 pt-4">
-              {/* Left creature tokens list */}
+              {/* Left creature tokens list with real specimen thumbnails */}
               <div className="flex flex-col gap-1.5 bg-black/40 backdrop-blur-xs p-2 rounded-2xl border border-white/20">
-                {['🐟', '🐢', '🐠', '⭐', '🌿'].map((icon, idx) => (
+                {[
+                  { id: 'clownfish', img: '/assets/generated/creatures/thumb_clownfish_tile.jpg', title: 'Cá hề' },
+                  { id: 'turtle', img: '/assets/generated/creatures/turtle_isolated.png', title: 'Rùa xanh' },
+                  { id: 'starfish', img: '/assets/generated/creatures/thumb_starfish_tile.jpg', title: 'Sao biển' },
+                  { id: 'shell', img: '/assets/generated/creatures/thumb_shell_tile.jpg', title: 'Vỏ sò' },
+                  { id: 'seagrass', img: '/assets/generated/stations/botanical_seagrass_specimen.jpg', title: 'Cỏ biển' },
+                ].map((item) => (
                   <div
-                    key={idx}
-                    className="w-8 h-8 rounded-xl bg-white text-base flex items-center justify-center shadow-xs cursor-grab active:cursor-grabbing hover:scale-110 transition-transform"
-                    title="Sinh vật biển kéo thả"
+                    key={item.id}
+                    className="w-8 h-8 rounded-xl bg-white overflow-hidden p-0.5 shadow-xs cursor-grab active:cursor-grabbing hover:scale-110 transition-transform"
+                    title={item.title}
                   >
-                    {icon}
+                    <img src={item.img} alt={item.title} className="w-full h-full object-cover rounded-lg" />
                   </div>
                 ))}
               </div>

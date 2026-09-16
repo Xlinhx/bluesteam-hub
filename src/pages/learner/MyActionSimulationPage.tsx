@@ -39,9 +39,11 @@ export function MyActionSimulationPage() {
   return (
     <ActivityShell
       title={locale === 'vi' ? 'Hành động của em: Chiếc chai nhựa' : 'My Action: The Plastic Bottle'}
+      variant="light"
       currentStep={isCompareMode ? 3 : 2}
       totalSteps={3}
       onBack={() => navigate('/interactive/simulations')}
+      showLogo={true}
     >
       <div className="relative w-full h-[calc(100vh-72px)] flex flex-col justify-between overflow-hidden">
         {/* Background Image Layer */}

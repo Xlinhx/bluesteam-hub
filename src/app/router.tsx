@@ -129,6 +129,10 @@ export function RouterProvider({ children }: { children: React.ReactNode }) {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
+  if (typeof window !== 'undefined') {
+    (window as any).__navigate = navigate;
+  }
+
   useEffect(() => {
     const handlePopState = () => {
       setCurrentPath(window.location.pathname || '/');

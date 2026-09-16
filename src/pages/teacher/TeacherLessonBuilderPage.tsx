@@ -72,6 +72,29 @@ export const CANONICAL_BUILDER_ACTIVITIES: LessonActivity[] = [
 
 export const CANONICAL_BUILDER_STEPS = CANONICAL_BUILDER_ACTIVITIES;
 
+export const STEP_INSTRUCTIONS: Record<number, { child: string; teacher: string }> = {
+  1: {
+    child: 'Em hãy chạm vào nơi rùa thường sống nhé!',
+    teacher: 'Hỏi trẻ: Vì sao rùa lại thích sống ở thảm cỏ biển?',
+  },
+  2: {
+    child: 'Bé hãy chạm xoay mô hình 3D để khám phá cơ thể rùa biển!',
+    teacher: 'Gợi mở: Mai rùa có tác dụng gì giúp bảo vệ bạn ấy?',
+  },
+  3: {
+    child: 'Em hãy chạm vào nơi rùa thường sống nhé!',
+    teacher: 'Hỏi trẻ: Vì sao rùa lại thích sống ở thảm cỏ biển?',
+  },
+  4: {
+    child: 'Cả lớp cùng bình chọn câu trả lời đúng trên máy tính bảng!',
+    teacher: 'Khuyến khích học sinh thảo luận nhóm trước khi chọn đáp án.',
+  },
+  5: {
+    child: 'Chúc mừng các bé đã hoàn thành xuất sắc bài học hôm nay!',
+    teacher: 'Tổng kết kiến thức và trao tặng huy hiệu STEAM cho học sinh.',
+  },
+};
+
 export function TeacherLessonBuilderPage() {
   const { query, navigate } = useRouter();
   const isPlanMode = query.mode === 'plan';
@@ -81,12 +104,12 @@ export function TeacherLessonBuilderPage() {
   // ----------------------------------------------------------------------
   const [activeStepId, setActiveStepId] = useState<number>(1);
   const [childInstruction, setChildInstruction] = useState(
-    'Em hãy chạm vào nơi rùa thường sống nhé!'
+    STEP_INSTRUCTIONS[1].child
   );
   const [voiceActor, setVoiceActor] = useState('Giọng nữ (mặc định)');
   const [allowRetry, setAllowRetry] = useState(true);
   const [teacherPrompt, setTeacherPrompt] = useState(
-    'Hỏi trẻ: Vì sao rùa lại thích sống ở đây?'
+    STEP_INSTRUCTIONS[1].teacher
   );
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [selectedHotspot, setSelectedHotspot] = useState<string | null>(null);
@@ -96,6 +119,14 @@ export function TeacherLessonBuilderPage() {
 
   const handleHearAudio = () => {
     oceanAudio.speak(childInstruction);
+  };
+
+  const handleSelectStep = (id: number) => {
+    setActiveStepId(id);
+    if (STEP_INSTRUCTIONS[id]) {
+      setChildInstruction(STEP_INSTRUCTIONS[id].child);
+      setTeacherPrompt(STEP_INSTRUCTIONS[id].teacher);
+    }
   };
 
   const handleAddActivity = () => {
@@ -521,7 +552,7 @@ export function TeacherLessonBuilderPage() {
                 return (
                   <div
                     key={act.id}
-                    onClick={() => setActiveStepId(act.id)}
+                    onClick={() => handleSelectStep(act.id)}
                     className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
                       isActive
                         ? 'border-[#17657A] ring-2 ring-[#17657A]/20 bg-sky-50/40 shadow-xs'
@@ -621,56 +652,96 @@ export function TeacherLessonBuilderPage() {
                 </button>
               </div>
 
-              {/* Main Scene: Turtle + Clickable Hotspots */}
+              {/* Main Scene: Synchronized with activeStepId */}
               <div className="relative z-10 flex-1 flex items-center justify-center">
-                {/* Swimming turtle graphic in center */}
-                <img
-                  src="/assets/card_turtle.jpg"
-                  alt="Rùa biển bơi"
-                  className="w-36 sm:w-44 rounded-2xl shadow-xl border-2 border-white/40 transform -rotate-6 transition-transform hover:scale-105"
-                />
+                {(activeStepId === 1 || activeStepId === 3) && (
+                  <>
+                    <div className="flex flex-col items-center gap-2">
+                      <img
+                        src="/assets/generated/creatures/green_turtle_hero.jpg"
+                        alt="Rùa biển bơi"
+                        className="w-40 sm:w-48 rounded-2xl shadow-xl border-2 border-white/50 object-cover"
+                      />
+                      <span className="px-3.5 py-1 rounded-full bg-black/50 backdrop-blur-md text-xs font-bold text-white border border-white/20">
+                        Rùa biển xanh (Chelonia mydas)
+                      </span>
+                    </div>
 
-                {/* Hotspot 1: Vùng nước nông */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedHotspot('Vùng nước nông')}
-                  className={`absolute top-6 right-6 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all shadow-md cursor-pointer ${
-                    selectedHotspot === 'Vùng nước nông'
-                      ? 'bg-amber-400 text-sky-950 scale-105 ring-4 ring-amber-300/40'
-                      : 'bg-white/90 text-sky-950 hover:bg-white'
-                  }`}
-                >
-                  <span className="w-3 h-3 rounded-full border-2 border-teal-500" />
-                  <span>Vùng nước nông</span>
-                </button>
+                    {/* Hotspot 1: Vùng nước nông */}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedHotspot('Vùng nước nông')}
+                      className={`absolute top-6 right-6 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all shadow-md cursor-pointer ${
+                        selectedHotspot === 'Vùng nước nông'
+                          ? 'bg-amber-400 text-sky-950 scale-105 ring-4 ring-amber-300/40'
+                          : 'bg-white/90 text-sky-950 hover:bg-white'
+                      }`}
+                    >
+                      <span className="w-3 h-3 rounded-full border-2 border-teal-500" />
+                      <span>Vùng nước nông</span>
+                    </button>
 
-                {/* Hotspot 2: Thảm cỏ biển (Correct target) */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedHotspot('Thảm cỏ biển')}
-                  className={`absolute bottom-8 left-12 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all shadow-md cursor-pointer ${
-                    selectedHotspot === 'Thảm cỏ biển'
-                      ? 'bg-emerald-400 text-sky-950 scale-105 ring-4 ring-emerald-300/50'
-                      : 'bg-white/90 text-sky-950 hover:bg-white'
-                  }`}
-                >
-                  <span className="w-3 h-3 rounded-full bg-emerald-500" />
-                  <span>Thảm cỏ biển</span>
-                </button>
+                    {/* Hotspot 2: Thảm cỏ biển (Correct target) */}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedHotspot('Thảm cỏ biển')}
+                      className={`absolute bottom-8 left-12 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all shadow-md cursor-pointer ${
+                        selectedHotspot === 'Thảm cỏ biển'
+                          ? 'bg-emerald-400 text-sky-950 scale-105 ring-4 ring-emerald-300/50'
+                          : 'bg-white/90 text-sky-950 hover:bg-white'
+                      }`}
+                    >
+                      <span className="w-3 h-3 rounded-full bg-emerald-500" />
+                      <span>Thảm cỏ biển</span>
+                    </button>
 
-                {/* Hotspot 3: Rạn san hô */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedHotspot('Rạn san hô')}
-                  className={`absolute bottom-6 right-8 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all shadow-md cursor-pointer ${
-                    selectedHotspot === 'Rạn san hô'
-                      ? 'bg-orange-400 text-sky-950 scale-105 ring-4 ring-orange-300/50'
-                      : 'bg-white/90 text-sky-950 hover:bg-white'
-                  }`}
-                >
-                  <span className="w-3 h-3 rounded-full border-2 border-orange-500" />
-                  <span>Rạn san hô</span>
-                </button>
+                    {/* Hotspot 3: Rạn san hô */}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedHotspot('Rạn san hô')}
+                      className={`absolute bottom-6 right-8 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all shadow-md cursor-pointer ${
+                        selectedHotspot === 'Rạn san hô'
+                          ? 'bg-orange-400 text-sky-950 scale-105 ring-4 ring-orange-300/50'
+                          : 'bg-white/90 text-sky-950 hover:bg-white'
+                      }`}
+                    >
+                      <span className="w-3 h-3 rounded-full border-2 border-orange-500" />
+                      <span>Rạn san hô</span>
+                    </button>
+                  </>
+                )}
+
+                {activeStepId === 2 && (
+                  <div className="flex flex-col items-center gap-3">
+                    <img
+                      src="/assets/card_turtle.jpg"
+                      alt="Mô hình 3D Rùa biển"
+                      className="w-44 sm:w-52 rounded-2xl shadow-xl border-2 border-[#2EE6CA]/50 object-cover ring-4 ring-[#2EE6CA]/20"
+                    />
+                    <span className="px-4 py-1.5 rounded-full bg-black/50 backdrop-blur-md text-xs font-bold text-[#2EE6CA] border border-[#2EE6CA]/30">
+                      Chế độ xoay quan sát 3D
+                    </span>
+                  </div>
+                )}
+
+                {activeStepId === 4 && (
+                  <div className="flex flex-col items-center gap-3 p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-center max-w-sm">
+                    <span className="text-xs font-bold text-[#2EE6CA]">Thử thách lớp học</span>
+                    <h4 className="font-serif font-bold text-sm text-white">Rùa biển hô hấp bằng gì?</h4>
+                    <div className="flex gap-2">
+                      <span className="px-3 py-1 rounded-xl bg-white/20 text-xs">Mang</span>
+                      <span className="px-3 py-1 rounded-xl bg-emerald-500/80 text-xs font-bold ring-2 ring-emerald-300">Phổi ✓</span>
+                    </div>
+                  </div>
+                )}
+
+                {activeStepId === 5 && (
+                  <div className="flex flex-col items-center gap-2 p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-center">
+                    <span className="text-3xl">🏅</span>
+                    <h4 className="font-serif font-bold text-sm text-white">Vinh danh & Trao huy hiệu</h4>
+                    <span className="text-xs text-white/80">Cả lớp đã hoàn thành xuất sắc!</span>
+                  </div>
+                )}
               </div>
 
               {/* Bottom slide dots + Fullscreen */}

@@ -89,7 +89,7 @@ export function OceanAtlasPage() {
       species: [
         { name: 'Rạn san hô', image: '/assets/generated/stations/station_coral_reef.jpg' },
         { name: 'Rùa biển', image: '/assets/generated/creatures/turtle_isolated.png' },
-        { name: 'Cá hề', image: '/assets/bluesteam/bs-specimen-clownfish-v01.jpg' },
+        { name: 'Cá hề', image: '/assets/ocean/specimen-clownfish.jpg' },
         { name: 'Cá ngừ', image: '/assets/generated/stations/station_seagrass_fish.jpg' },
       ],
     },
