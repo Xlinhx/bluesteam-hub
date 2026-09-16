@@ -549,7 +549,7 @@ export function ResourcesLibraryPage() {
                       <div
                         key={card.id}
                         onClick={() => navigate(card.route)}
-                        className="rounded-[28px] bg-white p-3.5 shadow-[0_4px_16px_rgba(18,56,75,0.06)] border border-[#17657A]/12 flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(18,56,75,0.12)] transition-all cursor-pointer group"
+                        className="rounded-[28px] bg-white p-3.5 shadow-[0_4px_16px_rgba(18,56,75,0.06)] border border-[#17657A]/12 flex flex-col justify-between card-tactile-lift cursor-pointer group active:scale-[0.98] transition-all"
                       >
                         {/* Media Container */}
                         <div className="relative h-44 rounded-2xl overflow-hidden mb-3 bg-slate-100 flex items-center justify-center">
@@ -576,7 +576,7 @@ export function ResourcesLibraryPage() {
                             <img
                               src={card.image}
                               alt={card.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="w-full h-full object-cover card-img-zoom"
                             />
                           )}
 
@@ -912,13 +912,13 @@ export function ResourcesLibraryPage() {
                   <div
                     key={topic.id}
                     onClick={() => handleTopicSelect(topic.id)}
-                    className="rounded-[22px] bg-white overflow-hidden shadow-[0_4px_20px_rgba(18,56,75,0.06)] border border-[#17657A]/12 flex flex-col justify-between hover:-translate-y-1 hover:shadow-lg transition-all cursor-pointer group"
+                    className="rounded-[22px] bg-white overflow-hidden shadow-[0_4px_20px_rgba(18,56,75,0.06)] border border-[#17657A]/12 flex flex-col justify-between card-tactile-lift cursor-pointer group active:scale-[0.98] transition-all"
                   >
                     <div className="h-40 sm:h-44 w-full overflow-hidden bg-slate-100">
                       <img
                         src={topic.image}
                         alt={topic.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover card-img-zoom"
                       />
                     </div>
                     <div className="p-5 flex flex-col justify-between flex-1">
@@ -1089,13 +1089,13 @@ export function ResourcesLibraryPage() {
                       <div
                         key={idx}
                         onClick={() => navigate(item.route)}
-                        className={`rounded-[22px] overflow-hidden shadow-[0_4px_20px_rgba(18,56,75,0.06)] border flex flex-col justify-between hover:-translate-y-1 hover:shadow-lg transition-all cursor-pointer group ${item.bgClass} ${item.borderClass}`}
+                        className={`rounded-[22px] overflow-hidden shadow-[0_4px_20px_rgba(18,56,75,0.06)] border flex flex-col justify-between card-tactile-lift cursor-pointer group active:scale-[0.98] transition-all ${item.bgClass} ${item.borderClass}`}
                       >
                         <div className="relative h-36 w-full overflow-hidden flex items-center justify-center bg-slate-50">
                           <img
                             src={item.image}
                             alt={item.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-cover card-img-zoom"
                           />
                           <span className={`absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-xs ${item.tagBg}`}>
                             {item.tag}

@@ -130,7 +130,7 @@ export function SimulationsCatalogPage() {
             {/* Left Big Hero Card: "Hành trình giải cứu" (7 Cols) */}
             <div
               onClick={() => navigate('/interactive/rescue-mission')}
-              className="lg:col-span-7 rounded-[28px] overflow-hidden relative group cursor-pointer shadow-[0_12px_32px_rgba(16,42,56,0.14)] hover:shadow-[0_18px_44px_rgba(16,42,56,0.22)] transition-all duration-300 min-h-[380px] sm:min-h-[410px] flex flex-col justify-between p-7 sm:p-9 bg-[#0A2E44]"
+              className="lg:col-span-7 rounded-[28px] overflow-hidden relative group cursor-pointer shadow-[0_12px_32px_rgba(16,42,56,0.14)] hover:shadow-[0_18px_44px_rgba(16,42,56,0.22)] card-tactile-lift active:scale-[0.99] transition-all duration-300 min-h-[380px] sm:min-h-[410px] flex flex-col justify-between p-7 sm:p-9 bg-[#0A2E44]"
             >
               {/* Card Photo Backdrop with split sea turtle & rocky bay */}
               <img
@@ -162,7 +162,7 @@ export function SimulationsCatalogPage() {
                     e.stopPropagation();
                     navigate('/interactive/rescue-mission');
                   }}
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#F26A5A] hover:bg-[#E55746] text-white font-bold text-sm shadow-md transition-all active:scale-95 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#F26A5A] hover:bg-[#E55746] text-white font-bold text-sm shadow-md transition-all active:scale-95 cursor-pointer btn-shimmer-sweep relative overflow-hidden"
                 >
                   <span>{locale === 'vi' ? 'Bắt đầu' : 'Start'}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -175,7 +175,7 @@ export function SimulationsCatalogPage() {
               {/* Card 1: "Hành động của em" (Split text left, full-bleed photo right) */}
               <div
                 onClick={() => navigate('/interactive/my-action')}
-                className="flex-1 rounded-[28px] overflow-hidden bg-[#f0f7f9] border border-[#D5E6ED] shadow-[0_6px_24px_rgba(16,42,56,0.06)] hover:shadow-[0_12px_32px_rgba(16,42,56,0.12)] transition-all duration-300 min-h-[180px] sm:min-h-[192px] flex items-stretch cursor-pointer group"
+                className="flex-1 rounded-[28px] overflow-hidden bg-[#f0f7f9] border border-[#D5E6ED] shadow-[0_6px_24px_rgba(16,42,56,0.06)] hover:shadow-[0_12px_32px_rgba(16,42,56,0.12)] card-tactile-lift active:scale-[0.99] transition-all duration-300 min-h-[180px] sm:min-h-[192px] flex items-stretch cursor-pointer group"
               >
                 {/* Left Text Content */}
                 <div className="p-5 sm:p-6 flex flex-col justify-between flex-1 min-w-0">
@@ -197,7 +197,7 @@ export function SimulationsCatalogPage() {
                         e.stopPropagation();
                         navigate('/interactive/my-action');
                       }}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#DCEAF0] hover:bg-[#CDE3EC] text-[#15586E] font-bold text-xs transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#DCEAF0] hover:bg-[#CDE3EC] text-[#15586E] font-bold text-xs active:scale-95 transition-all cursor-pointer"
                     >
                       <span>{locale === 'vi' ? 'Xem cách chơi' : 'How to Play'}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -218,7 +218,7 @@ export function SimulationsCatalogPage() {
               {/* Card 2: "Một mảnh nhựa đi đâu?" (Deep Oceanic Split Card) */}
               <div
                 onClick={() => navigate('/interactive/plastic-journey')}
-                className="flex-1 rounded-[28px] overflow-hidden bg-[#0A2E44] shadow-[0_8px_24px_rgba(16,42,56,0.15)] hover:shadow-[0_14px_32px_rgba(16,42,56,0.22)] transition-all duration-300 min-h-[180px] sm:min-h-[192px] flex items-stretch cursor-pointer group"
+                className="flex-1 rounded-[28px] overflow-hidden bg-[#0A2E44] shadow-[0_8px_24px_rgba(16,42,56,0.15)] hover:shadow-[0_14px_32px_rgba(16,42,56,0.22)] card-tactile-lift active:scale-[0.99] transition-all duration-300 min-h-[180px] sm:min-h-[192px] flex items-stretch cursor-pointer group"
               >
                 {/* Left Text Content */}
                 <div className="p-5 sm:p-6 flex flex-col justify-between flex-1 min-w-0">
@@ -240,7 +240,7 @@ export function SimulationsCatalogPage() {
                         e.stopPropagation();
                         navigate('/interactive/plastic-journey');
                       }}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#E5EEF3] hover:bg-white text-[#102A38] font-bold text-xs transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#E5EEF3] hover:bg-white text-[#102A38] font-bold text-xs active:scale-95 transition-all cursor-pointer"
                     >
                       <span>{locale === 'vi' ? 'Xem cách chơi' : 'How to Play'}</span>
                       <ArrowRight className="w-3.5 h-3.5 text-[#15586E]" />
@@ -316,7 +316,7 @@ export function SimulationsCatalogPage() {
                 <div
                   key={act.id}
                   onClick={() => navigate(act.route)}
-                  className="bg-white rounded-[24px] overflow-hidden shadow-[0_4px_20px_rgba(16,42,56,0.06)] hover:shadow-[0_14px_32px_rgba(16,42,56,0.14)] hover:-translate-y-1 transition-all duration-300 border border-[#EAE5DB] group cursor-pointer flex flex-col justify-between"
+                  className="bg-white rounded-[24px] overflow-hidden shadow-[0_4px_20px_rgba(16,42,56,0.06)] hover:shadow-[0_14px_32px_rgba(16,42,56,0.14)] card-tactile-lift active:scale-[0.98] card-img-zoom transition-all duration-300 border border-[#EAE5DB] group cursor-pointer flex flex-col justify-between"
                 >
                   {/* Full Bleed Image (Tràn viền cạnh trên, trái, phải) */}
                   <div className="w-full h-40 sm:h-44 overflow-hidden relative bg-slate-100">

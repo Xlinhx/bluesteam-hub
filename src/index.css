@@ -787,6 +787,50 @@ body {
   animation: marineWaveSway 4s ease-in-out infinite alternate;
 }
 
+/* Ocean current flow on dashed connectors */
+@keyframes currentFlow {
+  from {
+    stroke-dashoffset: 26;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-current-flow {
+  animation: currentFlow 2.4s linear infinite;
+}
+
+/* Living station glowing halo pulse */
+@keyframes stationPulse {
+  0%, 100% {
+    box-shadow: 0 0 35px rgba(242, 100, 64, 0.45);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 55px rgba(242, 100, 64, 0.80);
+    transform: scale(1.025);
+  }
+}
+
+.animate-station-pulse {
+  animation: stationPulse 3.5s ease-in-out infinite;
+}
+
+/* Speaker acoustic wave pulse */
+@keyframes acousticPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(23, 101, 122, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(23, 101, 122, 0);
+  }
+}
+
+.animate-speaker-pulse {
+  animation: acousticPulse 1.8s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
 /* Universal Accessibility: Zero continuous motion when reduced motion is preferred */
 @media (prefers-reduced-motion: reduce) {
   .animate-hero-drift,
@@ -804,6 +848,9 @@ body {
   .animate-feedback-pop,
   .animate-digit-pop,
   .animate-wave-line,
+  .animate-current-flow,
+  .animate-station-pulse,
+  .animate-speaker-pulse,
   .water-shimmer-sheen,
   .pin-ripple-halo,
   .ocean-caustics-1,

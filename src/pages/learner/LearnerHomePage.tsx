@@ -81,6 +81,7 @@ export function LearnerHomePage() {
                 strokeDasharray="12 14"
                 strokeLinecap="round"
                 strokeOpacity="0.95"
+                className="animate-current-flow"
               />
               {/* Segment 2: Cỏ biển rim to Rạn san hô rim */}
               <path
@@ -90,6 +91,7 @@ export function LearnerHomePage() {
                 strokeDasharray="12 14"
                 strokeLinecap="round"
                 strokeOpacity="0.95"
+                className="animate-current-flow"
               />
             </svg>
 
@@ -125,7 +127,7 @@ export function LearnerHomePage() {
               <button
                 type="button"
                 onClick={() => handleStationClick(2, '/3dmodel/turtle')}
-                className="relative w-48 h-48 lg:w-56 lg:h-56 rounded-full border-[5px] border-[#F26440] ring-8 ring-[#F26440]/30 shadow-[0_0_40px_rgba(242,100,64,0.6)] overflow-hidden cursor-pointer group-hover:scale-105 transition-all duration-300"
+                className="relative w-48 h-48 lg:w-56 lg:h-56 rounded-full border-[5px] border-[#F26440] ring-8 ring-[#F26440]/30 shadow-[0_0_40px_rgba(242,100,64,0.6)] overflow-hidden cursor-pointer group-hover:scale-105 transition-all duration-300 animate-station-pulse"
               >
                 <img
                   src="/assets/generated/stations/station_seagrass_fish.jpg"

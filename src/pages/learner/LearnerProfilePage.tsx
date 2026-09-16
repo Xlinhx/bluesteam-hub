@@ -20,6 +20,7 @@ import {
   Check,
 } from 'lucide-react';
 import { oceanAudio } from '../../shared/sound/oceanAudio';
+import { TiltCard } from '../../shared/components/TiltCard';
 
 export function LearnerProfilePage() {
   const { navigate } = useRouter();
@@ -575,47 +576,58 @@ export function LearnerProfilePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {authenticBadges.map((badge) => (
-              <div
-                key={badge.id}
-                className={`p-4 rounded-2xl border transition-all flex flex-col justify-between space-y-3 ${
-                  badge.unlocked
-                    ? 'bg-gradient-to-b from-white to-neutral-50 border-neutral-200 shadow-sm'
-                    : 'bg-neutral-50/60 border-dashed border-neutral-200 opacity-60'
-                }`}
-              >
-                <div className="space-y-2 text-center">
-                  <div
-                    className={`w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-2xl shadow-xs ${
-                      badge.unlocked
-                        ? 'bg-[#E3F6F9] text-[#17657A]'
-                        : 'bg-neutral-200 text-neutral-400'
-                    }`}
-                  >
-                    {badge.unlocked ? badge.icon : <Lock className="w-5 h-5 text-neutral-400" />}
+            {authenticBadges.map((badge) =>
+              badge.unlocked ? (
+                <TiltCard
+                  key={badge.id}
+                  maxTilt={8}
+                  glare={true}
+                  className="p-4 rounded-2xl border border-neutral-200/90 shadow-xs bg-gradient-to-b from-white to-neutral-50 flex flex-col justify-between space-y-3 cursor-pointer group card-tactile-lift"
+                >
+                  <div className="space-y-2 text-center">
+                    <div className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-2xl shadow-xs bg-[#E3F6F9] text-[#17657A] group-hover:scale-110 transition-transform duration-300">
+                      {badge.icon}
+                    </div>
+                    <h4 className="font-bold text-sm text-[#102A38] leading-tight group-hover:text-[#17657A] transition-colors">
+                      {badge.title}
+                    </h4>
+                    <p className="text-[11px] text-neutral-500 leading-snug">
+                      {badge.desc}
+                    </p>
                   </div>
-                  <h4 className="font-bold text-sm text-[#102A38] leading-tight">
-                    {badge.title}
-                  </h4>
-                  <p className="text-[11px] text-neutral-500 leading-snug">
-                    {badge.desc}
-                  </p>
-                </div>
 
-                <div className="text-center pt-2 border-t border-neutral-100">
-                  {badge.unlocked ? (
+                  <div className="text-center pt-2 border-t border-neutral-100">
                     <span className="inline-flex items-center gap-1 text-[11px] font-black text-emerald-700">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>Đã đạt được</span>
                     </span>
-                  ) : (
+                  </div>
+                </TiltCard>
+              ) : (
+                <div
+                  key={badge.id}
+                  className="p-4 rounded-2xl border border-dashed border-neutral-200 bg-neutral-50/60 opacity-60 flex flex-col justify-between space-y-3 select-none"
+                >
+                  <div className="space-y-2 text-center">
+                    <div className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-2xl shadow-xs bg-neutral-200 text-neutral-400">
+                      <Lock className="w-5 h-5 text-neutral-400" />
+                    </div>
+                    <h4 className="font-bold text-sm text-[#102A38] leading-tight">
+                      {badge.title}
+                    </h4>
+                    <p className="text-[11px] text-neutral-500 leading-snug">
+                      {badge.desc}
+                    </p>
+                  </div>
+
+                  <div className="text-center pt-2 border-t border-neutral-100">
                     <span className="text-[10px] text-neutral-400 italic">
                       {badge.stationRequirement}
                     </span>
-                  )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
         </div>
 
