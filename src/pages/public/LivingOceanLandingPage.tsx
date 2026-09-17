@@ -259,7 +259,7 @@ export function LivingOceanLandingPage() {
               </div>
               <button
                 type="button"
-                onClick={() => navigate('/interactive')}
+                onClick={() => navigate('/entry')}
                 className="group btn-shimmer-sweep inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#17657A]/40 bg-white/80 hover:bg-white text-[#17657A] font-medium text-xs sm:text-sm hover:border-[#17657A] hover:shadow-sm transition-all cursor-pointer hover:scale-[1.02] active:scale-95"
               >
                 <span>Khám phá tương tác</span>
@@ -272,7 +272,7 @@ export function LivingOceanLandingPage() {
               {/* Pin 1: Bờ biển và vùng triều (15.5%) */}
               <button
                 type="button"
-                onClick={() => navigate('/interactive/habitat-placement')}
+                onClick={() => navigate('/entry')}
                 className="pointer-events-auto absolute left-[15.5%] top-0 -translate-x-1/2 flex flex-col items-center group cursor-pointer focus-visible:outline-none"
                 style={{
                   transform: prefersReducedMotion ? 'none' : revealed.s2 ? 'translateY(0)' : 'translateY(-16px)',
@@ -294,7 +294,7 @@ export function LivingOceanLandingPage() {
               {/* Pin 2: Rạn san hô (33.5%) */}
               <button
                 type="button"
-                onClick={() => navigate('/interactive/habitat-placement')}
+                onClick={() => navigate('/entry')}
                 className="pointer-events-auto absolute left-[33.5%] top-3 -translate-x-1/2 flex flex-col items-center group cursor-pointer focus-visible:outline-none"
                 style={{
                   transform: prefersReducedMotion ? 'none' : revealed.s2 ? 'translateY(0)' : 'translateY(-16px)',
@@ -316,7 +316,7 @@ export function LivingOceanLandingPage() {
               {/* Pin 3: Vùng nước mở (53.9%) */}
               <button
                 type="button"
-                onClick={() => navigate('/interactive/habitat-placement')}
+                onClick={() => navigate('/entry')}
                 className="pointer-events-auto absolute left-[53.9%] top-3 -translate-x-1/2 flex flex-col items-center group cursor-pointer focus-visible:outline-none"
                 style={{
                   transform: prefersReducedMotion ? 'none' : revealed.s2 ? 'translateY(0)' : 'translateY(-16px)',
@@ -338,7 +338,7 @@ export function LivingOceanLandingPage() {
               {/* Pin 4: Vùng biển sâu (72.6%) */}
               <button
                 type="button"
-                onClick={() => navigate('/interactive/habitat-placement')}
+                onClick={() => navigate('/entry')}
                 className="pointer-events-auto absolute left-[72.6%] top-3 -translate-x-1/2 flex flex-col items-center group cursor-pointer focus-visible:outline-none"
                 style={{
                   transform: prefersReducedMotion ? 'none' : revealed.s2 ? 'translateY(0)' : 'translateY(-16px)',
@@ -360,7 +360,7 @@ export function LivingOceanLandingPage() {
               {/* Pin 5: Đáy đại dương (92.2%) */}
               <button
                 type="button"
-                onClick={() => navigate('/interactive/habitat-placement')}
+                onClick={() => navigate('/entry')}
                 className="pointer-events-auto absolute left-[92.2%] top-3 -translate-x-1/2 flex flex-col items-center group cursor-pointer focus-visible:outline-none"
                 style={{
                   transform: prefersReducedMotion ? 'none' : revealed.s2 ? 'translateY(0)' : 'translateY(-16px)',
@@ -589,7 +589,7 @@ export function LivingOceanLandingPage() {
               <div className="pt-1">
                 <button
                   type="button"
-                  onClick={() => navigate('/interactive/my-action')}
+                  onClick={() => navigate('/entry')}
                   className="group btn-shimmer-sweep px-7 py-3 rounded-full bg-white hover:bg-slate-50 text-[#12384B] font-bold text-xs shadow-md border border-slate-200 flex items-center gap-2 cursor-pointer transition-all hover:scale-[1.02] active:scale-95"
                 >
                   <span>Chọn hành động</span>
@@ -1136,7 +1136,7 @@ export function LivingOceanLandingPage() {
                     <TiltCard
                       maxTilt={6}
                       glare={true}
-                      onClick={() => navigate('/interactive')}
+                      onClick={() => navigate('/entry')}
                       className="group rounded-2xl bg-white shadow-sm border border-slate-200/70 flex flex-col overflow-hidden card-tactile-lift cursor-pointer active:scale-[0.98]"
                     >
                       <div className="aspect-[4/3] w-full overflow-hidden">
