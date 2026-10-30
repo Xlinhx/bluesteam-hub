@@ -1,3 +1,5 @@
 * text=auto eol=lf
 # Provenance copies are checksummed byte-for-byte; never normalize their content.
 server/seed-data/sources/** -text -diff
+# Applied SQL is immutable: its exact bytes are verified against the database.
+server/src/database/migrations/*.sql -text

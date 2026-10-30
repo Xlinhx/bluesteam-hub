@@ -2,7 +2,7 @@
 
 ## Cấu hình đã chuẩn bị
 
-- Repository: `initforge/ocean-immerseve-learning`, nhánh production `main`.
+- Repository: `Xlinhx/bluesteam`, nhánh production `main`.
 - VPS: `36.50.26.70:22`, SSH user `bluesteam-deploy`, xác thực bằng key riêng.
 - GitHub Actions secrets đã cấu hình: `VPS_HOST`, `VPS_PORT`, `VPS_USER`, `VPS_SSH_KEY`, `VPS_KNOWN_HOSTS`, `PRODUCTION_ENV`.
 - `PRODUCTION_ENV` chứa mật khẩu PostgreSQL, JWT secret và seed password ngẫu nhiên; CORS cho `https://bluesteam.webinprogress.click`. Không chứa mật khẩu root VPS.
@@ -52,3 +52,5 @@ CI build cả hai Docker images từ source đã giải nén trong release archi
 `/srv/bluesteam/bootstrap/` chứa `local.dump`, `media.tar.gz` và `SHA256SUMS`, được truyền qua SSH, không vào Git/Actions artifact. `deploy/bootstrap-local.sh` chỉ khôi phục khi database và thư mục media trống; PostgreSQL restore dùng một transaction. Marker `/srv/bluesteam/shared/local-bootstrap-complete` lưu checksum sau thành công. Các lần deploy sau thấy marker sẽ bỏ qua hoàn toàn bootstrap, không chạy content/demo seed. Không xóa marker để ép nạp lại lên dữ liệu đang dùng.
 
 Snapshot giữ nội dung và tài khoản local, không chuyển `auth_sessions`. Draft trong IndexedDB/localStorage của trình duyệt không nằm trong database server nên không di chuyển. Nếu lần restore đầu bị gián đoạn giữa database/media, script từ chối ghi đè và cần xử lý có chủ đích trước khi thử lại.
+
+Các migration đã áp dụng phải giữ nguyên byte, kể cả line ending và whitespace. `.gitattributes` tắt chuẩn hóa SQL; `tests/migration_bytes.test.ts` kiểm checksum của 19 migration đang có trong snapshot lần đầu. Không đổi checksum trong database để hợp thức hóa SQL bị sửa.
