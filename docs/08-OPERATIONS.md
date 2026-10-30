@@ -54,3 +54,5 @@ CI build cả hai Docker images từ source đã giải nén trong release archi
 Snapshot giữ nội dung và tài khoản local, không chuyển `auth_sessions`. Draft trong IndexedDB/localStorage của trình duyệt không nằm trong database server nên không di chuyển. Nếu lần restore đầu bị gián đoạn giữa database/media, script từ chối ghi đè và cần xử lý có chủ đích trước khi thử lại.
 
 Các migration đã áp dụng phải giữ nguyên byte, kể cả line ending và whitespace. `.gitattributes` tắt chuẩn hóa SQL; `tests/migration_bytes.test.ts` kiểm checksum của 19 migration đang có trong snapshot lần đầu. Không đổi checksum trong database để hợp thức hóa SQL bị sửa.
+
+Frontend có healthcheck đi qua API; deploy dùng Compose `--wait` trước khi kiểm HTTP, và retry cả lỗi kết nối bị reset lúc Nginx mới khởi động. Deploy chỉ cập nhật symlink `current` sau khi các kiểm tra nội bộ thành công.

@@ -33,11 +33,13 @@ bash deploy/bootstrap-local.sh
 # API startup runs the existing advisory-locked migrations. Future releases never seed.
 "${compose[@]}" up -d --wait --wait-timeout 180 bluesteam_backend
 # Nginx resolves its upstream on startup: refresh it when the API container changes.
-"${compose[@]}" up -d --no-deps --force-recreate bluesteam_frontend
-curl --fail --silent --show-error --retry 10 --retry-delay 3 --retry-connrefused \
+"${compose[@]}" up -d --no-deps --force-recreate --wait --wait-timeout 120 bluesteam_frontend
+curl --fail --silent --show-error --retry 10 --retry-delay 3 --retry-all-errors \
   http://127.0.0.1:8010/api/v1/health/ready >/dev/null
-curl --fail --silent --show-error http://127.0.0.1:3010/api/v1/health/ready >/dev/null
-curl --fail --silent --show-error http://127.0.0.1:3010/ >/dev/null
+curl --fail --silent --show-error --retry 10 --retry-delay 3 --retry-all-errors \
+  http://127.0.0.1:3010/api/v1/health/ready >/dev/null
+curl --fail --silent --show-error --retry 10 --retry-delay 3 --retry-all-errors \
+  http://127.0.0.1:3010/ >/dev/null
 
 install -m 600 "$release/production.env" /srv/bluesteam/shared/production.env
 ln -sfn "$release" /srv/bluesteam/current
