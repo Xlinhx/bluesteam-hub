@@ -12,8 +12,8 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const PNG_MAGIC = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
 describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenger 1)', () => {
-  const visualManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'visual-review-manifest.json');
-  const sceneManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'scene-manifest.json');
+  const visualManifestPath = path.join(REPO_ROOT, 'docs', 'verification', 'visual-review-manifest.json');
+  const sceneManifestPath = path.join(REPO_ROOT, 'docs', 'verification', 'scene-manifest.json');
   const appTsxPath = path.join(REPO_ROOT, 'src', 'app', 'App.tsx');
 
   const rawVisualManifest = fs.readFileSync(visualManifestPath, 'utf8');
@@ -53,13 +53,13 @@ describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenge
       expect(uniqueIds.size).toBe(39);
     });
 
-    it('strictly partitions into 34 REFERENCE, 3 RESPONSIVE_SPEC, and 2 SPEC_ONLY records', () => {
+    it('strictly partitions into 32 REFERENCE, 5 RESPONSIVE_SPEC, and 2 SPEC_ONLY records', () => {
       const refRecords = visualManifest.records.filter((r: any) => r.basis === 'REFERENCE');
       const respRecords = visualManifest.records.filter((r: any) => r.basis === 'RESPONSIVE_SPEC');
       const specRecords = visualManifest.records.filter((r: any) => r.basis === 'SPEC_ONLY');
 
-      expect(refRecords).toHaveLength(34);
-      expect(respRecords).toHaveLength(3);
+      expect(refRecords).toHaveLength(32);
+      expect(respRecords).toHaveLength(5);
       expect(specRecords).toHaveLength(2);
       expect(refRecords.length + respRecords.length + specRecords.length).toBe(39);
     });
@@ -87,7 +87,7 @@ describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenge
       'colorAndDepth'
     ] as const;
 
-    it('all 34 REFERENCE records have scores.total >= 95 and <= 100', () => {
+    it('all 32 REFERENCE records have scores.total >= 95 and <= 100', () => {
       const refRecords = visualManifest.records.filter((r: any) => r.basis === 'REFERENCE');
       for (const rec of refRecords) {
         expect(rec.scores).toBeDefined();
@@ -98,7 +98,7 @@ describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenge
       }
     });
 
-    it('all 34 REFERENCE records have all 5 rubric categories scored between 18 and 20 pts', () => {
+    it('all 32 REFERENCE records have all 5 rubric categories scored between 18 and 20 pts', () => {
       const refRecords = visualManifest.records.filter((r: any) => r.basis === 'REFERENCE');
       for (const rec of refRecords) {
         let categorySum = 0;
@@ -114,7 +114,7 @@ describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenge
       }
     });
 
-    it('all 34 REFERENCE records have complete rubric documentation matching scores', () => {
+    it('all 32 REFERENCE records have complete rubric documentation matching scores', () => {
       const refRecords = visualManifest.records.filter((r: any) => r.basis === 'REFERENCE');
       for (const rec of refRecords) {
         expect(rec.rubric).toBeDefined();
@@ -129,11 +129,11 @@ describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenge
       }
     });
 
-    it('all 5 responsive/spec-only records strictly enforce scores === null and rubric === null (Rules K.9 & M.3)', () => {
+    it('all 7 responsive/spec-only records strictly enforce scores === null and rubric === null (Rules K.9 & M.3)', () => {
       const nonRefRecords = visualManifest.records.filter(
         (r: any) => r.basis === 'RESPONSIVE_SPEC' || r.basis === 'SPEC_ONLY'
       );
-      expect(nonRefRecords).toHaveLength(5);
+      expect(nonRefRecords).toHaveLength(7);
       for (const rec of nonRefRecords) {
         expect(rec.scores).toBeNull();
         expect(rec.rubric).toBeNull();
@@ -217,25 +217,15 @@ describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenge
   // 5. APP.TSX CANONICAL ROUTING & IMPORTS AUDIT
   // =========================================================================
   describe('5. App.tsx Canonical V2 Architecture & Routing Integrity', () => {
-    it('imports canonical v2 PresentationPage from pages/teacher/PresentationPage', () => {
-      expect(appTsxContent).toContain("import { PresentationPage } from '../pages/teacher/PresentationPage'");
+    it('imports canonical v2 PresentationPage from domains/teacher/presentation/PresentationPage', () => {
+      expect(appTsxContent).toContain("import { PresentationPage } from '../domains/teacher/presentation/PresentationPage'");
       // Negative constraint: must not import legacy session mock
       expect(appTsxContent).not.toContain("import { PresentationPage } from '../pages/session/PresentationPage'");
     });
 
-    it('imports canonical v2 TeacherSessionResultsPage from pages/teacher/TeacherSessionResultsPage', () => {
-      expect(appTsxContent).toContain(
-        "import { TeacherSessionResultsPage } from '../pages/teacher/TeacherSessionResultsPage'"
-      );
-      // Negative constraint: must not import legacy SessionResultsPage
-      expect(appTsxContent).not.toContain(
-        "import { SessionResultsPage } from '../pages/teacher/SessionResultsPage'"
-      );
-    });
-
     it('imports canonical v2 TeacherResourceLibraryPage from pages/teacher/TeacherResourceLibraryPage', () => {
       expect(appTsxContent).toContain(
-        "import { TeacherResourceLibraryPage } from '../pages/teacher/TeacherResourceLibraryPage'"
+        "import { TeacherResourceLibraryPage } from '../domains/teacher/resources/TeacherResourceLibraryPage'"
       );
       // Negative constraint: must not import legacy TeacherLibraryPage
       expect(appTsxContent).not.toContain(
@@ -245,10 +235,6 @@ describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenge
 
     it('routes /presentation directly to <PresentationPage />', () => {
       expect(appTsxContent).toMatch(/cleanPath === '\/presentation'[\s\S]*?return <PresentationPage \/>/);
-    });
-
-    it('routes /teacher/results directly to <TeacherSessionResultsPage />', () => {
-      expect(appTsxContent).toMatch(/cleanPath === '\/teacher\/results'[\s\S]*?return <TeacherSessionResultsPage \/>/);
     });
 
     it('routes /teacher/library directly to <TeacherResourceLibraryPage />', () => {
@@ -271,7 +257,6 @@ describe('Milestone 6 Empirical Quality Gate & Master Stress Suite (M6 Challenge
         "cleanPath === '/profile'",
         "cleanPath === '/teacher'",
         "cleanPath === '/teacher/builder'",
-        "cleanPath === '/teacher/live'",
       ];
 
       for (const route of coreRoutes) {

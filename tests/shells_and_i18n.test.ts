@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { TRANSLATIONS } from '../src/shared/i18n/translations';
-import { oceanAudio } from '../src/shared/sound/oceanAudio';
+import { oceanAudio } from '../src/shared/audio/oceanAudio';
 
 describe('BlueSTEAM v2 Foundation: Shells, Tokens & i18n', () => {
   it('should have complete and symmetric translation keys for VI and EN', () => {

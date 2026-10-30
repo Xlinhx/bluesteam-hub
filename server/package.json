@@ -1,0 +1,38 @@
+{
+  "name": "@bluesteam/server",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "node dist/main.js",
+    "start:dev": "tsx src/main.ts",
+    "build": "tsc -p tsconfig.json && node scripts/postbuild.mjs",
+    "test": "vitest run --config vitest.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "db:migrate": "tsx src/database/migrate-cli.ts",
+    "db:seed": "tsx src/database/seeds/seed-cli.ts",
+    "bootstrap:teacher": "tsx src/auth/bootstrap-teacher-cli.ts"
+  },
+  "dependencies": {
+    "@bluesteam/contracts": "*",
+    "@nestjs/common": "^11.0.11",
+    "@nestjs/core": "^11.0.11",
+    "@nestjs/platform-express": "^11.0.11",
+    "@node-rs/argon2": "^2.0.2",
+    "busboy": "^1.6.0",
+    "pg": "^8.13.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/busboy": "^1.5.4",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.10",
+    "@types/pg": "^8.11.11",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.2",
+    "vitest": "2.1.9"
+  }
+}

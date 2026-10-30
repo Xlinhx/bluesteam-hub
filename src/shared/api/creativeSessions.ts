@@ -1,0 +1,10 @@
+import {apiRequest} from './client';
+export interface CreativeSession{ id:string;title:string;kind:'scan'|'habitat';code:string;state:'open'|'paused'|'ended';environment_id:string;motion_paused:boolean;created_at:string;expires_at:string;review_required:boolean;challenge:import('@bluesteam/contracts').HabitatChallengeSnapshot|null;submissions?:number;projects?:number;counts?:{total:number;released:number;ready:number;needs_retry:number};previews?:string[] }
+export interface CreativeSubmission{id:string;alias:string;kind:'scan'|'habitat';status:'ready'|'released'|'needs_retry';preview:string;document:any;edit_version:number;teacher_note:string;hidden:boolean;created_at:string}
+export interface SessionDetail{session:CreativeSession;counts:{total:number;released:number;ready:number;needs_retry:number;participants:number};items:CreativeSubmission[];filteredTotal:number;selectedSubmission?:CreativeSubmission|null;seaItems:{id:string;alias:string;preview:string;motion:any}[];seaTotal:number}
+export const listCreativeSessions=(offset=0,signal?:AbortSignal,kind?:'scan'|'habitat')=>apiRequest<{items:CreativeSession[];total:number}>(`/api/v1/teacher/creative-sessions?offset=${offset}${kind?'&kind='+kind:''}`,{signal});
+export const creativeSessionDetail=(id:string,offset=0,signal?:AbortSignal,filters?:Record<string,string|number>)=>apiRequest<SessionDetail>(`/api/v1/teacher/creative-sessions/${id}?offset=${offset}&${new URLSearchParams(Object.entries(filters||{}).map(([k,v])=>[k,String(v)]))}`,{signal});
+export const postCreative=(path:string,body:unknown)=>apiRequest<any>('/api/v1/'+path,{method:'POST',body:JSON.stringify(body)});
+
+export async function uploadCreativeImage(image:string,token:string){if(!image.startsWith('data:'))return image;const result=await apiRequest<{url:string}>('/api/v1/creative-sessions/media',{method:'POST',participantToken:token,body:JSON.stringify({image})});return result.url;}
+export const sessionStateLabel=(s:CreativeSession)=>s.state==='ended'?'Đã kết thúc':new Date(s.expires_at).getTime()<=Date.now()?'Hết hiệu lực':s.state==='paused'?'Tạm ngừng nhận':'Đang nhận';

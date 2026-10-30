@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { demoStore } from '../src/demo/storage/demoStore';
-import { creativeStorage, CreativeArtwork } from '../src/services/creativeStorage';
+import { demoStore } from '../src/shared/realtime/demoStore';
+import { creativeStorage, CreativeArtwork } from '../src/shared/creative/creativeStorage';
 import fs from 'node:fs';
 import path from 'node:path';
 

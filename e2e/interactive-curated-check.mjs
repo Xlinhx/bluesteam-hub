@@ -1,0 +1,124 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { chromium } from '@playwright/test';
+const base = process.env.INTERACTIVE_UI_URL || 'http://127.0.0.1:3010';
+const browser = await chromium.launch({ channel:'chrome', headless:true });
+const context = await browser.newContext({viewport:{width:1440,height:1000}});
+const page = await context.newPage();
+const errors = []; page.on('pageerror', error => errors.push(error.message));
+page.setDefaultTimeout(20000);page.setDefaultNavigationTimeout(30000);
+const directory='screenshots/interactive-curated'; fs.mkdirSync(directory,{recursive:true});
+const shot = async name => {
+  console.log('Checking',name);
+  await page.evaluate(async()=>{await document.fonts.ready;await Promise.race([Promise.all([...document.images].map(img=>{img.loading='eager';return img.decode().catch(()=>{});})),new Promise(resolve=>setTimeout(resolve,3000))]);});
+  await page.screenshot({path:directory+'/'+name+'.png',fullPage:true});
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,name+' overflow');
+  assert.deepEqual(await page.locator('img').evaluateAll(imgs=>imgs.filter(i=>!i.naturalWidth).map(i=>i.src)),[],name+' broken image');
+};
+try {
+  const smokePassword=crypto.randomUUID()+'Aa7!';
+  const registration=await page.request.post(base+'/api/v1/auth/register',{data:{role:'student',email:'interactive-smoke-'+Date.now()+'@example.test',password:smokePassword,displayName:'Kiểm thử Tương tác (agent)'}});
+  assert.equal(registration.status(),201,'dedicated learner smoke account');
+  await page.goto(base+'/interactive?kind=game');
+  await page.getByRole('heading',{name:'Ngôi nhà đại dương',exact:true}).waitFor();
+  await shot('learner-desktop');
+  await page.setViewportSize({width:390,height:844});
+  const first = page.getByRole('button',{name:'Chơi ngay',exact:true}).first();
+  await shot('learner-mobile');
+  const bounds=await first.boundingBox(); assert.ok(bounds && bounds.y+bounds.height<780,'first playable CTA visible above mobile nav: '+JSON.stringify(bounds));
+  await page.getByRole('button',{name:'Mở nhóm',exact:true}).first().click();
+  assert.ok(new URL(page.url()).searchParams.get('groupId'));
+  await page.getByRole('tab',{name:'Mô phỏng',exact:true}).click();
+  assert.equal(new URL(page.url()).searchParams.has('groupId'),false);
+  await page.getByRole('heading',{name:'Giữ biển sạch',exact:true}).waitFor();
+  const gameOpen=page.waitForResponse(r=>r.url().endsWith('/interactive-usage/runs')&&r.request().method()==='POST');
+  await page.goto(base+'/interactive/habitat-placement');assert.equal((await gameOpen).status(),201);
+  await page.getByRole('button',{name:'Bắt đầu tìm nhà',exact:true}).click();
+  await page.getByTestId('sorting-item-obj-clownfish').click();
+  const answer=page.waitForResponse(r=>r.url().endsWith('/interactions')&&r.request().method()==='POST');
+  await page.getByTestId('sorting-zone-zone-coral').click();assert.equal((await answer).status(),201);
+  const key=await page.evaluate(()=>history.state.interactiveVisit.key);
+  await page.reload();await page.getByRole('button',{name:'Bắt đầu tìm nhà',exact:true}).waitFor();
+  assert.equal(await page.evaluate(()=>history.state.interactiveVisit.key),key,'reload retains visit id');
+  const opened=page.waitForResponse(r=>r.url().endsWith('/interactive-usage/runs')&&r.request().method()==='POST');
+  await page.goto(base+'/interactive/plastic-journey');
+  await page.getByRole('heading',{name:/Hành trình/}).first().waitFor();
+  assert.equal((await opened).status(),201);
+  const stepAck=page.waitForResponse(r=>r.url().endsWith('/interactions')&&r.request().method()==='POST');
+  await page.getByRole('button',{name:/Vỡ vụn vi nhựa/}).click();assert.equal((await stepAck).status(),201);
+  await shot('learner-plastic-alias');
+  const scenarioPage=await (await page.request.get(base+'/api/v1/activities?kind=scenario&limit=1')).json();
+  const scenarioOpen=page.waitForResponse(r=>r.url().endsWith('/interactive-usage/runs')&&r.request().method()==='POST');
+  await page.goto(base+'/interactive/activities/'+scenarioPage.items[0].id);assert.equal((await scenarioOpen).status(),201);
+  const choiceAck=page.waitForResponse(r=>r.url().endsWith('/interactions')&&r.request().method()==='POST');
+  await page.locator('[data-testid^="scenario-choice-"]').first().click();assert.equal((await choiceAck).status(),201);
+  const modelPage=await (await page.request.get(base+'/api/v1/models?limit=1')).json();
+  let failedModelOpens=0;
+  const modelListener=request=>{if(request.url().endsWith('/interactive-usage/runs')&&request.method()==='POST')failedModelOpens++;};
+  page.on('request',modelListener);
+  await page.route('**/*sketchfab*',route=>route.abort());
+  await page.goto(base+'/interactive/models/'+modelPage.items[0].id);
+  await page.getByText('Không tải được liên kết mô hình 3D',{exact:true}).waitFor();
+  assert.equal(failedModelOpens,0,'failed external model does not create usage');
+  page.off('request',modelListener);await page.unroute('**/*sketchfab*');
+  await page.setViewportSize({width:1440,height:1000});
+  const login=await page.request.post(base+'/api/v1/auth/login',{data:{email:'linh.nguyen@mamnon.edu.vn',password:process.env.SEED_TEACHER_PASSWORD || 'daiduong2026'}});
+  assert.equal(login.status(),200,'local teacher login');
+  const publicGame=await (await page.request.get(base+'/api/v1/activities/home-sorting')).json();
+  const mutations=[['post','activities'],['patch','activities/'+publicGame.id],['delete','activities/'+publicGame.id],['post','activities/'+publicGame.id+'/duplicate'],['post','models'],['patch','models/'+publicGame.id],['delete','models/'+publicGame.id],['post','interactive-groups'],['patch','interactive-groups/'+publicGame.id],['delete','interactive-groups/'+publicGame.id],['post','interactive-groups/'+publicGame.id+'/members'],['delete','interactive-groups/'+publicGame.id+'/members']];
+  for(const [method,path] of mutations){const response=await page.request[method](base+'/api/v1/teacher/'+path,{data:{}});assert.equal(response.status(),403,method+' '+path);assert.match(await response.text(),/INTERACTIVE_CONTENT_READ_ONLY/);}
+  const forbiddenOpen=await page.request.post(base+'/api/v1/interactive-usage/runs',{data:{contentType:'activity',contentId:publicGame.id,version:publicGame.version,openKey:crypto.randomUUID()}});
+  assert.equal(forbiddenOpen.status(),403,'teacher usage excluded at HTTP boundary');
+  await page.goto(base+'/teacher/interactive?kind=game');
+  await page.locator('.curated-card').first().waitFor();
+  assert.equal(await page.getByText('Tạo trò chơi',{exact:true}).count(),0);
+  await shot('teacher-library-desktop');
+  const before=await (await page.request.get(base+'/api/v1/teacher/interactive-usage?kind=game')).json();
+  let telemetry=0; const listen=req=>{if(req.url().includes('/interactive-usage/runs'))telemetry++;};page.on('request',listen);
+  await page.getByRole('button',{name:'Xem thử',exact:true}).first().click();
+  await page.getByRole('dialog',{name:/Xem thử/}).waitFor();
+  await page.locator('[data-testid="sorting-game-runtime"]').waitFor();
+  await page.keyboard.press('Escape');
+  assert.equal(telemetry,0,'preview sends no usage');page.off('request',listen);
+  const after=await (await page.request.get(base+'/api/v1/teacher/interactive-usage?kind=game')).json();
+  assert.equal(before.summary.opens.value,after.summary.opens.value);
+  for(const path of ['games/new','scenarios/new']) { await page.goto(base+'/teacher/interactive/'+path); await page.locator('.curated-card').first().waitFor(); assert.equal(await page.getByText('Lưu nháp',{exact:true}).count(),0); }
+  for(const kind of ['game','model3d','simulation','scenario']){
+    await page.goto(base+'/teacher/interactive?kind='+kind);
+    await page.locator('.curated-card').first().waitFor();
+    let previewWrites=0;const previewListener=request=>{if(request.url().includes('/interactive-usage/runs'))previewWrites++;};page.on('request',previewListener);
+    await page.getByRole('button',{name:'Xem thử',exact:true}).first().click();
+    await page.getByRole('dialog',{name:/Xem thử/}).waitFor();
+    if(kind==='model3d') {const iframe=page.locator('iframe').first();await iframe.waitFor();assert.match(await iframe.getAttribute('src'),/sketchfab.com/);}
+    await page.keyboard.press('Escape');page.off('request',previewListener);assert.equal(previewWrites,0,kind+' preview exclusion');
+    await page.goto(base+'/teacher/interactive?kind='+kind+'&view=usage');
+    await page.getByRole('heading',{name:'Số liệu sử dụng',exact:true}).waitFor();
+    await page.locator('.teacher-usage__summary').waitFor();
+    if(await page.locator('.usage-row__toggle').count()){await page.locator('.usage-row__toggle').first().click();await page.locator('.teacher-usage__detail select').waitFor();}
+    await shot('teacher-usage-'+kind);
+    const csv=await page.request.get(base+'/api/v1/teacher/interactive-usage/export.csv?kind='+kind);
+    assert.equal(csv.status(),200);assert.match(csv.headers()['content-type'],/text\/csv/);
+  }
+  await page.setViewportSize({width:390,height:844});
+  await page.goto(base+'/teacher/interactive?kind=game');
+  await page.locator('.curated-card').first().waitFor();await shot('teacher-library-mobile');
+  await page.getByRole('button',{name:'Xu hướng',exact:true}).click();await page.locator('.teacher-usage__summary').waitFor();await shot('teacher-usage-mobile');
+  await page.getByLabel('Khoảng thời gian',{exact:true}).selectOption('custom');
+  await page.getByLabel('Từ ngày',{exact:true}).fill('2026-10-01');await page.getByLabel('Đến ngày',{exact:true}).fill('2026-10-25');
+  await page.getByRole('button',{name:'Áp dụng',exact:true}).click();
+  assert.equal(new URL(page.url()).searchParams.get('from'),'2026-10-01');await page.reload();
+  assert.equal(await page.getByLabel('Từ ngày',{exact:true}).inputValue(),'2026-10-01');
+  await page.getByLabel('Khoảng thời gian',{exact:true}).selectOption('30');await page.locator('.teacher-usage__summary').waitFor();
+  const usageEntry=await page.locator('.usage-row__toggle').first().boundingBox();assert.ok(usageEntry && usageEntry.y<774,'usage first entry visible: '+JSON.stringify(usageEntry));
+  for(const [width,height] of [[1440,900],[1366,768],[768,1024],[360,800],[430,932]]) {
+    await page.setViewportSize({width,height});await page.goto(base+'/teacher/interactive?kind=game');await page.locator('.curated-card').first().waitFor();await shot('teacher-'+width);
+    await page.goto(base+'/interactive?kind=game');await page.locator('.ocean-activity-card').first().waitFor();await shot('learner-'+width);
+  }
+  await page.setViewportSize({width:390,height:844});await page.goto(base+'/teacher/interactive?kind=game&view=usage');await page.locator('.teacher-usage__summary').waitFor();
+  await page.route('**/api/v1/teacher/interactive-usage?**',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:{code:'UNAVAILABLE',message:'Chưa tải được số liệu.'}})}));
+  await page.reload();await page.getByRole('button',{name:'Thử lại',exact:true}).waitFor();await shot('teacher-usage-error');
+  await page.unroute('**/api/v1/teacher/interactive-usage?**');
+  await page.getByRole('button',{name:'Thử lại',exact:true}).click();await page.locator('.teacher-usage__summary').waitFor();
+  assert.deepEqual(errors,[]);
+  console.log('PASS: curated library, aliases, mobile CTA, preview exclusion, four report kinds, real CSV, error/retry, no overflow or broken images.');
+} finally { await browser.close(); }

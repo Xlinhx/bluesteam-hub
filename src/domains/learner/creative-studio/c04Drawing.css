@@ -1,0 +1,104 @@
+/* C04 owns its geometry; shared teacher and habitat surfaces keep their layout. */
+.c04-page.learner-creative-page.creative-local-page {
+  --c04-frame: url('/assets/generated/creative/c04-watercolor-frame-v3.png');
+  padding: 30px max(5%, calc((100% - 1336px)/2)) 70px;
+  min-height: calc(100dvh - 68px);
+}
+.c04-page .learner-creative-backdrop {background:#fcfaf5 var(--c04-frame) center bottom / 100% auto no-repeat}
+.c04-page .learner-creative-backdrop>* {display:none}
+.c04-page .learner-creative-backdrop::before,.c04-page .learner-creative-backdrop::after {content:none}
+.c04-page .creative-local-heading {max-width:1336px;justify-content:flex-start;flex-wrap:nowrap;gap:24px;margin:0 auto 30px;padding:0 44px}
+.c04-page .creative-local-heading>button {order:-1;flex-shrink:0;border:1.5px solid #0d4968;border-radius:999px;min-height:50px;padding:8px 26px;font-size:15px;font-weight:600;color:#0a3d59;background:#fcfaf5}
+.c04-page .creative-local-heading h2 {font-size:38px;line-height:1.2;font-weight:800;color:#073c56}
+.c04-page .creative-local-heading p {font-size:14px;color:#527182;margin-top:6px}
+.c04-page:not(:has(.drawing-shade-panel.is-open)) .creative-local-heading {max-width:974px;padding:0}
+.c04-page .creative-drawing-layout {max-width:1336px}
+.c04-page .creative-drawing-workspace {width:100%;max-width:974px;margin:0 auto;padding:16px;border-radius:20px;background:#fcfaf6;border:1px solid #eae3d9;box-shadow:none}
+.c04-page .creative-drawing-workspace:has(.drawing-shade-panel.is-open) {width:calc(100% - 380px);max-width:none;margin-left:0;padding:16px;min-height:0}
+.c04-page .drawing-shade-panel .creative-tool-panel {top:-1px;right:-381px;width:360px;max-height:none;padding:22px;border-radius:18px;border-color:#eae3d9;background:#fdfbf7;overflow:visible}
+.c04-page .drawing-shade-panel .creative-tool-panel-heading {margin-bottom:20px}
+.c04-page .drawing-shade-panel .creative-tool-panel-heading h2 {font-size:23px;font-weight:800}
+.c04-page .drawing-toolbar {padding:8px;justify-content:flex-start;gap:8px;flex-wrap:nowrap;border:1px solid #eae3d9;border-radius:18px;background:#fffdf9}
+.c04-page .drawing-toolbar>div {gap:5px;flex-wrap:nowrap}
+.c04-page .drawing-toolbar button {min-height:48px;min-width:46px;border-radius:12px;font-size:13px;font-weight:500;padding:8px 10px;white-space:nowrap}
+.c04-page .drawing-tool-group>button {padding:8px 12px;gap:7px}
+.c04-page .drawing-toolbar .drawing-tool-group>div {padding-left:5px;border:0}
+.c04-page .drawing-toolbar svg {width:18px;height:18px}
+.c04-page .drawing-tool-group>button.bg-\[\#17657A\] {background:linear-gradient(145deg,#0b7c92,#14677c);color:white}
+.c04-page .drawing-toolbar .creative-btn:has(>svg+span):not(.creative-complete-button)>span {display:inline}
+.c04-page .drawing-palette {border:0;background:none;padding:0;margin-top:10px}
+.c04-page .drawing-palette-row {gap:12px;min-height:58px;margin:0}
+.c04-page .drawing-palette-row:first-child {border:1px solid #eae3d9;border-radius:16px;background:#fffdf9;padding:12px 10px;overflow:visible;flex-wrap:nowrap}
+.c04-page .drawing-palette-row>strong {min-width:66px;font-size:12px;font-weight:700;line-height:1.4}
+.c04-page .drawing-palette-row>strong small {font-size:11px;font-weight:400;white-space:nowrap;margin-top:6px}
+.c04-page .drawing-basic-colors,.c04-page .creative-drawing-workspace:has(.drawing-shade-panel.is-open) .drawing-basic-colors {display:flex;flex:1;justify-content:space-between;gap:10px;min-width:0}
+.c04-page .drawing-basic-colors .drawing-swatch {width:44px;height:auto;min-height:0;min-width:0;flex:0 1 44px;aspect-ratio:1}
+.c04-page .drawing-swatch {border:1px solid #12384b15;box-shadow:inset 0 1px 3px #ffffff50,0 1px 2px #12384b16;background-image:none}
+.c04-page .drawing-swatch[aria-pressed=true] {outline:1px solid #148b9a;outline-offset:4px}
+.c04-page .drawing-recent-row {padding:9px 10px;gap:14px;flex-wrap:wrap}
+.c04-page .drawing-recent-row .drawing-swatch {width:36px;height:36px;min-width:36px;min-height:36px}
+.c04-page .drawing-recent-row .drawing-add-color {width:auto;min-width:124px;min-height:40px;padding:7px 14px;border-radius:999px;border:1px solid #35abc0;background:#effafa;color:#075775;font-size:12px;font-weight:700}
+.c04-page .drawing-recent-empty {font-size:12px;color:#607b87}
+.c04-page .drawing-paper-scroll {min-height:0;border:1px solid #eae3d9;border-radius:16px;box-shadow:none;margin-top:8px;background:#fffdf8}
+.c04-page .drawing-paper-size {min-height:0}
+.c04-page .drawing-color-panel .creative-palette-tabs {grid-template-columns:1fr .85fr .85fr 1.3fr;gap:6px;padding-bottom:0}
+.c04-page .drawing-color-panel .creative-palette-tabs .creative-btn {font-size:14px;min-height:50px;border-radius:12px;font-weight:400;background:#faf8f4;border-color:#e7dfd5;white-space:nowrap}
+.c04-page .drawing-color-panel .creative-palette-tabs [aria-pressed=true] {background:linear-gradient(145deg,#087b91,#12657b);color:white}
+.c04-page .drawing-color-panel .drawing-shades {grid-template-columns:repeat(6,minmax(0,1fr));gap:12px 8px;margin:28px 0 34px}
+.c04-page .drawing-shades .drawing-swatch {width:100%;height:auto;min-width:0;min-height:0;aspect-ratio:1}
+.c04-page .drawing-color-footer {padding-top:30px;background:transparent;border-color:#eae3d9}
+.c04-page .drawing-color-preview {font-size:17px;gap:20px;margin-bottom:28px}
+.c04-page .drawing-color-preview>span {width:92px;height:92px;border-radius:50%;border:4px solid #fff;outline:1px solid #148b9a}
+.c04-page .drawing-color-footer .creative-workspace-actions>.creative-btn:first-child {display:none}
+.c04-page .drawing-color-footer .creative-btn.primary {min-height:56px;border-radius:999px;font-size:15px;font-weight:700;background:linear-gradient(145deg,#087b91,#12657b)}
+.c04-page .drawing-paper-footer {display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;margin:12px 0 0}
+.c04-page .drawing-paper-hints {display:flex;justify-content:center;gap:24px;flex-basis:100%;font-size:12px;color:#16546e}
+.c04-page .drawing-paper-hints>span {display:flex;align-items:center;gap:10px}
+.c04-page .drawing-paper-hints>span+span {border-left:1px solid #eae3d9;padding-left:24px}
+.c04-page .drawing-zoom {margin:0;gap:6px}
+.c04-page .drawing-zoom .creative-btn {min-height:40px;min-width:40px}
+.c04-page .drawing-paper-footer .creative-complete-button {min-height:40px;border-radius:999px;font-size:12px}
+@media(min-width:1201px) and (max-width:1400px) {
+ .c04-page .creative-drawing-workspace:has(.drawing-shade-panel.is-open) {width:calc(100% - 350px)}
+ .c04-page .drawing-shade-panel .creative-tool-panel {right:-351px;width:330px;padding:18px}
+ .c04-page .drawing-toolbar,.c04-page .drawing-toolbar>div {gap:4px}
+ .c04-page .drawing-toolbar button {min-width:44px;min-height:46px;padding:8px;font-size:12px}
+ .c04-page .drawing-tool-group>button {padding:8px;gap:5px}
+}
+@media(min-width:801px) and (max-width:1200px) {
+ .c04-page.learner-creative-page.creative-local-page {padding-left:4%;padding-right:4%}
+ .c04-page .creative-local-heading {padding:0;gap:18px}
+ .c04-page .creative-drawing-workspace:has(.drawing-shade-panel.is-open) {width:calc(100% - 310px)}
+ .c04-page .drawing-shade-panel .creative-tool-panel {right:-311px;width:295px;padding:16px}
+ .c04-page .drawing-toolbar,.c04-page .drawing-toolbar>div {flex-wrap:wrap}
+ .c04-page .drawing-basic-colors {gap:5px}
+ .c04-page .drawing-palette-row {gap:8px}
+}
+@media(max-width:800px) {
+ .c04-page.learner-creative-page.creative-local-page {padding:20px 14px 70px}
+ .c04-page.learner-creative-page.creative-local-page:has(.drawing-shade-panel.is-open) {padding-bottom:65dvh}
+ .c04-page .learner-creative-backdrop::before,.c04-page .learner-creative-backdrop::after {content:'';position:absolute;inset:0 auto 0 0;width:30px;background:var(--c04-frame) left top / auto 100% no-repeat}
+ .c04-page .learner-creative-backdrop::after {left:auto;right:0;background-position:right top}
+ .c04-page .creative-local-heading {padding:0;gap:12px;margin-bottom:20px;align-items:center}
+ .c04-page .creative-local-heading>button {min-height:44px;font-size:11px;padding:8px 12px}
+ .c04-page .creative-local-heading h2 {font-size:22px}
+ .c04-page .creative-local-heading p {font-size:10px}
+ .c04-page .creative-drawing-workspace,.c04-page .creative-drawing-workspace:has(.drawing-shade-panel.is-open) {width:100%;max-width:none;padding:10px;min-height:0}
+ .c04-page .drawing-toolbar,.c04-page .drawing-toolbar>div {flex-wrap:wrap;gap:5px}
+ .c04-page .drawing-toolbar {padding:6px}
+ .c04-page .drawing-toolbar button {min-height:44px;min-width:44px;font-size:11px;padding:8px}
+ .c04-page .drawing-toolbar .drawing-tool-group>button>span {display:inline}
+ .c04-page .drawing-palette-row:first-child {flex-wrap:wrap;padding:10px}
+ .c04-page .drawing-palette-row>strong {flex-basis:auto;display:block}
+ .c04-page .drawing-basic-colors,.c04-page .creative-drawing-workspace:has(.drawing-shade-panel.is-open) .drawing-basic-colors {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;width:100%;flex-basis:100%}
+ .c04-page .drawing-basic-colors .drawing-swatch {width:100%;max-width:44px;justify-self:center}
+ .c04-page .drawing-recent-row {padding:10px 0;gap:10px}
+ .c04-page .drawing-shade-panel .creative-tool-panel {inset:auto 0 0;width:100%;max-height:60dvh;padding:20px;overflow:auto;border-radius:26px 26px 0 0}
+ .c04-page .drawing-color-panel .drawing-shades {grid-template-columns:repeat(6,minmax(0,1fr));margin:20px 0;gap:10px}
+ .c04-page .drawing-color-footer {padding-top:15px;background:#fdfbf7}
+ .c04-page .drawing-color-preview {margin-bottom:16px;font-size:14px}
+ .c04-page .drawing-color-preview>span {width:56px;height:56px}
+ .c04-page .drawing-paper-hints {font-size:10px;gap:10px;flex-wrap:wrap}
+ .c04-page .drawing-paper-hints>span+span {padding-left:10px}
+ .c04-page .drawing-palette {margin-left:0;margin-right:0}
+}

@@ -1,0 +1,35 @@
+.ocean-fieldwork{position:absolute;inset:0;overflow:hidden;pointer-events:none;color:#c9e8db;isolation:isolate}
+.fieldwork-chart{position:absolute;width:690px;height:690px;left:-330px;top:7%;opacity:.5}
+.fieldwork-coral{position:absolute;right:-38px;bottom:-65px;width:290px;height:570px;opacity:.65;transform-origin:50% 100%}
+.fieldwork-lens{position:absolute;width:190px;height:190px;right:6%;top:9%;opacity:.55}
+.fieldwork-lens svg{width:100%;height:100%}
+.fieldwork-chart,.fieldwork-lens{transition:transform 1800ms cubic-bezier(.42,0,.2,1)}
+.fieldwork-current{transition:opacity 1400ms ease}
+.entry-page:has(.entry-role-card[data-role=student]:is(:hover,:focus-within)) .fieldwork-lens{transform:translate(-24px,18px) rotate(-18deg)}
+.entry-page:has(.entry-role-card[data-role=teacher]:is(:hover,:focus-within)) .fieldwork-chart{transform:rotate(9deg) translateY(-14px)}
+.entry-page:has(.entry-role-card:is(:hover,:focus-within)) .fieldwork-current{opacity:.7}
+.account-page[data-role=student] .ocean-fieldwork--form .fieldwork-lens{transform:rotate(24deg) translateX(-8px)}
+.fieldwork-wash{position:absolute;inset:-12%;background:radial-gradient(ellipse at 20% 40%,#d0f1d820,transparent 45%),linear-gradient(125deg,transparent 35%,#fff8d230 47%,transparent 63%);mix-blend-mode:screen;transform:none;opacity:.5}
+.ocean-fieldwork--entry{z-index:1;color:#e3f5dc}
+.ocean-fieldwork--entry .fieldwork-chart{left:-240px;top:12%;width:700px;height:700px}
+.ocean-fieldwork--entry .fieldwork-coral{right:-40px;width:360px;height:650px;opacity:.9}
+.ocean-fieldwork--auth{z-index:0}
+.ocean-fieldwork--auth .fieldwork-chart{left:-390px;top:20%}
+.ocean-fieldwork--auth .fieldwork-coral{right:-55px;bottom:-80px;opacity:.45}
+.ocean-fieldwork--auth .fieldwork-lens{top:29%;right:8%;width:150px;height:150px}
+.account-main{position:relative;isolation:isolate}
+.account-main>.account-top,.account-main>.account-content,.account-main>.account-footer{position:relative;z-index:1}
+.ocean-fieldwork--form{color:#41716e;z-index:0;opacity:.19}
+.ocean-fieldwork--form .fieldwork-chart{left:auto;right:-420px;top:48%;width:650px;height:650px}
+.ocean-fieldwork--form .fieldwork-coral{left:0;right:auto;bottom:-120px;width:140px;height:400px;opacity:.35}
+.ocean-fieldwork--form .fieldwork-lens{width:120px;height:120px;top:3%;right:-60px;opacity:.5}
+.ocean-fieldwork--form .fieldwork-wash{display:none}
+.account-coast>.account-logo,.account-coast>.account-coast-copy{position:relative;z-index:1}
+.entry-role-art{box-shadow:inset 0 0 0 1px #fff6}
+.entry-connections{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;color:#17657a;opacity:.27;z-index:0}
+.entry-connections path{stroke:currentColor;stroke-width:.85}
+.entry-role-card>.entry-role-art,.entry-role-card>.entry-persona,.entry-role-card>.entry-role-action,.entry-role-card>.grid{position:relative;z-index:1}
+.entry-role-card .entry-connections{transition:opacity 1000ms ease}
+.entry-role-card:hover .entry-connections,.entry-role-card:focus-within .entry-connections{opacity:.65}
+@media(max-width:767px){.ocean-fieldwork--entry .fieldwork-chart{width:480px;height:480px;left:-300px;top:4%}.ocean-fieldwork--entry .fieldwork-coral{right:-130px;bottom:-30px;width:280px;height:600px}.fieldwork-lens{width:120px;height:120px;right:4%;top:1%}}
+@media(prefers-reduced-motion:reduce){.ocean-fieldwork *,.entry-connections{animation:none!important;transition:none!important}.ocean-fieldwork .fieldwork-chart,.ocean-fieldwork .fieldwork-lens{transform:none!important}}

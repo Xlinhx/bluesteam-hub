@@ -1,0 +1,43 @@
+/* Artwork settles within fixed frames; interactive hit targets stay still. */
+.home-gallery-stage { position:absolute; inset:0; }
+.home-selector > img { transform-origin:50% 150%; }
+.home-discovery[data-selection-input=keyboard] .home-feature-gallery img { transition:none; }
+.home-feature-gallery img { transition-timing-function:cubic-bezier(.26,.78,.23,1),ease; transition-duration:var(--home-gallery-duration,680ms),340ms; }
+.home-discovery[data-selection-input=pointer] .home-feature-copy h2 { animation:home-title-tide 280ms cubic-bezier(.22,1,.36,1) both; }
+.home-discovery[data-selection-input=pointer] .home-feature-copy p { animation:home-copy-follow 240ms cubic-bezier(.22,1,.36,1) both; }
+@keyframes home-title-tide { from { translate:0 5px; opacity:.8; } to { translate:0 0; opacity:1; } }
+@keyframes home-copy-follow { from { opacity:.3; translate:0 8px; } to { opacity:1; translate:0 0; } }
+.learner-home { --home-feedback:240ms; }
+.teacher-home { --home-feedback:160ms; }
+.home-selector > img, .teacher-home-domains img, .home-shortcut > img { transition:scale var(--home-feedback,200ms) cubic-bezier(.22,1,.36,1); }
+.home-selector:active .home-selector-label, .teacher-home-domains > button:active .teacher-domain-label { transform:translateY(1px); }
+@media(hover:none) and (pointer:coarse) and (prefers-reduced-motion:no-preference) {
+ .home-selector > img, .teacher-home-domains img, .home-shortcut > img { scale:1; transition:scale 260ms cubic-bezier(.22,1,.36,1); }
+ .home-selector:active > img, .teacher-home-domains > button:active img, .home-shortcut:active > img { scale:1.035; transition-duration:100ms; }
+}
+:is(.learner-home,.teacher-home)[data-motion-input=keyboard] *,
+:is(.learner-home,.teacher-home)[data-motion-input=keyboard] *::before,
+:is(.learner-home,.teacher-home)[data-motion-input=keyboard] *::after { transition:none!important; animation:none!important; }
+
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+ .home-selector:hover > img, .teacher-home-domains > button:hover img { scale:1.055; }
+ .home-shortcut:hover > img { scale:1.035; }
+ .home-primary > svg:last-child { transition:transform 200ms cubic-bezier(.22,1,.36,1); }
+ .home-primary:hover > svg:last-child { transform:translateX(3px); }
+}
+
+/* Only the Home-to-destination snapshot receives this water aperture. Header stays anchored. */
+html[data-home-journey=opening]::view-transition { pointer-events:none; }
+html[data-home-journey=opening]::view-transition-old(root) { animation:home-space-recede 680ms cubic-bezier(.32,.72,0,1) both; mix-blend-mode:normal; }
+html[data-home-journey=opening]::view-transition-new(root) { animation:home-water-aperture 920ms cubic-bezier(.22,.8,.2,1) both; mix-blend-mode:normal; }
+html[data-home-journey=opening]::view-transition-group(home-header) { animation-duration:0s; z-index:5; }
+html[data-home-journey=opening]::view-transition-old(home-header) { animation:none; opacity:0; }
+html[data-home-journey=opening]::view-transition-new(home-header) { animation:none; }
+@keyframes home-space-recede { to { scale:.97; opacity:0; } }
+@keyframes home-water-aperture {
+ from { clip-path:circle(0px at var(--home-journey-x) var(--home-journey-y)); }
+ to { clip-path:circle(var(--home-journey-radius) at var(--home-journey-x) var(--home-journey-y)); }
+}
+@media(prefers-reduced-motion:reduce) {
+ html[data-home-journey]::view-transition-old(root),html[data-home-journey]::view-transition-new(root) { animation:none!important; }
+}

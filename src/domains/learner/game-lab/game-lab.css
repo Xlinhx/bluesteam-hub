@@ -1,0 +1,84 @@
+.ocean-play-catalog{color:var(--interactive-ink);min-height:calc(100vh - 76px);font-family:var(--font-sans),sans-serif}
+.ocean-play-catalog__gateway,.ocean-play-catalog__results{position:relative;max-width:1264px;margin:0 auto;padding-inline:24px}
+.ocean-play-catalog__gateway{padding-top:32px}
+.ocean-play-catalog__results{padding-top:0;padding-bottom:112px}
+.ocean-play-catalog__intro{display:flex;gap:16px;align-items:center;margin-bottom:24px}
+.ocean-play-catalog__intro>div{flex:1;min-width:0}
+.ocean-play-catalog h1{font-family:inherit;font-weight:800;font-size:44px;line-height:1.15;letter-spacing:-.03em;margin:0 0 8px}
+.ocean-play-catalog__intro p{font-size:20px;line-height:1.5;font-weight:500;color:var(--interactive-muted);margin:0}
+.ocean-audio-button{display:grid;place-items:center;background:#c5edf4;color:#075d75;width:48px;min-width:48px;height:48px;border-radius:50%;cursor:pointer;flex-shrink:0;transition:transform .2s,background .2s}
+.ocean-play-catalog__intro>.ocean-audio-button{width:52px;min-width:52px;height:52px;background:var(--interactive-teal);color:white;box-shadow:0 0 0 3px #fff}
+.ocean-play-catalog__intro>.ocean-audio-button svg{width:26px;height:26px}
+.ocean-audio-button:hover{transform:scale(1.04);background:#9fdfeb}
+.ocean-catalog-toolbar{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.ocean-catalog-toolbar select{width:240px;min-width:0;min-height:52px;max-width:100%;padding:10px 38px 10px 16px;border:1px solid var(--interactive-border);border-radius:16px;background:#fff;font:inherit;font-weight:700;color:var(--interactive-ink)}
+.ocean-play-search{flex:1;min-width:0;display:flex;gap:12px;align-items:center;background:#fffdf8;border:1px solid var(--interactive-border);border-radius:16px;min-height:52px;padding:0 8px 0 14px}
+.ocean-play-search input{width:100%;min-width:0;font:inherit;color:var(--interactive-ink);outline:none;background:transparent}
+.ocean-play-search button{width:44px;min-width:44px;height:44px;display:grid;place-items:center;border-radius:12px;cursor:pointer}
+.ocean-play-search button:hover{background:var(--interactive-aqua)}
+.ocean-catalog-count{margin:0;min-width:112px;font-size:15px;font-weight:600;color:var(--interactive-muted);white-space:nowrap}
+.ocean-group-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0}
+.ocean-group-heading h2{font-family:inherit;font-size:26px;font-weight:800;line-height:1.25;margin:0;min-width:0;overflow-wrap:anywhere}
+.ocean-group-heading>button:not(.ocean-audio-button){display:flex;align-items:center;gap:8px;min-height:48px;font-weight:700;cursor:pointer;color:var(--interactive-teal)}
+.ocean-group-heading .ocean-group-open{margin-left:auto}
+.ocean-activity-group{margin-top:24px}.ocean-activity-group:first-child{margin-top:0}
+.ocean-activity-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:24px}
+.ocean-activity-group .ocean-activity-grid{margin-top:16px}
+.ocean-activity-card{display:flex;flex-direction:column;gap:12px;min-width:0;background:#fffefb;border-radius:24px;padding:12px;border:1px solid var(--interactive-border);box-shadow:0 6px 18px #10345212;transition:transform .2s,box-shadow .2s}
+.ocean-activity-card:hover{transform:translateY(-3px);box-shadow:0 10px 20px #10345218}
+.ocean-activity-card__preview{display:block;width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:16px;cursor:pointer;background:var(--interactive-aqua)}
+.ocean-activity-card__preview img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.ocean-activity-card__preview:hover img{transform:scale(1.035)}
+.ocean-activity-card__footer{display:grid;grid-template-columns:48px minmax(0,1fr);align-items:center;gap:12px;margin-top:auto}
+.ocean-activity-card h2{grid-column:1/-1;font-family:inherit;font-size:22px;font-weight:700;line-height:1.3;min-width:0;margin:0;overflow-wrap:anywhere}
+.ocean-play-button,.ocean-catalog-more button{display:flex;gap:8px;align-items:center;justify-content:center;background:#b74a36;color:#fff;border:1px solid #9d3c2a;border-radius:999px;font-weight:700;min-height:48px;padding:10px 18px;cursor:pointer;white-space:nowrap;transition:transform .2s,background .2s}
+.ocean-play-button:hover,.ocean-catalog-more button:hover{background:#9e3e2c;transform:translateY(-2px)}
+.ocean-catalog-more{display:flex;justify-content:center;margin-top:24px}
+.ocean-catalog-more button{padding-inline:36px}
+.ocean-catalog-message{padding:40px 24px;text-align:center;background:#fff;border:1px solid var(--interactive-border);border-radius:24px;margin:24px 0;color:var(--interactive-muted)}
+.ocean-catalog-message h2{font-size:26px;font-weight:800;font-family:inherit;color:var(--interactive-ink)}
+.ocean-catalog-message button{display:inline-flex;align-items:center;gap:8px;min-height:48px;margin-top:16px;padding:8px 20px;background:var(--interactive-teal);color:white;border-radius:16px;font-weight:700;cursor:pointer}
+.ocean-activity-skeleton{height:280px;background:linear-gradient(110deg,#e2eeec,#f3f8f6,#e2eeec);border-radius:24px}
+.ocean-play-catalog button:focus-visible,.ocean-play-search:focus-within{outline:3px solid var(--interactive-ink);outline-offset:4px}
+@media(max-width:1199px){
+ .ocean-play-catalog__intro{flex-wrap:wrap}
+ .ocean-activity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:767px){
+ .ocean-play-catalog__gateway,.ocean-play-catalog__results{padding-inline:16px}
+ .ocean-play-catalog__gateway{padding-top:16px}.ocean-play-catalog__results{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+ .ocean-play-catalog__intro{gap:12px;margin-bottom:12px;align-items:flex-start}
+ .ocean-play-catalog__intro>div{flex:1;min-width:0}
+ .ocean-play-catalog h1{font-size:32px;line-height:1.2}.ocean-play-catalog__intro p{font-size:18px}
+ .ocean-play-catalog__intro>.ocean-audio-button{width:44px;min-width:44px;height:44px}
+ .ocean-catalog-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px}
+ .ocean-play-search{grid-column:1/-1;min-height:48px;margin:0}
+ .ocean-catalog-toolbar select{width:100%;min-height:48px;font-size:15px}
+ .ocean-activity-grid{grid-template-columns:1fr;gap:16px;margin-top:16px}
+ .ocean-activity-group{margin-top:16px}.ocean-activity-group .ocean-activity-grid{margin-top:12px}
+ .ocean-group-heading{gap:8px}.ocean-group-heading h2{font-size:22px;flex:1}
+ .ocean-activity-group>.ocean-group-heading{flex-wrap:nowrap}
+ .ocean-activity-group>.ocean-group-heading>svg{width:24px;flex-shrink:0}
+ .ocean-group-heading .ocean-group-open{font-size:0;width:44px;min-width:44px;justify-content:center;margin-left:0}
+ .ocean-group-open svg{width:22px}.ocean-audio-button{width:44px;min-width:44px;height:44px}
+ .ocean-catalog-count{font-size:14px;margin:0;min-width:0}
+ .ocean-activity-card{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:16px}
+ .ocean-activity-card__preview{width:96px;height:72px;align-self:center;border-radius:14px}
+ .ocean-activity-card__footer{display:contents}
+ .ocean-activity-card h2{grid-column:2;grid-row:1;font-size:20px;align-self:center}
+ .ocean-activity-card .ocean-audio-button{grid-column:1;grid-row:2;justify-self:center}
+ .ocean-play-button{grid-column:2;grid-row:2;font-size:15px;min-height:44px;padding:10px 8px;scroll-margin-block:80px calc(92px + env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){.ocean-activity-card,.ocean-activity-card__preview img,.ocean-play-button,.ocean-audio-button{transition:none}.ocean-activity-card:hover,.ocean-play-button:hover{transform:none}}
+
+@media(min-width:600px) and (max-height:500px) and (hover:none){
+ .ocean-play-catalog__gateway{padding-top:12px}
+ .ocean-play-catalog__intro{margin-bottom:8px;flex-wrap:nowrap;align-items:center}
+ .ocean-play-catalog h1{font-size:28px;line-height:1.2}
+ .ocean-play-catalog__intro p{font-size:15px;line-height:1.35}
+ .ocean-play-catalog__intro>.ocean-audio-button{width:44px;min-width:44px;height:44px}
+ .ocean-play-catalog .interactive-worlds{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:0 0 12px}
+ .ocean-play-catalog .interactive-world{height:128px}
+ .ocean-play-catalog .interactive-world__art{height:80px}
+ .ocean-play-catalog .interactive-world__label{font-size:15px;min-height:44px;padding:6px 4px;gap:6px}
+}

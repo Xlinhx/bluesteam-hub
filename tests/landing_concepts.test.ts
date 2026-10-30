@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { CONCEPTS, ConceptId } from '../src/pages/concepts/ConceptTypes';
+import { CONCEPTS, ConceptId } from '../src/domains/public/concepts-preview/ConceptTypes';
 
 describe('Landing Page Concepts — Specifications & Data Integrity', () => {
   it('should define all 3 distinct landing page concepts with complete metadata', () => {
@@ -72,7 +72,7 @@ describe('Landing Page Concepts — Specifications & Data Integrity', () => {
   });
 
   it('should verify Concept B 5-tab system has complete scientific specimens for all categories', async () => {
-    const { TAB_SLIDES } = await import('../src/pages/concepts/ConceptBPage');
+    const { TAB_SLIDES } = await import('../src/domains/public/concepts-preview/ConceptBPage');
     const categories = ['ecosystem', 'life', 'process', 'impact', 'careers'] as const;
 
     categories.forEach((cat) => {
@@ -90,8 +90,8 @@ describe('Landing Page Concepts — Specifications & Data Integrity', () => {
   });
 
   it('should verify Concept B and Concept C camera feeds are distinct with 4 viewpoints each', async () => {
-    const { CAMERA_FEEDS_B } = await import('../src/pages/concepts/ConceptBPage');
-    const { CAMERA_FEEDS_C } = await import('../src/pages/concepts/ConceptCPage');
+    const { CAMERA_FEEDS_B } = await import('../src/domains/public/concepts-preview/ConceptBPage');
+    const { CAMERA_FEEDS_C } = await import('../src/domains/public/concepts-preview/ConceptCPage');
 
     expect(CAMERA_FEEDS_B).toHaveLength(4);
     expect(CAMERA_FEEDS_C).toHaveLength(4);
@@ -110,7 +110,7 @@ describe('Landing Page Concepts — Specifications & Data Integrity', () => {
   });
 
   it('should verify Concept A depth zones contain 5 zones with dynamic specimens and tags', async () => {
-    const { DEPTH_ZONES } = await import('../src/pages/concepts/ConceptAPage');
+    const { DEPTH_ZONES } = await import('../src/domains/public/concepts-preview/ConceptAPage');
 
     expect(DEPTH_ZONES).toHaveLength(5);
     DEPTH_ZONES.forEach((zone) => {

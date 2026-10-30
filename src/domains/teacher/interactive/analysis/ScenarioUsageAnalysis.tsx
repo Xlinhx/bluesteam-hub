@@ -1,0 +1,5 @@
+import type { UsageAnalysis } from '@bluesteam/contracts';
+import { UsageMeter } from './UsageMeter';
+export function ScenarioUsageAnalysis({ analysis }: { analysis: Extract<UsageAnalysis,{type:'scenario_choices'}> }) {
+  return <section className="usage-breakdown-panel usage-surface"><h2>Lựa chọn trong từng cảnh</h2>{analysis.scenes.map((scene,index) => <details className="usage-scene" key={scene.id} open={index===0}><summary><h3>Cảnh {index+1} · {scene.label}</h3><span>{scene.answeredRuns} lượt có lựa chọn</span></summary>{scene.choices.map(choice => <div className="usage-choice-row" key={choice.id}><span>{choice.label}</span><UsageMeter value={choice.count} total={scene.answeredRuns}/></div>)}</details>)}<p className="usage-help">Mỗi cảnh có mẫu số riêng. Không cộng các cảnh thành tổng số lượt chơi.</p></section>;
+}

@@ -1,0 +1,34 @@
+/* Keep the shell steady while paper, coastline and the work surface change depth. */
+:root[data-creative-journey]::view-transition{pointer-events:none}
+:root[data-creative-journey] :is(.creative-teacher-content,.scan-learner-content,.creative-hub-content,.c04-page,.creative-local-page,.resource-library){view-transition-name:creative-desk}
+:root[data-creative-journey] :is(.creative-hub-scene,.scan-ocean-backdrop,.creative-seascape,.learner-creative-backdrop){view-transition-name:creative-coast}
+:root[data-creative-journey]::view-transition-old(root),:root[data-creative-journey]::view-transition-new(root){animation:none;mix-blend-mode:normal}
+:root[data-creative-journey]::view-transition-group(creative-desk){animation-duration:920ms;animation-timing-function:cubic-bezier(.32,.72,0,1);z-index:2}
+:root[data-creative-journey]::view-transition-old(creative-desk){animation:creative-desk-leave 560ms cubic-bezier(.4,0,.5,1) both;mix-blend-mode:normal}
+:root[data-creative-journey]::view-transition-new(creative-desk){animation:creative-desk-arrive 1050ms cubic-bezier(.16,1,.3,1) both;mix-blend-mode:normal}
+:root[data-creative-journey=back]::view-transition-old(creative-desk){animation-name:creative-desk-leave-back}
+:root[data-creative-journey=back]::view-transition-new(creative-desk){animation-name:creative-desk-return}
+:root[data-creative-journey]::view-transition-group(creative-coast){animation-duration:1300ms;z-index:1}
+:root[data-creative-journey]::view-transition-old(creative-coast){animation:creative-coast-out 1050ms ease both;mix-blend-mode:normal}
+:root[data-creative-journey]::view-transition-new(creative-coast){animation:creative-coast-in 1350ms cubic-bezier(.22,1,.36,1) both;mix-blend-mode:normal}
+:root[data-creative-audience=teacher]::view-transition-new(creative-desk){animation-duration:780ms}
+:root[data-creative-audience=teacher]::view-transition-old(creative-desk){animation-duration:400ms}
+@keyframes creative-desk-leave{to{opacity:0;transform:translate(-3%,8px) rotate(-.6deg);clip-path:inset(0 8% 0 0 round 28px)}}
+@keyframes creative-desk-arrive{0%{opacity:0;transform:translate(4%,18px) rotate(.65deg);clip-path:inset(0 0 0 14% round 38px)}100%{opacity:1;transform:none;clip-path:inset(0 round 0)}}
+@keyframes creative-desk-leave-back{to{opacity:0;transform:translate(3%,8px) rotate(.5deg)}}
+@keyframes creative-desk-return{from{opacity:0;transform:translate(-3%,-8px) rotate(-.45deg);clip-path:inset(0 10% 0 0 round 28px)}to{opacity:1;transform:none;clip-path:inset(0 round 0)}}
+@keyframes creative-coast-out{to{opacity:0;transform:translateY(20px) scale(1.025)}}
+@keyframes creative-coast-in{from{opacity:0;transform:translateY(-24px) scale(1.035)}to{opacity:1;transform:none}}
+@media(max-width:700px){:root[data-creative-journey]::view-transition-new(creative-desk){animation-duration:850ms}:root[data-creative-journey]::view-transition-group(creative-desk){animation-duration:800ms}}
+@media(prefers-reduced-motion:reduce){:root[data-creative-journey]::view-transition-group(*),:root[data-creative-journey]::view-transition-old(*),:root[data-creative-journey]::view-transition-new(*){animation:none!important}}
+/* The destination determines the choreography, not a universal page preset. */
+:root[data-creative-destination=scan][data-creative-journey=forward]::view-transition-new(creative-desk){animation-name:creative-scan-focus;animation-duration:1050ms}
+:root[data-creative-destination=drawing][data-creative-journey=forward]::view-transition-new(creative-desk){animation-name:creative-paper-open;animation-duration:1150ms;transform-origin:30% 10%}
+:root[data-creative-destination=habitat][data-creative-journey=forward]::view-transition-new(creative-desk){animation-name:creative-tray-arrive;animation-duration:1100ms;transform-origin:50% 80%}
+:root[data-creative-destination=report][data-creative-journey=forward]::view-transition-new(creative-desk){animation-name:creative-report-open;animation-duration:800ms}
+:root[data-creative-destination=review][data-creative-journey=forward]::view-transition-new(creative-desk){animation-name:creative-review-open;animation-duration:900ms}
+@keyframes creative-scan-focus{from{opacity:0;clip-path:inset(12% 8% 5% 8% round 45px);transform:translateY(18px)}to{opacity:1;clip-path:inset(0 round 0);transform:none}}
+@keyframes creative-paper-open{from{opacity:0;transform:perspective(1500px) rotateX(5deg) rotate(-.5deg) translateY(22px);clip-path:inset(0 0 20% 0 round 30px)}to{opacity:1;transform:none;clip-path:inset(0 round 0)}}
+@keyframes creative-tray-arrive{from{opacity:0;transform:perspective(1500px) rotateX(4deg) translateY(32px) scale(.975)}to{opacity:1;transform:none}}
+@keyframes creative-report-open{from{opacity:0;clip-path:inset(0 0 0 8% round 24px);transform:translateX(18px)}to{opacity:1;clip-path:inset(0 round 0);transform:none}}
+@keyframes creative-review-open{from{opacity:0;clip-path:inset(0 6% 0 0 round 28px);transform:translateX(-22px)}to{opacity:1;clip-path:inset(0 round 0);transform:none}}

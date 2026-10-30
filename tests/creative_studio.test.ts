@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { creativeStorage, CreativeArtwork, HabitatPlacedItem } from '../src/services/creativeStorage';
+import { creativeStorage, CreativeArtwork, HabitatPlacedItem } from '../src/shared/creative/creativeStorage';
 
 describe('Chặng 5: Creative Studio & Persistence Tests', () => {
   beforeEach(async () => {

@@ -63,9 +63,9 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { RouterProvider } from '../src/app/router';
 import { I18nProvider } from '../src/shared/i18n/I18nContext';
-import { Ocean3DExplorePage } from '../src/pages/learner/Ocean3DExplorePage';
-import { InteractiveSubNav } from '../src/components/interactive/InteractiveSubNav';
-import { TurtleCard3DCanvas } from '../src/components/3d/TurtleCard3DCanvas';
+import { Ocean3DExplorePage } from '../src/domains/learner/atlas/Ocean3DExplorePage';
+import { InteractiveSubNav } from '../src/shared/ui/navigation/InteractiveSubNav';
+import { TurtleCard3DCanvas } from '../src/domains/learner/creature-viewer/components/TurtleCard3DCanvas';
 import {
   DragToRotateIcon,
   DragToRotateBadge,
@@ -75,7 +75,7 @@ import {
   OrganicWaveDivider,
   StarfishOutlineDoodle,
   FloatingBubbleIcon,
-} from '../src/components/3d/Ocean3DSvgs';
+} from '../src/shared/ui/visuals/Ocean3DSvgs';
 
 function renderWithProviders(element: React.ReactElement): string {
   return renderToString(

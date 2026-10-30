@@ -272,7 +272,8 @@
 }
 
 html {
-  /* Natural viewport scrolling */
+  /* Keep short Home screens and scrollable catalogs on the same horizontal axis. */
+  scrollbar-gutter: stable;
 }
 
 body {

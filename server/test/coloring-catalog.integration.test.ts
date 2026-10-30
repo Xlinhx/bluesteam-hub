@@ -1,0 +1,8 @@
+import {afterAll,beforeAll,it,expect} from 'vitest';
+import {createDatabasePool,assertTestDatabaseUrl} from '../src/database/pool';
+import {runMigrations} from '../src/database/migrate';
+import {ResourcesService} from '../src/content/resources/resources.service';
+const url=process.env.TEST_DATABASE_URL||'postgresql://bluesteam:bluesteam_dev_local@127.0.0.1:5442/bluesteam_test',pool=createDatabasePool(url),service=new ResourcesService(pool),prefix='scale-'+crypto.randomUUID();
+beforeAll(async()=>{assertTestDatabaseUrl(url);await runMigrations(pool);await pool.query(`INSERT INTO resources(kind,title,visibility,content) SELECT 'coloring',$1||n::text,CASE WHEN n=73 THEN 'hidden' ELSE 'published' END,jsonb_build_object('drawingTemplateKey',CASE WHEN n%2=0 THEN 'turtle' ELSE '' END,'svgTemplate',CASE WHEN n%3=0 THEN '<svg/>' ELSE '' END) FROM generate_series(1,73)n`,[prefix]);});
+afterAll(async()=>{await pool.query('DELETE FROM resources WHERE title LIKE $1',[prefix+'%']);await pool.end();});
+it('filters capability before total and cursor across a large coloring collection',async()=>{const first=await service.listResources({isTeacher:false,kind:'coloring',q:prefix,capability:'screen',limit:6});expect(first.total).toBe(36);expect(first.items).toHaveLength(6);expect(first.items.every(i=>i.content.drawingTemplateKey)).toBe(true);const next=await service.listResources({isTeacher:false,kind:'coloring',q:prefix,capability:'screen',limit:6,cursor:first.nextCursor!});expect(next.total).toBe(36);expect(new Set([...first.items,...next.items].map(i=>i.id)).size).toBe(12);const printable=await service.listResources({isTeacher:false,kind:'coloring',q:prefix,capability:'print',limit:6});expect(printable.total).toBe(24);});

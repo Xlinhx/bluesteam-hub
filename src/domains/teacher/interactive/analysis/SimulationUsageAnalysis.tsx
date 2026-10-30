@@ -1,0 +1,8 @@
+import type { UsageAnalysis } from '@bluesteam/contracts';
+import { UsageMeter } from './UsageMeter';
+export function SimulationUsageAnalysis({ analysis }: { analysis: Extract<UsageAnalysis, {type:'simulation_steps'|'simulation_choices'}> }) {
+  return <section className="usage-breakdown-panel usage-surface"><h2>{analysis.type === 'simulation_steps' ? 'Các chặng đã khám phá' : 'Lựa chọn trong mô phỏng'}</h2>
+    <p className="usage-help">{analysis.type === 'simulation_steps' ? 'Một lượt chơi có thể được ghi nhận ở nhiều chặng. Các chặng không phải tiến độ hoàn thành.' : 'Mỗi bước có mẫu số riêng, chỉ tính lựa chọn đầu được ghi nhận.'}</p>
+    {analysis.type === 'simulation_steps' ? <><p className="usage-help">{analysis.interactedRuns} lượt có ít nhất một thao tác tại chặng.</p>{analysis.steps.map((step,index) => <div className="usage-step" key={step.id}><span className="usage-step__number">{index+1}</span><span>{step.label}</span><UsageMeter value={step.visitedRuns} total={analysis.interactedRuns}/></div>)}</> : analysis.steps.map(step => <div className="usage-choice-section" key={step.id}><h3>{step.label}</h3><p className="usage-help">{step.answeredRuns} lượt có lựa chọn tại bước này</p>{step.choices.map(choice => <div className="usage-choice-row" key={choice.id}><span>{choice.label}</span><UsageMeter value={choice.count} total={step.answeredRuns}/></div>)}</div>)}
+  </section>;
+}

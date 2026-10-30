@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { OCEAN_RESOURCES } from '../src/content/resourcesData';
-import { demoStore } from '../src/demo/storage/demoStore';
+import { OCEAN_RESOURCES } from '../src/domains/learner/resources/resourcesData';
+import { demoStore } from '../src/shared/realtime/demoStore';
 
 describe('Chặng 4: Resources, Media, Flashcards & Simulations Verification', () => {
   beforeEach(() => {

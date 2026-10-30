@@ -5,7 +5,7 @@ import {
   EDITORIAL_TOKENS,
   TACTILE_TOKENS,
   applyThemeVariables,
-} from '../src/themes/tokens';
+} from '../src/shared/theme/tokens';
 
 describe('Adversarial Typography & Token Empirical Challenge (M1 Challenger 1)', () => {
   it('strictly verifies --font-editorial-serif contains Noto Serif, Playfair Display and NEVER Charter', () => {

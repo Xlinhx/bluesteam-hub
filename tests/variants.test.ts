@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { VARIANTS, VariantId } from '../src/domain/variant/types';
-import { EDITORIAL_TOKENS, TACTILE_TOKENS } from '../src/themes/tokens';
+import { VARIANTS, VariantId } from '../src/shared/types/variant';
+import { EDITORIAL_TOKENS, TACTILE_TOKENS } from '../src/shared/theme/tokens';
 import { matchRoute } from '../src/app/router';
 
 describe('Variant Hypotheses & Semantic Routing', () => {

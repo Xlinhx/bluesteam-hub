@@ -4,8 +4,8 @@ import {
   DEFAULT_HABITAT_ITEMS,
   HABITAT_SCENE_PRESETS,
   HABITAT_ASSET_PALETTE,
-} from '../src/pages/learner/habitatTypes';
-import { creativeStorage, CreativeArtwork } from '../src/services/creativeStorage';
+} from '../src/shared/creative/habitatTypes';
+import { creativeStorage, CreativeArtwork } from '../src/shared/creative/creativeStorage';
 
 describe('Squad 7: 3D Habitat Builder & Simulation Run Integrity Tests', () => {
   beforeEach(async () => {

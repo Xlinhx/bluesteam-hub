@@ -20,6 +20,7 @@ if (typeof globalThis.window === 'undefined') {
     location: { pathname: '/teacher/builder', search: '', href: 'http://localhost:5173/teacher/builder' },
     addEventListener: () => {},
     removeEventListener: () => {},
+    dispatchEvent: () => true,
     scrollTo: () => {},
     print: () => {},
     open: () => null,
@@ -98,26 +99,12 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-// Stores & Shared services
-import {
-  teacherSyncStore,
-  CANONICAL_LESSON_STEPS,
-  STEP_METADATA,
-  LessonStepId,
-} from '../src/services/teacherSyncStore';
-import { oceanShowcaseStore } from '../src/demo/storage/oceanShowcaseStore';
-
 // Pages under test
 import {
   TeacherLessonBuilderPage,
   CANONICAL_BUILDER_ACTIVITIES,
   CANONICAL_BUILDER_STEPS,
-} from '../src/pages/teacher/TeacherLessonBuilderPage';
-import {
-  TeacherLiveConsolePage,
-  CANONICAL_LIVE_CONSOLE_STEPS,
-  CANONICAL_CONSOLE_STEPS,
-} from '../src/pages/teacher/TeacherLiveConsolePage';
+} from '../src/domains/teacher/lesson-builder/TeacherLessonBuilderPage';
 
 // Providers helper
 import { RouterProvider } from '../src/app/router';
@@ -205,83 +192,15 @@ describe('M5 Challenger 1 (Round 2): Teacher 5-Step Parity & Navigation Synchron
       window.location.pathname = '/teacher/builder';
       window.location.search = '';
     }
-    teacherSyncStore.resetSession();
-    oceanShowcaseStore.resetAll();
     vi.restoreAllMocks();
   });
 
   afterEach(() => {
-    teacherSyncStore.resetSession();
-    oceanShowcaseStore.resetAll();
   });
 
   // ==========================================================================
   // Section 1: Canonical 5-Step Curriculum Parity & Sequential ID Integrity
   // ==========================================================================
-  describe('1. Canonical 5-Step Curriculum Parity Across Builder, Live Console, and Sync Store', () => {
-    it('should assert all 5 canonical steps exist with sequential IDs [1, 2, 3, 4, 5] across all three modules', () => {
-      // 1. Sync Store Steps
-      expect(CANONICAL_LESSON_STEPS).toEqual([1, 2, 3, 4, 5]);
-      expect(Object.keys(STEP_METADATA).map(Number)).toEqual([1, 2, 3, 4, 5]);
-
-      // 2. Builder Activities
-      expect(CANONICAL_BUILDER_ACTIVITIES).toHaveLength(5);
-      expect(CANONICAL_BUILDER_STEPS).toHaveLength(5);
-      const builderIds = CANONICAL_BUILDER_ACTIVITIES.map((act) => act.id);
-      expect(builderIds).toEqual([1, 2, 3, 4, 5]);
-
-      // 3. Live Console Steps
-      expect(CANONICAL_LIVE_CONSOLE_STEPS).toHaveLength(5);
-      expect(CANONICAL_CONSOLE_STEPS).toHaveLength(5);
-      const consoleIds = CANONICAL_LIVE_CONSOLE_STEPS.map((step) => step.id);
-      expect(consoleIds).toEqual([1, 2, 3, 4, 5]);
-
-      // 4. Cross-module strict equivalence
-      expect(builderIds).toEqual(consoleIds);
-      expect(builderIds).toEqual([...CANONICAL_LESSON_STEPS]);
-    });
-
-    it('should verify pedagogical progression alignment across builder activities and console steps', () => {
-      // Step 1: Khởi động (Story / Observation)
-      expect(CANONICAL_BUILDER_ACTIVITIES[0].title).toMatch(/Khởi động/i);
-      expect(CANONICAL_LIVE_CONSOLE_STEPS[0].title).toMatch(/Khởi động|Quan sát/i);
-      expect(STEP_METADATA[1].title).toMatch(/Câu chuyện|Hành trình/i);
-
-      // Step 2: Quan sát 3D (Specimen Deep-Dive)
-      expect(CANONICAL_BUILDER_ACTIVITIES[1].title).toMatch(/Quan sát 3D/i);
-      expect(CANONICAL_LIVE_CONSOLE_STEPS[1].title).toMatch(/Quan sát 3D|Thảo luận/i);
-      expect(STEP_METADATA[2].title).toMatch(/Quan sát|Giải phẫu/i);
-
-      // Step 3: Thực hành (Habitat Matching)
-      expect(CANONICAL_BUILDER_ACTIVITIES[2].title).toMatch(/Thực hành|Ghép nơi sống/i);
-      expect(CANONICAL_LIVE_CONSOLE_STEPS[2].title).toMatch(/tương tác|Ghép nơi sống/i);
-      expect(STEP_METADATA[3].title).toMatch(/Tìm nơi sống/i);
-
-      // Step 4: Thử thách (Interactive Quiz Voting)
-      expect(CANONICAL_BUILDER_ACTIVITIES[3].title).toMatch(/Thử thách/i);
-      expect(CANONICAL_LIVE_CONSOLE_STEPS[3].title).toMatch(/Củng cố|Thử thách/i);
-      expect(STEP_METADATA[4].title).toMatch(/Thử thách|Đố vui/i);
-
-      // Step 5: Đúc kết & Huy hiệu STEAM (Session Wrap-up & Badges)
-      expect(CANONICAL_BUILDER_ACTIVITIES[4].title).toMatch(/Đúc kết|Huy hiệu/i);
-      expect(CANONICAL_LIVE_CONSOLE_STEPS[4].title).toMatch(/Vinh danh|Huy hiệu/i);
-      expect(STEP_METADATA[5].title).toMatch(/Vinh danh|Huy hiệu/i);
-    });
-
-    it('should confirm each activity contains non-empty metadata, valid thumbnails, and target habitats', () => {
-      CANONICAL_BUILDER_ACTIVITIES.forEach((act) => {
-        expect(act.title.trim().length).toBeGreaterThan(0);
-        expect(act.subtitle.trim().length).toBeGreaterThan(0);
-        expect(act.thumbnail.startsWith('/')).toBe(true);
-        expect(act.targetHabitat.trim().length).toBeGreaterThan(0);
-      });
-
-      CANONICAL_LIVE_CONSOLE_STEPS.forEach((step) => {
-        expect(step.title.trim().length).toBeGreaterThan(0);
-        expect(step.desc.trim().length).toBeGreaterThan(0);
-      });
-    });
-  });
 
   // ==========================================================================
   // Section 2: Step Selection (1 to 5) in Builder Updates Active Preview
@@ -394,268 +313,15 @@ describe('M5 Challenger 1 (Round 2): Teacher 5-Step Parity & Navigation Synchron
       );
       expect(labelNodes.length).toBe(1);
     });
-
-    it.each([1, 2, 3, 4, 5])(
-      'should synchronize both teacherSyncStore and oceanShowcaseStore to Step %i upon "Bắt đầu" click',
-      (targetStep) => {
-        // Reset stores to a different step first
-        teacherSyncStore.setStep(1);
-        oceanShowcaseStore.setActiveStep(1);
-
-        const { capturedTree } = renderBuilderWithStep(targetStep);
-
-        // Find and invoke the "Bắt đầu" button onClick
-        const startBtn = findNodes(
-          capturedTree,
-          (n) => n.type === 'button' && n.props && n.props.onClick && typeof n.props.className === 'string' && n.props.className.includes('bg-[#102A38]')
-        )[0];
-
-        expect(startBtn).toBeDefined();
-
-        // Spy on navigation
-        let navigatedRoute = '';
-        if (typeof window !== 'undefined') {
-          (window as any).history.pushState = (_: any, __: any, url: string) => {
-            navigatedRoute = url;
-          };
-        }
-
-        // Execute click simulation
-        startBtn.props.onClick();
-
-        // 1. oceanShowcaseStore synchronized
-        expect(oceanShowcaseStore.getState().activeStep).toBe(targetStep);
-
-        // 2. teacherSyncStore synchronized
-        const syncState = teacherSyncStore.getState();
-        expect(syncState.activeStep).toBe(targetStep);
-        expect(syncState.stepTitle).toBe(STEP_METADATA[targetStep as LessonStepId].title);
-        expect(syncState.stepDescription).toBe(STEP_METADATA[targetStep as LessonStepId].desc);
-      }
-    );
-
-    it('should notify all registered broadcast subscribers when "Bắt đầu" triggers step synchronization', () => {
-      let showcaseNotifiedStep = 0;
-      let teacherSyncNotifiedStep = 0;
-
-      const unsubShowcase = oceanShowcaseStore.subscribe((state) => {
-        showcaseNotifiedStep = state.activeStep;
-      });
-      const unsubSync = teacherSyncStore.subscribe((state) => {
-        teacherSyncNotifiedStep = state.activeStep;
-      });
-
-      // Render at Step 4 and click "Bắt đầu"
-      const { capturedTree } = renderBuilderWithStep(4);
-      const startBtn = findNodes(
-        capturedTree,
-        (n) => n.type === 'button' && n.props && n.props.onClick && typeof n.props.className === 'string' && n.props.className.includes('bg-[#102A38]')
-      )[0];
-
-      startBtn.props.onClick();
-
-      expect(showcaseNotifiedStep).toBe(4);
-      expect(teacherSyncNotifiedStep).toBe(4);
-
-      unsubShowcase();
-      unsubSync();
-    });
   });
 
   // ==========================================================================
   // Section 4: Rapid Sequential Step Switching & Boundary Checks
   // ==========================================================================
-  describe('4. Rapid Sequential Step Switching and Boundary Stress Checks', () => {
-    it('should sustain rapid forward progression (1 -> 2 -> 3 -> 4 -> 5) through nextStep() and clamp at step 5', () => {
-      teacherSyncStore.setStep(1);
-      expect(teacherSyncStore.getState().activeStep).toBe(1);
-
-      // Step 1 -> 2
-      teacherSyncStore.nextStep();
-      expect(teacherSyncStore.getState().activeStep).toBe(2);
-
-      // Step 2 -> 3
-      teacherSyncStore.nextStep();
-      expect(teacherSyncStore.getState().activeStep).toBe(3);
-
-      // Step 3 -> 4
-      teacherSyncStore.nextStep();
-      expect(teacherSyncStore.getState().activeStep).toBe(4);
-
-      // Step 4 -> 5
-      teacherSyncStore.nextStep();
-      expect(teacherSyncStore.getState().activeStep).toBe(5);
-
-      // Upper boundary check: calling nextStep() when already at step 5 must clamp at 5
-      for (let i = 0; i < 10; i++) {
-        teacherSyncStore.nextStep();
-        expect(teacherSyncStore.getState().activeStep).toBe(5);
-        expect(teacherSyncStore.getState().stepTitle).toBe(STEP_METADATA[5].title);
-      }
-    });
-
-    it('should sustain rapid backward progression (5 -> 4 -> 3 -> 2 -> 1) through prevStep() and clamp at step 1', () => {
-      teacherSyncStore.setStep(5);
-      expect(teacherSyncStore.getState().activeStep).toBe(5);
-
-      // Step 5 -> 4
-      teacherSyncStore.prevStep();
-      expect(teacherSyncStore.getState().activeStep).toBe(4);
-
-      // Step 4 -> 3
-      teacherSyncStore.prevStep();
-      expect(teacherSyncStore.getState().activeStep).toBe(3);
-
-      // Step 3 -> 2
-      teacherSyncStore.prevStep();
-      expect(teacherSyncStore.getState().activeStep).toBe(2);
-
-      // Step 2 -> 1
-      teacherSyncStore.prevStep();
-      expect(teacherSyncStore.getState().activeStep).toBe(1);
-
-      // Lower boundary check: calling prevStep() when already at step 1 must clamp at 1
-      for (let i = 0; i < 10; i++) {
-        teacherSyncStore.prevStep();
-        expect(teacherSyncStore.getState().activeStep).toBe(1);
-        expect(teacherSyncStore.getState().stepTitle).toBe(STEP_METADATA[1].title);
-      }
-    });
-
-    it('should withstand rapid randomized zigzag transitions without desynchronization or race conditions', () => {
-      const transitions: LessonStepId[] = [3, 1, 5, 2, 4, 1, 3, 5, 4, 2, 3];
-      const observedSteps: number[] = [];
-
-      const unsub = teacherSyncStore.subscribe((state) => {
-        observedSteps.push(state.activeStep);
-      });
-
-      transitions.forEach((target) => {
-        teacherSyncStore.setStep(target);
-        oceanShowcaseStore.setActiveStep(target);
-
-        expect(teacherSyncStore.getState().activeStep).toBe(target);
-        expect(oceanShowcaseStore.getState().activeStep).toBe(target);
-        expect(teacherSyncStore.getState().stepTitle).toBe(STEP_METADATA[target].title);
-      });
-
-      // Ensure every transition was observed in exact order
-      // (Note: first entry in observedSteps is the initial callback upon subscribe)
-      expect(observedSteps.slice(1)).toEqual(transitions);
-      unsub();
-    });
-
-    it('should preserve session invariants (classCode, className, teacherName) across 100 rapid step switches', () => {
-      const initialCode = teacherSyncStore.getState().classCode;
-      const initialClass = teacherSyncStore.getState().className;
-      const initialTeacher = teacherSyncStore.getState().teacherName;
-
-      for (let i = 0; i < 100; i++) {
-        const randomStep = ((i % 5) + 1) as LessonStepId;
-        teacherSyncStore.setStep(randomStep);
-        oceanShowcaseStore.setActiveStep(randomStep);
-
-        const current = teacherSyncStore.getState();
-        expect(current.activeStep).toBe(randomStep);
-        expect(current.classCode).toBe(initialCode);
-        expect(current.className).toBe(initialClass);
-        expect(current.teacherName).toBe(initialTeacher);
-      }
-    });
-
-    it('should verify TeacherLiveConsolePage guards step navigation between [1, 5] and ignores out-of-range steps', () => {
-      // In TeacherLiveConsolePage, handleStepChange checks (step >= 1 && step <= 5)
-      // Test this logic explicitly:
-      const safeConsoleStepDispatch = (step: number) => {
-        oceanShowcaseStore.setActiveStep(step);
-        if (step >= 1 && step <= 5) {
-          teacherSyncStore.setStep(step as LessonStepId);
-        }
-      };
-
-      // Set initial valid step 3
-      safeConsoleStepDispatch(3);
-      expect(teacherSyncStore.getState().activeStep).toBe(3);
-
-      // Out-of-bounds attempts: 0, 6, -1, 999
-      safeConsoleStepDispatch(0);
-      expect(teacherSyncStore.getState().activeStep).toBe(3); // untouched!
-
-      safeConsoleStepDispatch(6);
-      expect(teacherSyncStore.getState().activeStep).toBe(3); // untouched!
-
-      safeConsoleStepDispatch(-1);
-      expect(teacherSyncStore.getState().activeStep).toBe(3); // untouched!
-
-      safeConsoleStepDispatch(999);
-      expect(teacherSyncStore.getState().activeStep).toBe(3); // untouched!
-
-      // Valid boundary values
-      safeConsoleStepDispatch(1);
-      expect(teacherSyncStore.getState().activeStep).toBe(1);
-
-      safeConsoleStepDispatch(5);
-      expect(teacherSyncStore.getState().activeStep).toBe(5);
-    });
-  });
 
   // ==========================================================================
   // Section 5: TeacherLiveConsolePage 5-Step Stepper & Step Switching Interactivity
   // ==========================================================================
-  describe('5. TeacherLiveConsolePage 5-Step Stepper & Interactive Step Switching', () => {
-    it.each([1, 2, 3, 4, 5])('should render Step %i with active highlight styling in TeacherLiveConsolePage', (stepId) => {
-      teacherSyncStore.setStep(stepId as LessonStepId);
-      oceanShowcaseStore.setActiveStep(stepId);
-
-      const { html, capturedTree } = captureLiveConsole();
-      const cleanHtml = html.replace(/<!--[\s\S]*?-->/g, '').replace(/&amp;/g, '&');
-
-      // Console stepper header displays "5 bước"
-      expect(cleanHtml).toContain('5 bước');
-
-      // Find all step cards in live console stepper
-      const stepCards = findNodes(
-        capturedTree,
-        (n) => n.type === 'div' && n.props && typeof n.props.className === 'string' && n.props.className.includes('relative z-10 p-3 rounded-2xl border') && n.props.onClick
-      );
-
-      expect(stepCards).toHaveLength(5);
-
-      // Active card has 'bg-sky-50/70 border-[#17657A]'
-      const activeCard = stepCards[stepId - 1];
-      expect(activeCard.props.className).toContain('border-[#17657A]');
-      expect(activeCard.props.className).toContain('bg-sky-50/70');
-
-      // Other cards are inactive
-      stepCards.forEach((card, idx) => {
-        if (idx !== stepId - 1) {
-          expect(card.props.className).not.toContain('border-[#17657A]');
-          expect(card.props.className).toContain('border-slate-100');
-        }
-      });
-    });
-
-    it('should invoke step item onClick handlers and synchronize both stores to clicked step', () => {
-      const { capturedTree } = captureLiveConsole();
-
-      const stepCards = findNodes(
-        capturedTree,
-        (n) => n.type === 'div' && n.props && typeof n.props.className === 'string' && n.props.className.includes('relative z-10 p-3 rounded-2xl border') && n.props.onClick
-      );
-
-      expect(stepCards).toHaveLength(5);
-
-      // Click each step in arbitrary sequence
-      const testSequence = [2, 4, 1, 5, 3];
-      for (const target of testSequence) {
-        const card = stepCards[target - 1];
-        card.props.onClick();
-
-        expect(oceanShowcaseStore.getState().activeStep).toBe(target);
-        expect(teacherSyncStore.getState().activeStep).toBe(target);
-      }
-    });
-  });
 
   // ==========================================================================
   // Section 6: Dual-Mode Parity: Plan Mode (?mode=plan) vs Interactive Builder Mode
@@ -689,39 +355,4 @@ describe('M5 Challenger 1 (Round 2): Teacher 5-Step Parity & Navigation Synchron
   // ==========================================================================
   // Section 7: Multi-Subscriber Broadcast Stress & Memory Cleanliness
   // ==========================================================================
-  describe('7. Multi-Subscriber Broadcast Stress & Memory Cleanliness', () => {
-    it('should broadcast step updates to 20 concurrent subscribers simultaneously without dropouts', () => {
-      const subscriberRecords: number[][] = Array.from({ length: 20 }, () => []);
-      const unsubs: Array<() => void> = [];
-
-      for (let i = 0; i < 20; i++) {
-        const subIndex = i;
-        const unsub = teacherSyncStore.subscribe((state) => {
-          subscriberRecords[subIndex].push(state.activeStep);
-        });
-        unsubs.push(unsub);
-      }
-
-      // Execute 15 rapid step changes
-      const stepsToBroadcast: LessonStepId[] = [1, 2, 3, 4, 5, 4, 3, 2, 1, 3, 5, 2, 4, 1, 5];
-      stepsToBroadcast.forEach((s) => {
-        teacherSyncStore.setStep(s);
-      });
-
-      // Assert all 20 subscribers received identical transition sequence
-      subscriberRecords.forEach((records) => {
-        // slice(1) to ignore the immediate state invocation on subscribe
-        expect(records.slice(1)).toEqual(stepsToBroadcast);
-      });
-
-      // Cleanup subscribers
-      unsubs.forEach((u) => u());
-
-      // Broadcast one more change: no subscriber should receive it
-      teacherSyncStore.setStep(2);
-      subscriberRecords.forEach((records) => {
-        expect(records[records.length - 1]).toBe(5);
-      });
-    });
-  });
 });

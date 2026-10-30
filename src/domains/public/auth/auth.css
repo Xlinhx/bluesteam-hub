@@ -1,0 +1,60 @@
+.account-page{min-height:100dvh;display:grid;grid-template-columns:1fr 1fr;background:#faf8f5;color:#12384b;font-family:'Be Vietnam Pro',sans-serif}
+.account-page button{cursor:pointer}.account-page button:disabled{cursor:wait;opacity:.6}.account-page :focus-visible{outline:3px solid #17657a;outline-offset:4px}
+.account-coast{position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:64px 48px;background:linear-gradient(180deg,#12384b08 30%,#102a38bb),url('/assets/generated/public-fieldwork/marine-field-station.webp') center/cover}
+.account-logo{align-self:center;border:0;background:none;filter:drop-shadow(0 2px 12px #ffffffd9)}
+.account-coast-copy{color:white;max-width:480px;margin:80px auto 0}.account-coast-copy p{font-size:14px;margin-bottom:16px}.account-coast-copy h2{font-family:var(--font-editorial,Georgia,serif);font-size:clamp(32px,3.4vw,52px);line-height:1.2;letter-spacing:-.025em}
+.account-main{display:flex;flex-direction:column;min-width:0;padding:28px 48px 22px}.account-top{display:flex;align-items:center;justify-content:space-between;gap:16px}.account-link{display:inline-flex;align-items:center;gap:7px;color:#15586e;font-weight:650;font-size:14px;border:0;background:none;padding:7px 0;text-decoration:underline;text-underline-offset:4px}
+.account-content{max-width:420px;width:100%;margin:auto;padding:30px 0}.account-roles{display:flex;background:#eeeae2;padding:4px;border-radius:14px;gap:4px;margin-bottom:27px}.account-roles button{flex:1;min-height:44px;border:0;border-radius:10px;background:transparent;color:#436475;font-weight:650;font-size:14px}.account-roles button[aria-pressed=true]{background:#fff;color:#12384b;box-shadow:0 2px 6px #12384b0c}
+.account-eyebrow{font-size:10px;letter-spacing:.14em;font-weight:750;color:#567482;margin-bottom:9px}.account-content h1{font-family:var(--font-editorial,Georgia,serif);font-weight:700;letter-spacing:-.035em;font-size:clamp(30px,3vw,42px);line-height:1.2;margin-bottom:12px}.account-description{font-size:14px;line-height:1.7;color:#436475;margin-bottom:24px}
+.account-content fieldset{border:0;padding:0;margin:0;display:grid;gap:16px;min-width:0}.account-field label{display:block;font-size:13px;font-weight:650;margin-bottom:7px}.account-input-wrap{position:relative}.account-field input{width:100%;height:49px;border:1px solid #12384b33;border-radius:12px;background:white;color:#12384b;padding:12px 46px 12px 14px;font-size:15px;box-sizing:border-box}.account-field input[aria-invalid=true]{border-color:#b53232}.account-field input:focus{outline:2px solid #17657a;outline-offset:2px}.account-field input::placeholder{color:#71838d;font-weight:400}.account-eye{position:absolute;right:4px;top:3px;display:grid;place-items:center;width:43px;height:43px;background:none;border:0;color:#567482;border-radius:8px}
+.account-hint{font-size:12px;line-height:1.6;color:#567482;margin-top:6px}.account-field-error{font-size:12px;color:#b53232;margin-top:6px}.account-alert{display:flex;gap:9px;align-items:flex-start;color:#a52b2b;background:#fff0ee;border:1px solid #edc6c0;border-radius:12px;padding:12px;font-size:13px;line-height:1.6;margin-top:16px}.account-alert svg{flex-shrink:0;margin-top:2px}
+.account-submit{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;border:0;border-radius:999px;background:#bc4b36;color:white;font-size:14px;font-weight:700;margin-top:23px;transition:background .15s}.account-submit:hover{background:#a63d2b}.account-switch{text-align:center;font-size:13px;color:#436475;margin-top:17px}.account-switch .account-link{margin-left:4px}.account-parent-note{text-align:center}.account-footer{text-align:center;color:#567482;font-size:11px;padding-top:16px}
+@media(max-width:900px){.account-main{padding:24px 28px}.account-coast{padding:48px 24px}.account-coast-copy h2{font-size:36px}}
+@media(max-width:640px){
+ .account-page{display:flex;flex-direction:column;min-height:100svh}
+ .account-page .account-coast{display:flex;flex:none;height:216px;padding:20px max(24px,env(safe-area-inset-right)) 24px max(24px,env(safe-area-inset-left));box-sizing:border-box}
+ .account-page .account-logo{align-self:flex-start;padding:7px 11px;border-radius:12px}
+ .account-logo img{width:128px}.account-logo span:not(.sr-only){font-size:8px;letter-spacing:.17em;margin-top:4px}
+ .account-coast-copy{margin:12px 0 0;max-width:280px}.account-coast-copy p{font-size:10px;margin-bottom:5px}.account-coast-copy h2{font-size:26px;line-height:1.12;text-shadow:0 2px 12px #12384b88}
+ .account-main{min-height:calc(100svh - 216px);padding:12px max(24px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left))}
+ .account-content{margin:0 auto;padding:22px 0 28px}.account-roles{margin-bottom:24px}.account-content h1{font-size:clamp(29px,8.5vw,34px)}
+ .account-field input{font-size:16px;scroll-margin-block:90px}.account-footer{margin-top:auto;padding-bottom:6px}
+ .account-page .ocean-fieldwork--auth .fieldwork-chart{width:360px;height:360px;left:-190px;top:-85px;opacity:.4}
+ .account-page .ocean-fieldwork--auth .fieldwork-lens{width:100px;height:100px;right:6%;top:18px;opacity:.75}
+ .account-page .ocean-fieldwork--auth .fieldwork-coral{width:150px;height:240px;right:-25px;bottom:-65px;opacity:.7}
+}
+@media(max-width:640px) and (max-height:480px){.account-page .account-coast{height:160px;padding-block:12px}.account-coast-copy h2{font-size:22px}.account-coast-copy p{display:none}.account-main{min-height:calc(100svh - 160px)}}
+@media(hover:none) and (pointer:coarse){.account-field input{font-size:16px}}
+
+/* A single selection surface travels inside the stable two-column role rail. */
+.account-roles{position:relative;isolation:isolate}
+.account-roles::before{content:'';position:absolute;z-index:-1;inset:4px auto 4px 4px;width:calc((100% - 12px)/2);border-radius:10px;background:white;box-shadow:0 2px 6px #12384b0c;transform:translateX(0);transition:transform 650ms cubic-bezier(.25,.65,.3,1)}
+.account-page[data-role=student] .account-roles::before{transform:translateX(calc(100% + 4px))}
+.account-roles button[aria-pressed=true]{background:transparent;box-shadow:none}
+.account-roles button{transition:color 140ms ease}
+.account-field input{transition:border-color 140ms ease,box-shadow 140ms ease}
+.account-submit{transition:background-color 150ms ease,box-shadow 150ms ease,transform 120ms ease}
+.account-submit:not(:disabled):active{transform:translateY(1px)}
+.account-submit:disabled{opacity:1;background:#945247}
+.account-submit svg:last-child{transition:transform 160ms ease}
+@media(hover:hover) and (pointer:fine){.account-submit:not(:disabled):hover svg:last-child:not(.account-spinner){transform:translateX(3px)}}
+.account-field-error,.account-alert{animation:account-feedback 180ms ease-out}
+.account-spinner{animation:account-pending 900ms linear infinite}
+@keyframes account-feedback{from{opacity:.45}to{opacity:1}}
+@keyframes account-pending{to{transform:rotate(360deg)}}
+.account-coast{isolation:isolate;overflow:hidden;background:#12384b}
+.account-main{background:#faf8f5}
+.account-coast-image{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#12384b08 30%,#102a38bb),url('/assets/generated/public-fieldwork/marine-field-station.webp') center/cover;transition:transform 1100ms cubic-bezier(.25,.65,.3,1)}
+.account-logo{background:#faf8f2e8;border-radius:18px;padding:12px 18px;filter:none}
+.account-coast::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(100deg,transparent 35%,#e7f6ef24);opacity:0;transition:opacity 900ms ease}
+.account-page:has(.account-field:focus-within) .account-coast::after{opacity:1}
+.account-page:has(.account-field:focus-within) .account-coast-image{transform:scale(1.012)}
+.account-field label{transition:color 450ms ease}
+.account-field:focus-within label{color:#17657a}
+.account-eye{width:44px;height:44px;top:2px}
+.account-top button,.account-switch .account-link{min-height:44px}
+@media(prefers-reduced-motion:reduce){
+ .account-page *,.account-page *::before,.account-page *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ .account-page button:active,.account-submit svg{transform:none!important}
+ .account-page .account-coast-image{transform:none!important}
+}

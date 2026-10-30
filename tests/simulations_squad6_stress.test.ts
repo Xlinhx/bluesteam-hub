@@ -1,4 +1,4 @@
-﻿// Setup minimal SSR window/document mock prior to any imports
+// Setup minimal SSR window/document mock prior to any imports
 if (typeof globalThis.window === 'undefined') {
   (globalThis as any).window = {
     location: { pathname: '/', search: '' },
@@ -22,13 +22,13 @@ if (typeof globalThis.document === 'undefined') {
 import { describe, it, expect, beforeEach } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { MyActionSimulationPage } from '../src/pages/learner/MyActionSimulationPage';
-import { PlasticJourneySimulationPage } from '../src/pages/learner/PlasticJourneySimulationPage';
-import { RescueMissionSimulationPage } from '../src/pages/learner/RescueMissionSimulationPage';
-import { SimulationsCatalogPage } from '../src/pages/learner/SimulationsCatalogPage';
+import { MyActionSimulationPage } from '../src/shared/activities/simulations/MyActionSimulationPage';
+import { PlasticJourneySimulationPage } from '../src/shared/activities/simulations/PlasticJourneySimulationPage';
+import { RescueMissionSimulationPage } from '../src/shared/activities/simulations/RescueMissionSimulationPage';
+import { SimulationsCatalogPage } from '../src/domains/learner/simulations/SimulationsCatalogPage';
 import { RouterProvider } from '../src/app/router';
 import { I18nProvider } from '../src/shared/i18n/I18nContext';
-import { demoStore } from '../src/demo/storage/demoStore';
+import { demoStore } from '../src/shared/realtime/demoStore';
 
 function renderWithProviders(element: React.ReactElement, initialSearch: string = ''): string {
   if (typeof window !== 'undefined') {
@@ -209,5 +209,3 @@ describe('M3 Challenger 2: Simulations Empirical & Adversarial Stress Suite', ()
     });
   });
 });
-
-

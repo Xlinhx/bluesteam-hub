@@ -1,0 +1,29 @@
+.resource-library,.teacher-resource-library,.resource-detail-page { position:relative; isolation:isolate; }
+.resource-seascape { position:absolute; inset:0; overflow:clip; pointer-events:none; z-index:-1; border-radius:inherit; }
+.resource-seascape-wash { position:absolute; inset:0; background:radial-gradient(ellipse at 0 38%,#dceee78c,transparent 56%),radial-gradient(ellipse at 100% 76%,#f0e1cd70,transparent 50%); }
+.resource-seascape-art { position:absolute; inset:auto 0 0; height:180px; background:url('/assets/generated/resources/library-watercolor-shore.webp') center bottom/100% auto no-repeat; opacity:.72; mask-image:linear-gradient(transparent,#000 38%); }
+.resource-seascape-current { position:absolute; top:16px; left:0; width:100%; height:120px; opacity:.38; fill:none; stroke:#9dcbd0; stroke-width:1.2; }
+.resource-seascape-current path+path { stroke:#e8c1a8; opacity:.65; }
+.resource-seascape[data-resource-scene=teacher] .resource-seascape-art,.resource-seascape[data-resource-scene=teacher] .resource-seascape-current,.resource-seascape[data-resource-scene=detail] .resource-seascape-art,.resource-seascape[data-resource-scene=detail] .resource-seascape-current { display:none; }
+.resource-seascape[data-resource-scene=teacher] .resource-seascape-wash { background:radial-gradient(ellipse at 100% 0,#f1e7d969,transparent 55%); }
+.resource-seascape[data-resource-scene=detail] .resource-seascape-wash { display:none; }
+.resource-surface { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; overflow:visible; }
+.resource-surface[data-surface=workspace] { opacity:.55; }
+.resource-surface[data-surface=index] { opacity:.8; }
+.resource-surface-fill { fill:var(--surface-fill,#e4efea); }
+.resource-surface-edge { fill:none; stroke:var(--surface-edge,#a8caca); stroke-width:1; vector-effect:non-scaling-stroke; opacity:.65; }
+.resource-surface[data-surface=tools] { --surface-fill:#e7f0f1; --surface-edge:#b4ced0; }
+.resource-seascape .resource-surface[data-surface=observation] { inset:auto 0 0 auto; width:100%; height:44%; --surface-fill:#ebf1eb; --surface-edge:#ccdcd3; opacity:.8; }
+.resource-current-feedback { pointer-events:none; position:fixed; inset:0; z-index:30; overflow:clip; }
+.resource-current-pulse { position:absolute; width:160px; height:160px; fill:none; stroke:#24899a; stroke-width:1.3; }
+.resource-current-pulse circle { transform-origin:80px 80px; animation:resource-water-touch 620ms cubic-bezier(.16,1,.3,1) both; }
+.resource-current-pulse circle:nth-child(2) { animation-delay:65ms; stroke:#8bc2c4; }
+.resource-current-pulse path { stroke-dasharray:120; animation:resource-water-line 580ms ease-out both; }
+@keyframes resource-water-touch { from {opacity:.65;transform:scale(.35)} to {opacity:0;transform:scale(1.35)} }
+@keyframes resource-water-line { from {opacity:.65;stroke-dashoffset:120} to {opacity:0;stroke-dashoffset:0} }
+@media(max-width:600px) { .resource-seascape-art { height:120px; background-size:auto 180px; opacity:.45; }.resource-seascape-current { height:65px; }.resource-seascape[data-resource-scene=teacher] .resource-seascape-art { opacity:.12; }.resource-seascape[data-resource-scene=detail] .resource-seascape-art { height:120px; opacity:.15; } }
+@media(prefers-reduced-motion:reduce) { .resource-current-feedback { display:none; }.resource-current-pulse * { animation:none; } }
+
+.resource-surface-contour{opacity:1}.resource-surface-contour .resource-surface-edge{stroke:#6a9e9650;stroke-width:.8}.resource-surface-current{fill:none;stroke:#8fa58a80;stroke-width:.65;vector-effect:non-scaling-stroke}.resource-surface[data-surface=shelf-sandbank]{--surface-light:#f5f0e4;--surface-fill:#e9e5d4;--surface-deep:#d8e1cd}.resource-surface[data-surface=shelf-inlet]{--surface-light:#f0ece3;--surface-fill:#e1e8e2;--surface-deep:#cbdedc}.resource-surface[data-surface=index]{--surface-light:#eef3ec;--surface-fill:#e4ede5;--surface-deep:#d7e6db}.resource-surface[data-surface=workspace]{opacity:.8;--surface-light:#f8f3e8;--surface-fill:#e9eee2;--surface-deep:#d7e3d8}.teacher-resource-title>.ocean-cabinet{z-index:-1}.teacher-resource-title{isolation:isolate}.teacher-resource-title-actions,.teacher-resource-title-copy{position:relative;z-index:1}
+
+.resource-seascape-art{height:240px;background-image:url('/assets/generated/resources/reef-cabinet-v3.webp');background-size:auto 280px;background-position:105% 115%;opacity:.16;mask-image:linear-gradient(transparent,#000 46%)}@media(max-width:600px){.resource-seascape-art{height:150px;background-size:auto 180px;opacity:.12}}

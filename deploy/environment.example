@@ -1,0 +1,17 @@
+# BlueSTEAM r2 Environment Example (Do NOT commit real secrets)
+NODE_ENV=production
+PORT=8010
+API_PORT=8010
+WEB_PORT=3010
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5442
+POSTGRES_USER=bluesteam
+POSTGRES_PASSWORD=change_me_strong_db_password
+POSTGRES_DB=bluesteam
+DATABASE_URL=postgresql://bluesteam:change_me_strong_db_password@127.0.0.1:5442/bluesteam
+JWT_SECRET=change_me_64_char_random_jwt_secret
+CORS_ORIGINS=https://bluesteam.example.edu.vn,http://localhost:3010
+MEDIA_STORAGE_DIR=/data/uploads
+UPLOAD_DIR=/data/uploads
+MEDIA_HOST_DIR=/srv/bluesteam/media
+SEED_TEACHER_PASSWORD=change_me_teacher_password

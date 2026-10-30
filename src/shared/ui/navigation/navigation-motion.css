@@ -1,0 +1,126 @@
+/* Shared geometry: role changes content; routes never change the header layout. */
+.bluesteam-app-header {
+  --header-brand-width: 175px;
+  --header-actions-width: 544px;
+  --header-group-gap: 18px;
+  --header-action-gap: 10px;
+  --header-tab-padding: 12px;
+  --header-tab-gap: 10px;
+  --header-tab-font: 17px;
+  --header-language-width: 148px;
+  --header-room-width: 148px;
+  --header-name-width: 80px;
+  display: grid;
+  grid-template-columns: var(--header-brand-width) minmax(0, 1fr) var(--header-actions-width);
+  align-items: center;
+  column-gap: var(--header-group-gap);
+  height: var(--header-height, 82px);
+  flex-shrink: 0;
+  padding-inline: 28px;
+  background: #fdfcfa;
+  border-bottom: 1px solid #07385d0d;
+  color: #07385d;
+}
+.bluesteam-app-header > div:first-child img { height:58px; width:auto; max-width:180px; }
+.bluesteam-primary-nav {
+  display:flex; align-items:center; gap:2px; width:max-content; justify-self:start;
+  padding:0; margin:0; border:0; background:transparent; box-shadow:none;
+}
+.bluesteam-nav-link {
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  gap:var(--header-tab-gap, 10px); padding-inline:var(--header-tab-padding, 12px);
+  height:44px; min-height:44px; border-radius:999px;
+  font-size:var(--header-tab-font, 17px); font-weight:600; color:#07385d;
+  box-shadow:none; cursor:pointer; transition:background-color 150ms ease, color 150ms ease;
+}
+.bluesteam-nav-link:focus-visible { outline:2px solid #17657a; outline-offset:2px; }
+.bluesteam-nav-icon { display:inline-flex; flex-shrink:0; }
+.bluesteam-primary-nav .bluesteam-nav-icon svg { width:23px; height:23px; }
+.bluesteam-header-actions { display:flex; align-items:center; justify-self:end; gap:var(--header-action-gap); width:var(--header-actions-width); }
+.bluesteam-header-utilities { display:contents; }
+.bluesteam-utilities-toggle { display:none; }
+.bluesteam-utilities-toggle:focus-visible { outline:3px solid #1685a1; outline-offset:3px; }
+.bluesteam-header-language { width:var(--header-language-width); flex-shrink:0; padding:2px; background:transparent; border:0; box-shadow:none; }
+.bluesteam-header-language > button { width:100%; min-height:44px; white-space:nowrap; }
+.bluesteam-header-language button { color:#07385d; font-weight:500; box-shadow:none; }
+.bluesteam-header-language > button > span { font-size:16px; font-weight:500; }
+.bluesteam-header-language > div button { min-height:44px; font-size:14px; }
+.bluesteam-header-language button:focus-visible { outline:2px solid #17657a; outline-offset:2px; }
+.bluesteam-header-audio { flex-shrink:0; background:transparent; color:#07385d; border-color:transparent; box-shadow:none; }
+.bluesteam-header-audio:hover { background:#e0f3f7; border-color:transparent; box-shadow:none; }
+.bluesteam-header-audio svg { width:19px; height:19px; }
+.bluesteam-header-audio[aria-label='Bật âm thanh'] { color:#637c8e; }
+.bluesteam-header-room-action {
+  display:flex; align-items:center; justify-content:center; gap:8px; flex-shrink:0;
+  width:var(--header-room-width); height:44px; min-height:44px; padding-inline:9px;
+  white-space:nowrap; border-radius:999px; font-size:14px; font-weight:500;
+  background:transparent; color:#07385d; box-shadow:none; border:1px solid #07385d18;
+  cursor:pointer; transition:background-color 150ms ease, color 150ms ease;
+}
+.bluesteam-header-room-action:hover { background:#e0f3f7; }
+.bluesteam-header-identity {
+  display:flex; align-items:center; flex-shrink:0; gap:6px; padding:2px;
+  height:50px; min-height:50px; border:1px solid transparent; border-radius:999px;
+  background:transparent; box-shadow:none;
+}
+.bluesteam-header-identity > button:first-child,
+.bluesteam-header-identity > button:first-child > span { width:44px; height:44px; }
+.bluesteam-header-identity > button:first-child > span > img { width:40px; height:40px; }
+.bluesteam-header-identity > button:first-child > span.bluesteam-header-photo { border:0; background:transparent; }
+.bluesteam-header-identity > button:first-child > span.bluesteam-header-photo > img.bluesteam-header-photo-image { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.bluesteam-header-identity > button[title='Đăng xuất'] { width:32px; height:32px; }
+.bluesteam-header-name { display:inline-block; width:var(--header-name-width); padding-right:4px; font-size:17px; color:#07385d; }
+.bluesteam-mobile-nav { display:none; }
+.bluesteam-role-shell { --header-height:82px; --home-bottom-space:0px; padding-bottom:0; }
+.bluesteam-role-shell:has(> .bluesteam-app-header[data-nav-collapsed='true']) {
+  --home-bottom-space:calc(68px + env(safe-area-inset-bottom));
+  padding-bottom:var(--home-bottom-space);
+}
+
+/* Preserve intrinsic nav width while hidden, so ResizeObserver can detect added tabs. */
+.bluesteam-app-header[data-nav-collapsed='true'] { display:flex; justify-content:space-between; gap:var(--header-group-gap); }
+.bluesteam-app-header[data-nav-collapsed='true'] .bluesteam-primary-nav { position:absolute; visibility:hidden; pointer-events:none; inset:0 auto auto -10000px; }
+.bluesteam-app-header[data-nav-collapsed='true'] .bluesteam-header-actions { width:auto; gap:8px; }
+.bluesteam-app-header[data-nav-collapsed='true'] .bluesteam-header-utilities { display:none; }
+.bluesteam-app-header[data-nav-collapsed='true'] .bluesteam-header-utilities[data-open='true'] {
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px;
+  position:absolute; top:calc(100% + 8px); left:16px; right:16px;
+  padding:12px; border:1px solid #d2e1e5; border-radius:18px; background:#fffefc;
+  box-shadow:0 8px 24px #07334d18;
+}
+.bluesteam-app-header[data-nav-collapsed='true'] .bluesteam-utilities-toggle {
+  display:grid; place-items:center; width:44px; height:44px; padding:0; border-radius:50%;
+  border:1px solid #d2e1e5; color:#07334d; background:#fffefc; cursor:pointer; flex-shrink:0;
+}
+.bluesteam-mobile-nav[data-visible='true'] {
+  display:grid; grid-auto-flow:column; grid-auto-columns:minmax(56px,1fr); align-items:center; gap:2px;
+  height:calc(68px + env(safe-area-inset-bottom)); padding:4px 6px calc(4px + env(safe-area-inset-bottom));
+  overflow-x:auto; background:#faf8f5f2; border-top:1px solid #12384b1a; box-shadow:0 -4px 20px #12384b0f;
+}
+.bluesteam-mobile-nav .bluesteam-nav-link {
+  flex-direction:column; gap:4px; height:56px; min-height:56px;
+  min-width:56px; padding:6px; border-radius:16px; font-size:11px; font-weight:600;
+}
+.bluesteam-mobile-nav .bluesteam-nav-link > span:last-child {
+  max-width:100%; white-space:normal; display:-webkit-box;
+  -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
+}
+@media (max-width:1535px) {
+  .bluesteam-app-header { --header-action-gap:6px; --header-actions-width:532px; --header-tab-padding:9px; --header-tab-gap:7px; --header-tab-font:16px; }
+}
+@media (max-width:1399px) {
+  .bluesteam-role-shell { --header-height:76px; }
+  .bluesteam-app-header { padding-inline:24px; }
+  .bluesteam-app-header > div:first-child img { height:34px; max-width:150px; }
+}
+@media (max-width:800px) {
+  .bluesteam-role-shell { --header-height:64px; }
+  .bluesteam-app-header { padding-inline:16px; }
+  .bluesteam-header-identity > button:first-child,
+  .bluesteam-header-identity > button:first-child > span { width:40px; height:40px; }
+  .bluesteam-header-identity > button:first-child > span > img { width:32px; height:32px; }
+  .bluesteam-header-identity > button[title='Đăng xuất'] { width:44px; height:44px; }
+}
+@media (max-width:639px) { .bluesteam-header-name { display:none; } }
+@media (max-width:480px) { .bluesteam-app-header > div:first-child img { width:96px; height:auto; } }
+@media (prefers-reduced-motion:reduce) { .bluesteam-nav-link { transition:none; } }

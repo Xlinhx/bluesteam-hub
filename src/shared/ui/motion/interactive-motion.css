@@ -1,0 +1,127 @@
+/* Only the Interactive catalogs, reports and their activity experiences use these timings. */
+:where(.interactive-seascape,.interactive-activity-motion){--interactive-motion-press:110ms;--interactive-motion-control:160ms;--interactive-motion-panel:240ms;--interactive-motion-settle:cubic-bezier(.22,1,.36,1)}
+:where(.interactive-seascape,.interactive-activity-motion) button{transition-property:background-color,border-color,box-shadow,color,opacity;transition-duration:var(--interactive-motion-control);transition-timing-function:var(--interactive-motion-settle)}
+:where(.interactive-seascape,.interactive-activity-motion) button:not(:disabled):active{scale:.985;transition-duration:var(--interactive-motion-press)}
+.interactive-seascape--teacher .interactive-world:hover,.interactive-seascape--teacher .curated-card:hover{transform:none}
+.interactive-seascape .interactive-world{transition:box-shadow 180ms var(--interactive-motion-settle),border-color 160ms var(--interactive-motion-settle),background-color 160ms var(--interactive-motion-settle)}
+.interactive-seascape .interactive-world:hover{transform:none}
+.curated-interactive .curated-interactive__views{position:relative;isolation:isolate}
+.curated-interactive .interactive-view-current{position:absolute;top:4px;bottom:4px;border-radius:999px;background:var(--interactive-teal);transform-origin:left center;pointer-events:none;z-index:-1}
+.curated-interactive .curated-interactive__views button[aria-pressed=true]{background:transparent}
+.interactive-world__creature{transition:translate 220ms var(--interactive-motion-settle),rotate 300ms var(--interactive-motion-settle)}
+@media(hover:hover) and (pointer:fine){
+ .interactive-seascape--learner .interactive-world--model3d:hover .interactive-world__creature{translate:3px -3px;rotate:-2deg}
+ .interactive-seascape--learner .interactive-world--game:hover .interactive-world__creature{translate:0 -3px;rotate:1.5deg}
+ .interactive-seascape--learner .interactive-world--simulation:hover .interactive-world__creature{rotate:-1.5deg}
+ .interactive-seascape--learner .interactive-world--scenario:hover .interactive-world__creature{translate:-3px 0;rotate:1deg}
+}
+.interactive-activity-motion{width:100%;min-width:0}
+.interactive-activity-motion [data-testid^=matching-],.interactive-activity-motion [data-testid^=choice-option-],.interactive-activity-motion [data-testid^=scenario-choice-]{transition-property:background-color,border-color,box-shadow,opacity;transition-duration:180ms}
+.interactive-activity-motion [data-feedback]{animation:interactive-feedback-read 180ms var(--interactive-motion-settle)}
+.interactive-activity-motion [data-feedback=correct] svg{animation:interactive-confirm 280ms var(--interactive-motion-settle)}
+.interactive-activity-motion [data-testid$=complete-banner]>:first-child>svg{animation:interactive-confirm 420ms var(--interactive-motion-settle)}
+.interactive-activity-motion .sorting-ocean__residents img{animation:none}
+.interactive-activity-motion .sorting-ocean__object:not(:disabled):hover{transform:translateY(-3px)}
+.interactive-activity-motion .sorting-ocean__burst i{animation-duration:800ms}
+.interactive-activity-motion [data-paused=true] *{animation-play-state:paused}
+.interactive-seascape .usage-meter__track>span{transform-origin:left center;will-change:auto}
+@keyframes interactive-confirm{0%{rotate:-12deg;scale:.85}65%{rotate:3deg;scale:1.04}100%{rotate:0deg;scale:1}}
+@keyframes interactive-feedback-read{from{opacity:.65}to{opacity:1}}
+@supports(interpolate-size:allow-keywords){
+ .interactive-seascape .usage-game-item{interpolate-size:allow-keywords}
+ .interactive-seascape .usage-game-item::details-content{block-size:0;overflow:clip;opacity:0;transition:block-size 240ms var(--interactive-motion-settle),opacity 160ms,content-visibility 240ms;transition-behavior:allow-discrete}
+ .interactive-seascape .usage-game-item[open]::details-content{block-size:auto;opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+ :where(.interactive-seascape,.interactive-activity-motion) *,:where(.interactive-seascape,.interactive-activity-motion) *::before,:where(.interactive-seascape,.interactive-activity-motion) *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ :where(.interactive-seascape,.interactive-activity-motion) button:active{scale:none}
+ .interactive-seascape .interactive-world__creature{translate:none!important;rotate:none!important}
+ .interactive-activity-motion .sorting-ocean__object:not(:disabled):hover{transform:none}
+}
+
+/* Artwork rests on a luminous tidal shelf rather than a rectangular glow. */
+.interactive-seascape .interactive-world__light{display:block;position:absolute;inset:22% 4% 23%;border-radius:48% 52% 57% 43% / 60% 45% 55% 40%;background:radial-gradient(ellipse at 50% 70%,#8ce5ec52, #d8f6f32b 58%,transparent 72%);opacity:0;scale:.9;transition:opacity 560ms,scale 800ms cubic-bezier(.22,1,.36,1);z-index:-1}
+.interactive-world[aria-pressed=true] .interactive-world__light,.interactive-world:hover .interactive-world__light{opacity:1;scale:1.08}
+.interactive-world__art{position:relative;transform-origin:center bottom}
+@media(hover:hover) and (pointer:fine){
+ .interactive-seascape .interactive-world__creature{transition:translate 620ms cubic-bezier(.22,1,.36,1),rotate 720ms cubic-bezier(.22,1,.36,1)}
+ .interactive-seascape .interactive-world--model3d:hover .interactive-world__creature{translate:8px -9px;rotate:-4deg}
+ .interactive-seascape .interactive-world--game:hover .interactive-world__creature{translate:0 -10px;rotate:3deg}
+ .interactive-seascape .interactive-world--simulation:hover .interactive-world__creature{translate:0 -5px;rotate:-3deg}
+ .interactive-seascape .interactive-world--scenario:hover .interactive-world__creature{translate:-7px -5px;rotate:3deg}
+ .interactive-seascape :is(.curated-card,.ocean-activity-card) img{transition:scale 850ms cubic-bezier(.22,1,.36,1);transform-origin:center}
+ .interactive-seascape :is(.curated-card,.ocean-activity-card):hover img{scale:1.035}
+}
+.curated-preview .interactive-activity-motion{animation:interactive-preview-depth 960ms cubic-bezier(.22,1,.36,1) both}
+@keyframes interactive-preview-depth{from{opacity:.2;translate:0 34px;scale:.975}to{opacity:1;translate:0 0;scale:1}}
+/* Route snapshots preserve the shell while the activity moves through the water. */
+:root[data-interactive-journey]::view-transition{pointer-events:none}
+:root[data-interactive-journey] .interactive-seascape__artwork{view-transition-name:interactive-coast}
+:root[data-interactive-journey] :is(.curated-interactive__content,.ocean-play-catalog__gateway,.interactive-activity-motion){view-transition-name:interactive-stage}
+:root[data-interactive-journey] .ocean-play-catalog__results{view-transition-name:interactive-catalog}
+:root[data-interactive-journey]::view-transition-old(root),:root[data-interactive-journey]::view-transition-new(root){animation:none;mix-blend-mode:normal}
+:root[data-interactive-journey]::view-transition-group(*){animation-duration:860ms;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+:root[data-interactive-journey]::view-transition-old(interactive-stage){animation:interactive-stage-depart 540ms cubic-bezier(.4,0,.3,1) both}
+:root[data-interactive-journey]::view-transition-new(interactive-stage){animation:interactive-stage-arrive 920ms cubic-bezier(.22,1,.36,1) both}
+:root[data-interactive-journey]::view-transition-old(interactive-catalog){animation:interactive-stage-depart 620ms ease both}
+:root[data-interactive-journey]::view-transition-new(interactive-catalog){animation:interactive-catalog-arrive 1050ms cubic-bezier(.22,1,.36,1) both}
+:root[data-interactive-journey]::view-transition-old(interactive-coast),:root[data-interactive-journey]::view-transition-new(interactive-coast){animation-duration:1000ms}
+:root[data-interactive-journey=back]::view-transition-new(interactive-stage){animation-name:interactive-stage-return}
+:root[data-interactive-journey=back]::view-transition-old(interactive-stage){animation-name:interactive-stage-away}
+@keyframes interactive-stage-depart{to{opacity:0;transform:translateX(-32px) scale(.97)}}
+@keyframes interactive-stage-arrive{from{opacity:0;transform:translateX(56px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes interactive-stage-return{from{opacity:0;transform:translateX(-44px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes interactive-stage-away{to{opacity:0;transform:translateX(42px) scale(.98)}}
+@keyframes interactive-catalog-arrive{from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){
+ :root[data-interactive-journey]::view-transition-group(*),:root[data-interactive-journey]::view-transition-new(*),:root[data-interactive-journey]::view-transition-old(*){animation:none!important}
+ .interactive-world__light{transition:none!important}
+ .curated-preview .interactive-activity-motion{animation:none!important}
+ .interactive-seascape :is(.curated-card,.ocean-activity-card):hover img{scale:none}
+}
+
+/* The selected thumbnail expands into the activity, then returns to its own card. */
+:root[data-interactive-journey]::view-transition-group(interactive-artwork){z-index:4;animation-duration:1080ms;animation-timing-function:cubic-bezier(.42,0,.18,1);overflow:clip;border-radius:22px}
+:root[data-interactive-journey]::view-transition-old(interactive-artwork){height:100%;width:100%;object-fit:cover;animation:interactive-artwork-release 1080ms ease both}
+:root[data-interactive-journey]::view-transition-new(interactive-artwork){height:100%;width:100%;object-fit:cover;animation:interactive-artwork-receive 1080ms ease both}
+@keyframes interactive-artwork-release{0%,30%{opacity:1}100%{opacity:0}}
+@keyframes interactive-artwork-receive{0%,25%{opacity:0}85%,100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){:root[data-interactive-journey]::view-transition-group(interactive-artwork),:root[data-interactive-journey]::view-transition-new(interactive-artwork),:root[data-interactive-journey]::view-transition-old(interactive-artwork){animation:none!important}}
+
+.interactive-preview-flight{position:fixed;pointer-events:none;z-index:201;object-fit:cover;transform-origin:left top;opacity:0;max-width:none}
+
+/* Feedback belongs to the chosen creature or to both ends of the matched pair. */
+.interactive-activity-motion [data-match-side=left][data-response=correct] img{animation:interactive-pair-left 720ms cubic-bezier(.22,1,.36,1)}
+.interactive-activity-motion [data-match-side=right][data-response=correct] img{animation:interactive-pair-right 720ms cubic-bezier(.22,1,.36,1)}
+.interactive-activity-motion [data-testid^=choice-option-][data-response=correct] img{animation:interactive-choice-greet 780ms cubic-bezier(.22,1,.36,1)}
+.interactive-activity-motion [data-testid^=choice-option-][data-response=retry] img{animation:interactive-choice-reconsider 460ms cubic-bezier(.22,1,.36,1)}
+@keyframes interactive-pair-left{0%,100%{translate:0 0;scale:1}45%{translate:10px -3px;scale:1.08}}
+@keyframes interactive-pair-right{0%,100%{translate:0 0;scale:1}45%{translate:-10px -3px;scale:1.08}}
+@keyframes interactive-choice-greet{0%,100%{translate:0 0;rotate:0deg}45%{translate:0 -9px;rotate:-4deg}75%{rotate:2deg}}
+@keyframes interactive-choice-reconsider{0%,100%{translate:0 0}40%{translate:0 3px}}
+@media(max-width:639px){
+ @keyframes interactive-pair-left{0%,100%{translate:0 0;scale:1}45%{translate:0 5px;scale:1.06}}
+ @keyframes interactive-pair-right{0%,100%{translate:0 0;scale:1}45%{translate:0 -5px;scale:1.06}}
+}
+@media(prefers-reduced-motion:reduce){.interactive-activity-motion [data-response] img{animation:none!important}}
+
+/* Small screens retain the image bridge; the surrounding scene travels a shorter distance. */
+@media(max-width:767px){
+ :root[data-interactive-journey]::view-transition-group(interactive-artwork){animation-duration:820ms;border-radius:16px}
+ :root[data-interactive-journey]::view-transition-old(interactive-artwork),:root[data-interactive-journey]::view-transition-new(interactive-artwork){animation-duration:820ms}
+ :root[data-interactive-journey]::view-transition-new(interactive-stage){animation-name:interactive-mobile-arrive;animation-duration:700ms}
+ :root[data-interactive-journey=back]::view-transition-new(interactive-stage){animation-name:interactive-mobile-return}
+ :root[data-interactive-journey]::view-transition-old(interactive-stage){animation:interactive-mobile-depart 400ms ease both}
+ :root[data-interactive-journey]::view-transition-new(interactive-catalog){animation:interactive-mobile-arrive 780ms cubic-bezier(.22,1,.36,1) both}
+ .curated-preview .interactive-activity-motion{animation-duration:760ms}
+}
+@keyframes interactive-mobile-arrive{from{opacity:0;transform:translateY(16px) scale(.99)}to{opacity:1;transform:none}}
+@keyframes interactive-mobile-return{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+@keyframes interactive-mobile-depart{to{opacity:0;transform:translateY(-10px) scale(.99)}}
+@media(hover:none) and (pointer:coarse){
+ .interactive-world:not([aria-pressed=true]):hover .interactive-world__light{opacity:0;scale:.9}
+ .interactive-seascape button{touch-action:manipulation}
+}
+@media(prefers-reduced-motion:reduce){
+ :root[data-interactive-journey]::view-transition-group(*),:root[data-interactive-journey]::view-transition-old(*),:root[data-interactive-journey]::view-transition-new(*){animation:none!important}
+}

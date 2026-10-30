@@ -1,0 +1,78 @@
+name: bluesteam-prod
+
+services:
+  bluesteam_db:
+    image: postgres:16-alpine
+    container_name: bluesteam_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - bluesteam_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - bluesteam_net
+
+  bluesteam_backend:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: bluesteam_backend
+    restart: always
+    depends_on:
+      bluesteam_db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 8010
+      API_PORT: 8010
+      HOST: 0.0.0.0
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@bluesteam_db:5432/${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      MEDIA_STORAGE_DIR: /data/uploads
+      UPLOAD_DIR: /data/uploads
+      SEED_TEACHER_PASSWORD: ${SEED_TEACHER_PASSWORD}
+    ports:
+      - "127.0.0.1:8010:8010"
+    volumes:
+      - ${MEDIA_HOST_DIR:-bluesteam_uploads}:/data/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8010/api/v1/health/ready || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+    networks:
+      bluesteam_net:
+        aliases:
+          - bluesteam_api
+
+  bluesteam_frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: bluesteam_frontend
+    restart: always
+    depends_on:
+      bluesteam_backend:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:3010:80"
+    networks:
+      bluesteam_net:
+        aliases:
+          - bluesteam_web
+
+volumes:
+  bluesteam_pgdata:
+  bluesteam_uploads:
+
+networks:
+  bluesteam_net:
+    name: bluesteam_net

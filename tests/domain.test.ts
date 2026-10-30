@@ -1,12 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import {
-  SEED_UNITS,
-  SEED_LESSONS,
-  SEED_STUDENTS,
-  SEED_PATHS,
-  getExperienceById,
-  getExperiencesForUnit,
-} from '../src/content/seed';
+import { SEED_UNITS } from '../src/shared/data/seed/units';
+import { SEED_LESSONS } from '../src/shared/data/seed/lessons';
+import { SEED_STUDENTS } from '../src/shared/data/seed/students';
+import { SEED_PATHS } from '../src/shared/data/seed/paths';
+import { getExperienceById, getExperiencesForUnit } from '../src/shared/data/seed/queries';
 
 describe('Domain Models & Seed Integrity', () => {
   it('should have 5 valid learning units with decoupled indicators', () => {

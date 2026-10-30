@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { demoStore } from '../src/demo/storage/demoStore';
+import { demoStore } from '../src/shared/realtime/demoStore';
 
 describe('BlueSTEAM v2 Learner Journey & Progression Tests', () => {
   beforeEach(() => {

@@ -22,20 +22,20 @@ export default defineConfig({
           next();
         });
         server.middlewares.use('/mockups', (req, res, next) => {
-          const safeUrl = req.url ? req.url.split('?')[0].replace(/^\//, '') : '';
+          const rawUrl = req.url ? req.url.split('?')[0].replace(/^\//, '') : '';
+          let fileName: string;
+          try { fileName = decodeURIComponent(rawUrl); }
+          catch { res.statusCode = 400; res.end('Invalid path'); return; }
+          // The canonical design collection is intentionally flat.
+          if (path.basename(fileName) !== fileName || fileName.startsWith('.')) return next();
           const mockupsDir = path.join(process.cwd(), 'docs', 'mockups');
-          let filePath = path.join(mockupsDir, safeUrl);
-          if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
-            if (fs.existsSync(mockupsDir)) {
-              const files = fs.readdirSync(mockupsDir);
-              const found = files.find((f) => f === safeUrl || f.endsWith('-' + safeUrl));
-              if (found) {
-                filePath = path.join(mockupsDir, found);
-              }
-            }
-          }
-          if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-            res.setHeader('Content-Type', 'image/png');
+          const filePath = path.join(mockupsDir, fileName);
+          const contentTypes: Record<string, string> = {
+            '.png': 'image/png',
+          };
+          const contentType = contentTypes[path.extname(fileName)];
+          if (contentType && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+            res.setHeader('Content-Type', contentType);
             return fs.createReadStream(filePath).pipe(res);
           }
           next();
@@ -61,10 +61,26 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5173,
+    port: 3010,
+    strictPort: true,
     host: true,
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_PROXY_TARGET || 'http://127.0.0.1:8010',
+        changeOrigin: true,
+      },
+      '/uploads': {
+        target: process.env.VITE_API_PROXY_TARGET || 'http://127.0.0.1:8010',
+        changeOrigin: true,
+      },
+      '/socket.io': {
+        target: process.env.VITE_API_PROXY_TARGET || 'http://127.0.0.1:8010',
+        changeOrigin: true,
+        ws: true,
+      },
+    },
     watch: {
-      ignored: ['**/.agents/**', '**/artifacts/**', '**/docs/**'],
+      ignored: ['**/.agents/**', '**/artifacts/**', '**/docs/**', '**/screenshots/**'],
     },
   },
 });

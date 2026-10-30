@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { OCEAN_RESOURCES } from '../src/content/resourcesData';
+import { OCEAN_RESOURCES } from '../src/domains/learner/resources/resourcesData';
 
 describe('Milestone 4 — Squad 5: Kho học liệu & Media Hub Verification', () => {
   describe('Screen 3 & Screen 10: Resources Catalog & Curated Overview', () => {

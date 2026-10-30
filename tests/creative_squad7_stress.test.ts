@@ -1,3 +1,4 @@
+import { indexedDB } from 'fake-indexeddb';
 // Setup minimal SSR window/document/sessionStorage mock prior to any imports
 if (typeof globalThis.window === 'undefined') {
   const sessionStorageStore: Record<string, string> = {};
@@ -85,23 +86,26 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import { CreativeStudioPage } from '../src/pages/learner/CreativeStudioPage';
-import { CreativeDrawingPage } from '../src/pages/learner/CreativeDrawingPage';
-import { HabitatStudioPage } from '../src/pages/learner/HabitatStudioPage';
+import { CreativeStudioPage } from '../src/domains/learner/creative-studio/CreativeStudioPage';
+import { CreativeDrawingSurface } from '../src/shared/creative/CreativeDrawingSurface';
+import { CreativeHabitatSurface } from '../src/shared/creative/CreativeHabitatSurface';
+import type { ImmutableContentSnapshot } from '../src/shared/creative/contentSnapshot';
+const snapshot:ImmutableContentSnapshot={contentType:'creative_template',contentId:'free',title:'Nơi sống của bé',kind:'habitat',thumbnailUrl:'',narrationUrl:null,config:{},contentVersion:1,capturedAt:''};
 import {
   drawCrayonStroke,
   drawEraserStroke,
   drawMarineStamp,
   floodFill,
   MarineStampType,
-} from '../src/pages/learner/drawing_engine';
+} from '../src/shared/creative/drawing_engine';
 import {
   HabitatPlacedItem,
   DEFAULT_HABITAT_ITEMS,
   HABITAT_ASSET_PALETTE,
   HABITAT_SCENE_PRESETS,
-} from '../src/pages/learner/habitatTypes';
-import { creativeStorage, CreativeArtwork } from '../src/services/creativeStorage';
+} from '../src/shared/creative/habitatTypes';
+import { creativeStorage, CreativeArtwork } from '../src/shared/creative/creativeStorage';
+Object.defineProperty(window, 'indexedDB', { value: indexedDB, configurable: true });
 import { RouterProvider } from '../src/app/router';
 import { I18nProvider } from '../src/shared/i18n/I18nContext';
 
@@ -139,111 +143,31 @@ describe('M4 Challenger 2: Squad 7 Creative Studio & 3D Habitat Empirical Stress
   // PART 1: CreativeStudioPage Empty Slot Card & Reference Corrections
   // =========================================================================
   describe('1. CreativeStudioPage — Empty Slot Card & Reference Corrections (REFERENCE_CORRECTIONS.md line 23)', () => {
-    it('strictly displays "Tạo mới" on empty slot card and does NOT display "Mở tác phẩm" in Vietnamese', () => {
-      const html = renderWithProviders(React.createElement(CreativeStudioPage), '/creative', '', 'vi');
-
-      // REFERENCE_CORRECTIONS.md line 23: "Ô rỗng dùng tạo mới, không Mở tác phẩm; bỏ slogan tự sinh"
-      expect(html).toContain('Tạo mới');
-      expect(html).not.toContain('Mở tác phẩm');
-      expect(html).not.toContain('mo-tac-pham');
-
-      // Auto-generated slogan elimination check
-      expect(html).not.toContain('Biển cũng cần những ý tưởng nhỏ');
-
-      // Functional counter badge check
-      expect(html).toContain('tác phẩm đã lưu');
+    it('offers scanning on paper, the canonical coloring library, habitat and profile resume',()=>{
+      const html=renderWithProviders(React.createElement(CreativeStudioPage));
+      for(const label of ['Cho tranh của bé sống dậy','Quét tranh của bé','Vào phiên bằng mã','Chọn tranh từ Học liệu','Xây một nơi sống','Làm tiếp','Xem tác phẩm trong Hồ sơ'])expect(html).toContain(label);
+      expect(html).not.toContain('Tác phẩm của An');
+      expect(html).not.toContain('Mẫu Bạch tuộc');
     });
 
-    it('strictly displays "Create New" on empty slot card in English and does NOT display "Mở tác phẩm"', () => {
-      const html = renderWithProviders(React.createElement(CreativeStudioPage), '/creative', '', 'en');
-
-      expect(html).toContain('Create New');
-      expect(html).not.toContain('Mở tác phẩm');
-      expect(html).not.toContain('Open Artwork');
-      expect(html).toContain('saved artworks');
-    });
-
-    it('verifies static source file of CreativeStudioPage contains ZERO occurrences of "Mở tác phẩm"', () => {
-      const sourcePath = path.resolve(__dirname, '../src/pages/learner/CreativeStudioPage.tsx');
-      const sourceCode = fs.readFileSync(sourcePath, 'utf-8');
-
-      expect(sourceCode).not.toContain('Mở tác phẩm');
-      expect(sourceCode).toContain('Tạo mới');
-      expect(sourceCode).toContain('Create New');
-      expect(sourceCode).toContain('tác phẩm đã lưu');
-    });
-
-    it('verifies CreativeStudioPage has valid navigation routes for all creative activities', () => {
-      const html = renderWithProviders(React.createElement(CreativeStudioPage), '/creative', '', 'vi');
-
-      // Free drawing canvas
-      expect(html).toContain('Vẽ tự do');
-      // Coloring octopus template
-      expect(html).toContain('Tô màu');
-      expect(html).toContain('Mẫu Bạch tuộc');
-      // 3D Habitat builder
-      expect(html).toContain('Xây một nơi sống');
-      expect(html).toContain('Bắt đầu xây');
-      // Collection section
-      expect(html).toContain('Tác phẩm của An');
-    });
   });
 
   // =========================================================================
   // PART 2: CreativeDrawingPage Tablet Ergonomics & Drawing Engine
   // =========================================================================
   describe('2. CreativeDrawingPage — Screen 39 Tablet Dock Ergonomics & Drawing Engine Stack', () => {
-    it('strictly satisfies >= 56px touch target standard on Screen 39 tablet bottom dock (min-w-[56px] min-h-[56px])', () => {
-      const html = renderWithProviders(React.createElement(CreativeDrawingPage), '/creative/drawing', '', 'vi');
-
-      // Tablet dock wrapper exists with Apple-standard rounded-[28px]
-      expect(html).toContain('rounded-[28px]');
-      expect(html).toContain('lg:hidden');
-
-      // All 5 primary tools in the tablet bottom dock have min-w-[56px] and min-h-[56px]
-      // Cọ vẽ (Brush)
-      expect(html).toMatch(/min-w-\[56px\]\s+min-h-\[56px\][^>]*>.*?Cọ vẽ/s);
-      // Tẩy (Eraser)
-      expect(html).toMatch(/min-w-\[56px\]\s+min-h-\[56px\][^>]*>.*?Tẩy/s);
-      // Tô màu (Bucket Fill)
-      expect(html).toMatch(/min-w-\[56px\]\s+min-h-\[56px\][^>]*>.*?Tô màu/s);
-      // Con dấu (Marine Stamps)
-      expect(html).toMatch(/min-w-\[56px\]\s+min-h-\[56px\][^>]*>.*?Con dấu/s);
-      // Mẫu gợi ý (Templates)
-      expect(html).toMatch(/min-w-\[56px\]\s+min-h-\[56px\][^>]*>.*?Mẫu/s);
-
-      // Verify header action buttons also satisfy touch targets (min-h-[48px] sm:min-h-[56px])
-      expect(html).toContain('min-w-[48px] min-h-[48px] sm:min-w-[56px] sm:min-h-[56px]');
+    it('renders shared drawing tools with child touch target rules',()=>{
+      const html=renderToString(React.createElement(CreativeDrawingSurface,{snapshot:{...snapshot,kind:'drawing'},workspace:{kind:'local',id:'paper'},preview:true}));
+      for(const tool of ['brush','bucket','stamp','eraser'])expect(html).toContain('drawing-tool-'+tool);
+      expect(html).toContain('Lưu tiến trình');
+      expect(html).not.toContain('room-submit-artwork-btn');
+      const css=fs.readFileSync(path.resolve(__dirname,'../src/shared/creative/creativeWorkspace.css'),'utf8');
+      expect(css).toContain('min-height:56px;min-width:56px');
     });
-
-    it('verifies all 14 Living Ocean color swatches in tablet dock satisfy min-w-[56px] min-h-[56px]', () => {
-      const sourcePath = path.resolve(__dirname, '../src/pages/learner/CreativeDrawingPage.tsx');
-      const sourceCode = fs.readFileSync(sourcePath, 'utf-8');
-
-      // Verify the 14 Living Ocean color definitions
-      const expectedColors = [
-        '#1A1A1A',
-        '#7F8C8D',
-        '#8D5524',
-        '#E74C3C',
-        '#F67650',
-        '#E67E22',
-        '#F1C40F',
-        '#82C91E',
-        '#1E7E48',
-        '#2EE6CA',
-        '#4DABF7',
-        '#1C7ED6',
-        '#7950F2',
-        '#FFFFFF',
-      ];
-
-      expectedColors.forEach((color) => {
-        expect(sourceCode).toContain(color);
-      });
-
-      // Verify tablet color buttons class includes min-w-[56px] min-h-[56px]
-      expect(sourceCode).toContain('min-w-[56px] min-h-[56px] rounded-2xl shadow-xs transition-transform');
+    it('keeps all fourteen drawing colors in the shared runtime',()=>{
+      const html=renderToString(React.createElement(CreativeDrawingSurface,{snapshot:{...snapshot,kind:'drawing'},preview:true}));
+      expect((html.match(/data-testid="drawing-color-/g)||[]).length).toBe(14);
+      for(const color of ['1A1A1A','7F8C8D','8D5524','FFFFFF'])expect(html).toContain('drawing-color-'+color);
     });
 
     it('verifies drawing engine functions (drawCrayonStroke, drawEraserStroke, drawMarineStamp, floodFill) execute correctly', () => {
@@ -513,61 +437,17 @@ describe('M4 Challenger 2: Squad 7 Creative Studio & 3D Habitat Empirical Stress
       expect(returnedTurtle.scale).toBe(1.4);
     });
 
-    it('verifies Build Mode UI contracts: shows "Nơi sống của An", "Chạy thử", "Cảnh trong dự án", and bottom asset tray', () => {
-      const html = renderWithProviders(React.createElement(HabitatStudioPage), '/creative/habitat', '');
-
-      // Title in Build Mode
-      expect(html).toContain('Nơi sống của An');
-
-      // Primary CTA: Chạy thử
-      expect(html).toContain('Chạy thử');
-
-      // Right Panel: Cảnh trong dự án
-      expect(html).toContain('Cảnh trong dự án');
-      expect(html).toContain('Vùng cỏ biển');
-      expect(html).toContain('Rạn đá');
-      expect(html).toContain('Thêm cảnh');
-
-      // Bottom Asset Tray tabs
-      expect(html).toContain('Cát');
-      expect(html).toContain('Đá');
-      expect(html).toContain('Cỏ biển');
-      expect(html).toContain('Sinh vật');
-
-      // Delete tool active in Build Mode
-      expect(html).toContain('Công cụ xóa');
-      expect(html).toContain('Di chuyển');
-      expect(html).toContain('Xoay');
-      expect(html).toContain('Phóng to');
+    it('renders one real project scene and the shared habitat tools',()=>{
+      const html=renderToString(React.createElement(CreativeHabitatSurface,{snapshot,workspace:{kind:'local',id:'habitat'},preview:true}));
+      for(const label of ['Chạy thử','Cảnh đang mở','Thêm cảnh','Cỏ biển','Di chuyển','Xoay','Công cụ Xóa'])expect(html).toContain(label);
+      expect(html).not.toContain('Nơi sống của An');
+      expect(html).not.toContain('room-submit-artwork-btn');
     });
-
-    it('verifies Run Mode UI contracts (?mode=run): shows "Quan sát môi trường của An", "Sửa thiết kế", "Con muốn đổi điều gì?", and hides bottom asset tray', () => {
-      const html = renderWithProviders(React.createElement(HabitatStudioPage), '/creative/habitat', '?mode=run');
-
-      // Title in Run Mode
-      expect(html).toContain('Quan sát môi trường của An');
-
-      // Mode switch back CTA: Sửa thiết kế (Coral button #F67650)
-      expect(html).toContain('Sửa thiết kế');
-      expect(html).toContain('#F67650');
-
-      // Simulation runtime controls
-      expect(html).toContain('Tạm dừng');
-      expect(html).toContain('Chạy lại');
-
-      // Right Panel: Con muốn đổi điều gì?
-      expect(html).toContain('Con muốn đổi điều gì?');
-      expect(html).toContain('Hãy chọn đối tượng để thêm, bớt hoặc di chuyển trong mô hình.');
-
-      // Bottom asset tray MUST NOT be rendered in Run Mode
-      expect(html).not.toContain('Kéo thả đối tượng vào vùng hợp lệ trên mô hình');
-
-      // Delete tool is disabled / hidden in Run Mode
-      expect(html).toContain('Chế độ chạy ẩn công cụ xóa');
-
-      // Motion spline trajectory SVG is rendered in Run Mode
-      expect(html).toContain('stroke="#2EE6CA"');
-      expect(html).toContain('stroke-dasharray="8 6"');
+    it('keeps run mode controls and disables additions without changing the scene',()=>{
+      const html=renderToString(React.createElement(CreativeHabitatSurface,{snapshot,preview:true,initialMode:'run'}));
+      expect(html).toContain('Sửa thiết kế');expect(html).toContain('Tạm dừng chuyển động');
+      expect(html).toMatch(/disabled=""[^>]*data-testid="habitat-select-/);
+      expect(html).not.toContain('room-submit-artwork-btn');
     });
 
     it('verifies persistent storage roundtrip via creativeStorage preserves all habitat transforms', async () => {

@@ -51,13 +51,13 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import { ResourcesLibraryPage } from '../src/pages/learner/ResourcesLibraryPage';
-import { FlashcardDetailPage } from '../src/pages/learner/FlashcardDetailPage';
-import { VideoPlayerPage } from '../src/pages/learner/VideoPlayerPage';
-import { PrintPreviewPage } from '../src/pages/learner/PrintPreviewPage';
+import { ResourcesLibraryPage } from '../src/domains/learner/resources/ResourcesLibraryPage';
+import { FlashcardDetailPage } from '../src/domains/learner/resources/FlashcardDetailPage';
+import { VideoPlayerPage } from '../src/domains/learner/resources/VideoPlayerPage';
+import { PrintPreviewPage } from '../src/domains/learner/resources/PrintPreviewPage';
 import { RouterProvider } from '../src/app/router';
 import { I18nProvider } from '../src/shared/i18n/I18nContext';
-import { oceanAudio } from '../src/shared/sound/oceanAudio';
+import { oceanAudio } from '../src/shared/audio/oceanAudio';
 
 // Helper to render pages within required BlueSTEAM context providers
 function renderWithProviders(element: React.ReactElement, initialSearch: string = ''): string {
@@ -103,145 +103,30 @@ describe('M4 Challenger 1: Squad 5 Media Hub Empirical & Adversarial Stress Suit
   /* =========================================================================
      1. ResourcesLibraryPage (Screen 3 & Screen 10)
      ========================================================================= */
-  describe('1. ResourcesLibraryPage — Dual-Mode View Switching & Filtering State Machine', () => {
-    it('renders Screen 10 (Curated Collections Overview) when ?view=curated is specified', () => {
-      const html = renderWithProviders(React.createElement(ResourcesLibraryPage), '?view=curated');
-
-      // Top Mode Switcher indicates Curated is active
-      expect(html).toContain('Chế độ hiển thị:');
-      expect(html).toContain('Học liệu tuyển chọn (Màn 10 - Dọc)');
-      expect(html).toContain('Kho học liệu lưới (Màn 3)');
-
-      // Section 1: Hero Showcase
-      expect(html).toContain('Học liệu cho những khám phá nhỏ');
-      expect(html).toContain('Khám phá đại dương qua những học liệu trực quan');
-      expect(html).toContain('Khám phá ngay');
-      expect(html).toContain('Rùa biển');
-      expect(html).toContain('Hệ sinh thái rạn san hô');
-      expect(html).toContain('Âm thanh đại dương');
-
-      // Section 2: Khám phá theo chủ đề (4 category cards)
-      expect(html).toContain('Khám phá theo chủ đề');
-      expect(html).toContain('Sinh vật biển');
-      expect(html).toContain('Vùng ven biển');
-      expect(html).toContain('Môi trường biển');
-      expect(html).toContain('Thực vật biển');
-
-      // Section 3: Tất cả học liệu
-      expect(html).toContain('Tất cả học liệu');
-      expect(html).toContain('Cá hề');
-      expect(html).toContain('Tiếng hát của cá voi');
-      expect(html).toContain('Làm mô hình rùa biển');
-      expect(html).toContain('Mở kho học liệu');
-
-      // Section 4: Mang khám phá ra ngoài màn hình (Printables fan-out)
-      expect(html).toContain('Mang khám phá ra ngoài màn hình');
-      expect(html).toContain('Tranh tô màu sinh vật biển');
-      expect(html).toContain('Mẫu cắt dán thủ công');
-      expect(html).toContain('Phiếu quan sát ngoài thiên nhiên');
-      expect(html).toContain('Hoạt động thực hành tại nhà');
-      expect(html).toContain('Xem tài liệu in');
-      expect(html).toContain('Sinh vật vùng triều');
+  describe('1. ResourcesLibraryPage — grouped API-backed catalog', () => {
+    it.each(['', '?view=curated', '?view=catalog', '?state=curated-collections-overview'])('uses one canonical catalog for legacy query %s', search => {
+      const html=renderWithProviders(React.createElement(ResourcesLibraryPage),search);
+      expect(html).toContain('Khám phá theo nhóm');
+      expect(html).toContain('Chọn nhóm học liệu');
+      expect(html).toContain('Đang mở thư viện');
+      expect(html).not.toContain('Chế độ hiển thị:');
+      expect(html).not.toContain('Học liệu tuyển chọn (Màn 10');
+      expect(html).not.toContain('Phiếu học tập');
     });
-
-    it('accepts ?state=curated-collections-overview alias and renders Curated mode', () => {
-      const html = renderWithProviders(
-        React.createElement(ResourcesLibraryPage),
-        '?state=curated-collections-overview'
-      );
-      expect(html).toContain('Học liệu cho những khám phá nhỏ');
-      expect(html).toContain('Khám phá theo chủ đề');
-    });
-
-    it('renders Screen 3 (Catalog Grid View) when ?view=catalog or default desktop route', () => {
-      const html = renderWithProviders(React.createElement(ResourcesLibraryPage), '?view=catalog');
-
-      // Title & Heading in oceanic navy
-      expect(html).toContain('Kho học liệu');
-      expect(html).toContain('text-[#102A38]');
-      expect(html).toContain('tracking-[-0.02em]');
-
-      // Search input & bookmark button
-      expect(html).toContain('placeholder="Tìm học liệu"');
+    it('does not invent catalog entries before API data arrives',()=>{
+      const html=renderWithProviders(React.createElement(ResourcesLibraryPage),'');
+      expect(html).not.toContain('Rùa biển xanh');
+      expect(html).not.toContain('Cua biển');
+      expect(html).toContain('role="status"');
+      expect(html).toContain('Tìm học liệu');
       expect(html).toContain('Đã lưu');
-
-      // Left Sidebar Filters: Loại học liệu
-      expect(html).toContain('Loại học liệu');
-      expect(html).toContain('Tất cả học liệu');
+    });
+    it('respects the group context and offers merged visual formats',()=>{
+      const html=renderWithProviders(React.createElement(ResourcesLibraryPage),'?group=00000000-0000-4000-8000-000000000001&kind=visual');
+      expect(html).toContain('Học liệu trong nhóm');
       expect(html).toContain('Thẻ hình');
-      expect(html).toContain('Hình ảnh');
-      expect(html).toContain('Âm thanh');
-      expect(html).toContain('Video');
-      expect(html).toContain('Tranh tô màu');
-      expect(html).toContain('Phiếu học tập');
-      expect(html).toContain('Poster');
-
-      // Left Sidebar Filters: Chủ đề
-      expect(html).toContain('Chủ đề');
-      expect(html).toContain('Tất cả chủ đề');
-      expect(html).toContain('Môi trường');
-      expect(html).toContain('Bảo vệ biển');
-
-      // Right Main Featured Banner
-      expect(html).toContain('Học liệu nổi bật');
-      expect(html).toContain('Khám phá thảm cỏ biển');
-
-      // Base 6 Canonical cards from bluesteam-v2-resources-catalog.png
-      expect(html).toContain('Rùa biển xanh');
-      expect(html).toContain('Cỏ biển');
-      expect(html).toContain('Âm thanh đại dương: Tiếng rạn san hô');
-      expect(html).toContain('Bạch tuộc');
-      expect(html).toContain('Hệ sinh thái ven biển');
-      expect(html).toContain('Cá mập voi – Người khổng lồ hiền lành');
-      expect(html).toContain('Đang chuẩn bị');
-
-      // Expand list button
-      expect(html).toContain('Xem thêm học liệu');
-    });
-
-    it('accepts ?state=catalog-grid-view alias and renders Catalog mode', () => {
-      const html = renderWithProviders(
-        React.createElement(ResourcesLibraryPage),
-        '?state=catalog-grid-view'
-      );
-      expect(html).toContain('Kho học liệu');
-      expect(html).toContain('placeholder="Tìm học liệu"');
-    });
-
-    it('defaults to Curated mode in portrait window viewport (1024x1536)', () => {
-      if (typeof window !== 'undefined') {
-        window.innerHeight = 1536;
-        window.innerWidth = 1024;
-      }
-      const html = renderWithProviders(React.createElement(ResourcesLibraryPage), '');
-      expect(html).toContain('Học liệu cho những khám phá nhỏ');
-      expect(html).toContain('Khám phá theo chủ đề');
-    });
-
-    it('verifies search filtering, category filtering, and empty state rendering logic in component source', () => {
-      const sourceCode = fs.readFileSync(
-        path.resolve(__dirname, '../src/pages/learner/ResourcesLibraryPage.tsx'),
-        'utf-8'
-      );
-
-      // Verify search query matching logic
-      expect(sourceCode).toContain('card.title.toLowerCase().includes(q)');
-      expect(sourceCode).toContain('card.type.toLowerCase().includes(q)');
-
-      // Verify activeType and activeTopic filtering
-      expect(sourceCode).toContain('card.typeKey !== activeType');
-      expect(sourceCode).toContain('card.topicKey !== activeTopic');
-
-      // Verify empty state fallback UI
-      expect(sourceCode).toContain('Không tìm thấy học liệu phù hợp');
-      expect(sourceCode).toContain(
-        'Hãy thử tìm kiếm với từ khóa khác hoặc đặt lại bộ lọc để khám phá toàn bộ kho tài nguyên.'
-      );
-      expect(sourceCode).toContain('Đặt lại bộ lọc');
-      expect(sourceCode).toContain('🐢');
-
-      // Verify sound chime upon saving bookmark
-      expect(sourceCode).toContain('oceanAudio.playChime(next[id] ? 659.25 : 440, 0.15)');
+      expect(html).not.toContain('>Hình ảnh<');
+      expect(html).not.toContain('Phiếu học tập');
     });
   });
 
@@ -329,7 +214,7 @@ describe('M4 Challenger 1: Squad 5 Media Hub Empirical & Adversarial Stress Suit
       expect(typeof oceanAudio.speak).toBe('function');
 
       const sourceCode = fs.readFileSync(
-        path.resolve(__dirname, '../src/pages/learner/FlashcardDetailPage.tsx'),
+        path.resolve(__dirname, '../src/domains/learner/resources/FlashcardDetailPage.tsx'),
         'utf-8'
       );
 
@@ -410,7 +295,7 @@ describe('M4 Challenger 1: Squad 5 Media Hub Empirical & Adversarial Stress Suit
 
     it('verifies chapter seek navigation, scrubber progress calculations, and audio narration triggers', () => {
       const sourceCode = fs.readFileSync(
-        path.resolve(__dirname, '../src/pages/learner/VideoPlayerPage.tsx'),
+        path.resolve(__dirname, '../src/domains/learner/resources/VideoPlayerPage.tsx'),
         'utf-8'
       );
 
@@ -482,7 +367,7 @@ describe('M4 Challenger 1: Squad 5 Media Hub Empirical & Adversarial Stress Suit
     it('STRICT ADVERSARIAL CHECK: Absolutely NO "Cộng đồng" section exists (REFERENCE_CORRECTIONS.md line 11)', () => {
       const html = renderWithProviders(React.createElement(PrintPreviewPage));
       const sourceCode = fs.readFileSync(
-        path.resolve(__dirname, '../src/pages/learner/PrintPreviewPage.tsx'),
+        path.resolve(__dirname, '../src/domains/learner/resources/PrintPreviewPage.tsx'),
         'utf-8'
       );
 
@@ -513,7 +398,7 @@ describe('M4 Challenger 1: Squad 5 Media Hub Empirical & Adversarial Stress Suit
 
     it('verifies window.print and download execution in component source', () => {
       const sourceCode = fs.readFileSync(
-        path.resolve(__dirname, '../src/pages/learner/PrintPreviewPage.tsx'),
+        path.resolve(__dirname, '../src/domains/learner/resources/PrintPreviewPage.tsx'),
         'utf-8'
       );
 
@@ -534,7 +419,6 @@ describe('M4 Challenger 1: Squad 5 Media Hub Empirical & Adversarial Stress Suit
   describe('5. Cross-Cutting Design Tokens, Spacing & WCAG Contrast Invariants', () => {
     it('verifies Noto Serif / Playfair Display editorial headings with #102A38 navy across all Squad 5 pages', () => {
       const pages = [
-        React.createElement(ResourcesLibraryPage, { key: 'library' }),
         React.createElement(FlashcardDetailPage, { key: 'flashcard' }),
         React.createElement(VideoPlayerPage, { key: 'video' }),
         React.createElement(PrintPreviewPage, { key: 'print' }),
@@ -549,7 +433,6 @@ describe('M4 Challenger 1: Squad 5 Media Hub Empirical & Adversarial Stress Suit
 
     it('verifies Apple 28px/32px standard corner radiuses across all major containers', () => {
       const pages = [
-        React.createElement(ResourcesLibraryPage, { key: 'library' }),
         React.createElement(FlashcardDetailPage, { key: 'flashcard' }),
         React.createElement(VideoPlayerPage, { key: 'video' }),
         React.createElement(PrintPreviewPage, { key: 'print' }),

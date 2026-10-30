@@ -1,0 +1,24 @@
+.entry-page :is(button,a):focus-visible{outline:3px solid #17657a;outline-offset:5px}
+.entry-role-card{position:relative}
+.entry-page h1{color:#fff7df;text-shadow:0 2px 24px #062d36b3}
+.entry-page .entry-wave{color:#f3ddae}
+.entry-role-art img{transition:transform 1000ms cubic-bezier(.25,.65,.3,1);transform-origin:50% 65%}
+.entry-persona img{transition:transform 800ms cubic-bezier(.25,.65,.3,1)}
+.entry-feature>div{transition:transform 700ms cubic-bezier(.25,.65,.3,1),background-color 500ms ease}
+.entry-role-card:focus-within .entry-role-art img{transform:scale(1.025)}
+.entry-role-card:focus-within .entry-persona img{transform:translateY(-2px)}
+.entry-role-card:focus-within .entry-feature>div{transform:translateY(-3px)}
+.entry-role-action{transition:background-color 160ms ease,box-shadow 160ms ease,transform 120ms ease}
+.entry-role-action:focus-visible{box-shadow:0 0 0 5px #fff,0 0 0 8px #17657a}
+@media(max-width:767px){.entry-page .entry-atmosphere,.entry-page .entry-role-card{backdrop-filter:none}.entry-page main{padding-bottom:max(24px,env(safe-area-inset-bottom))}}
+@media(hover:hover) and (pointer:fine){
+ .entry-role-action:hover{box-shadow:0 8px 20px #102a3826}
+ .entry-role-card:hover .entry-role-art img{transform:scale(1.025)}
+ .entry-role-card:hover .entry-persona img{transform:translateY(-2px)}
+ .entry-role-card:hover .entry-feature>div{transform:translateY(-3px)}
+}
+@media(prefers-reduced-motion:reduce){
+ .entry-page *,.entry-page *::before,.entry-page *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ .entry-page button:active,.entry-page button svg{transform:none!important}
+ .entry-page .entry-role-art img,.entry-page .entry-persona img,.entry-page .entry-feature>div{transform:none!important}
+}

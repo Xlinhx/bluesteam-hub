@@ -1,0 +1,135 @@
+/* Motion stays attached to its object; no ambient loops or layout movement. */
+.bluesteam-app-header,
+.bluesteam-app-header + nav { --header-ease: cubic-bezier(.22, 1, .36, 1); }
+.bluesteam-app-header > div:first-child > button,
+.bluesteam-nav-link,
+.bluesteam-nav-icon,
+.bluesteam-header-room-action,
+.bluesteam-header-identity,
+.bluesteam-header-identity > button,
+.bluesteam-header-audio { position: relative; }
+.bluesteam-nav-icon { isolation: isolate; }
+.bluesteam-nav-icon::before,
+.bluesteam-nav-icon::after,
+.bluesteam-app-header > div:first-child > button::after,
+.bluesteam-header-room-action::after,
+.bluesteam-header-identity::after {
+  content: ''; position: absolute; pointer-events: none; opacity: 0;
+}
+.bluesteam-nav-icon::before,
+.bluesteam-nav-icon::after { z-index: -1; }
+.bluesteam-nav-link:active .bluesteam-nav-icon,
+.bluesteam-header-room-action:active > svg,
+.bluesteam-header-identity > button:active > span { transform: scale(.88); }
+.bluesteam-nav-link:active,
+.bluesteam-header-room-action:active { transition-duration: 80ms; }
+
+/* Dropdown unfolds from the trigger, then its two choices follow. */
+.bluesteam-header-language > div {
+  transform-origin: top right;
+  animation: header-menu-unfold 220ms var(--header-ease, cubic-bezier(.22,1,.36,1)) both;
+}
+.bluesteam-header-language > div > button {
+  animation: header-option-arrive 240ms cubic-bezier(.22,1,.36,1) both;
+}
+.bluesteam-header-language > div > button:nth-child(2) { animation-delay: 40ms; }
+.bluesteam-header-language > button > svg:last-child { transition: transform 180ms cubic-bezier(.22,1,.36,1); }
+.bluesteam-header-language > button[aria-expanded='true'] > svg:last-child { transform: rotate(180deg); }
+.bluesteam-app-header[data-compact-mobile='true'] .bluesteam-header-utilities[data-open='true'] {
+  transform-origin: top right; animation: header-menu-unfold 220ms cubic-bezier(.22,1,.36,1) both;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* A small wake crosses the logo, then dissolves. */
+  .bluesteam-app-header > div:first-child > button::after {
+    left: 5px; bottom: 2px; width: 28px; height: 8px;
+    border-bottom: 2px solid #47b9ca; border-radius: 50%;
+  }
+  .bluesteam-app-header > div:first-child > button:hover::after { animation: header-logo-wake 900ms var(--header-ease) both; }
+  .bluesteam-app-header > div:first-child > button:hover img { animation: header-logo-dip 700ms var(--header-ease) both; }
+
+  /* Home lands; the book opens; the compass searches and settles. */
+  .bluesteam-nav-link:is([data-nav-key='home'], [data-nav-key='overview']):hover .bluesteam-nav-icon {
+    animation: header-home-land 650ms var(--header-ease) both;
+  }
+  .bluesteam-nav-link[data-nav-key='resources'] .bluesteam-nav-icon { perspective: 80px; }
+  .bluesteam-nav-link[data-nav-key='resources']:hover .bluesteam-nav-icon > svg { animation: header-book-open 750ms var(--header-ease) both; }
+  .bluesteam-nav-link[data-nav-key='resources'] .bluesteam-nav-icon::after {
+    width: 11px; height: 7px; top: -5px; right: -4px; border-radius: 1px 5px 1px 1px;
+    border-top: 1px solid #2697b0; border-right: 1px solid #2697b0;
+  }
+  .bluesteam-nav-link[data-nav-key='resources']:hover .bluesteam-nav-icon::after { animation: header-page-lift 850ms var(--header-ease) both; }
+  .bluesteam-nav-link[data-nav-key='interactive']:hover .bluesteam-nav-icon > svg { animation: header-compass-search 950ms var(--header-ease) both; }
+  .bluesteam-nav-link[data-nav-key='interactive'] .bluesteam-nav-icon::after {
+    inset: -5px; border: 1px dashed #2697b080; border-radius: 50%;
+  }
+  .bluesteam-nav-link[data-nav-key='interactive']:hover .bluesteam-nav-icon::after { animation: header-compass-orbit 950ms var(--header-ease) both; }
+
+  /* Three paint flecks follow the palette at different moments. */
+  .bluesteam-nav-link[data-nav-key='creative']:hover .bluesteam-nav-icon > svg { animation: header-palette-flourish 850ms var(--header-ease) both; }
+  .bluesteam-nav-link[data-nav-key='creative'] .bluesteam-nav-icon::before {
+    width: 4px; height: 4px; top: 2px; right: 1px; border-radius: 50%;
+    background: #e0654e; box-shadow: -7px -4px 0 #38aaba;
+  }
+  .bluesteam-nav-link[data-nav-key='creative'] .bluesteam-nav-icon::after {
+    width: 3px; height: 5px; top: 1px; right: 1px; background: #d2aa43; border-radius: 60% 40% 65% 35%;
+  }
+  .bluesteam-nav-link[data-nav-key='creative']:hover .bluesteam-nav-icon::before { animation: header-paint-flecks 850ms var(--header-ease) both; }
+  .bluesteam-nav-link[data-nav-key='creative']:hover .bluesteam-nav-icon::after { animation: header-paint-flecks 750ms 90ms var(--header-ease) both; }
+  .bluesteam-nav-link[data-nav-key='profile']:hover .bluesteam-nav-icon > svg { animation: header-avatar-greet 800ms var(--header-ease) both; }
+  .bluesteam-nav-link[data-nav-key='rooms']:hover .bluesteam-nav-icon > svg { transform-origin: left center; animation: header-door-open 850ms var(--header-ease) both; }
+
+  /* A room invitation sends a tiny current in the direction of its arrow. */
+  .bluesteam-header-room-action { isolation: isolate; }
+  .bluesteam-header-room-action::after {
+    left: 9px; top: calc(50% - 5px); width: 12px; height: 10px;
+    border-top: 1px solid #38aaba; border-bottom: 1px solid #38aaba; border-radius: 50%;
+  }
+  .bluesteam-header-room-action:hover::after { animation: header-invitation-wake 850ms var(--header-ease) both; }
+  .bluesteam-header-room-action:hover > svg { animation: header-invitation-arrow 700ms var(--header-ease) both; }
+  .bluesteam-header-identity > button:first-child:hover > span { animation: header-avatar-greet 800ms var(--header-ease) both; }
+  .bluesteam-header-identity::after {
+    left: 27px; top: 9px; width: 4px; height: 4px; border: 1px solid #38aaba; border-radius: 50%;
+    box-shadow: 5px 8px 0 -1px #38aaba80;
+  }
+  .bluesteam-header-identity:has(> button:first-child:hover)::after { animation: header-avatar-bubbles 950ms var(--header-ease) both; }
+  .bluesteam-header-identity > button[title='Đăng xuất']:hover svg { animation: header-invitation-arrow 500ms var(--header-ease) both; }
+  .bluesteam-header-language > button:hover > svg:first-child { animation: header-globe-turn 800ms var(--header-ease) both; }
+  .bluesteam-header-audio:not([aria-label='Bật âm thanh']):hover > svg > path:last-child { animation: header-sound-wave 700ms var(--header-ease) both; transform-origin: center; }
+}
+
+@keyframes header-home-land { 0%,100% { transform: none; } 30% { transform: translateY(-4px) rotate(-5deg); } 60% { transform: translateY(1px) scaleY(.92); } 78% { transform: translateY(-1px); } }
+@keyframes header-book-open { 0%,100% { transform: none; } 35% { transform: rotateY(-32deg) rotate(-8deg); } 65% { transform: rotateY(14deg) rotate(3deg); } }
+@keyframes header-page-lift { 0%,100% { opacity: 0; transform: none; } 35% { opacity: .75; transform: translate(2px,-2px) rotate(12deg); } 80% { opacity: 0; transform: translate(7px,-7px) rotate(30deg); } }
+@keyframes header-compass-search { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-35deg); } 60% { transform: rotate(55deg); } 82% { transform: rotate(-9deg); } }
+@keyframes header-compass-orbit { 0% { opacity: 0; transform: scale(.75) rotate(-30deg); } 35% { opacity: .6; } 100% { opacity: 0; transform: scale(1.18) rotate(90deg); } }
+@keyframes header-palette-flourish { 0%,100% { transform: none; } 30% { transform: translateY(-3px) rotate(-17deg); } 65% { transform: rotate(8deg); } }
+@keyframes header-paint-flecks { 0% { opacity: 0; transform: scale(.5); } 28% { opacity: .9; } 65% { opacity: .65; transform: translate(6px,-8px) rotate(40deg); } 100% { opacity: 0; transform: translate(9px,-5px) rotate(75deg) scale(.6); } }
+@keyframes header-door-open { 0%,100% { transform: perspective(70px) rotateY(0); } 45% { transform: perspective(70px) rotateY(-35deg); } 75% { transform: perspective(70px) rotateY(8deg); } }
+@keyframes header-avatar-greet { 0%,100% { transform: none; } 25% { transform: translateY(-2px) rotate(-10deg); } 50% { transform: rotate(8deg); } 75% { transform: rotate(-3deg); } }
+@keyframes header-avatar-bubbles { 0% { opacity: 0; transform: none; } 30% { opacity: .85; } 100% { opacity: 0; transform: translate(8px,-10px) scale(.65); } }
+@keyframes header-invitation-arrow { 0%,100% { transform: translateX(0); } 35% { transform: translateX(-2px); } 65% { transform: translateX(4px); } }
+@keyframes header-invitation-wake { 0% { opacity: 0; transform: translateX(0) scale(.6); } 35% { opacity: .6; } 100% { opacity: 0; transform: translateX(14px) scale(1.2); } }
+@keyframes header-globe-turn { 0%,100% { transform: none; } 45% { transform: perspective(60px) rotateY(55deg); } 75% { transform: perspective(60px) rotateY(-12deg); } }
+@keyframes header-sound-wave { 0%,100% { opacity: 1; transform: none; } 30% { opacity: .4; transform: scale(.92); } 65% { opacity: 1; transform: scale(1.08); } }
+@keyframes header-logo-wake { 0% { opacity: 0; transform: translateX(-3px) scaleX(.6); } 35% { opacity: .65; } 100% { opacity: 0; transform: translateX(28px) scaleX(1.2); } }
+@keyframes header-logo-dip { 0%,100% { transform: none; } 35% { transform: translateY(-1px) rotate(-2deg); } 70% { transform: rotate(1deg); } }
+@keyframes header-menu-unfold { from { opacity: 0; transform: translateY(-5px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes header-option-arrive { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+
+/* A keyboard user gets stable focus; touch gets immediate press feedback. */
+.bluesteam-app-header:has(:focus-visible) *,
+.bluesteam-app-header:has(:focus-visible) *::before,
+.bluesteam-app-header:has(:focus-visible) *::after,
+.bluesteam-app-header + nav:has(:focus-visible) *,
+.bluesteam-app-header + nav:has(:focus-visible) *::before,
+.bluesteam-app-header + nav:has(:focus-visible) *::after { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .bluesteam-app-header *, .bluesteam-app-header *::before, .bluesteam-app-header *::after,
+  .bluesteam-app-header + nav *, .bluesteam-app-header + nav *::before, .bluesteam-app-header + nav *::after {
+    animation: none !important; transition: none !important;
+  }
+  .bluesteam-nav-link:active .bluesteam-nav-icon,
+  .bluesteam-header-room-action:active > svg,
+  .bluesteam-header-identity > button:active > span { transform: none; }
+}

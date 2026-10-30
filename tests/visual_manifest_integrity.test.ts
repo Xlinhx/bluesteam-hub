@@ -9,8 +9,8 @@ const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 
 describe('BlueSTEAM v2 — Visual Review Manifest Integrity (Rules K, L, M)', () => {
-  const sceneManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'scene-manifest.json');
-  const visualManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'visual-review-manifest.json');
+  const sceneManifestPath = path.join(REPO_ROOT, 'docs', 'verification', 'scene-manifest.json');
+  const visualManifestPath = path.join(REPO_ROOT, 'docs', 'verification', 'visual-review-manifest.json');
 
   it('should have visual-review-manifest.json present and readable', () => {
     expect(fs.existsSync(visualManifestPath)).toBe(true);
@@ -31,7 +31,7 @@ describe('BlueSTEAM v2 — Visual Review Manifest Integrity (Rules K, L, M)', ()
     expect(result.valid).toBe(true);
     expect(result.errors).toHaveLength(0);
     expect(result.summary.missingScenes).toHaveLength(0);
-    expect(result.summary.referenceCoverage).toBe('35 / 35');
+    expect(result.summary.referenceCoverage).toBe('33 / 33');
     expect(result.summary.totalRecords).toBeGreaterThanOrEqual(35);
   });
 

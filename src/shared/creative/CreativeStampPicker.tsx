@@ -1,0 +1,7 @@
+import {Search,ChevronLeft,ChevronRight,Stamp} from 'lucide-react';
+import {useState} from 'react';
+import {CreativeMaterialPreview} from './CreativeMaterialPreview';
+export function CreativeStampPicker({materials,onSelect,disabled}:{materials:any[];onSelect:(item:any)=>void;disabled:boolean}){
+ const [q,setQ]=useState(''),[page,setPage]=useState(0);const filtered=materials.filter(m=>String(m.title).toLocaleLowerCase().includes(q.toLocaleLowerCase()));
+ return <details className="creative-stamp-library"><summary><Stamp size={17}/>Thư viện tem · {materials.length}</summary><label><Search size={17}/>Tìm tem<input aria-label="Tìm tem" value={q} onChange={e=>{setQ(e.target.value);setPage(0);}}/></label><div className="creative-palette-assets">{filtered.slice(page*12,page*12+12).map(m=><button className="creative-palette-asset" key={m.id} disabled={disabled} onClick={()=>onSelect(m)}><CreativeMaterialPreview material={m} className="w-10 h-10 object-contain"/>{m.title}</button>)}</div><div className="creative-workspace-actions"><button className="creative-btn" disabled={!page} aria-label="Trang tem trước" onClick={()=>setPage(p=>p-1)}><ChevronLeft size={18}/></button><span>Trang {page+1} / {Math.max(1,Math.ceil(filtered.length/12))}</span><button className="creative-btn" disabled={(page+1)*12>=filtered.length} aria-label="Trang tem sau" onClick={()=>setPage(p=>p+1)}><ChevronRight size={18}/></button></div></details>;
+}

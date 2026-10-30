@@ -1,0 +1,2113 @@
+{
+  "schemaVersion": "2026-10-15-r2",
+  "generatedAt": "2026-10-15T15:00:00.000Z",
+  "reusableContent": {
+    "topics": [
+      {
+        "sourceKey": "topic:species",
+        "slug": "species",
+        "label": "Sinh vật",
+        "iconKey": "fish",
+        "coverUrl": "/assets/generated/stations/aquarium_gallery_clownfish.jpg"
+      },
+      {
+        "sourceKey": "topic:environment",
+        "slug": "environment",
+        "label": "Môi trường",
+        "iconKey": "waves",
+        "coverUrl": "/assets/generated/decor/ref_s2_topic2.jpg"
+      },
+      {
+        "sourceKey": "topic:conservation",
+        "slug": "conservation",
+        "label": "Bảo vệ biển",
+        "iconKey": "shield",
+        "coverUrl": "/assets/generated/decor/topic_ocean_wave.jpg"
+      }
+    ],
+    "resources": [
+      {
+        "sourceKey": "resource:crab-flashcard",
+        "kind": "flashcard",
+        "title": "Cua biển",
+        "description": "Cua biển có lớp vỏ cứng và 10 chân. Chúng thường sống ở vùng nước nông, ven bờ biển.",
+        "coverUrl": "/assets/generated/stations/station_hermit_crab.jpg",
+        "mediaUrl": "/assets/generated/stations/station_hermit_crab.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "linkedVariantSourceKeys": [
+          "resource:crab-image",
+          "resource:crab-video",
+          "resource:crab-audio",
+          "resource:crab-coloring"
+        ],
+        "content": {
+          "shortFacts": [
+            {
+              "iconKey": "claw",
+              "label": "Hai càng",
+              "detail": "Có hai càng khỏe để bắt mồi và tự vệ."
+            },
+            {
+              "iconKey": "crab",
+              "label": "Bò ngang",
+              "detail": "Di chuyển chủ yếu bằng cách bò ngang."
+            },
+            {
+              "iconKey": "wave",
+              "label": "Ven biển",
+              "detail": "Sống ở vùng biển nông, ven bờ đá và bãi cát."
+            }
+          ],
+          "narrationText": "Cua biển có hai càng khỏe, di chuyển bằng cách bò ngang và sống ở vùng ven biển.",
+          "audioKind": "narration",
+          "albumImages": [
+            "/assets/generated/stations/station_hermit_crab.jpg",
+            "/assets/generated/creatures/crab_isolated.png"
+          ]
+        }
+      },
+      {
+        "sourceKey": "resource:starfish-flashcard",
+        "kind": "flashcard",
+        "title": "Sao biển",
+        "description": "Sao biển có 5 cánh đối xứng, bò chậm trên cát và rạn đá.",
+        "coverUrl": "/assets/generated/stations/species_starfish.jpg",
+        "mediaUrl": "/assets/generated/stations/species_starfish.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "linkedVariantSourceKeys": [],
+        "content": {
+          "shortFacts": [
+            {
+              "iconKey": "star",
+              "label": "Năm cánh",
+              "detail": "Thân hình ngôi sao năm cánh đặc trưng."
+            },
+            {
+              "iconKey": "footprints",
+              "label": "Chân ống",
+              "detail": "Di chuyển nhờ hàng trăm chân ống nhỏ bên dưới."
+            },
+            {
+              "iconKey": "wave",
+              "label": "Đáy cát",
+              "detail": "Sống ở bãi cát và rạn đá nước nông."
+            }
+          ],
+          "narrationText": "Sao biển có năm cánh đẹp mắt, di chuyển chậm dưới đáy cát và rạn san hô.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:seashell-flashcard",
+        "kind": "flashcard",
+        "title": "Vỏ sò",
+        "description": "Lớp vỏ cứng nhiều vân đẹp mắt bảo vệ các loài thân mềm dưới biển.",
+        "coverUrl": "/assets/generated/stations/aquarium_gallery_shell.jpg",
+        "mediaUrl": "/assets/generated/stations/aquarium_gallery_shell.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species",
+          "environment"
+        ],
+        "linkedVariantSourceKeys": [],
+        "content": {
+          "shortFacts": [
+            {
+              "iconKey": "shell",
+              "label": "Vỏ cứng",
+              "detail": "Hai mảnh vỏ khép lại bảo vệ cơ thể mềm bên trong."
+            },
+            {
+              "iconKey": "sparkles",
+              "label": "Vân sọc",
+              "detail": "Bề mặt có nhiều đường gân hình quạt."
+            },
+            {
+              "iconKey": "wave",
+              "label": "Bãi cát",
+              "detail": "Thường vùi mình dưới lớp cát ven bờ."
+            }
+          ],
+          "narrationText": "Vỏ sò cứng cáp với những đường vân hình quạt giúp bảo vệ các bạn sò nhỏ trên bãi cát.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:clownfish-flashcard",
+        "kind": "flashcard",
+        "title": "Cá hề",
+        "description": "Chú cá nhỏ màu cam sọc trắng sống cùng hải quỳ trong rạn san hô.",
+        "coverUrl": "/assets/generated/stations/aquarium_gallery_clownfish.jpg",
+        "mediaUrl": "/assets/generated/stations/aquarium_gallery_clownfish.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "linkedVariantSourceKeys": [
+          "resource:clownfish-coloring"
+        ],
+        "content": {
+          "shortFacts": [
+            {
+              "iconKey": "fish",
+              "label": "Sọc trắng cam",
+              "detail": "Thân màu cam rực rỡ với 3 dải sọc trắng."
+            },
+            {
+              "iconKey": "flower",
+              "label": "Bạn hải quỳ",
+              "detail": "Sống an toàn giữa những xúc tu hải quỳ."
+            },
+            {
+              "iconKey": "home",
+              "label": "Rạn san hô",
+              "detail": "Bơi lội quanh rạn san hô nước ấm."
+            }
+          ],
+          "narrationText": "Cá hề màu cam có ba sọc trắng, sống vui vẻ bên người bạn hải quỳ ở rạn san hô.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:seagrass-flashcard",
+        "kind": "flashcard",
+        "title": "Cỏ biển",
+        "description": "Thảm cỏ xanh mượt dưới đáy nước nông, là nơi kiếm ăn của rùa biển.",
+        "coverUrl": "/assets/generated/stations/botanical_seagrass_specimen.jpg",
+        "mediaUrl": "/assets/generated/stations/botanical_seagrass_specimen.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "environment"
+        ],
+        "linkedVariantSourceKeys": [],
+        "content": {
+          "shortFacts": [
+            {
+              "iconKey": "sprout",
+              "label": "Lá xanh dài",
+              "detail": "Mọc thành từng thảm xanh dưới đáy biển nông."
+            },
+            {
+              "iconKey": "sun",
+              "label": "Cần ánh nắng",
+              "detail": "Quang hợp nhờ ánh nắng chiếu qua làn nước."
+            },
+            {
+              "iconKey": "home",
+              "label": "Nhà cá nhỏ",
+              "detail": "Là nơi trú ẩn của cá con và thức ăn của rùa xanh."
+            }
+          ],
+          "narrationText": "Cỏ biển tạo thành đồng cỏ xanh dưới nước, cung cấp thức ăn cho rùa biển và chỗ trú cho cá nhỏ.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:coral-flashcard",
+        "kind": "flashcard",
+        "title": "San hô",
+        "description": "Rạn san hô đầy màu sắc là ngôi nhà chung của hàng ngàn loài sinh vật biển.",
+        "coverUrl": "/assets/generated/stations/station_coral_reef.jpg",
+        "mediaUrl": "/assets/generated/stations/station_coral_reef.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species",
+          "environment"
+        ],
+        "linkedVariantSourceKeys": [],
+        "content": {
+          "shortFacts": [
+            {
+              "iconKey": "sparkles",
+              "label": "Nhiều màu sắc",
+              "detail": "Rạn san hô rực rỡ như khu vườn dưới đáy biển."
+            },
+            {
+              "iconKey": "home",
+              "label": "Ngôi nhà chung",
+              "detail": "Nơi sinh sống của cá hề, sao biển và tôm nhỏ."
+            },
+            {
+              "iconKey": "shield",
+              "label": "Cần nước sạch",
+              "detail": "Phát triển tốt ở vùng nước biển trong và ấm."
+            }
+          ],
+          "narrationText": "San hô trông như những cành cây rực rỡ, là ngôi nhà ấm áp của biết bao loài cá nhỏ.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:jellyfish-flashcard",
+        "kind": "flashcard",
+        "title": "Sứa",
+        "description": "Sứa biển có thân trong suốt như chiếc ô nhỏ trôi nhẹ nhàng trong làn nước.",
+        "coverUrl": "/assets/generated/stations/aquarium_gallery_jellyfish.jpg",
+        "mediaUrl": "/assets/generated/stations/aquarium_gallery_jellyfish.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "linkedVariantSourceKeys": [],
+        "content": {
+          "shortFacts": [
+            {
+              "iconKey": "umbrella",
+              "label": "Thân hình dù",
+              "detail": "Mũ sứa mềm mại co bóp để đẩy nước."
+            },
+            {
+              "iconKey": "waves",
+              "label": "Bơi nhịp nhàng",
+              "detail": "Trôi nhẹ nhàng theo dòng nước biển."
+            },
+            {
+              "iconKey": "sparkles",
+              "label": "Trong suốt",
+              "detail": "Cơ thể mềm và trong suốt dưới ánh sáng."
+            }
+          ],
+          "narrationText": "Bạn sứa có thân hình chiếc ô mềm mại, bơi nhịp nhàng trong làn nước xanh.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:whale-flashcard",
+        "kind": "flashcard",
+        "title": "Cá voi",
+        "description": "Người khổng lồ hiền hòa của đại dương với tiếng hát vang xa trong nước.",
+        "coverUrl": "/assets/ocean/specimen-whale.jpg",
+        "mediaUrl": "/assets/ocean/specimen-whale.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species",
+          "conservation"
+        ],
+        "linkedVariantSourceKeys": [],
+        "content": {
+          "shortFacts": [
+            {
+              "iconKey": "whale",
+              "label": "To lớn nhất",
+              "detail": "Là loài động vật lớn nhất dưới đại dương."
+            },
+            {
+              "iconKey": "wind",
+              "label": "Phun cột nước",
+              "detail": "Ngoi lên mặt biển để thở và phun nước."
+            },
+            {
+              "iconKey": "volume",
+              "label": "Hát dưới biển",
+              "detail": "Giao tiếp với nhau bằng âm thanh trầm ấm."
+            }
+          ],
+          "narrationText": "Cá voi là người bạn khổng lồ hiền lành, thường ngoi lên mặt nước thở và ngân vang tiếng hát.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:green-turtle-flashcard",
+        "kind": "flashcard",
+        "title": "Rùa biển xanh",
+        "description": "Loài rùa biển hiền lành có mai cứng và bốn chân bơi khỏe khoắn.",
+        "coverUrl": "/assets/generated/creatures/green_turtle_hero.jpg",
+        "mediaUrl": "/assets/generated/creatures/green_turtle_hero.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species",
+          "conservation"
+        ],
+        "linkedVariantSourceKeys": [
+          "resource:turtle-coloring"
+        ],
+        "content": {
+          "shortFacts": [
+            {
+              "iconKey": "shield",
+              "label": "Mai cứng cáp",
+              "detail": "Chiếc mai lớn bảo vệ cơ thể rùa biển."
+            },
+            {
+              "iconKey": "sprout",
+              "label": "Ăn cỏ biển",
+              "detail": "Rùa trưởng thành thích ăn cỏ biển xanh non."
+            },
+            {
+              "iconKey": "waves",
+              "label": "Chân bơi khỏe",
+              "detail": "Bốn chân dạng mái chèo giúp bơi xa."
+            }
+          ],
+          "narrationText": "Rùa biển xanh có chiếc mai cứng cáp và đôi chân bơi như mái chèo, rất thích ăn cỏ biển.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:wave-audio",
+        "kind": "audio",
+        "title": "Tiếng sóng",
+        "description": "Âm thanh rì rào của sóng biển vỗ nhẹ lên bờ cát.",
+        "coverUrl": "/assets/generated/decor/topic_ocean_wave.jpg",
+        "mediaUrl": null,
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "environment"
+        ],
+        "linkedVariantSourceKeys": [],
+        "content": {
+          "audioKind": "ambient",
+          "durationSeconds": 35,
+          "narrationText": "Hãy lắng nghe tiếng sóng biển rì rào vỗ nhẹ vào bờ cát trắng.",
+          "waveformPeaks": [
+            0.25,
+            0.5,
+            0.8,
+            0.6,
+            0.35,
+            0.7,
+            0.9,
+            0.45,
+            0.3,
+            0.65,
+            0.85,
+            0.4
+          ]
+        }
+      },
+      {
+        "sourceKey": "resource:crab-image",
+        "kind": "image",
+        "title": "Hình ảnh Cua biển ven đá",
+        "description": "Ảnh chụp cận cảnh cua biển trên ghềnh đá ven bờ.",
+        "coverUrl": "/assets/generated/stations/station_hermit_crab.jpg",
+        "mediaUrl": "/assets/generated/stations/station_hermit_crab.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "linkedVariantSourceKeys": [
+          "resource:crab-flashcard",
+          "resource:crab-video",
+          "resource:crab-audio",
+          "resource:crab-coloring"
+        ],
+        "content": {
+          "shortFacts": [
+            {
+              "iconKey": "claw",
+              "label": "Hai càng",
+              "detail": "Càng cua khỏe và cứng cáp."
+            },
+            {
+              "iconKey": "wave",
+              "label": "Ghềnh đá",
+              "detail": "Nơi cua ẩn nấp khi sóng vỗ."
+            }
+          ],
+          "narrationText": "Ảnh chụp bạn cua biển đang đứng trên ghềnh đá đón nắng.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:crab-video",
+        "kind": "video",
+        "title": "Video Cua biển bò ngang",
+        "description": "Quan sát cách cua biển di chuyển trên bãi cát và ven đá.",
+        "coverUrl": "/assets/generated/stations/station_hermit_crab.jpg",
+        "mediaUrl": "/assets/generated/stations/station_hermit_crab.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "linkedVariantSourceKeys": [
+          "resource:crab-flashcard",
+          "resource:crab-image",
+          "resource:crab-audio",
+          "resource:crab-coloring"
+        ],
+        "content": {
+          "durationSeconds": 45,
+          "narrationText": "Cùng xem bạn cua biển khéo léo bò ngang trên bãi cát.",
+          "audioKind": "narration",
+          "chapters": [
+            {
+              "timeSeconds": 0,
+              "title": "Cua rời hang cát"
+            },
+            {
+              "timeSeconds": 18,
+              "title": "Đôi càng kẹp thức ăn"
+            }
+          ]
+        }
+      },
+      {
+        "sourceKey": "resource:crab-audio",
+        "kind": "audio",
+        "title": "Lời kể về bạn Cua biển",
+        "description": "Lời thuyết minh ngắn giới thiệu đặc điểm của cua biển cho bé.",
+        "coverUrl": "/assets/generated/stations/station_hermit_crab.jpg",
+        "mediaUrl": null,
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "linkedVariantSourceKeys": [
+          "resource:crab-flashcard",
+          "resource:crab-image",
+          "resource:crab-video",
+          "resource:crab-coloring"
+        ],
+        "content": {
+          "audioKind": "narration",
+          "durationSeconds": 18,
+          "narrationText": "Cua biển có tám chân đi bộ và hai chiếc càng to. Khi đi dạo trên bãi cát, cua thường bò ngang thật nhanh.",
+          "waveformPeaks": [
+            0.3,
+            0.6,
+            0.75,
+            0.5,
+            0.85,
+            0.65,
+            0.4,
+            0.7,
+            0.6,
+            0.35
+          ]
+        }
+      },
+      {
+        "sourceKey": "resource:crab-coloring",
+        "kind": "coloring",
+        "title": "Tranh tô màu: Bạn Cua biển",
+        "description": "Tranh nét rõ ràng để bé tô màu chú cua biển đáng yêu.",
+        "coverUrl": "/assets/generated/creatures/crab_isolated.png",
+        "mediaUrl": "/assets/generated/creatures/crab_isolated.png",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "linkedVariantSourceKeys": [
+          "resource:crab-flashcard"
+        ],
+        "content": {
+          "printableType": "coloring",
+          "svgTemplate": "crab",
+          "drawingTemplateKey": "template:drawing-crab",
+          "narrationText": "Bé hãy chọn màu cam hoặc đỏ tươi để tô cho bạn cua biển nhé!",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:turtle-coloring",
+        "kind": "coloring",
+        "title": "Tranh tô màu: Rùa biển bên cỏ xanh",
+        "description": "Bản in A4 đường nét rõ ràng để bé tập tô màu rùa xanh.",
+        "coverUrl": "/assets/generated/creatures/turtle_isolated.png",
+        "mediaUrl": "/assets/generated/creatures/turtle_isolated.png",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species",
+          "environment"
+        ],
+        "linkedVariantSourceKeys": [
+          "resource:green-turtle-flashcard"
+        ],
+        "content": {
+          "printableType": "coloring",
+          "svgTemplate": "turtle",
+          "drawingTemplateKey": "template:drawing-turtle",
+          "narrationText": "Bé hãy dùng màu xanh lá cho mai rùa và cỏ biển nhé!",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:clownfish-coloring",
+        "kind": "coloring",
+        "title": "Tranh tô màu: Cá hề và san hô",
+        "description": "Bản in A4 giúp bé luyện khéo tay tô màu cá hề.",
+        "coverUrl": "/assets/generated/creatures/clownfish_isolated.png",
+        "mediaUrl": "/assets/generated/creatures/clownfish_isolated.png",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "linkedVariantSourceKeys": [
+          "resource:clownfish-flashcard"
+        ],
+        "content": {
+          "printableType": "coloring",
+          "svgTemplate": "clownfish",
+          "drawingTemplateKey": "template:drawing-clownfish",
+          "narrationText": "Bé hãy tô thân cá hề màu cam ấm áp cùng ba dải sọc trắng nhé.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:depth-worksheet",
+        "kind": "worksheet",
+        "title": "Phiếu học tập: Ai ở tầng nước nào?",
+        "description": "Phiếu học tập nối sinh vật biển với nơi sống phù hợp.",
+        "coverUrl": "/assets/ocean/atlas-vertical-bg.jpg",
+        "mediaUrl": "/assets/ocean/atlas-vertical-bg.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "environment"
+        ],
+        "linkedVariantSourceKeys": [],
+        "content": {
+          "printableType": "worksheet",
+          "svgTemplate": "depth-match",
+          "narrationText": "Bé hãy nối mỗi bạn sinh vật biển về đúng ngôi nhà dưới nước của bạn ấy.",
+          "audioKind": "narration"
+        }
+      },
+      {
+        "sourceKey": "resource:mangrove-poster",
+        "kind": "poster",
+        "title": "Poster: Giữ biển sạch đẹp",
+        "description": "Poster trực quan treo lớp hướng dẫn bảo vệ bờ biển và rừng ngập mặn.",
+        "coverUrl": "/assets/generated/stations/mangrove_ecosystem_poster.jpg",
+        "mediaUrl": "/assets/generated/stations/mangrove_ecosystem_poster.jpg",
+        "narrationUrl": null,
+        "visibility": "published",
+        "topicSlugs": [
+          "conservation",
+          "environment"
+        ],
+        "linkedVariantSourceKeys": [],
+        "content": {
+          "printableType": "poster",
+          "svgTemplate": "clean-ocean-poster",
+          "narrationText": "Cùng nhau bỏ rác đúng nơi quy định để giữ bãi biển và đại dương luôn sạch đẹp.",
+          "audioKind": "narration"
+        }
+      }
+    ],
+    "activities": [
+      {
+        "sourceKey": "activity:home-sorting",
+        "kind": "game",
+        "templateKey": "sorting",
+        "title": "Về đúng nhà",
+        "description": "Tìm nơi ở phù hợp cho các sinh vật biển.",
+        "coverUrl": "/assets/generated/stations/station_hermit_crab.jpg",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "species",
+          "environment"
+        ],
+        "config": {
+          "templateKey": "sorting",
+          "instructionText": "Đưa bạn về nhà",
+          "allowRetry": true,
+          "backgroundUrl": "/assets/generated/simulations/sim_coastal_bay_landscape.png",
+          "targets": [
+            {
+              "id": "zone-sand",
+              "label": "Bờ cát",
+              "iconKey": "sand",
+              "bounds": {
+                "x": 0.05,
+                "y": 0.55,
+                "width": 0.27,
+                "height": 0.35
+              }
+            },
+            {
+              "id": "zone-seagrass",
+              "label": "Cỏ biển",
+              "iconKey": "seagrass",
+              "bounds": {
+                "x": 0.37,
+                "y": 0.55,
+                "width": 0.27,
+                "height": 0.35
+              }
+            },
+            {
+              "id": "zone-coral",
+              "label": "San hô",
+              "iconKey": "coral",
+              "bounds": {
+                "x": 0.69,
+                "y": 0.55,
+                "width": 0.27,
+                "height": 0.35
+              }
+            }
+          ],
+          "objects": [
+            {
+              "id": "obj-crab",
+              "label": "Cua biển",
+              "imageUrl": "/assets/generated/r2-cutouts/crab_friendly_cutout.png",
+              "acceptedTargetIds": [
+                "zone-sand"
+              ]
+            },
+            {
+              "id": "obj-starfish",
+              "label": "Sao biển",
+              "imageUrl": "/assets/generated/r2-cutouts/starfish_cutout.png",
+              "acceptedTargetIds": [
+                "zone-sand",
+                "zone-seagrass"
+              ]
+            },
+            {
+              "id": "obj-clownfish",
+              "label": "Cá hề",
+              "imageUrl": "/assets/generated/creatures/clownfish_isolated.png",
+              "acceptedTargetIds": [
+                "zone-coral"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "sourceKey": "activity:pair-matching",
+        "kind": "game",
+        "templateKey": "matching",
+        "title": "Tìm đôi bạn",
+        "description": "Ghép các sinh vật giống nhau.",
+        "coverUrl": "/assets/generated/creatures/thumb_fish_sort_gamelab.png",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "species"
+        ],
+        "config": {
+          "templateKey": "matching",
+          "instructionText": "Chạm vào hai hình bạn sinh vật giống nhau",
+          "allowRetry": true,
+          "pairs": [
+            {
+              "id": "pair-clownfish",
+              "left": {
+                "id": "L-clownfish",
+                "label": "Cá hề",
+                "imageUrl": "/assets/generated/creatures/clownfish_isolated.png"
+              },
+              "right": {
+                "id": "R-clownfish",
+                "label": "Cá hề cam",
+                "imageUrl": "/assets/generated/creatures/clownfish_isolated.png"
+              }
+            },
+            {
+              "id": "pair-bluefish",
+              "left": {
+                "id": "L-bluefish",
+                "label": "Cá xanh",
+                "imageUrl": "/assets/generated/creatures/blue_fish_isolated.png"
+              },
+              "right": {
+                "id": "R-bluefish",
+                "label": "Cá đuôi vàng",
+                "imageUrl": "/assets/generated/creatures/blue_fish_isolated.png"
+              }
+            },
+            {
+              "id": "pair-crab",
+              "left": {
+                "id": "L-crab",
+                "label": "Cua biển",
+                "imageUrl": "/assets/generated/creatures/crab_isolated.png"
+              },
+              "right": {
+                "id": "R-crab",
+                "label": "Bạn cua",
+                "imageUrl": "/assets/generated/creatures/crab_isolated.png"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "sourceKey": "activity:choose-animal",
+        "kind": "game",
+        "templateKey": "choice",
+        "title": "Chọn con vật",
+        "description": "Chọn đúng sinh vật theo câu hỏi.",
+        "coverUrl": "/assets/generated/creatures/green_turtle_hero.jpg",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "species"
+        ],
+        "config": {
+          "templateKey": "choice",
+          "instructionText": "Bé hãy chạm vào bạn Rùa biển xanh nhé!",
+          "allowRetry": true,
+          "questions": [
+            {
+              "id": "q-find-turtle",
+              "promptText": "Đâu là bạn Rùa biển xanh có chiếc mai cứng cáp?",
+              "options": [
+                {
+                  "id": "opt-clownfish",
+                  "label": "Cá hề",
+                  "imageUrl": "/assets/generated/creatures/clownfish_isolated.png"
+                },
+                {
+                  "id": "opt-turtle",
+                  "label": "Rùa biển",
+                  "imageUrl": "/assets/generated/creatures/turtle_isolated.png"
+                },
+                {
+                  "id": "opt-bluefish",
+                  "label": "Cá xanh",
+                  "imageUrl": "/assets/generated/creatures/blue_fish_isolated.png"
+                }
+              ],
+              "correctOptionId": "opt-turtle",
+              "feedbackText": "Đúng rồi! Đây là bạn Rùa biển xanh."
+            },
+            {
+              "id": "q-find-crab",
+              "promptText": "Bạn nào có hai chiếc càng khỏe và bò ngang trên cát?",
+              "options": [
+                {
+                  "id": "opt-crab",
+                  "label": "Cua biển",
+                  "imageUrl": "/assets/generated/creatures/crab_isolated.png"
+                },
+                {
+                  "id": "opt-starfish",
+                  "label": "Sao biển",
+                  "imageUrl": "/assets/specimen_starfish.png"
+                },
+                {
+                  "id": "opt-seahorse",
+                  "label": "Cá ngựa",
+                  "imageUrl": "/assets/generated/creatures/seahorse_isolated.png"
+                }
+              ],
+              "correctOptionId": "opt-crab",
+              "feedbackText": "Giỏi lắm! Bạn Cua biển có hai chiếc càng khỏe."
+            }
+          ]
+        }
+      },
+      {
+        "sourceKey": "activity:shell-fish-sorting",
+        "kind": "game",
+        "templateKey": "sorting",
+        "title": "Cùng phân loại",
+        "description": "Phân loại vỏ sò và các loài cá vào đúng giỏ.",
+        "coverUrl": "/assets/generated/creatures/thumb_shell_gamelab.png",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "species"
+        ],
+        "config": {
+          "templateKey": "sorting",
+          "instructionText": "Đặt vỏ sò và cá vào đúng giỏ nhé",
+          "allowRetry": true,
+          "backgroundUrl": "/assets/generated/decor/resources_shells_bg.jpg",
+          "targets": [
+            {
+              "id": "basket-shell",
+              "label": "Giỏ Vỏ sò",
+              "iconKey": "shell",
+              "bounds": {
+                "x": 0.12,
+                "y": 0.52,
+                "width": 0.34,
+                "height": 0.36
+              }
+            },
+            {
+              "id": "basket-fish",
+              "label": "Giỏ Cá biển",
+              "iconKey": "fish",
+              "bounds": {
+                "x": 0.54,
+                "y": 0.52,
+                "width": 0.34,
+                "height": 0.36
+              }
+            }
+          ],
+          "objects": [
+            {
+              "id": "item-shell-1",
+              "label": "Vỏ sò quạt",
+              "imageUrl": "/assets/specimen_shell.png",
+              "acceptedTargetIds": [
+                "basket-shell"
+              ]
+            },
+            {
+              "id": "item-snail-1",
+              "label": "Ốc biển",
+              "imageUrl": "/assets/specimen_snail.png",
+              "acceptedTargetIds": [
+                "basket-shell"
+              ]
+            },
+            {
+              "id": "item-clownfish-1",
+              "label": "Cá hề",
+              "imageUrl": "/assets/generated/creatures/clownfish_isolated.png",
+              "acceptedTargetIds": [
+                "basket-fish"
+              ]
+            },
+            {
+              "id": "item-bluefish-1",
+              "label": "Cá xanh",
+              "imageUrl": "/assets/generated/creatures/blue_fish_isolated.png",
+              "acceptedTargetIds": [
+                "basket-fish"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "sourceKey": "activity:shadow-matching",
+        "kind": "game",
+        "templateKey": "matching",
+        "title": "Tìm bóng hình",
+        "description": "Ghép mỗi sinh vật biển với bóng hình tương ứng.",
+        "coverUrl": "/assets/generated/creatures/stingray_isolated.jpg",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "species"
+        ],
+        "config": {
+          "templateKey": "matching",
+          "instructionText": "Tìm bóng hình đúng cho mỗi bạn biển",
+          "allowRetry": true,
+          "pairs": [
+            {
+              "id": "shadow-stingray",
+              "left": {
+                "id": "L-stingray",
+                "label": "Cá đuối",
+                "imageUrl": "/assets/generated/creatures/stingray_isolated.png"
+              },
+              "right": {
+                "id": "R-stingray",
+                "label": "Bóng cá đuối",
+                "imageUrl": "/assets/generated/creatures/stingray_isolated.png",
+                "isSilhouette": true
+              }
+            },
+            {
+              "id": "shadow-turtle",
+              "left": {
+                "id": "L-turtle",
+                "label": "Rùa biển",
+                "imageUrl": "/assets/generated/creatures/turtle_isolated.png"
+              },
+              "right": {
+                "id": "R-turtle",
+                "label": "Bóng rùa biển",
+                "imageUrl": "/assets/generated/creatures/turtle_isolated.png",
+                "isSilhouette": true
+              }
+            },
+            {
+              "id": "shadow-octopus",
+              "left": {
+                "id": "L-octopus",
+                "label": "Bạch tuộc",
+                "imageUrl": "/assets/generated/creatures/octopus_isolated.png"
+              },
+              "right": {
+                "id": "R-octopus",
+                "label": "Bóng bạch tuộc",
+                "imageUrl": "/assets/generated/creatures/octopus_isolated.png",
+                "isSilhouette": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "sourceKey": "activity:beach-cleanup",
+        "kind": "game",
+        "templateKey": "sorting",
+        "title": "Nhặt rác biển",
+        "description": "Kéo thả rác về đúng thùng để giữ bờ biển sạch.",
+        "coverUrl": "/assets/generated/simulations/sim_bottle_beach.png",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "conservation"
+        ],
+        "config": {
+          "templateKey": "sorting",
+          "instructionText": "Nhặt rác bỏ vào thùng, để lại sinh vật trên bãi cát",
+          "allowRetry": true,
+          "backgroundUrl": "/assets/generated/simulations/sim_bottle_beach.png",
+          "targets": [
+            {
+              "id": "bin-recycle",
+              "label": "Thùng rác tái chế",
+              "iconKey": "recycle",
+              "bounds": {
+                "x": 0.12,
+                "y": 0.52,
+                "width": 0.35,
+                "height": 0.36
+              }
+            },
+            {
+              "id": "beach-keep",
+              "label": "Giữ lại tự nhiên",
+              "iconKey": "shell",
+              "bounds": {
+                "x": 0.53,
+                "y": 0.52,
+                "width": 0.35,
+                "height": 0.36
+              }
+            }
+          ],
+          "objects": [
+            {
+              "id": "trash-bottle",
+              "label": "Chai nhựa",
+              "imageUrl": "/assets/ocean/sim-plastic-bottle.jpg",
+              "acceptedTargetIds": [
+                "bin-recycle"
+              ]
+            },
+            {
+              "id": "trash-bag",
+              "label": "Túi nilon",
+              "imageUrl": "/assets/ocean/sim-plastic-bag.jpg",
+              "acceptedTargetIds": [
+                "bin-recycle"
+              ]
+            },
+            {
+              "id": "nature-shell",
+              "label": "Vỏ sò tự nhiên",
+              "imageUrl": "/assets/specimen_shell.png",
+              "acceptedTargetIds": [
+                "beach-keep"
+              ]
+            },
+            {
+              "id": "nature-starfish",
+              "label": "Sao biển",
+              "imageUrl": "/assets/specimen_starfish.png",
+              "acceptedTargetIds": [
+                "beach-keep"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "sourceKey": "activity:clean-beach-scenario",
+        "kind": "scenario",
+        "templateKey": "scenario",
+        "title": "Giữ bờ biển sạch",
+        "description": "Chọn cách xử lý khi thấy chai nhựa trên bãi cát.",
+        "coverUrl": "/assets/generated/simulations/sim_bottle_beach.png",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "conservation"
+        ],
+        "config": {
+          "templateKey": "scenario",
+          "startSceneId": "scene-1",
+          "scoringEnabled": true,
+          "scenes": [
+            {
+              "id": "scene-1",
+              "title": "1. Trên bãi biển",
+              "backgroundUrl": "/assets/generated/simulations/sim_bottle_beach.png",
+              "narrationText": "Thấy chai nhựa trên cát, bé làm gì?",
+              "choices": [
+                {
+                  "id": "c1-pickup",
+                  "label": "Nhặt rác",
+                  "imageUrl": "/assets/generated/r2-scenarios/choice_pickup_bottle_bin.jpg",
+                  "nextSceneId": "scene-3",
+                  "feedbackText": "Tuyệt vời! Bỏ chai nhựa vào thùng giúp bãi biển sạch đẹp.",
+                  "isCorrect": true
+                },
+                {
+                  "id": "c1-leave",
+                  "label": "Bỏ đi",
+                  "imageUrl": "/assets/generated/r2-scenarios/choice_walk_past_bottle.jpg",
+                  "nextSceneId": "scene-2",
+                  "feedbackText": "Chai nhựa có thể bị sóng cuốn ra biển đấy. Mình thử chọn lại nhé!",
+                  "isCorrect": false
+                }
+              ]
+            },
+            {
+              "id": "scene-2",
+              "title": "2. Chọn cách xử lý",
+              "backgroundUrl": "/assets/generated/simulations/sim_plastic_journey.png",
+              "narrationText": "Sóng sắp cuốn chai nhựa ra biển rồi, mình giúp bãi biển thế nào nhỉ?",
+              "choices": [
+                {
+                  "id": "c2-pickup",
+                  "label": "Bỏ vào thùng",
+                  "imageUrl": "/assets/generated/r2-scenarios/choice_pickup_bottle_bin.jpg",
+                  "nextSceneId": "scene-3",
+                  "feedbackText": "Đúng rồi! Nhặt chai nhựa kịp thời giúp rùa và cá an toàn.",
+                  "isCorrect": true
+                }
+              ]
+            },
+            {
+              "id": "scene-3",
+              "title": "3. Bờ biển sạch",
+              "backgroundUrl": "/assets/generated/simulations/sim_coastal_bay_landscape.png",
+              "narrationText": "Bãi biển đã sạch tinh tươm, các bạn cua và sao biển vui vẻ tắm nắng!",
+              "isEnd": true,
+              "choices": []
+            }
+          ]
+        }
+      },
+      {
+        "sourceKey": "activity:sim-rescue-mission",
+        "kind": "simulation",
+        "templateKey": "rescue-mission",
+        "title": "Hành trình giải cứu",
+        "description": "Giải cứu rùa biển vướng lưới và làm sạch vùng vịnh.",
+        "coverUrl": "/assets/generated/simulations/sim_rescue_hero_full.png",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "conservation",
+          "species"
+        ],
+        "config": {
+          "simulationKey": "rescue-mission",
+          "route": "/interactive/rescue-mission",
+          "instructionText": "Chạm vào lưới rác để giải cứu bạn rùa biển an toàn."
+        }
+      },
+      {
+        "sourceKey": "activity:sim-plastic-journey",
+        "kind": "simulation",
+        "templateKey": "plastic-journey",
+        "title": "Hành trình chai nhựa",
+        "description": "Quan sát đường đi của rác nhựa và cách ngăn chặn từ bờ biển.",
+        "coverUrl": "/assets/generated/simulations/sim_plastic_journey.png",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "conservation",
+          "environment"
+        ],
+        "config": {
+          "simulationKey": "plastic-journey",
+          "route": "/interactive/plastic-journey",
+          "instructionText": "Quan sát điều gì xảy ra khi chai nhựa trôi ra biển."
+        }
+      },
+      {
+        "sourceKey": "activity:sim-water-column",
+        "kind": "simulation",
+        "templateKey": "water-column",
+        "title": "Khám phá tầng nước đại dương",
+        "description": "Trượt qua các tầng nước để xem ánh sáng và sinh vật thay đổi theo độ sâu.",
+        "coverUrl": "/assets/ocean/atlas-vertical-bg.jpg",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "environment",
+          "species"
+        ],
+        "config": {
+          "simulationKey": "water-column",
+          "route": "/learn/atlas",
+          "initialDepthMeters": 50,
+          "instructionText": "Kéo thanh trượt độ sâu để ngắm các tầng nước biển."
+        }
+      }
+    ],
+    "models3d": [
+      {
+        "sourceKey": "model:clownfish",
+        "provider": "sketchfab",
+        "modelUid": "eb47bc5ab9084881b68443d893622111",
+        "canonicalUrl": "https://sketchfab.com/3d-models/clownfish-eb47bc5ab9084881b68443d893622111",
+        "title": "Cá hề",
+        "description": "Mô hình 3D cá hề sọc cam trắng bơi quanh hải quỳ.",
+        "coverUrl": "/assets/generated/stations/aquarium_gallery_clownfish.jpg",
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "attribution": {
+          "creator": "BlueSTEAM 3D Marine Collection",
+          "license": "CC-BY-4.0",
+          "sourceUrl": "https://sketchfab.com/3d-models/clownfish-eb47bc5ab9084881b68443d893622111"
+        },
+        "narrationText": "Chạm và xoay để ngắm bạn Cá hề với ba dải sọc trắng trên thân màu cam."
+      },
+      {
+        "sourceKey": "model:turtle",
+        "provider": "sketchfab",
+        "modelUid": "02c0ead2ef48466d8bf4ab5c03cd2e18",
+        "canonicalUrl": "https://sketchfab.com/3d-models/green-sea-turtle-02c0ead2ef48466d8bf4ab5c03cd2e18",
+        "title": "Rùa biển xanh",
+        "description": "Mô hình 3D rùa biển xanh với mai cứng và chân bơi dạng mái chèo.",
+        "coverUrl": "/assets/generated/creatures/green_turtle_hero.jpg",
+        "visibility": "published",
+        "topicSlugs": [
+          "species",
+          "conservation"
+        ],
+        "attribution": {
+          "creator": "BlueSTEAM 3D Marine Collection",
+          "license": "CC-BY-4.0",
+          "sourceUrl": "https://sketchfab.com/3d-models/green-sea-turtle-02c0ead2ef48466d8bf4ab5c03cd2e18"
+        },
+        "narrationText": "Chạm và xoay để quan sát chiếc mai và đôi chân bơi của bạn Rùa biển xanh."
+      },
+      {
+        "sourceKey": "model:starfish",
+        "provider": "sketchfab",
+        "modelUid": "6f4b2390b19b4a0ea2b9d7236e2f7e81",
+        "canonicalUrl": "https://sketchfab.com/3d-models/starfish-6f4b2390b19b4a0ea2b9d7236e2f7e81",
+        "title": "Sao biển",
+        "description": "Mô hình 3D sao biển 5 cánh sống ở vùng đáy cát nông.",
+        "coverUrl": "/assets/generated/stations/species_starfish.jpg",
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "attribution": {
+          "creator": "BlueSTEAM 3D Marine Collection",
+          "license": "CC-BY-4.0",
+          "sourceUrl": "https://sketchfab.com/3d-models/starfish-6f4b2390b19b4a0ea2b9d7236e2f7e81"
+        },
+        "narrationText": "Cùng xoay xem năm cánh đều nhau của bạn Sao biển nhé."
+      },
+      {
+        "sourceKey": "model:stingray",
+        "provider": "sketchfab",
+        "modelUid": "9a8d71c4230e47b99f621bc8a109f4c2",
+        "canonicalUrl": "https://sketchfab.com/3d-models/stingray-9a8d71c4230e47b99f621bc8a109f4c2",
+        "title": "Cá đuối",
+        "description": "Mô hình 3D cá đuối với đôi vây rộng lướt nhẹ dưới nước.",
+        "coverUrl": "/assets/generated/creatures/stingray_isolated.jpg",
+        "visibility": "draft",
+        "topicSlugs": [
+          "species"
+        ],
+        "attribution": {
+          "creator": "BlueSTEAM 3D Marine Collection",
+          "license": "CC-BY-4.0",
+          "sourceUrl": "https://sketchfab.com/3d-models/stingray-9a8d71c4230e47b99f621bc8a109f4c2"
+        },
+        "narrationText": "Bạn Cá đuối có thân dẹt và đôi vây rộng như đôi cánh dưới đáy biển."
+      },
+      {
+        "sourceKey": "model:jellyfish",
+        "provider": "sketchfab",
+        "modelUid": "4c219a0f8b124d58a7c38e02f94c71d3",
+        "canonicalUrl": "https://sketchfab.com/3d-models/jellyfish-4c219a0f8b124d58a7c38e02f94c71d3",
+        "title": "Sứa",
+        "description": "Mô hình 3D sứa biển mềm mại bơi trong làn nước.",
+        "coverUrl": "/assets/generated/stations/aquarium_gallery_jellyfish.jpg",
+        "visibility": "published",
+        "topicSlugs": [
+          "species"
+        ],
+        "attribution": {
+          "creator": "BlueSTEAM 3D Marine Collection",
+          "license": "CC-BY-4.0",
+          "sourceUrl": "https://sketchfab.com/3d-models/jellyfish-4c219a0f8b124d58a7c38e02f94c71d3"
+        },
+        "narrationText": "Ngắm nhìn chiếc ô mềm mại và các xúc tu của bạn Sứa biển."
+      }
+    ],
+    "creativeTemplates": [
+      {
+        "sourceKey": "template:drawing-ocean-friend",
+        "kind": "drawing",
+        "title": "Vẽ bạn biển",
+        "previewUrl": "/assets/generated/craft/craft_desk_art.jpg",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "species"
+        ],
+        "payload": {
+          "svgTemplate": "turtle",
+          "instructionText": "Vẽ và trang trí sinh vật biển yêu thích của bé.",
+          "suggestedColors": [
+            "#DC6B52",
+            "#17657A",
+            "#2EE6CA",
+            "#F59E0B",
+            "#10B981",
+            "#3B82F6"
+          ]
+        }
+      },
+      {
+        "sourceKey": "template:drawing-crab",
+        "kind": "drawing",
+        "title": "Tô màu Cua biển",
+        "previewUrl": "/assets/generated/r2-cutouts/crab_friendly_cutout.png",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "species"
+        ],
+        "payload": {
+          "svgTemplate": "crab",
+          "instructionText": "Tô màu chú cua biển có hai chiếc càng khỏe khoắn.",
+          "suggestedColors": [
+            "#EF4444",
+            "#F97316",
+            "#F59E0B",
+            "#17657A"
+          ]
+        }
+      },
+      {
+        "sourceKey": "template:drawing-clownfish",
+        "kind": "drawing",
+        "title": "Tô màu Cá hề",
+        "previewUrl": "/assets/generated/creatures/clownfish_isolated.png",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "species"
+        ],
+        "payload": {
+          "svgTemplate": "clownfish",
+          "instructionText": "Tô màu bạn cá hề cam và rạn san hô.",
+          "suggestedColors": [
+            "#F97316",
+            "#FFFFFF",
+            "#12384B",
+            "#10B981"
+          ]
+        }
+      },
+      {
+        "sourceKey": "template:habitat-seagrass",
+        "kind": "habitat",
+        "title": "Sa bàn: Vùng cỏ biển",
+        "previewUrl": "/assets/habitat/scene-seagrass.png",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "environment"
+        ],
+        "payload": {
+          "presetId": 1,
+          "instructionText": "Sắp xếp cỏ biển, đá và các bạn rùa xanh, cá hề."
+        }
+      },
+      {
+        "sourceKey": "template:habitat-reef",
+        "kind": "habitat",
+        "title": "Sa bàn: Rạn đá san hô",
+        "previewUrl": "/assets/habitat/scene-reef.png",
+        "visibility": "published",
+        "schemaVersion": 1,
+        "topicSlugs": [
+          "environment",
+          "species"
+        ],
+        "payload": {
+          "presetId": 2,
+          "instructionText": "Xây dựng rạn đá và san hô cho sinh vật biển trú ẩn."
+        }
+      }
+    ],
+    "creativeMaterials": [
+      {
+        "sourceKey": "material:stamp-crab",
+        "kind": "stamp",
+        "title": "Tem hình Cua biển",
+        "mediaUrl": "/assets/generated/r2-cutouts/crab_friendly_cutout.png",
+        "visibility": "published",
+        "payload": {
+          "stampId": "crab",
+          "defaultScale": 1
+        }
+      },
+      {
+        "sourceKey": "material:stamp-starfish",
+        "kind": "stamp",
+        "title": "Tem hình Sao biển",
+        "mediaUrl": "/assets/generated/r2-cutouts/starfish_cutout.png",
+        "visibility": "published",
+        "payload": {
+          "stampId": "starfish",
+          "defaultScale": 1
+        }
+      },
+      {
+        "sourceKey": "material:stamp-clownfish",
+        "kind": "stamp",
+        "title": "Tem hình Cá hề",
+        "mediaUrl": "/assets/generated/creatures/clownfish_isolated.png",
+        "visibility": "published",
+        "payload": {
+          "stampId": "clownfish",
+          "defaultScale": 1
+        }
+      },
+      {
+        "sourceKey": "material:habitat-seagrass-tall",
+        "kind": "habitat_item",
+        "title": "Cỏ biển cao",
+        "mediaUrl": "/assets/habitat/seagrass-tall.png",
+        "visibility": "published",
+        "payload": {
+          "assetId": "seagrass-tall",
+          "category": "seagrass",
+          "itemType": "seagrass",
+          "defaultScale": 1.2
+        }
+      },
+      {
+        "sourceKey": "material:habitat-rock-large",
+        "kind": "habitat_item",
+        "title": "Tảng đá lớn",
+        "mediaUrl": "/assets/habitat/rock-large.png",
+        "visibility": "published",
+        "payload": {
+          "assetId": "rock-large",
+          "category": "rocks",
+          "itemType": "rock",
+          "defaultScale": 1.3
+        }
+      },
+      {
+        "sourceKey": "material:habitat-turtle-green",
+        "kind": "habitat_item",
+        "title": "Rùa biển xanh 3D",
+        "mediaUrl": "/assets/habitat/turtle-green.png",
+        "visibility": "published",
+        "payload": {
+          "assetId": "turtle-green",
+          "category": "creatures",
+          "itemType": "turtle",
+          "defaultScale": 1.2
+        }
+      }
+    ]
+  },
+  "demoFixtures": {
+    "teacherUser": {
+      "sourceKey": "demo:teacher:colinh",
+      "email": "colinh@bluesteam.edu.vn",
+      "displayName": "Cô Linh",
+      "avatarUrl": "/assets/avatar_colinh_headshot.png"
+    },
+    "rooms": [
+      {
+        "sourceKey": "demo:room:active-coastal",
+        "name": "Khám phá bờ biển",
+        "participationMode": "individual-devices",
+        "status": "active",
+        "joinCode": "482915",
+        "joinEnabled": true,
+        "createdAt": "2026-10-15T10:00:00.000Z",
+        "endedAt": null,
+        "queueItems": [
+          {
+            "position": 1,
+            "contentType": "activity",
+            "contentSourceKey": "activity:home-sorting"
+          },
+          {
+            "position": 2,
+            "contentType": "creative_template",
+            "contentSourceKey": "template:drawing-ocean-friend"
+          },
+          {
+            "position": 3,
+            "contentType": "activity",
+            "contentSourceKey": "activity:clean-beach-scenario"
+          }
+        ],
+        "participants": [
+          {
+            "sourceKey": "demo:p:active:an",
+            "alias": "Bé An",
+            "avatarKey": "crab",
+            "kind": "device",
+            "connected": true
+          },
+          {
+            "sourceKey": "demo:p:active:binh",
+            "alias": "Bé Bình",
+            "avatarKey": "clownfish",
+            "kind": "device",
+            "connected": true
+          },
+          {
+            "sourceKey": "demo:p:active:chi",
+            "alias": "Bé Chi",
+            "avatarKey": "starfish",
+            "kind": "device",
+            "connected": true
+          },
+          {
+            "sourceKey": "demo:p:active:duy",
+            "alias": "Bé Duy",
+            "avatarKey": "dolphin",
+            "kind": "device",
+            "connected": true
+          },
+          {
+            "sourceKey": "demo:p:active:ha",
+            "alias": "Bé Hà",
+            "avatarKey": "seashell",
+            "kind": "device",
+            "connected": true
+          },
+          {
+            "sourceKey": "demo:p:active:minh",
+            "alias": "Bé Minh",
+            "avatarKey": "jellyfish",
+            "kind": "device",
+            "connected": false
+          }
+        ],
+        "pointEvents": [
+          {
+            "participantSourceKey": "demo:p:active:an",
+            "source": "objective",
+            "delta": 2,
+            "reason": "Về đúng nhà: Cua biển, Sao biển",
+            "sourceEventKey": "demo:active:ev1"
+          },
+          {
+            "participantSourceKey": "demo:p:active:an",
+            "source": "teacher",
+            "delta": 1,
+            "reason": "Hợp tác cùng bạn",
+            "sourceEventKey": "demo:active:ev2"
+          },
+          {
+            "participantSourceKey": "demo:p:active:binh",
+            "source": "objective",
+            "delta": 2,
+            "reason": "Về đúng nhà: Cua biển, Cá hề",
+            "sourceEventKey": "demo:active:ev3"
+          },
+          {
+            "participantSourceKey": "demo:p:active:chi",
+            "source": "objective",
+            "delta": 2,
+            "reason": "Về đúng nhà: Sao biển, Cá hề",
+            "sourceEventKey": "demo:active:ev4"
+          },
+          {
+            "participantSourceKey": "demo:p:active:duy",
+            "source": "objective",
+            "delta": 1,
+            "reason": "Về đúng nhà: Cua biển",
+            "sourceEventKey": "demo:active:ev5"
+          },
+          {
+            "participantSourceKey": "demo:p:active:ha",
+            "source": "objective",
+            "delta": 1,
+            "reason": "Về đúng nhà: Cá hề",
+            "sourceEventKey": "demo:active:ev6"
+          }
+        ],
+        "artworks": [
+          {
+            "sourceKey": "demo:art:active:an",
+            "participantSourceKey": "demo:p:active:an",
+            "title": "Cá của An",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_clownfish.png",
+            "note": "Bé An tô màu cam sọc trắng rất rõ nét."
+          },
+          {
+            "sourceKey": "demo:art:active:binh",
+            "participantSourceKey": "demo:p:active:binh",
+            "title": "Bạch tuộc vui vẻ",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_octopus.png",
+            "note": "Bức vẽ bạch tuộc có tám xúc tu sinh động."
+          },
+          {
+            "sourceKey": "demo:art:active:chi",
+            "participantSourceKey": "demo:p:active:chi",
+            "title": "Cua biển",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_crab.png",
+            "note": "Màu đỏ tươi nổi bật trên nền cát vàng."
+          },
+          {
+            "sourceKey": "demo:art:active:duy",
+            "participantSourceKey": "demo:p:active:duy",
+            "title": "Sứa nhiều màu",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_jellyfish.png",
+            "note": "Phối màu hồng và xanh rất hài hòa."
+          },
+          {
+            "sourceKey": "demo:art:active:ha",
+            "participantSourceKey": "demo:p:active:ha",
+            "title": "Rạn san hô",
+            "kind": "habitat",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_coral.png",
+            "note": "Sắp xếp rạn san hô rất cân đối."
+          },
+          {
+            "sourceKey": "demo:art:active:minh",
+            "participantSourceKey": "demo:p:active:minh",
+            "title": "Cá voi xanh",
+            "kind": "habitat",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_whale.png",
+            "note": "Chú cá voi phun nước rất đáng yêu."
+          }
+        ]
+      },
+      {
+        "sourceKey": "demo:room:ended-coastal",
+        "name": "Khám phá bờ biển",
+        "participationMode": "individual-devices",
+        "status": "ended",
+        "joinCode": "739204",
+        "joinEnabled": false,
+        "createdAt": "2026-10-15T02:00:00.000Z",
+        "endedAt": "2026-10-15T02:45:00.000Z",
+        "queueItems": [
+          {
+            "position": 1,
+            "contentType": "activity",
+            "contentSourceKey": "activity:home-sorting"
+          },
+          {
+            "position": 2,
+            "contentType": "creative_template",
+            "contentSourceKey": "template:drawing-ocean-friend"
+          },
+          {
+            "position": 3,
+            "contentType": "activity",
+            "contentSourceKey": "activity:clean-beach-scenario"
+          }
+        ],
+        "participants": [
+          {
+            "sourceKey": "demo:p:ended1:an",
+            "alias": "Bé An",
+            "avatarKey": "crab",
+            "kind": "device",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended1:binh",
+            "alias": "Bé Bình",
+            "avatarKey": "clownfish",
+            "kind": "device",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended1:chi",
+            "alias": "Bé Chi",
+            "avatarKey": "starfish",
+            "kind": "device",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended1:duy",
+            "alias": "Bé Duy",
+            "avatarKey": "dolphin",
+            "kind": "device",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended1:ha",
+            "alias": "Bé Hà",
+            "avatarKey": "seashell",
+            "kind": "device",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended1:minh",
+            "alias": "Bé Minh",
+            "avatarKey": "jellyfish",
+            "kind": "device",
+            "connected": false
+          }
+        ],
+        "pointEvents": [
+          {
+            "participantSourceKey": "demo:p:ended1:an",
+            "source": "objective",
+            "delta": 3,
+            "reason": "Về đúng nhà",
+            "sourceEventKey": "demo:ended1:ev1"
+          },
+          {
+            "participantSourceKey": "demo:p:ended1:an",
+            "source": "teacher",
+            "delta": 2,
+            "reason": "Cùng bạn dọn góc chơi.",
+            "sourceEventKey": "demo:ended1:ev2"
+          },
+          {
+            "participantSourceKey": "demo:p:ended1:binh",
+            "source": "objective",
+            "delta": 3,
+            "reason": "Về đúng nhà",
+            "sourceEventKey": "demo:ended1:ev3"
+          },
+          {
+            "participantSourceKey": "demo:p:ended1:binh",
+            "source": "teacher",
+            "delta": 1,
+            "reason": "Xung phong trả lời câu hỏi.",
+            "sourceEventKey": "demo:ended1:ev4"
+          },
+          {
+            "participantSourceKey": "demo:p:ended1:chi",
+            "source": "objective",
+            "delta": 2,
+            "reason": "Về đúng nhà",
+            "sourceEventKey": "demo:ended1:ev5"
+          },
+          {
+            "participantSourceKey": "demo:p:ended1:chi",
+            "source": "teacher",
+            "delta": 2,
+            "reason": "Kể tên đúng loài sinh vật.",
+            "sourceEventKey": "demo:ended1:ev6"
+          },
+          {
+            "participantSourceKey": "demo:p:ended1:duy",
+            "source": "objective",
+            "delta": 2,
+            "reason": "Về đúng nhà",
+            "sourceEventKey": "demo:ended1:ev7"
+          },
+          {
+            "participantSourceKey": "demo:p:ended1:duy",
+            "source": "teacher",
+            "delta": 1,
+            "reason": "Chú ý lắng nghe.",
+            "sourceEventKey": "demo:ended1:ev8"
+          },
+          {
+            "participantSourceKey": "demo:p:ended1:ha",
+            "source": "objective",
+            "delta": 1,
+            "reason": "Về đúng nhà",
+            "sourceEventKey": "demo:ended1:ev9"
+          },
+          {
+            "participantSourceKey": "demo:p:ended1:ha",
+            "source": "teacher",
+            "delta": 1,
+            "reason": "Hoàn thành bức tranh.",
+            "sourceEventKey": "demo:ended1:ev10"
+          },
+          {
+            "participantSourceKey": "demo:p:ended1:minh",
+            "source": "objective",
+            "delta": 1,
+            "reason": "Về đúng nhà",
+            "sourceEventKey": "demo:ended1:ev11"
+          }
+        ],
+        "artworks": [
+          {
+            "sourceKey": "demo:art:ended1:an",
+            "participantSourceKey": "demo:p:ended1:an",
+            "title": "Cá của An",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_clownfish.png",
+            "note": "Bé An tô màu cam sọc trắng rất rõ nét."
+          },
+          {
+            "sourceKey": "demo:art:ended1:binh",
+            "participantSourceKey": "demo:p:ended1:binh",
+            "title": "Bạch tuộc vui vẻ",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_octopus.png",
+            "note": "Bức vẽ bạch tuộc có tám xúc tu sinh động."
+          },
+          {
+            "sourceKey": "demo:art:ended1:chi",
+            "participantSourceKey": "demo:p:ended1:chi",
+            "title": "Cua biển",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_crab.png",
+            "note": "Màu đỏ tươi nổi bật trên nền cát vàng."
+          },
+          {
+            "sourceKey": "demo:art:ended1:duy",
+            "participantSourceKey": "demo:p:ended1:duy",
+            "title": "Sứa nhiều màu",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_jellyfish.png",
+            "note": "Phối màu hồng và xanh rất hài hòa."
+          },
+          {
+            "sourceKey": "demo:art:ended1:ha",
+            "participantSourceKey": "demo:p:ended1:ha",
+            "title": "Rạn san hô",
+            "kind": "habitat",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_coral.png",
+            "note": "Sắp xếp rạn san hô rất cân đối."
+          },
+          {
+            "sourceKey": "demo:art:ended1:minh",
+            "participantSourceKey": "demo:p:ended1:minh",
+            "title": "Cá voi xanh",
+            "kind": "habitat",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_whale.png",
+            "note": "Chú cá voi phun nước rất đáng yêu."
+          }
+        ]
+      },
+      {
+        "sourceKey": "demo:room:ended-colors",
+        "name": "Sắc màu đại dương",
+        "participationMode": "shared-display",
+        "status": "ended",
+        "joinCode": "518392",
+        "joinEnabled": false,
+        "createdAt": "2026-10-14T03:00:00.000Z",
+        "endedAt": "2026-10-14T03:45:00.000Z",
+        "queueItems": [
+          {
+            "position": 1,
+            "contentType": "creative_template",
+            "contentSourceKey": "template:drawing-ocean-friend"
+          }
+        ],
+        "participants": [
+          {
+            "sourceKey": "demo:p:ended2:an",
+            "alias": "Bé An",
+            "avatarKey": "crab",
+            "kind": "teacher_managed",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended2:binh",
+            "alias": "Bé Bình",
+            "avatarKey": "clownfish",
+            "kind": "teacher_managed",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended2:chi",
+            "alias": "Bé Chi",
+            "avatarKey": "starfish",
+            "kind": "teacher_managed",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended2:duy",
+            "alias": "Bé Duy",
+            "avatarKey": "dolphin",
+            "kind": "teacher_managed",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended2:ha",
+            "alias": "Bé Hà",
+            "avatarKey": "seashell",
+            "kind": "teacher_managed",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended2:minh",
+            "alias": "Bé Minh",
+            "avatarKey": "jellyfish",
+            "kind": "teacher_managed",
+            "connected": false
+          }
+        ],
+        "pointEvents": [
+          {
+            "participantSourceKey": "demo:p:ended2:an",
+            "source": "teacher",
+            "delta": 2,
+            "reason": "Giới thiệu tranh tự tin.",
+            "sourceEventKey": "demo:ended2:ev1"
+          },
+          {
+            "participantSourceKey": "demo:p:ended2:binh",
+            "source": "teacher",
+            "delta": 2,
+            "reason": "Phối màu sáng tạo.",
+            "sourceEventKey": "demo:ended2:ev2"
+          }
+        ],
+        "artworks": [
+          {
+            "sourceKey": "demo:art:ended2:an",
+            "participantSourceKey": "demo:p:ended2:an",
+            "title": "Cá của An",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_clownfish.png",
+            "note": "Bé An giới thiệu tranh cá hề rất hào hứng."
+          },
+          {
+            "sourceKey": "demo:art:ended2:binh",
+            "participantSourceKey": "demo:p:ended2:binh",
+            "title": "Bạch tuộc vui vẻ",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_octopus.png",
+            "note": ""
+          },
+          {
+            "sourceKey": "demo:art:ended2:chi",
+            "participantSourceKey": "demo:p:ended2:chi",
+            "title": "Cua biển",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_crab.png",
+            "note": ""
+          },
+          {
+            "sourceKey": "demo:art:ended2:duy",
+            "participantSourceKey": "demo:p:ended2:duy",
+            "title": "Sứa nhiều màu",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_jellyfish.png",
+            "note": ""
+          },
+          {
+            "sourceKey": "demo:art:ended2:ha",
+            "participantSourceKey": "demo:p:ended2:ha",
+            "title": "Rạn san hô",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_coral.png",
+            "note": ""
+          },
+          {
+            "sourceKey": "demo:art:ended2:minh",
+            "participantSourceKey": "demo:p:ended2:minh",
+            "title": "Cá voi xanh",
+            "kind": "drawing",
+            "previewUrl": "/assets/generated/craft/artwork_crayon_whale.png",
+            "note": ""
+          }
+        ]
+      },
+      {
+        "sourceKey": "demo:room:ended-coral",
+        "name": "Bạn của san hô",
+        "participationMode": "shared-display",
+        "status": "ended",
+        "joinCode": "604128",
+        "joinEnabled": false,
+        "createdAt": "2026-10-12T07:00:00.000Z",
+        "endedAt": "2026-10-12T07:45:00.000Z",
+        "queueItems": [
+          {
+            "position": 1,
+            "contentType": "model3d",
+            "contentSourceKey": "model:clownfish"
+          },
+          {
+            "position": 2,
+            "contentType": "activity",
+            "contentSourceKey": "activity:pair-matching"
+          }
+        ],
+        "participants": [
+          {
+            "sourceKey": "demo:p:ended3:an",
+            "alias": "Bé An",
+            "avatarKey": "crab",
+            "kind": "teacher_managed",
+            "connected": false
+          },
+          {
+            "sourceKey": "demo:p:ended3:binh",
+            "alias": "Bé Bình",
+            "avatarKey": "clownfish",
+            "kind": "teacher_managed",
+            "connected": false
+          }
+        ],
+        "pointEvents": [
+          {
+            "participantSourceKey": "demo:p:ended3:an",
+            "source": "teacher",
+            "delta": 2,
+            "reason": "Nhận biết đúng bạn cá hề.",
+            "sourceEventKey": "demo:ended3:ev1"
+          }
+        ],
+        "artworks": []
+      }
+    ]
+  },
+  "retiredCurriculum": {
+    "units": [
+      "unit-ocean-depth",
+      "unit-sediment-movement",
+      "unit-life-in-deep",
+      "unit-light-under-water",
+      "unit-ocean-sounds"
+    ],
+    "lessons": [
+      "lesson-depth-expedition",
+      "lesson-sediment-dynamics"
+    ],
+    "classes": [
+      "class-kindergarten-blue",
+      "class-grade1-discovery"
+    ],
+    "collections": [
+      "col-vertical-zones",
+      "col-geological-dynamics",
+      "col-deep-adaptations"
+    ],
+    "paths": [
+      "path-abyssal-expedition",
+      "path-mineral-currents"
+    ]
+  },
+  "fakeLearningResults": {
+    "sessionStudents": [
+      {
+        "id": "01",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "02",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "03",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "04",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "05",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "06",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "07",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "08",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "09",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "10",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "11",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "12",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "13",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "14",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "15",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "16",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "17",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "18",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "19",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "20",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "21",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "22",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "23",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      },
+      {
+        "id": "24",
+        "reasonExcluded": "Hardcoded 24-student roster with fabricated engagement % (85%-98%) and fake voice transcripts."
+      }
+    ],
+    "demoProgress": {
+      "source": "src/shared/realtime/demoStore.ts",
+      "reasonExcluded": "Pre-completed station milestones and fake discoveries."
+    }
+  }
+}

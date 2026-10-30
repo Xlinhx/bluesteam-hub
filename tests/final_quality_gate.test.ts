@@ -11,8 +11,8 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 
 describe('Milestone 6 Final Quality Gate & Master Audit Verification', () => {
   const appTsxPath = path.join(REPO_ROOT, 'src', 'app', 'App.tsx');
-  const visualManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'visual-review-manifest.json');
-  const sceneManifestPath = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'scene-manifest.json');
+  const visualManifestPath = path.join(REPO_ROOT, 'docs', 'verification', 'visual-review-manifest.json');
+  const sceneManifestPath = path.join(REPO_ROOT, 'docs', 'verification', 'scene-manifest.json');
 
   // =========================================================================
   // GATE 1: App.tsx Canonical V2 Wiring & Routing Architecture
@@ -24,21 +24,15 @@ describe('Milestone 6 Final Quality Gate & Master Audit Verification', () => {
       expect(content.length).toBeGreaterThan(1000);
     });
 
-    it('should route /presentation to canonical v2 PresentationPage from pages/teacher', () => {
+    it('should route /presentation to canonical v2 PresentationPage from domains/teacher/presentation', () => {
       const content = fs.readFileSync(appTsxPath, 'utf8');
-      expect(content).toContain("import { PresentationPage } from '../pages/teacher/PresentationPage'");
+      expect(content).toContain("import { PresentationPage } from '../domains/teacher/presentation/PresentationPage'");
       expect(content).toMatch(/cleanPath === '\/presentation'[\s\S]*?return <PresentationPage \/>/);
-    });
-
-    it('should route /teacher/results to canonical v2 TeacherSessionResultsPage', () => {
-      const content = fs.readFileSync(appTsxPath, 'utf8');
-      expect(content).toContain("import { TeacherSessionResultsPage } from '../pages/teacher/TeacherSessionResultsPage'");
-      expect(content).toMatch(/cleanPath === '\/teacher\/results'[\s\S]*?return <TeacherSessionResultsPage \/>/);
     });
 
     it('should route /teacher/library to canonical v2 TeacherResourceLibraryPage', () => {
       const content = fs.readFileSync(appTsxPath, 'utf8');
-      expect(content).toContain("import { TeacherResourceLibraryPage } from '../pages/teacher/TeacherResourceLibraryPage'");
+      expect(content).toContain("import { TeacherResourceLibraryPage } from '../domains/teacher/resources/TeacherResourceLibraryPage'");
       expect(content).toMatch(/cleanPath === '\/teacher\/library'[\s\S]*?return <TeacherResourceLibraryPage \/>/);
     });
 
@@ -61,7 +55,6 @@ describe('Milestone 6 Final Quality Gate & Master Audit Verification', () => {
         "cleanPath === '/profile'",
         "cleanPath === '/teacher'",
         "cleanPath === '/teacher/builder'",
-        "cleanPath === '/teacher/live'",
       ];
 
       for (const handler of requiredRouteHandlers) {
@@ -113,7 +106,7 @@ describe('Milestone 6 Final Quality Gate & Master Audit Verification', () => {
       const manifest = JSON.parse(fs.readFileSync(visualManifestPath, 'utf8'));
       const referenceScreens = manifest.records.filter((r: any) => r.basis === 'REFERENCE');
 
-      expect(referenceScreens.length).toBe(34);
+      expect(referenceScreens.length).toBe(32);
 
       for (const rec of referenceScreens) {
         expect(rec.scores).toBeDefined();
@@ -146,7 +139,7 @@ describe('Milestone 6 Final Quality Gate & Master Audit Verification', () => {
       const manifest = JSON.parse(fs.readFileSync(visualManifestPath, 'utf8'));
       const nonReferenceScreens = manifest.records.filter((r: any) => r.basis === 'RESPONSIVE_SPEC' || r.basis === 'SPEC_ONLY');
 
-      expect(nonReferenceScreens.length).toBe(5);
+      expect(nonReferenceScreens.length).toBe(7);
 
       for (const rec of nonReferenceScreens) {
         expect(rec.scores).toBeNull();
@@ -192,7 +185,7 @@ describe('Milestone 6 Final Quality Gate & Master Audit Verification', () => {
       expect(result.summary.belowThresholdCount).toBe(0);
       expect(result.summary.blockedCount).toBe(0);
       expect(result.summary.staleCount).toBe(0);
-      expect(result.summary.referenceCoverage).toBe('35 / 35');
+      expect(result.summary.referenceCoverage).toBe('33 / 33');
       expect(result.summary.existingScreenshotsCount).toBe(39);
     });
   });

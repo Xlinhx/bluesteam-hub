@@ -21,11 +21,11 @@ if (typeof globalThis.document === 'undefined') {
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { PublicShell } from '../src/shells/PublicShell';
-import { PresentationShell } from '../src/shells/PresentationShell';
-import { LearnerShell } from '../src/shells/LearnerShell';
-import { TeacherShell } from '../src/shells/TeacherShell';
-import { ActivityShell } from '../src/shells/ActivityShell';
+import { PublicShell } from '../src/shared/shells/PublicShell';
+import { PresentationShell } from '../src/shared/shells/PresentationShell';
+import { LearnerShell } from '../src/shared/shells/LearnerShell';
+import { TeacherShell } from '../src/shared/shells/TeacherShell';
+import { ActivityShell } from '../src/shared/shells/ActivityShell';
 import { RouterProvider } from '../src/app/router';
 import { I18nProvider } from '../src/shared/i18n/I18nContext';
 
@@ -100,9 +100,7 @@ describe('M1 Challenger 2: Adversarial Shells & Regression Test Suite', () => {
       expect(html).toContain('tracking-[-0.02em]');
 
       // Verify join code pill
-      expect(html).toContain('482915');
-      expect(html).toContain('text-[#F67650]');
-      expect(html).toContain('font-mono');
+      expect(html).not.toContain('482915');
 
       // Verify join code contrast ratio: Coral #F67650 on Deep Navy #071e2e
       const coralRgb: [number, number, number] = [246, 118, 80]; // #F67650
@@ -114,8 +112,8 @@ describe('M1 Challenger 2: Adversarial Shells & Regression Test Suite', () => {
     });
   });
 
-  describe('3. LearnerShell 4-Item Mobile Bottom Nav & Layout Preservation', () => {
-    it('should preserve all 4 bottom nav items with min 56x56px touch targets and bottom clearance', () => {
+  describe('3. LearnerShell Mobile Navigation', () => {
+    it('preserves all five canonical destinations in the shared mobile navigation', () => {
       const html = renderWithProviders(
         React.createElement(LearnerShell, { activeNav: 'interactive', learnerName: 'Bé An' },
           React.createElement('div', null, 'Student Dashboard')
@@ -124,23 +122,23 @@ describe('M1 Challenger 2: Adversarial Shells & Regression Test Suite', () => {
 
       // Verify bottom nav layout
       expect(html).toContain('Điều hướng chính di động');
-      expect(html).toContain('h-[68px]');
+      expect(html).toContain('bluesteam-mobile-nav');
       expect(html).toContain('bottom-0');
       expect(html).toContain('fixed');
 
-      // Verify bottom clearance on root container
-      expect(html).toContain('pb-20');
+      // Geometry and bottom clearance are exercised in header-consistency.spec.ts.
+      expect(html).toContain('bluesteam-role-shell');
 
-      // Verify all 4 canonical items exist in output
+      // Verify all five canonical learner items exist in output.
+      expect(html).toContain('Trang chủ');
       expect(html).toContain('Học liệu');
       expect(html).toContain('Tương tác');
       expect(html).toContain('Sáng tạo');
       expect(html).toContain('Hồ sơ');
       expect(html).not.toContain('Học tập');
 
-      // Verify minimum 56x56px touch target classes
-      expect(html).toContain('min-w-[56px]');
-      expect(html).toContain('min-h-[56px]');
+      const mobileNav = html.split('aria-label="Điều hướng chính di động"')[1].split('</nav>')[0];
+      expect(mobileNav.match(/data-nav-key=/g)).toHaveLength(5);
 
       // Verify learner avatar
       expect(html).toContain('Bé An');
@@ -189,16 +187,16 @@ describe('M1 Challenger 2: Adversarial Shells & Regression Test Suite', () => {
 
       // Verify Teacher Suite badge
       expect(html).toContain('Teacher Suite');
-      expect(html).toContain('Live Sync');
+      expect(html).not.toContain('Live Sync');
       expect(html).toContain('Cô Linh');
       expect(html).toContain('CL');
 
-      // Verify teacher destinations
-      expect(html).toContain('Bài giảng');
-      expect(html).toContain('Giáo án');
+      // Verify 5 canonical r2 teacher destinations
+      expect(html).toContain('Trang chủ');
       expect(html).toContain('Học liệu');
-      expect(html).toContain('Lớp học');
-      expect(html).toContain('Kết quả');
+      expect(html).toContain('Tương tác');
+      expect(html).toContain('Sáng tạo');
+      expect(html).not.toContain('Phòng học');
       expect(html).toContain('Về bàn làm việc giáo viên');
     });
   });

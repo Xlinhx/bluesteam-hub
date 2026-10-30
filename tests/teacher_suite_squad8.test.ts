@@ -91,28 +91,18 @@ import { renderToString } from 'react-dom/server';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 // Theme tokens & Stores
-import { applyThemeVariables } from '../src/themes/tokens';
-import { oceanShowcaseStore } from '../src/demo/storage/oceanShowcaseStore';
-import {
-  teacherSyncStore,
-  CANONICAL_LESSON_STEPS,
-} from '../src/services/teacherSyncStore';
-import { oceanAudio } from '../src/shared/sound/oceanAudio';
+import { applyThemeVariables } from '../src/shared/theme/tokens';
+import { oceanAudio } from '../src/shared/audio/oceanAudio';
 
 // Pages & Components
-import { TeacherDashboardPage } from '../src/pages/teacher/TeacherDashboardPage';
+import { TeacherDashboardPage } from '../src/domains/teacher/dashboard/TeacherDashboardPage';
 import {
   TeacherResourceLibraryPage,
-  SAMPLE_RESOURCES,
-} from '../src/pages/teacher/TeacherResourceLibraryPage';
+} from '../src/domains/teacher/resources/TeacherResourceLibraryPage';
 import {
   TeacherLessonBuilderPage,
   CANONICAL_BUILDER_ACTIVITIES,
-} from '../src/pages/teacher/TeacherLessonBuilderPage';
-import {
-  TeacherLiveConsolePage,
-  CANONICAL_LIVE_CONSOLE_STEPS,
-} from '../src/pages/teacher/TeacherLiveConsolePage';
+} from '../src/domains/teacher/lesson-builder/TeacherLessonBuilderPage';
 
 // App Providers helper
 import { RouterProvider } from '../src/app/router';
@@ -138,8 +128,6 @@ describe('Squad 8 Contract Suite — Teacher Suite (Screens 31 to 35)', () => {
       window.location.pathname = '/teacher';
       window.location.search = '';
     }
-    oceanShowcaseStore.resetAll();
-    teacherSyncStore.resetSession();
     vi.restoreAllMocks();
   });
 
@@ -170,119 +158,46 @@ describe('Squad 8 Contract Suite — Teacher Suite (Screens 31 to 35)', () => {
       expect(mockElement.style.getPropertyValue('--radius-4xl')).toBe('32px');
     });
 
-    it('should render TeacherDashboardPage with adult tool density and real rounded-[28px] card classes', () => {
+    it('should render TeacherDashboardPage (M07) with mockup feature, management row and shared shortcuts', () => {
       const html = renderWithProviders(React.createElement(TeacherDashboardPage));
 
-      // Major Card Container Radiuses (Apple 28px standard)
-      const radiusMatches = html.match(/rounded-\[28px\]/g) || [];
-      expect(radiusMatches.length).toBeGreaterThanOrEqual(4);
+      expect(html).toContain('class="teacher-home-feature"');
+      expect(html).toContain('class="teacher-home-domains"');
+      expect((html.match(/class="home-shortcut"/g) || []).length).toBe(1);
 
-      // Section Card Verification
-      expect(html).toContain('BÀI GIẢNG HIỆN TẠI');
-      expect(html).toContain('Việc cần chuẩn bị');
-      expect(html).toContain('Bài giảng đã lưu');
-      expect(html).toContain('Học liệu liên quan');
-    });
-
-    it('should bind teacher identity to Cô Linh and Lớp Sao Biển across store and rendered markup', () => {
-      const state = oceanShowcaseStore.getState();
-      expect(state.teacherName).toBe('Cô Linh');
-      expect(state.className).toBe('Lớp Sao Biển');
-      expect(state.classCode).toBe('482915');
-
-      const html = renderWithProviders(React.createElement(TeacherDashboardPage));
-      expect(html).toContain('Cô Linh');
-      expect(html).toContain('Khám phá nơi sống');
-      expect(html).toContain('Chủ đề: Cỏ biển và hệ sinh thái ven bờ');
+      // M07 Section Card Verification (UI-SPEC 2.4 & M07)
+      expect(html).toContain('Không gian của cô');
+      expect(html).toContain('Quản lý tương tác');
+      expect(html).toContain('Quản lý');
+      expect(html).toContain('sáng tạo');
+      expect(html).not.toContain('Phòng');
+      expect(html).not.toContain('sinh hoạt');
+      expect(html).not.toContain('Buổi sinh hoạt gần đây');
+      // No fake KPIs
+      expect(html).not.toContain('98%');
     });
   });
 
   // ==========================================================================
   // Contract S8-2: Screen 32 Teacher Resource Library Strict Corrections (Line 28)
   // ==========================================================================
-  describe('Contract S8-2: Screen 32 Teacher Resource Library Strict Corrections (Line 28)', () => {
-    const FORBIDDEN_LEVEL_STRINGS = [
-      'tiểu học',
-      'thcs',
-      'thpt',
-      'trung học cơ sở',
-      'trung học phổ thông',
-      'cấp 1',
-      'cấp 2',
-      'cấp 3',
-      'lớp 1',
-      'lớp 2',
-      'lớp 3',
-      'lớp 4',
-      'lớp 5',
-    ];
-
-    const ALLOWED_PRESCHOOL_TIERS = [
-      '3-4 tuổi (Mầm)',
-      '4-5 tuổi (Chồi)',
-      '5-6 tuổi (Lá)',
-    ];
-
-    const ALLOWED_STEAM_THEMES = [
-      'Hệ sinh thái biển',
-      'Động vật biển',
-      'Thực vật biển',
-      'Khám phá khoa học',
-      'Hoạt động góc',
-      'Kể chuyện sinh thái',
-      'Bảo vệ môi trường',
-    ];
-
-    it('should strictly verify 0 items in SAMPLE_RESOURCES contain primary or secondary school keywords', () => {
-      expect(SAMPLE_RESOURCES.length).toBeGreaterThan(0);
-
-      SAMPLE_RESOURCES.forEach((resource) => {
-        const fullContent = [
-          resource.title,
-          resource.description,
-          resource.theme,
-          resource.ageGroup,
-          ...resource.objectives,
-          resource.instructionText,
-        ]
-          .join(' ')
-          .toLowerCase();
-
-        FORBIDDEN_LEVEL_STRINGS.forEach((forbidden) => {
-          expect(fullContent).not.toContain(forbidden);
-        });
-      });
+  describe('Teacher resources redesign — groups and truthful loading',()=>{
+    it('renders group management and server-backed filters without fabricated rows',()=>{
+      const html=renderWithProviders(React.createElement(TeacherResourceLibraryPage));
+      expect(html).toContain('Nhóm học liệu');
+      expect(html).toContain('Chưa phân nhóm');
+      expect(html).toContain('Tạo nhóm');
+      expect(html).toContain('Thêm học liệu');
+      expect(html).not.toMatch(/Xem như bé|Kho chung|Của cô|Nguồn học liệu/);
+      expect(html).toContain('<table');
+      expect(html).toContain('Đang tải học liệu');
+      expect(html).not.toContain('Cua biển');
+      expect(html).not.toContain('3-4 tuổi (Mầm)');
+      expect(html).not.toContain('5-6 tuổi (Lá)');
     });
-
-    it('should verify all items in SAMPLE_RESOURCES strictly belong to authentic preschool age tiers', () => {
-      SAMPLE_RESOURCES.forEach((resource) => {
-        expect(ALLOWED_PRESCHOOL_TIERS).toContain(resource.ageGroup);
-      });
-    });
-
-    it('should verify all items in SAMPLE_RESOURCES map to early childhood STEAM themes', () => {
-      SAMPLE_RESOURCES.forEach((resource) => {
-        expect(ALLOWED_STEAM_THEMES).toContain(resource.theme);
-      });
-    });
-
-    it('should verify rendered TeacherResourceLibraryPage HTML contains zero forbidden school levels and displays preschool filters', () => {
-      const html = renderWithProviders(React.createElement(TeacherResourceLibraryPage));
-      const lowerHtml = html.toLowerCase();
-
-      FORBIDDEN_LEVEL_STRINGS.forEach((forbidden) => {
-        expect(lowerHtml).not.toContain(forbidden);
-      });
-
-      // Preschool age tier filters
-      expect(html).toContain('3-4 tuổi (Mầm)');
-      expect(html).toContain('4-5 tuổi (Chồi)');
-      expect(html).toContain('5-6 tuổi (Lá)');
-
-      // Interactive preview drop zones
-      expect(html).toContain('Vùng ven bờ (cỏ biển)');
-      expect(html).toContain('Rạn san hô');
-      expect(html).toContain('Vùng nước sâu');
+    it('keeps the library appropriate for preschool without retired school taxonomies',()=>{
+      const html=renderWithProviders(React.createElement(TeacherResourceLibraryPage)).toLowerCase();
+      for(const forbidden of ['tiểu học','thcs','thpt','trung học cơ sở','lớp 1','lớp 2'])expect(html).not.toContain(forbidden);
     });
   });
 
@@ -290,40 +205,6 @@ describe('Squad 8 Contract Suite — Teacher Suite (Screens 31 to 35)', () => {
   // Contract S8-3: Screen 33 & 34 Dual Mode Lesson Builder & Step Integrity (Line 30)
   // ==========================================================================
   describe('Contract S8-3: Screen 33 & 34 Dual Mode Lesson Builder & Step Integrity (Line 30)', () => {
-    it('should enforce 5 canonical steps with identical sequential stepIds [1, 2, 3, 4, 5] across builder and console', () => {
-      expect(CANONICAL_BUILDER_ACTIVITIES).toHaveLength(5);
-      expect(CANONICAL_LIVE_CONSOLE_STEPS).toHaveLength(5);
-      expect(CANONICAL_LESSON_STEPS).toHaveLength(5);
-
-      const builderIds = CANONICAL_BUILDER_ACTIVITIES.map((b) => b.id);
-      const consoleIds = CANONICAL_LIVE_CONSOLE_STEPS.map((c) => c.id);
-
-      expect(builderIds).toEqual([1, 2, 3, 4, 5]);
-      expect(consoleIds).toEqual([1, 2, 3, 4, 5]);
-      expect(builderIds).toEqual(consoleIds);
-      expect(builderIds).toEqual([...CANONICAL_LESSON_STEPS]);
-    });
-
-    it('should verify pedagogical progression parity for each of the 5 canonical steps', () => {
-      for (let i = 0; i < 5; i++) {
-        expect(CANONICAL_BUILDER_ACTIVITIES[i].title).toBeTruthy();
-        expect(CANONICAL_BUILDER_ACTIVITIES[i].subtitle).toBeTruthy();
-        expect(CANONICAL_LIVE_CONSOLE_STEPS[i].title).toBeTruthy();
-        expect(CANONICAL_LIVE_CONSOLE_STEPS[i].desc).toBeTruthy();
-      }
-
-      // Step 1: Warmup & Observation
-      expect(CANONICAL_BUILDER_ACTIVITIES[0].title.toLowerCase()).toContain('khởi động');
-      expect(CANONICAL_LIVE_CONSOLE_STEPS[0].title.toLowerCase()).toContain('quan sát');
-
-      // Step 3: Interactive Habitat
-      expect(CANONICAL_BUILDER_ACTIVITIES[2].title.toLowerCase()).toContain('thực hành');
-      expect(CANONICAL_LIVE_CONSOLE_STEPS[2].title.toLowerCase()).toContain('tương tác');
-
-      // Step 5: Wrapup & Badges
-      expect(CANONICAL_BUILDER_ACTIVITIES[4].title.toLowerCase()).toContain('đúc kết');
-      expect(CANONICAL_LIVE_CONSOLE_STEPS[4].title.toLowerCase()).toContain('vinh danh');
-    });
 
     it('should render authentic 5-step curriculum progression in Screen 33 Plan Mode (?mode=plan)', () => {
       const htmlPlan = renderWithProviders(
@@ -344,101 +225,9 @@ describe('Squad 8 Contract Suite — Teacher Suite (Screens 31 to 35)', () => {
       expect(htmlPlan).toContain('Sáng tạo: Làm sản phẩm về nơi sống');
       expect(htmlPlan).toContain('Tổng kết: Chia sẻ và đúc kết');
     });
-
-    it('should synchronize selected step from builder into teacherSyncStore and oceanShowcaseStore', () => {
-      // Simulate selecting step 3 in builder and synchronizing state
-      teacherSyncStore.setStep(3);
-      oceanShowcaseStore.setActiveStep(3);
-
-      expect(teacherSyncStore.getState().activeStep).toBe(3);
-      expect(teacherSyncStore.getState().stepTitle).toBe('Tìm nơi sống cho bạn nhỏ');
-      expect(oceanShowcaseStore.getState().activeStep).toBe(3);
-    });
   });
 
   // ==========================================================================
   // Contract S8-4: Screen 35 Teacher Live Console Broadcast Synchronization & Attention Bell
   // ==========================================================================
-  describe('Contract S8-4: Screen 35 Teacher Live Console Broadcast Synchronization & Attention Bell', () => {
-    it('should trigger attention bell chime and broadcast attention state to classroom', () => {
-      const chimeSpy = vi.spyOn(oceanAudio, 'playChime');
-
-      // Trigger attention bell
-      if (typeof (teacherSyncStore as any).triggerAttentionBell === 'function') {
-        (teacherSyncStore as any).triggerAttentionBell(3500);
-      } else {
-        teacherSyncStore.setAudioPlaying(true, '🔔 Chuông chú ý: Cả lớp hướng lên màn hình cùng cô!');
-      }
-
-      expect(teacherSyncStore.getState().isAudioPlaying).toBe(true);
-      expect(teacherSyncStore.getState().activeAudioText).toContain('Chuông');
-
-      oceanAudio.playChime(659.25, 0.4);
-      expect(chimeSpy).toHaveBeenCalledWith(659.25, 0.4);
-    });
-
-    it('should render TeacherLiveConsolePage with dedicated attention bell button and controls', () => {
-      const html = renderWithProviders(React.createElement(TeacherLiveConsolePage));
-      expect(html).toContain('Chuông tập trung');
-      expect(html).toContain('Chuông chú ý');
-      expect(html).toContain('Điều khiển hoạt động');
-    });
-
-    it('should broadcast active step transitions across the 5 canonical steps to /presentation subscribers', () => {
-      const receivedSteps: number[] = [];
-      const unsub = teacherSyncStore.subscribe((state) => {
-        receivedSteps.push(state.activeStep);
-      });
-
-      // Traverse all 5 steps
-      [1, 2, 3, 4, 5].forEach((step) => {
-        teacherSyncStore.setStep(step as any);
-        oceanShowcaseStore.setActiveStep(step);
-      });
-
-      expect(teacherSyncStore.getState().activeStep).toBe(5);
-      expect(oceanShowcaseStore.getState().activeStep).toBe(5);
-      expect(receivedSteps).toEqual(expect.arrayContaining([1, 2, 3, 4, 5]));
-
-      unsub();
-    });
-
-    it('should synchronize creature selection and slot placement in teacherSyncStore', () => {
-      teacherSyncStore.selectCreature('crab');
-      expect(teacherSyncStore.getState().selectedCreature).toBe('crab');
-
-      teacherSyncStore.placeCreature('sand', 'crab');
-      expect(teacherSyncStore.getState().placedSlots.sand).toBe('crab');
-
-      teacherSyncStore.resetHabitatPlacement();
-      expect(teacherSyncStore.getState().placedSlots.sand).toBeNull();
-    });
-
-    it('should dispatch interactive quiz polling and solution reveal states', () => {
-      const initialVotes = teacherSyncStore.getState().quiz.totalVotes;
-      teacherSyncStore.submitQuizVote('opt-b');
-      expect(teacherSyncStore.getState().quiz.totalVotes).toBe(initialVotes + 1);
-
-      teacherSyncStore.toggleQuizReveal(true);
-      expect(teacherSyncStore.getState().quiz.isRevealed).toBe(true);
-    });
-
-    it('should trigger session end transition for navigation to /teacher/results', () => {
-      let ended = false;
-      const unsub = oceanShowcaseStore.subscribe((state) => {
-        ended = state.isSessionEnded;
-      });
-
-      expect(oceanShowcaseStore.getState().isSessionEnded).toBe(false);
-      oceanShowcaseStore.endSession();
-      teacherSyncStore.endSession();
-
-      expect(ended).toBe(true);
-      expect(oceanShowcaseStore.getState().isSessionEnded).toBe(true);
-      expect(teacherSyncStore.getState().isSessionEnded).toBe(true);
-      expect(teacherSyncStore.getState().activeStep).toBe(5);
-
-      unsub();
-    });
-  });
 });

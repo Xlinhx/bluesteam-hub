@@ -1,0 +1,83 @@
+name: bluesteam
+
+services:
+  bluesteam_db:
+    image: postgres:16-alpine
+    container_name: bluesteam_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-bluesteam}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bluesteam_dev_local}
+      POSTGRES_DB: ${POSTGRES_DB:-bluesteam}
+    ports:
+      - "127.0.0.1:5442:5432"
+    volumes:
+      - bluesteam_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-bluesteam} -d $${POSTGRES_DB:-bluesteam}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - bluesteam_net
+
+  bluesteam_backend:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: bluesteam_backend
+    restart: unless-stopped
+    depends_on:
+      bluesteam_db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 8010
+      API_PORT: 8010
+      HOST: 0.0.0.0
+      DATABASE_URL: postgresql://${POSTGRES_USER:-bluesteam}:${POSTGRES_PASSWORD:-bluesteam_dev_local}@bluesteam_db:5432/${POSTGRES_DB:-bluesteam}
+      JWT_SECRET: ${JWT_SECRET:-bluesteam-dev-jwt-secret-change-in-production}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3010,http://127.0.0.1:3010,http://192.168.1.9:3010}
+      MEDIA_STORAGE_DIR: /data/uploads
+      UPLOAD_DIR: /data/uploads
+      SEED_TEACHER_PASSWORD: ${SEED_TEACHER_PASSWORD:-BlueSteam2026!}
+    ports:
+      - "8010:8010"
+    volumes:
+      - bluesteam_uploads:/data/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8010/api/v1/health/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    networks:
+      bluesteam_net:
+        aliases:
+          - bluesteam_api
+
+  bluesteam_frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: bluesteam_frontend
+    restart: unless-stopped
+    depends_on:
+      bluesteam_backend:
+        condition: service_healthy
+    ports:
+      - "3010:80"
+    networks:
+      bluesteam_net:
+        aliases:
+          - bluesteam_web
+
+volumes:
+  bluesteam_postgres_data:
+    external: true
+    name: bluesteam_postgres_data
+  bluesteam_uploads:
+    name: bluesteam_uploads
+
+networks:
+  bluesteam_net:
+    name: bluesteam_net

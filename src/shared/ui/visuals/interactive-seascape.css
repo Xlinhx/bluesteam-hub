@@ -1,0 +1,60 @@
+.interactive-seascape{position:relative;isolation:isolate;min-height:calc(100vh - 76px);color:var(--interactive-ink);background:var(--interactive-paper);overflow:clip}
+.interactive-seascape__artwork{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:var(--interactive-paper)}
+.interactive-seascape__wash{position:absolute;inset:0 0 auto;width:100%;height:40vh;opacity:.2}
+.interactive-seascape__layer{position:absolute;display:block;pointer-events:none}
+.interactive-seascape__layer img{display:block;width:100%;height:100%;object-fit:contain}
+.interactive-seascape__layer--top-wash{inset:0 0 auto;height:36vh;width:100%}
+.interactive-seascape__layer--top-wash img{object-fit:cover;object-position:center top;opacity:.78}
+.interactive-seascape__layer--left-reef,.interactive-seascape__layer--right-shore{top:0;bottom:0;width:min(46vw,67vh)}
+.interactive-seascape__layer--left-reef{left:-48px}.interactive-seascape__layer--left-reef img{object-position:left center}
+.interactive-seascape__layer--right-shore{right:-48px}.interactive-seascape__layer--right-shore img{object-position:right center}
+@media(max-width:767px){
+ .interactive-seascape__wash{height:30vh}
+ .interactive-seascape__layer--top-wash{width:150%;left:-25%;height:26vh}
+ .interactive-seascape__layer--left-reef,.interactive-seascape__layer--right-shore{width:66.67vh;height:100%}
+ .interactive-seascape__layer--left-reef{left:calc(48px - 15vh);mask-image:linear-gradient(to right,#000 calc(15vh - 36px),transparent calc(15vh - 12px))}
+ .interactive-seascape__layer--right-shore{right:calc(48px - 15vh);mask-image:linear-gradient(to left,#000 calc(15vh - 36px),transparent calc(15vh - 12px))}
+}
+
+/* The coast stays anchored; life and refracted light move independently in its water. */
+.interactive-ocean-life{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.interactive-ocean-life__definitions{position:absolute}
+.interactive-ocean-life__rays{position:absolute;inset:-15% -20% 35%;opacity:.32;transform-origin:center top;background:repeating-conic-gradient(from 164deg at 48% -15%,transparent 0deg 8deg,#fff9 9deg 12deg,transparent 13deg 24deg);mask-image:linear-gradient(#000,transparent);animation:interactive-water-light 19s ease-in-out infinite alternate}
+.interactive-fish-school{position:absolute;width:110px;height:65px;opacity:.65;animation:interactive-school-drift 21s ease-in-out infinite alternate}
+.interactive-fish-school--0{left:0;top:24%;rotate:8deg}
+.interactive-fish-school--1{right:1%;top:22%;scale:-.8 .8;animation-delay:-9s;animation-duration:27s}
+.interactive-fish-school--2{left:2%;bottom:18%;scale:.7;rotate:-12deg;animation-delay:-16s;animation-duration:25s}
+.interactive-reef-fish{position:absolute;width:calc(24px + var(--fish-index)*4px);left:calc(var(--fish-index)*20px);top:calc(mod(var(--fish-index),2)*18px);animation:interactive-fish-fin 3.6s ease-in-out infinite alternate;animation-delay:calc(var(--fish-index)*-.8s)}
+.interactive-ocean-bubble{position:absolute;left:calc(1% + mod(var(--bubble-index),2)*95%);bottom:calc(5% + var(--bubble-index)*11%);width:calc(5px + mod(var(--bubble-index),3)*4px);aspect-ratio:1;border:1px solid #32bad0aa;border-radius:50%;background:radial-gradient(circle at 30% 24%,#fff 0 12%,#a7ecf333 28%,transparent 65%);box-shadow:inset -1px -2px 2px #31b2c24d;animation:interactive-bubble-rise calc(11s + var(--bubble-index)*1.2s) linear infinite;animation-delay:calc(var(--bubble-index)*-2.4s)}
+.interactive-ocean-life__seahorse{position:absolute;right:1%;bottom:13%;height:clamp(76px,12vh,136px);width:auto;object-fit:contain;transform-origin:center 65%;animation:interactive-seahorse-float 9s ease-in-out infinite}
+.interactive-ocean-life__ray{position:absolute;left:.5%;top:46%;width:clamp(80px,9vw,150px);height:auto;opacity:.85;animation:interactive-ray-glide 16s ease-in-out infinite alternate}
+@keyframes interactive-water-light{from{rotate:-4deg;opacity:.18}to{rotate:5deg;opacity:.36}}
+@keyframes interactive-school-drift{from{translate:-18px 6px}to{translate:30px -12px}}
+@keyframes interactive-fish-fin{from{transform:perspective(160px) rotateY(-12deg) rotate(-3deg)}to{transform:perspective(160px) rotateY(12deg) rotate(3deg)}}
+@keyframes interactive-bubble-rise{0%{translate:0 30px;opacity:0}15%{opacity:.7}80%{opacity:.6}100%{translate:18px -150px;opacity:0}}
+@keyframes interactive-seahorse-float{0%,100%{translate:0 5px;rotate:-4deg}50%{translate:-8px -12px;rotate:5deg}}
+@keyframes interactive-ray-glide{0%{translate:0 0;rotate:-8deg;scale:.92}100%{translate:26px -32px;rotate:6deg;scale:1}}
+@media(max-width:767px){
+ .interactive-fish-school{width:90px;scale:.65;transform-origin:left center;opacity:.55}
+ .interactive-fish-school--1{scale:-.55 .55;transform-origin:right center}
+ .interactive-fish-school--2{display:none}
+ .interactive-ocean-life__seahorse{right:-16px;height:80px;bottom:22%;opacity:.6}
+ .interactive-ocean-life__ray{left:-36px;width:86px;opacity:.6}
+ .interactive-ocean-life__rays{opacity:.18}
+}
+.interactive-seascape[data-motion-sleep=true] .interactive-ocean-life *,#root[inert] .interactive-ocean-life *{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.interactive-ocean-life *{animation:none!important}}
+
+/* Mobile keeps a foreground creature, a distant school and restrained water light. */
+@media(max-width:767px){
+ .interactive-ocean-life__rays{inset:-10% -10% 55%;animation-duration:24s}
+ .interactive-fish-school--0{top:25%;left:-22px}
+ .interactive-fish-school--1{top:36%;right:-18px}
+ .interactive-reef-fish:nth-child(4),.interactive-ocean-bubble:nth-of-type(2n){display:none}
+ .interactive-ocean-life__seahorse{height:68px;right:-18px;bottom:25%}
+ .interactive-ocean-life__ray{width:70px;left:-35px;top:54%}
+}
+@media(max-height:500px) and (hover:none){
+ .interactive-ocean-life__ray,.interactive-ocean-life__seahorse,.interactive-fish-school--1{display:none}
+ .interactive-ocean-life__rays{inset:0 0 30%}
+}

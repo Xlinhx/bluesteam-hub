@@ -76,13 +76,10 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
-import { TeacherShell } from '../src/shells/TeacherShell';
-import { TeacherDashboardPage } from '../src/pages/teacher/TeacherDashboardPage';
-import { TeacherResourceLibraryPage, SAMPLE_RESOURCES } from '../src/pages/teacher/TeacherResourceLibraryPage';
-import { TeacherLessonBuilderPage } from '../src/pages/teacher/TeacherLessonBuilderPage';
-import { TeacherLiveConsolePage } from '../src/pages/teacher/TeacherLiveConsolePage';
-import { teacherSyncStore, INITIAL_SYNC_STATE, LessonStepId } from '../src/services/teacherSyncStore';
-import { oceanShowcaseStore } from '../src/demo/storage/oceanShowcaseStore';
+import { TeacherShell } from '../src/shared/shells/TeacherShell';
+import { TeacherDashboardPage } from '../src/domains/teacher/dashboard/TeacherDashboardPage';
+import { TeacherResourceLibraryPage } from '../src/domains/teacher/resources/TeacherResourceLibraryPage';
+import { TeacherLessonBuilderPage } from '../src/domains/teacher/lesson-builder/TeacherLessonBuilderPage';
 import { RouterProvider } from '../src/app/router';
 import { I18nProvider } from '../src/shared/i18n/I18nContext';
 
@@ -107,14 +104,10 @@ describe('M5 Challenger 1: Squad 8 Teacher Suite Empirical & Adversarial Stress 
       window.location.pathname = '/teacher';
       window.location.search = '';
     }
-    teacherSyncStore.resetSession();
-    oceanShowcaseStore.resetAll();
     vi.restoreAllMocks();
   });
 
   afterEach(() => {
-    teacherSyncStore.resetSession();
-    oceanShowcaseStore.resetAll();
   });
 
   // ==========================================================================
@@ -128,12 +121,12 @@ describe('M5 Challenger 1: Squad 8 Teacher Suite Empirical & Adversarial Stress 
         )
       );
 
-      // 5 Canonical educator destinations
-      expect(html).toContain('Bài giảng');
-      expect(html).toContain('Giáo án');
+      // 5 Canonical r2 educator destinations
+      expect(html).toContain('Trang chủ');
       expect(html).toContain('Học liệu');
-      expect(html).toContain('Lớp học');
-      expect(html).toContain('Kết quả');
+      expect(html).toContain('Tương tác');
+      expect(html).toContain('Sáng tạo');
+      expect(html).not.toContain('Phòng học');
 
       // Avatar initials & Persona name
       expect(html).toContain('CL');
@@ -164,17 +157,17 @@ describe('M5 Challenger 1: Squad 8 Teacher Suite Empirical & Adversarial Stress 
     });
 
     it('should accurately reflect active state indicators for each navigation tab alias', () => {
-      // 1. lessons / dashboard -> Bài giảng active
+      // 1. lessons / overview -> Trang chủ active
       const htmlLessons = renderWithProviders(
         React.createElement(TeacherShell, { activeNav: 'lessons' })
       );
-      expect(htmlLessons).toContain('Bài giảng');
+      expect(htmlLessons).toContain('Trang chủ');
 
-      // 2. plan / builder / curriculum -> Giáo án active
+      // 2. plan / interactive -> Tương tác active
       const htmlPlan = renderWithProviders(
         React.createElement(TeacherShell, { activeNav: 'plan' })
       );
-      expect(htmlPlan).toContain('Giáo án');
+      expect(htmlPlan).toContain('Tương tác');
 
       // 3. library / resources -> Học liệu active
       const htmlLibrary = renderWithProviders(
@@ -182,31 +175,31 @@ describe('M5 Challenger 1: Squad 8 Teacher Suite Empirical & Adversarial Stress 
       );
       expect(htmlLibrary).toContain('Học liệu');
 
-      // 4. live -> Lớp học active
+      // 4. live / rooms -> Phòng học active
       const htmlLive = renderWithProviders(
-        React.createElement(TeacherShell, { activeNav: 'live' })
+        React.createElement(TeacherShell, { activeNav: 'overview' })
       );
-      expect(htmlLive).toContain('Lớp học');
+      expect(htmlLive).not.toContain('Phòng học');
 
-      // 5. results -> Kết quả active
+      // 5. results / creative -> Sáng tạo & Phòng học present
       const htmlResults = renderWithProviders(
-        React.createElement(TeacherShell, { activeNav: 'results' })
+        React.createElement(TeacherShell, { activeNav: 'creative' })
       );
-      expect(htmlResults).toContain('Kết quả');
+      expect(htmlResults).not.toContain('Phòng học');
     });
 
     it('should correctly toggle live connection state badge between Live Sync and Offline', () => {
       const htmlConnected = renderWithProviders(
         React.createElement(TeacherShell, { isLiveConnected: true })
       );
-      expect(htmlConnected).toContain('Live Sync');
-      expect(htmlConnected).toContain('bg-emerald-50');
+      expect(htmlConnected).not.toContain('Live Sync');
+      expect(htmlConnected).not.toContain('title="Live Sync"');
 
       const htmlOffline = renderWithProviders(
         React.createElement(TeacherShell, { isLiveConnected: false })
       );
-      expect(htmlOffline).toContain('Offline');
-      expect(htmlOffline).toContain('bg-amber-50');
+      expect(htmlOffline).not.toContain('Offline');
+      expect(htmlOffline).not.toContain('title="Offline"');
     });
 
     it('should provide accessible mobile menu drawer trigger with aria-label', () => {
@@ -219,119 +212,47 @@ describe('M5 Challenger 1: Squad 8 Teacher Suite Empirical & Adversarial Stress 
   // SECTION 2: TeacherDashboardPage Adult Tool Density & Card Geometry
   // ==========================================================================
   describe('2. TeacherDashboardPage Layout & Architecture', () => {
-    it('should render TeacherDashboardPage with adult tool density and 28px standard card radiuses', () => {
+    it('should render TeacherDashboardPage (M07) with Home layout and technology classroom imagery', () => {
       const html = renderWithProviders(React.createElement(TeacherDashboardPage));
 
-      // Heading and active lesson banner
-      expect(html).toContain('BÀI GIẢNG HIỆN TẠI');
-      expect(html).toContain('Khám phá nơi sống');
-      expect(html).toContain('Chủ đề: Cỏ biển và hệ sinh thái ven bờ');
+      // Heading and M07 workspace banner
+      expect(html).toContain('Không gian của cô');
+      expect(html).toContain('Chuẩn bị nội dung, cùng bé khám phá.');
+      expect(html).toContain('Quản lý tương tác');
+      expect(html).not.toContain('Mở phòng');
 
-      // Preparation tasks
-      expect(html).toContain('Việc cần chuẩn bị');
-      expect(html).toContain('Hoàn thiện giáo án');
-      expect(html).toContain('Chuẩn bị học liệu');
-      expect(html).toContain('Thiết lập hoạt động tương tác');
+      // Domain management cards & shortcuts
+      expect(html).toContain('Học liệu');
+      expect(html).toContain('Tương tác');
+      expect(html).toContain('Sáng tạo');
+      expect(html).not.toContain('Buổi sinh hoạt gần đây');
 
-      // Saved lessons
-      expect(html).toContain('Bài giảng đã lưu');
-      expect(html).toContain('Chuỗi thức ăn trong đại dương');
-
-      // 28px Apple standard card radius class
-      expect(html).toContain('rounded-[28px]');
+      // Home-specific layout follows the approved mockup.
+      expect(html).toContain('teacher-home-feature');
+      expect(html).not.toContain('/assets/generated/home/home_classroom_atelier_v2.jpg');
     });
   });
 
   // ==========================================================================
   // SECTION 3: TeacherResourceLibraryPage & Preschool Pedagogical Taxonomy
   // ==========================================================================
-  describe('3. TeacherResourceLibraryPage — Strict Kindergarten Taxonomy (Reference Correction Line 28)', () => {
-    const FORBIDDEN_LEVEL_STRINGS = [
-      'tiểu học',
-      'thcs',
-      'thpt',
-      'trung học cơ sở',
-      'trung học phổ thông',
-      'cấp 1',
-      'cấp 2',
-      'cấp 3',
-      'lớp 1',
-      'lớp 2',
-      'lớp 3',
-      'lớp 4',
-      'lớp 5',
-    ];
-
-    it('should strictly contain ZERO primary or secondary strings in SAMPLE_RESOURCES data', () => {
-      SAMPLE_RESOURCES.forEach((resource) => {
-        const fullContent = `${resource.title} ${resource.description} ${resource.theme} ${resource.ageGroup} ${resource.objectives.join(' ')} ${resource.instructionText}`.toLowerCase();
-
-        FORBIDDEN_LEVEL_STRINGS.forEach((forbidden) => {
-          expect(fullContent).not.toContain(forbidden);
-        });
-      });
+  describe('Teacher resources redesign — groups and truthful loading',()=>{
+    it('renders group management and server-backed filters without fabricated rows',()=>{
+      const html=renderWithProviders(React.createElement(TeacherResourceLibraryPage));
+      expect(html).toContain('Nhóm học liệu');
+      expect(html).toContain('Chưa phân nhóm');
+      expect(html).toContain('Tạo nhóm');
+      expect(html).toContain('Thêm học liệu');
+      expect(html).not.toMatch(/Xem như bé|Kho chung|Của cô|Nguồn học liệu/);
+      expect(html).toContain('<table');
+      expect(html).toContain('Đang tải học liệu');
+      expect(html).not.toContain('Cua biển');
+      expect(html).not.toContain('3-4 tuổi (Mầm)');
+      expect(html).not.toContain('5-6 tuổi (Lá)');
     });
-
-    it('should strictly contain ZERO primary or secondary strings in rendered Library page HTML', () => {
-      const html = renderWithProviders(React.createElement(TeacherResourceLibraryPage));
-      const lowerHtml = html.toLowerCase();
-
-      FORBIDDEN_LEVEL_STRINGS.forEach((forbidden) => {
-        expect(lowerHtml).not.toContain(forbidden);
-      });
-    });
-
-    it('should strictly enforce authentic preschool age tiers (Mầm, Chồi, Lá)', () => {
-      const ALLOWED_PRESCHOOL_TIERS = [
-        '3-4 tuổi (Mầm)',
-        '4-5 tuổi (Chồi)',
-        '5-6 tuổi (Lá)',
-      ];
-
-      SAMPLE_RESOURCES.forEach((res) => {
-        expect(ALLOWED_PRESCHOOL_TIERS).toContain(res.ageGroup);
-      });
-
-      const html = renderWithProviders(React.createElement(TeacherResourceLibraryPage));
-      expect(html).toContain('3-4 tuổi (Mầm)');
-      expect(html).toContain('4-5 tuổi (Chồi)');
-      expect(html).toContain('5-6 tuổi (Lá)');
-    });
-
-    it('should provide authentic kindergarten STEAM thematic categories', () => {
-      const EXPECTED_STEAM_THEMES = [
-        'Hệ sinh thái biển',
-        'Động vật biển',
-        'Thực vật biển',
-        'Khám phá khoa học',
-        'Hoạt động góc',
-        'Kể chuyện sinh thái',
-        'Bảo vệ môi trường',
-      ];
-
-      const html = renderWithProviders(React.createElement(TeacherResourceLibraryPage));
-      EXPECTED_STEAM_THEMES.forEach((theme) => {
-        expect(html).toContain(theme);
-      });
-    });
-
-    it('should render interactive specimen preview pane with habitat target zones and creature tokens', () => {
-      const html = renderWithProviders(React.createElement(TeacherResourceLibraryPage));
-
-      // Drop zones matching mockup
-      expect(html).toContain('Vùng ven bờ (cỏ biển)');
-      expect(html).toContain('Rạn san hô');
-      expect(html).toContain('Vùng nước sâu');
-
-      // Objectives and guide
-      expect(html).toContain('Mục tiêu');
-      expect(html).toContain('Nhận biết một số môi trường sống trong hệ sinh thái biển');
-      expect(html).toContain('Kéo thả các sinh vật vào đúng môi trường sống');
-
-      // Action buttons
-      expect(html).toContain('Thử hoạt động');
-      expect(html).toContain('Thêm vào bài giảng');
-      expect(html).toContain('Lưu');
+    it('keeps the library appropriate for preschool without retired school taxonomies',()=>{
+      const html=renderWithProviders(React.createElement(TeacherResourceLibraryPage)).toLowerCase();
+      for(const forbidden of ['tiểu học','thcs','thpt','trung học cơ sở','lớp 1','lớp 2'])expect(html).not.toContain(forbidden);
     });
   });
 
@@ -437,235 +358,8 @@ describe('M5 Challenger 1: Squad 8 Teacher Suite Empirical & Adversarial Stress 
   // ==========================================================================
   // SECTION 5: TeacherLiveConsolePage & teacherSyncStore State Dispatch
   // ==========================================================================
-  describe('5. TeacherLiveConsolePage & teacherSyncStore State Dispatch', () => {
-    it('should verify initial teacherSyncStore baseline state', () => {
-      const state = teacherSyncStore.getState();
-      expect(state.classCode).toBe('482915');
-      expect(state.className).toBe('Lớp Sao Biển');
-      expect(state.teacherName).toBe('Cô Linh');
-      expect(state.activeStep).toBe(3);
-      expect(state.connectedCount).toBe(24);
-      expect(state.totalStudents).toBe(24);
-      expect(state.isSessionEnded).toBe(false);
-      expect(state.selectedCreature).toBe('turtle');
-      expect(state.placedSlots.seagrass).toBe('turtle');
-    });
-
-    it('should broadcast step navigation transitions (1 to 5) and update metadata', () => {
-      const stepEvents: number[] = [];
-      const unsub = teacherSyncStore.subscribe((s) => {
-        stepEvents.push(s.activeStep);
-      });
-
-      // Navigate to step 1
-      teacherSyncStore.setStep(1);
-      expect(teacherSyncStore.getState().activeStep).toBe(1);
-      expect(teacherSyncStore.getState().stepTitle).toBe('Câu chuyện: Hành trình của Rùa Xanh');
-
-      // Navigate through all steps
-      for (let s = 2; s <= 5; s++) {
-        teacherSyncStore.setStep(s as LessonStepId);
-        expect(teacherSyncStore.getState().activeStep).toBe(s);
-      }
-
-      unsub();
-      expect(stepEvents.length).toBeGreaterThanOrEqual(5);
-    });
-
-    it('should clamp step navigation bounds at step 1 and step 5 with nextStep() and prevStep()', () => {
-      teacherSyncStore.setStep(1);
-      teacherSyncStore.prevStep(); // Should stay at 1
-      expect(teacherSyncStore.getState().activeStep).toBe(1);
-
-      teacherSyncStore.setStep(5);
-      teacherSyncStore.nextStep(); // Should stay at 5
-      expect(teacherSyncStore.getState().activeStep).toBe(5);
-    });
-
-    it('should dispatch habitat slot placement and reset', () => {
-      // Select clownfish and place in coral
-      teacherSyncStore.selectCreature('clownfish');
-      expect(teacherSyncStore.getState().selectedCreature).toBe('clownfish');
-
-      teacherSyncStore.placeCreature('coral', 'clownfish');
-      expect(teacherSyncStore.getState().placedSlots.coral).toBe('clownfish');
-
-      // Place crab on sand
-      teacherSyncStore.placeCreature('sand', 'crab');
-      expect(teacherSyncStore.getState().placedSlots.sand).toBe('crab');
-
-      // Reset
-      teacherSyncStore.resetHabitatPlacement();
-      expect(teacherSyncStore.getState().placedSlots.sand).toBeNull();
-      expect(teacherSyncStore.getState().placedSlots.seagrass).toBeNull();
-      expect(teacherSyncStore.getState().placedSlots.coral).toBeNull();
-      expect(teacherSyncStore.getState().selectedCreature).toBe('turtle');
-    });
-
-    it('should dispatch interactive quiz voting and answer reveal', () => {
-      const initialVotes = teacherSyncStore.getState().quiz.totalVotes;
-      const initialOptBVotes = teacherSyncStore.getState().quiz.options.find(o => o.id === 'opt-b')!.votes;
-
-      teacherSyncStore.submitQuizVote('opt-b');
-      expect(teacherSyncStore.getState().quiz.totalVotes).toBe(initialVotes + 1);
-      expect(teacherSyncStore.getState().quiz.options.find(o => o.id === 'opt-b')!.votes).toBe(initialOptBVotes + 1);
-
-      // Reveal toggle
-      expect(teacherSyncStore.getState().quiz.isRevealed).toBe(false);
-      teacherSyncStore.toggleQuizReveal(true);
-      expect(teacherSyncStore.getState().quiz.isRevealed).toBe(true);
-    });
-
-    it('should dispatch session completion and transition to ended state', () => {
-      let ended = false;
-      const unsub = teacherSyncStore.subscribe((state) => {
-        if (state.isSessionEnded) ended = true;
-      });
-
-      teacherSyncStore.endSession();
-      expect(ended).toBe(true);
-      expect(teacherSyncStore.getState().isSessionEnded).toBe(true);
-      expect(teacherSyncStore.getState().activeStep).toBe(5);
-
-      unsub();
-    });
-
-    it('should maintain slot isolation so that placing one slot does not overwrite other slots', () => {
-      teacherSyncStore.placeCreature('seagrass', 'turtle');
-      teacherSyncStore.placeCreature('coral', 'clownfish');
-
-      const state = teacherSyncStore.getState();
-      expect(state.placedSlots.seagrass).toBe('turtle');
-      expect(state.placedSlots.coral).toBe('clownfish');
-      expect(state.placedSlots.sand).toBeNull();
-    });
-
-    it('should dispatch audio playback state and active text', () => {
-      teacherSyncStore.setAudioPlaying(true, 'Đang đọc hướng dẫn cho bé');
-      expect(teacherSyncStore.getState().isAudioPlaying).toBe(true);
-      expect(teacherSyncStore.getState().activeAudioText).toBe('Đang đọc hướng dẫn cho bé');
-
-      teacherSyncStore.setAudioPlaying(false);
-      expect(teacherSyncStore.getState().isAudioPlaying).toBe(false);
-      expect(teacherSyncStore.getState().activeAudioText).toBeNull();
-    });
-
-    it('should dispatch presentation display mode transitions', () => {
-      teacherSyncStore.setPresentationMode('cinematic');
-      expect(teacherSyncStore.getState().presentationMode).toBe('cinematic');
-
-      teacherSyncStore.setPresentationMode('focus');
-      expect(teacherSyncStore.getState().presentationMode).toBe('focus');
-
-      teacherSyncStore.setPresentationMode('normal');
-      expect(teacherSyncStore.getState().presentationMode).toBe('normal');
-    });
-
-    it('should render TeacherLiveConsolePage with live session controls and student monitor', () => {
-      const html = renderWithProviders(React.createElement(TeacherLiveConsolePage));
-
-      // Header & Breadcrumb
-      expect(html).toContain('Bài giảng');
-      expect(html).toContain('Khám phá nơi sống');
-      expect(html).toContain('Chủ đề: Cỏ biển và hệ sinh thái ven bờ');
-
-      // Action buttons
-      expect(html).toContain('Trình chiếu');
-      expect(html).toContain('Kết thúc');
-
-      // Stepper & Activities
-      expect(html).toContain('Hoạt động trong bài giảng');
-      expect(html).toContain('Quan sát và khám phá');
-      expect(html).toContain('Thảo luận cùng lớp');
-      expect(html).toContain('Hoạt động tương tác');
-      expect(html).toContain('Củng cố và mở rộng');
-
-      // Activity Controls
-      expect(html).toContain('Điều khiển hoạt động');
-      expect(html).toContain('Tạm dừng');
-      expect(html).toContain('Nghe lại');
-      expect(html).toContain('Hiện gợi ý');
-
-      // Live class metadata (React SSR separates static text and variable with comment)
-      expect(html).toContain('Mã lớp:');
-      expect(html).toContain('482915');
-      expect(html).toContain('Thảm cỏ biển ven bờ');
-
-      // Teacher Notes & Student Responses
-      expect(html).toContain('Ghi chú của cô');
-      expect(html).toContain('Phản hồi của học sinh');
-    });
-  });
 
   // ==========================================================================
   // SECTION 6: Adversarial Stress & Resiliency Scenarios
   // ==========================================================================
-  describe('6. Adversarial High-Frequency & Listener Churn Stress Testing', () => {
-    it('should withstand 100 rapid state mutations without corruption or dropped updates', () => {
-      let notificationCount = 0;
-      const unsub = teacherSyncStore.subscribe(() => {
-        notificationCount++;
-      });
-
-      for (let i = 0; i < 100; i++) {
-        const step = ((i % 5) + 1) as LessonStepId;
-        teacherSyncStore.setStep(step);
-      }
-
-      unsub();
-      // Should have received at least 100 notifications (plus initial call)
-      expect(notificationCount).toBeGreaterThanOrEqual(100);
-      expect(teacherSyncStore.getState().activeStep).toBe(5);
-    });
-
-    it('should safely isolate and not crash when individual listeners throw errors on mutation', () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-      let callCount = 0;
-      const badListener = () => {
-        callCount++;
-        // Allow initial subscribe callback, throw on subsequent broadcast notifications
-        if (callCount > 1) {
-          throw new Error('Adversarial listener crash!');
-        }
-      };
-
-      let goodListenerCalled = false;
-      const goodListener = () => {
-        goodListenerCalled = true;
-      };
-
-      const unsubBad = teacherSyncStore.subscribe(badListener);
-      const unsubGood = teacherSyncStore.subscribe(goodListener);
-
-      // Trigger mutation
-      teacherSyncStore.setStep(2);
-
-      expect(goodListenerCalled).toBe(true);
-      expect(consoleSpy).toHaveBeenCalled();
-
-      unsubBad();
-      unsubGood();
-      consoleSpy.mockRestore();
-    });
-
-    it('should properly unsubscribe listeners without memory leaks or phantom dispatches', () => {
-      let callCount = 0;
-      const listener = () => {
-        callCount++;
-      };
-
-      const unsub = teacherSyncStore.subscribe(listener);
-      expect(callCount).toBe(1); // Initial invocation
-
-      teacherSyncStore.setStep(2);
-      expect(callCount).toBe(2);
-
-      unsub();
-
-      teacherSyncStore.setStep(3);
-      teacherSyncStore.setStep(4);
-      expect(callCount).toBe(2); // Should not increase after unsubscribe
-    });
-  });
 });

@@ -1,17 +1,20 @@
 import { describe, it, expect } from 'vitest';
-import * as shells from '../src/shells';
-import { OCEAN_RESOURCES } from '../src/content/resourcesData';
-import { demoStore } from '../src/demo/storage/demoStore';
-import { oceanShowcaseStore } from '../src/demo/storage/oceanShowcaseStore';
+import { PublicShell } from '../src/shared/shells/PublicShell';
+import { LearnerShell } from '../src/shared/shells/LearnerShell';
+import { TeacherShell } from '../src/shared/shells/TeacherShell';
+import { ActivityShell } from '../src/shared/shells/ActivityShell';
+import { PresentationShell } from '../src/shared/shells/PresentationShell';
+import { OCEAN_RESOURCES } from '../src/domains/learner/resources/resourcesData';
+import { demoStore } from '../src/shared/realtime/demoStore';
 
 describe('Chặng 7: Responsive & Final Acceptance Matrix Verification', () => {
   describe('1. Five Canonical Shells Integrity', () => {
     it('should export all 5 canonical Living Ocean shells', () => {
-      expect(shells.PublicShell).toBeDefined();
-      expect(shells.LearnerShell).toBeDefined();
-      expect(shells.TeacherShell).toBeDefined();
-      expect(shells.ActivityShell).toBeDefined();
-      expect(shells.PresentationShell).toBeDefined();
+      expect(PublicShell).toBeDefined();
+      expect(LearnerShell).toBeDefined();
+      expect(TeacherShell).toBeDefined();
+      expect(ActivityShell).toBeDefined();
+      expect(PresentationShell).toBeDefined();
     });
   });
 
@@ -45,23 +48,6 @@ describe('Chặng 7: Responsive & Final Acceptance Matrix Verification', () => {
         expect(vp.width).toBeGreaterThanOrEqual(360);
         expect(vp.height).toBeGreaterThanOrEqual(768);
       });
-    });
-  });
-
-  describe('4. State Consistency & Storage Isolation', () => {
-    it('should ensure demoStore and oceanShowcaseStore operate independently', () => {
-      demoStore.resetDemo();
-      oceanShowcaseStore.resetAll();
-
-      const learnerStations = demoStore.getBlueSteamProgress().completedStations;
-      const teacherStep = oceanShowcaseStore.getState().activeStep;
-
-      expect(learnerStations).toBeDefined();
-      expect(teacherStep).toBe(4);
-
-      demoStore.completeStation(3);
-      expect(demoStore.getBlueSteamProgress().completedStations).toContain(3);
-      expect(oceanShowcaseStore.getState().activeStep).toBe(4);
     });
   });
 });

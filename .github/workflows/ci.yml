@@ -1,0 +1,128 @@
+name: BlueSTEAM r2 CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy after verification (also requires ENABLE_PRODUCTION_DEPLOY=true)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: bluesteam
+          POSTGRES_PASSWORD: bluesteam_dev_local
+          POSTGRES_DB: bluesteam
+        ports:
+          - 5442:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://bluesteam:bluesteam_dev_local@127.0.0.1:5442/bluesteam
+      TEST_DATABASE_URL: postgresql://bluesteam:bluesteam_dev_local@127.0.0.1:5442/bluesteam_test
+      INTERACTIVE_TEST_DATABASE_URL: postgresql://bluesteam:bluesteam_dev_local@127.0.0.1:5442/bluesteam_interactive_test
+      INTERACTIVE_USAGE_TEST_DATABASE_URL: postgresql://bluesteam:bluesteam_dev_local@127.0.0.1:5442/bluesteam_interactive_usage_test
+      JWT_SECRET: ci-test-jwt-secret-key
+      SEED_TEACHER_PASSWORD: BlueSteam2026!
+      API_PORT: 8010
+      WEB_PORT: 3010
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm --workspace @bluesteam/contracts run build
+      - name: Create isolated integration databases
+        env:
+          PGPASSWORD: bluesteam_dev_local
+        run: |
+          for database in bluesteam_test bluesteam_accounts_test bluesteam_interactive_test bluesteam_interactive_usage_test; do
+            createdb --host=127.0.0.1 --port=5442 --username=bluesteam "$database"
+          done
+      - run: npm --workspace @bluesteam/server run db:migrate
+      - run: npm run db:seed:demo
+      - run: npm test
+      - run: npm --workspace @bluesteam/server test
+      - run: npm run test:server
+      - run: npm run validate:visual
+      - run: npm run build:all
+      - name: Package verified source
+        if: github.event_name != 'pull_request'
+        run: >-
+          git archive --format=tar.gz --output=release.tar.gz HEAD
+          .dockerignore Dockerfile.web compose.production.yaml deploy server packages
+          public package.json package-lock.json
+          tsconfig.json vite.config.ts tailwind.config.js index.html src
+      - name: Verify Docker builds from the release archive
+        if: github.event_name != 'pull_request'
+        run: |
+          install -d "$RUNNER_TEMP/bluesteam-release"
+          tar -xzf release.tar.gz -C "$RUNNER_TEMP/bluesteam-release"
+          docker build -f "$RUNNER_TEMP/bluesteam-release/server/Dockerfile" -t bluesteam-api:verify "$RUNNER_TEMP/bluesteam-release"
+          docker build -f "$RUNNER_TEMP/bluesteam-release/Dockerfile.web" -t bluesteam-web:verify "$RUNNER_TEMP/bluesteam-release"
+      - uses: actions/upload-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          name: production-source
+          path: release.tar.gz
+          retention-days: 7
+
+  deploy:
+    needs: verify
+    if: >-
+      vars.ENABLE_PRODUCTION_DEPLOY == 'true' &&
+      ((github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.deploy))
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: bluesteam-production
+      cancel-in-progress: false
+    env:
+      VPS_HOST: ${{ secrets.VPS_HOST }}
+      VPS_PORT: ${{ secrets.VPS_PORT }}
+      VPS_USER: ${{ secrets.VPS_USER }}
+      VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+      VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+      PRODUCTION_ENV: ${{ secrets.PRODUCTION_ENV }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: production-source
+      - name: Upload and deploy verified release
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/bluesteam
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          printf '%s\n' "$PRODUCTION_ENV" > "$RUNNER_TEMP/production.env"
+          trap 'rm -f ~/.ssh/bluesteam "$RUNNER_TEMP/production.env"' EXIT
+          ssh_args=(-i ~/.ssh/bluesteam -o BatchMode=yes -o StrictHostKeyChecking=yes)
+          target="$VPS_USER@$VPS_HOST"
+          release="/srv/bluesteam/releases/$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          ssh "${ssh_args[@]}" -p "$VPS_PORT" "$target" "mkdir -m 750 '$release'"
+          scp "${ssh_args[@]}" -P "$VPS_PORT" release.tar.gz "$target:$release/release.tar.gz"
+          scp "${ssh_args[@]}" -P "$VPS_PORT" "$RUNNER_TEMP/production.env" "$target:$release/production.env"
+          ssh "${ssh_args[@]}" -p "$VPS_PORT" "$target" \
+            "cd '$release' && tar -xzf release.tar.gz && bash deploy/deploy.sh '$release'"
+          curl --fail --silent --show-error --retry 10 --retry-delay 3 --retry-connrefused \
+            https://bluesteam.webinprogress.click/api/v1/health/ready
+          curl --fail --silent --show-error https://bluesteam.webinprogress.click/ >/dev/null

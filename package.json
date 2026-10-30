@@ -1,31 +1,49 @@
 {
   "name": "ocean-immersive-learning",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/*",
+    "server"
+  ],
   "scripts": {
     "dev": "vite",
+    "dev:api": "npm --workspace @bluesteam/server run dev",
     "build": "tsc && vite build",
+    "build:all": "npm --workspace @bluesteam/contracts run build && npm --workspace @bluesteam/server run build && npm run build",
     "preview": "vite preview",
-    "test": "vitest run",
-    "validate:visual": "node scripts/validate-visual-manifest.mjs"
+    "test": "vitest run tests",
+    "test:server": "npm --workspace @bluesteam/server run test:integration",
+    "test:e2e": "playwright test",
+    "validate:visual": "node scripts/validate-visual-manifest.mjs",
+    "db:seed:content": "npm --workspace @bluesteam/server run db:seed -- --mode=content",
+    "db:seed:demo": "npm --workspace @bluesteam/server run db:seed -- --mode=demo"
   },
   "dependencies": {
+    "@bluesteam/contracts": "*",
+    "@types/qrcode": "^1.5.6",
     "lucide-react": "^1.16.0",
+    "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "three": "^0.180.0"
+    "three": "^0.180.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.51.0",
     "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^22.13.10",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/three": "^0.180.0",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "fake-indexeddb": "^6.2.6",
     "postcss": "^8.4.49",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "vite": "5.4.21",
+    "vitest": "2.1.9"
   }
 }

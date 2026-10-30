@@ -1,0 +1,45 @@
+.public-shell{background:#f6f3eb;color:#12384b;font-family:'Be Vietnam Pro',sans-serif}
+.public-shell--landing{background:#f5f1e8;color:#193c43}
+.public-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.95);border-bottom:1px solid #12384b12;backdrop-filter:blur(16px)}
+.public-shell--landing .public-header{background:rgba(245,241,232,.93);border-color:#193c4318}
+.public-header-inner{max-width:1320px;min-height:76px;padding:0 48px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.public-brand{display:flex;align-items:center;flex-shrink:0;border-radius:4px}
+.public-brand img{max-width:172px}
+.public-desktop-nav{display:flex;align-items:center;justify-content:center;gap:8px}
+.public-nav-link{position:relative;display:flex;align-items:center;justify-content:center;gap:9px;width:130px;height:48px;font-size:14px;font-weight:500;border-radius:4px;color:inherit;overflow:hidden}
+.public-nav-icon{flex-shrink:0;transition:transform .35s cubic-bezier(.22,1,.36,1);transform-origin:center}
+.public-nav-label{transition:opacity .2s,transform .35s cubic-bezier(.22,1,.36,1);white-space:nowrap}
+.public-nav-link[aria-current=page]{background:#17657a;color:white}
+.public-header-actions{display:flex;align-items:center;gap:18px;flex-shrink:0}
+.public-join{display:inline-flex;justify-content:center;align-items:center;gap:16px;min-height:44px;padding:0 20px;background:#b84b34;color:#fffaf3;font-size:13px;font-weight:500;white-space:nowrap;border-radius:3px;transition:background .2s,transform .2s}
+.public-join:hover{background:#9f3c29;transform:translateY(-2px)}
+.public-login{font-size:14px;color:#17657a;font-weight:600}
+.public-menu-trigger{display:none;align-items:center;justify-content:center;cursor:pointer}
+.public-shell :is(a,button,input):focus-visible{outline:2px solid #17657a;outline-offset:5px}
+.public-skip-link{position:fixed;top:10px;left:12px;z-index:70;padding:12px 20px;background:#fff;transform:translateY(-160%)}
+.public-skip-link:focus{transform:translateY(0)}
+.public-drawer-backdrop{position:fixed;inset:0;background:#102a3866;backdrop-filter:blur(6px);z-index:60}
+.public-drawer{background:#f5f1e8;padding:22px 28px 30px;max-height:90dvh;overflow:auto;border-bottom:1px solid #193c4322}
+.public-drawer-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.public-drawer-heading button{width:48px;height:48px;display:grid;place-items:center;cursor:pointer}
+.public-drawer nav{display:grid;margin-bottom:24px}
+.public-drawer nav a{display:flex;align-items:center;gap:18px;min-height:64px;border-bottom:1px solid #193c4320;font-size:18px}
+.public-drawer nav a svg:last-child{margin-left:auto}
+.public-drawer-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+@media(hover:hover) and (pointer:fine){
+ .public-shell--landing .public-nav-link:hover .public-nav-label{opacity:0;transform:translateX(24px)}
+ .public-shell--landing .public-nav-link:hover .public-nav-icon{position:absolute;left:calc(50% - 10px);animation:public-icon-wiggle .6s .12s both}
+ .public-nav-link:hover{background:#193c4306}
+}
+@keyframes public-icon-wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-17deg)}55%{transform:rotate(13deg)}80%{transform:rotate(-5deg)}}
+@media(max-width:1199px){.public-header-inner{padding:0 32px;gap:16px}.public-nav-link{width:115px}.public-header-actions{gap:12px}}
+@media(max-width:1023px){.public-header-inner{min-height:72px;padding:0 24px}.public-desktop-nav,.public-login{display:none}.public-menu-trigger{display:flex}.public-header-actions{gap:12px}}
+@media(max-width:540px){.public-header-inner{min-height:68px;padding:0 18px;gap:8px}.public-brand img{max-width:128px;height:auto}.public-header-actions{gap:6px}.public-header-actions>.public-language{display:none}.public-join{min-height:40px;padding:0 13px;gap:10px;font-size:12px}.public-menu-trigger{width:48px}}
+@media(max-width:380px){.public-brand img{max-width:104px}.public-header-actions{flex-shrink:1;min-width:0}.public-header-actions>.public-join{white-space:normal;line-height:1.2;text-align:center;min-width:0;min-height:44px;padding-inline:9px;gap:6px}.public-header-actions>.public-join svg{flex-shrink:0}}
+@media(prefers-reduced-motion:reduce){.public-shell *, .public-shell *::before,.public-shell *::after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+.public-shell:not(.public-shell--landing) .public-header-inner{min-height:68px;max-width:1344px;padding-inline:32px}
+.public-shell:not(.public-shell--landing) .public-nav-link{border-radius:99px;font-weight:600}
+.public-shell:not(.public-shell--landing) .public-join{background:#f67650;color:#12384b;border-radius:99px;font-weight:700}
+@media(max-width:1023px){.public-shell:not(.public-shell--landing) .public-header-inner{min-height:64px;padding-inline:16px}}
+.public-header-inner{position:relative}
+.public-shell--landing .public-desktop-nav{position:absolute;left:50%;transform:translateX(-50%)}

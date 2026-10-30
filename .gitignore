@@ -18,6 +18,7 @@ build/
 .env
 .env.local
 .env.*.local
+production.env
 *.pem
 *.key
 
@@ -61,3 +62,15 @@ logs/
 # Worktrees
 astra/
 proteus/
+
+# Generated review output and local data
+output/
+screenshots/
+.superpowers/
+.wrangler/
+storage/
+backups/
+artifacts/*
+!artifacts/verification/
+
+*.tsbuildinfo

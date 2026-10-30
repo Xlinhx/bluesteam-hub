@@ -1,0 +1,44 @@
+{
+  "learner-creative": {
+    "tool": "built-in image_gen.imagegen",
+    "created": "2026-10-25",
+    "images": [
+      {
+        "id": "C02",
+        "file": "C02-learner-overview.png",
+        "referenceImages": [
+          "P:/ocean-immerserve-learning/docs/mockups/creative-v2-2026-10-25/references/live-learner.png",
+          "P:/ocean-immerserve-learning/docs/mockups/creative-v2-2026-10-25/references/live-profile.png"
+        ],
+        "prompt": "Use case: ui-mockup. Edit the supplied CURRENT BlueSTEAM website content screenshot, grounded in its actual UI. Deliver ONE large readable landscape CONTENT-AREA mockup, approximately 1440x1000. No browser frame, NO GLOBAL HEADER, NO LOGO, no avatar or global navigation: these are intentionally outside the image and will remain real shared components. Never invent a different brand. Be Vietnam Pro Vietnamese sans-serif, navy #12384B, teal #0E5970, warm ivory #FAF8F5, coral #F26B55 only for a primary action, pale cyan selection, fine warm-gray outlines, rounded controls from actual screenshot. Maintain crisp legible Vietnamese. Consistent button and icon design. Reference profile image is BACKGROUND-COMPOSITION guidance: layered water bands, seagrass, coral, rocks, fish and bubbles in side margins, inter-section gaps and footer, at low contrast beneath quiet readable central content. Fill available background with purposeful organic shapes and layered paper/water textures, not random floating circles. Keep the established creative craft desk material where applicable. No new classroom system, no asset CMS, no fake ability/creativity scores. This is a proposed design with illustrative data, not a runtime screenshot.\nEvolve input 1 learner creative hub, keep the actual warm craft-desk wall/table, wooden \"Sáng tạo\" badge, serif main heading \"Đại dương mang dấu ấn của bé\", same paper surface shapes and existing habitat image language. Keep hero modest to show three entrances and resume on one laptop view. Remove the giant duplicate full template catalog and full artwork gallery from hub.\nTop two unequal panels: left 58% \"Cho tranh của bé sống dậy\", helper \"Vẽ trên giấy, quét tranh rồi thả bạn nhỏ vào biển.\" Illustration shows the ACTUAL crayon drawing from input 1 on a physical sheet, an orange crayon fish drawn on a separate sheet and that EXACT orange flat 2D fish swimming on a small inset water scene; a camera scan corner guide communicates scanning paper, not drawing digitally. Main teal \"Quét tranh của bé\", secondary \"Vào phiên bằng mã\".\nRight 42% \"Tô màu\", three contained actual-style black-line sheet thumbnails turtle/octopus/starfish. Teal \"Chọn tranh từ Học liệu\", small \"In ra giấy hoặc tô trên màn hình\". No fixed octopus-only entry, no white-paper editor CTA.\nWide shallow lower entrance \"Xây một nơi sống\" with recognizable EXISTING diorama from screenshot, keep its models/arrangement style, short \"Chọn cảnh rồi sắp xếp theo ý bé\", teal \"Bắt đầu xây\". Do not make new photoreal 3D models.\nOne compact resume strip \"Làm tiếp\", turtle coloring thumbnail, \"Rùa biển xanh\", \"Tô tiếp\", and \"Xem tác phẩm trong Hồ sơ →\". Decorative paper cut waves, shell outlines, crayon squiggles and small coral clusters connect the three entrances and cover outside margins; no redundant badges or sprawling hero. Treat paper scans and digital coloring as distinct activities.",
+        "corrections": [],
+        "finalSource": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a170f0-81bc-7920-9602-ad89e418ccc3\\exec-c55d87c9-7b23-499d-ae39-0e4e8d66bd7c.png",
+        "width": 1505,
+        "height": 1045,
+        "sha256": "07d2154ae43560e296f1f62c15683754486c5bccf54cac3d237b2bd06a440938"
+      }
+    ]
+  },
+  "teacher-interactive": {
+    "tool": "built-in image_gen.imagegen",
+    "created": "2026-10-26",
+    "images": [
+      {
+        "id": "T01",
+        "title": "library-desktop",
+        "file": "T01-library-desktop.png",
+        "width": 1536,
+        "height": 1024,
+        "bytes": 2466918,
+        "sha256": "208c471d2f9536e2a0ce73149e3062b7de76e2f8cc4abda27484fedd3d450081",
+        "source": "C:/Users/ADMIN/.codex/generated_images/01a17394-0e95-7133-a788-e257d685eaa8/exec-c18fb337-4560-4ec4-8d58-65226b66e27f.png",
+        "referenceImages": [
+          "P:/ocean-immerserve-learning/docs/mockups/interactive-management-v4/G02-su-dung-tro-choi.png",
+          "P:/ocean-immerserve-learning/docs/mockups/creative-v2-2026-10-25/C07-teacher-scan-console.png",
+          "P:/ocean-immerserve-learning/screenshots/interactive-creative-refresh-2026-10-26/teacher-1440.png"
+        ],
+        "prompt": "Use case: ui-mockup. Create ONE final high-fidelity desktop BlueSTEAM teacher Interactive library screen, wide 1536x1024, no device frame, Vietnamese. This is the MASTER visual reference of a new coordinated design family. Input1 old teacher mockup: borrow polished spacing, friendly category dioramas and cream label plinths only. Input2 Creative scan console: borrow saturated layered watercolor marine paper craft, teal/coral pigment and luminous white negative space, NOT its functionality. Input3 actual current web: preserve its real global header identity and correct four navigation items, actual BlueSTEAM logo and teacher avatar; refine below header. Do not redesign logo. No new nav or classroom management.\n\nExact top white header height82, logo left; four nav Trang chủ, Học liệu, active Tương tác in pale aqua pill, Sáng tạo; right Tiếng Việt, speaker, Cô Linh avatar, coral circular logout. Main max-width1248 centered x144..1392. Brand typography Be Vietnam Pro, ink navy #103452, rich teal #087C91, muted #54778B, paper #FFFCF5; rounded consistent shapes (24px panels, 16px controls, 999 pills), clean navy outline icons 2px. NOT faded sage, NOT beige monochrome, NOT random asymmetric corner radii, NOT generic SaaS sidebars.\nBackdrop: luminous cream watercolor paper CENTER stays readable. Layered turquoise watercolor wave washes behind top and lower margins; independently composed left/bottom coral reefs and right tidal rocks/sea grass in teal, blue, coral orange with small ochre exploring dotted path details. Strong enough pigment at edges, restrained bubbles. Full color, depth, tactile polished quality. No continuous caustics wallpaper.\n\nMain top at y116: title Tương tác 44bold, subtitle Hoạt động làm sẵn để cô cùng bé khám phá. At right same-line segmented white pill Hoạt động (teal selected), Xu hướng.\nAt y214 four evenly spaced CATEGORY artwork tiles ~270x210: turtle reef label Khám phá 3D (cube icon), clownfish puzzle table Trò chơi (gamepad icon, SELECTED white/ivory rounded panel cyan double outline and teal check top right), lighthouse island Mô phỏng (waves icon), crab signpost Tình huống (branch icon). Preserve same subject identity and proportions as input1. Art sits above a cream rounded label plaque, no overlap with header or toolbar. All four have equal visual weight.\n\nAt y450 a low white rounded search toolbar: search icon Tìm hoạt động… long input; Tất cả nhóm chevron; 7 hoạt động count at right. No Add/Create/Edit/Delete controls.\nBelow y526 a THREE COLUMN activity grid, first row fully visible: three matching white/cream cards with16:10 rounded scenic thumbnails, light aqua1px border, soft lower shadow, padding18. Card1 Về đúng nhà, small pill Phân loại, subtitle Tìm nơi sống phù hợp cho các bạn biển., thumbnail truthful gameplay: coral/sea grass/rock destination zones with small sea-creature cutouts. Card2 Tìm bóng hình, badge Ghép cặp, subtitle Quan sát và ghép sinh vật với bóng hình., thumbnail stingray and silhouette pair. Card3 Chọn con vật, badge Chọn đáp án, subtitle Lắng nghe rồi chạm vào hình phù hợp., thumbnail turtle/clownfish/starfish selection. Thumbnail imagery stylized cohesive educational marine visual, distinguish mechanics, not three generic landscapes. Footer aligned same y: outlined chart Số liệu and filled rich teal eye Xem thử, height46. Text titles22bold, description15 readable. Large thumbnails and inviting spacing, precise baselines. Hint second row below crop; do not compress whole catalog to fit. Bottom small label Bản thiết kế · Dữ liệu minh họa. All text legible Vietnamese. No fake figures. Must feel crafted educational ocean product, tasteful and vivid."
+      }
+    ]
+  }
+}

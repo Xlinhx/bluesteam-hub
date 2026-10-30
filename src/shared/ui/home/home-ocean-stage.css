@@ -1,0 +1,47 @@
+:is(.learner-home,.teacher-home) { position:relative; isolation:isolate; }
+.home-hub-shell :is(.learner-home,.teacher-home) { background-image:linear-gradient(150deg,#e3f2f5,#f9fcfa 38%,#e1f2f6 75%,#eaf6f7); }
+.home-ocean-stage { position:absolute; inset:0; z-index:-1; pointer-events:none; overflow:hidden; contain:paint; }
+.home-water { position:absolute; background-repeat:no-repeat; background-size:100% 100%; }
+.home-water--ribbon { inset:-8% -6%; background-image:var(--home-ribbon); opacity:.8; }
+.home-water--cove { inset:30% -5% -12% 28%; background-image:var(--home-cove); opacity:.65; mix-blend-mode:multiply; }
+.home-current-lines { position:absolute; inset:0; width:100%; height:100%; stroke:#3c94a4; stroke-width:1; opacity:.28; }
+.home-current-lines path:nth-child(2) { stroke:#fff; stroke-width:3; }
+.home-current-lines path:nth-child(3) { stroke:#1d788f; }
+.home-tide-contours { position:absolute; right:-55px; top:20%; width:300px; height:440px; stroke:#589ca4; stroke-width:1; opacity:.22; }
+.home-specimen-mark { position:absolute; right:12px; top:5px; width:120px; height:120px; stroke:#367f91; stroke-width:1.15; opacity:.2; rotate:-18deg; z-index:-1; pointer-events:none; }
+.home-specimen-layer { opacity:0; transform-origin:80px 80px; transform:rotate(-7deg); transition:opacity 500ms cubic-bezier(.22,1,.36,1),transform 700ms cubic-bezier(.22,1,.36,1); }
+.home-specimen-mark:is([data-specimen="3d"],[data-specimen=shore]) [data-form=shell],
+.home-specimen-mark[data-specimen=resources] [data-form=kelp],
+.home-specimen-mark[data-specimen=games] [data-form=fish] { opacity:1; transform:none; }
+.home-fish-school { position:absolute; right:8%; top:41%; width:200px; color:#367f91; opacity:.3; }
+.home-bubble-trail { position:absolute; right:2px; top:25%; width:22px; height:220px; }
+.home-bubble-trail i { position:absolute; border:1px solid #4e9baa77; border-radius:50%; width:calc(7px + var(--bubble-index)*2px); aspect-ratio:1; left:calc(2px + var(--bubble-index)*1px); top:calc(var(--bubble-index)*38px); box-shadow:inset 2px 2px 0 #ffffffb0; }
+.home-ocean-stage--teacher .home-fish-school { right:5%; top:39%; }
+.home-ocean-stage--teacher .home-tide-contours { right:auto; left:-65px; top:2%; rotate:180deg; }
+.home-water--ribbon { transform:translate(calc(var(--home-pointer-x,0)*-16px),calc(var(--home-pointer-y,0)*-10px)); transition:transform 1300ms cubic-bezier(.22,1,.36,1); }
+.home-water--cove { transform:translate(calc(var(--home-pointer-x,0)*10px + var(--home-category-current,0px)),calc(var(--home-pointer-y,0)*7px)); transition:transform 1700ms cubic-bezier(.22,1,.36,1); }
+.learner-home[data-home-category=resources] { --home-category-current:-26px; }
+.learner-home[data-home-category=games] { --home-category-current:22px; }
+.home-fish-school { transform:translate(calc(var(--home-pointer-x,0)*-9px),calc(var(--home-pointer-y,0)*-5px)); transition:transform 900ms cubic-bezier(.22,1,.36,1); }
+.home-tide-contours { transform:translate(calc(var(--home-pointer-x,0)*6px),calc(var(--home-pointer-y,0)*12px)); transition:transform 1600ms cubic-bezier(.22,1,.36,1); }
+.home-split-copy::before { transform-origin:bottom right; }
+[data-entrance=open] .home-split-copy::before { animation:home-copy-water-unfurl 2200ms cubic-bezier(.22,1,.36,1) both; }
+[data-entrance=open] .home-split-copy::after { animation:home-copy-shoreline 1900ms cubic-bezier(.22,1,.36,1) both; }
+@keyframes home-copy-water-unfurl { from { transform:translate(-28px,18px) rotate(-5deg) scale(.85); opacity:.1; } }
+@keyframes home-copy-shoreline { from { transform:translateX(-22px) scaleX(.65); } }
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+ .home-selector-label > svg,.teacher-domain-label > svg { transition:transform 650ms cubic-bezier(.22,1,.36,1); }
+ :is(.home-selector,.teacher-home-domains > button):nth-child(1):hover span > svg { transform:perspective(100px) rotateY(-24deg) rotate(-8deg); }
+ :is(.home-selector,.teacher-home-domains > button):nth-child(2):hover span > svg { transform:rotate(-12deg) translateY(-2px); }
+ :is(.home-selector,.teacher-home-domains > button):nth-child(3):hover span > svg { transform:rotate(9deg); }
+ .home-shortcut:hover .home-shortcut-label > svg:first-child { transform:rotate(-13deg); transition:transform 600ms cubic-bezier(.22,1,.36,1); }
+}
+@media(max-width:767px) {
+ .home-water--ribbon { inset:-2% -40%; }
+ .home-water--cove { inset:30% -50% 0 0; }
+ .home-specimen-mark { width:86px; height:86px; right:4px; top:2px; opacity:.16; }
+ .home-tide-contours { width:190px; right:-80px; }
+ .home-fish-school { width:130px; top:58%; right:-25px; }
+ .home-bubble-trail { right:0; width:10px; }
+ .home-bubble-trail i { left:0; width:calc(4px + var(--bubble-index)*1px); }
+}

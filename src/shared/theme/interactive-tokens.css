@@ -1,0 +1,29 @@
+.interactive-seascape {
+  --interactive-ink: #103452;
+  --interactive-muted: #54778b;
+  --interactive-teal: #087c91;
+  --interactive-teal-hover: #06697b;
+  --interactive-paper: #fffcf5;
+  --interactive-panel: #ffffff;
+  --interactive-aqua: #dff5f8;
+  --interactive-border: #b8dde4;
+  --interactive-sand: #fff7e5;
+  --interactive-radius-panel: 24px;
+  --interactive-radius-control: 16px;
+  --interactive-radius-plaque: 18px;
+  --interactive-radius-pill: 999px;
+  --interactive-title-size: 44px;
+  --interactive-section-size: 26px;
+  --interactive-card-size: 22px;
+  --interactive-body-size: 16px;
+  --interactive-auxiliary-size: 14px;
+  --interactive-metric-size: 36px;
+}
+@media (max-width: 767px) {
+  .interactive-seascape {
+    --interactive-title-size: 32px;
+    --interactive-section-size: 22px;
+    --interactive-card-size: 20px;
+    --interactive-metric-size: 28px;
+  }
+}

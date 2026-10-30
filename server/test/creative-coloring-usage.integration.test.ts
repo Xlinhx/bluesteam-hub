@@ -1,0 +1,22 @@
+import {beforeAll,afterAll,it,expect} from 'vitest';
+import {createDatabasePool,assertTestDatabaseUrl} from '../src/database/pool';
+import {runMigrations} from '../src/database/migrate';
+import {createServerApp} from '../src/bootstrap';
+import {AuthService} from '../src/auth/auth.service';
+const url=process.env.TEST_DATABASE_URL||'postgresql://bluesteam:bluesteam_dev_local@127.0.0.1:5442/bluesteam_test';
+const pool=createDatabasePool(url);let api='',cookie='',close:()=>Promise<void>;
+const req=(p:string,b?:unknown,t='',c='')=>fetch(api+p,{method:b?'POST':'GET',headers:{'content-type':'application/json',cookie:c,'x-participant-token':t},body:b?JSON.stringify(b):undefined});
+beforeAll(async()=>{assertTestDatabaseUrl(url);await runMigrations(pool);const app=await createServerApp({databaseUrl:url,port:0});api=app.url+'/api/v1';close=app.close;await app.app.get(AuthService).upsertTeacherAccount({email:'color-report@test.local',password:'Testing123!',displayName:'Report'});cookie=(await req('/auth/login',{email:'color-report@test.local',password:'Testing123!'})).headers.get('set-cookie')!.split(';')[0];});
+afterAll(async()=>{await close?.();await pool.end();});
+it('deduplicates run/events, scopes tokens and aggregates actual runs with mixed input and matching CSV',async()=>{
+ const openKey=crypto.randomUUID(),contentRef={contentId:'builtin:turtle',contentVersion:1,title:'Rùa xanh'};
+ const open=await req('/creative-coloring-usage/runs',{openKey,contentRef});expect(open.status).toBe(201);const run=await open.json();
+ const again=await(await req('/creative-coloring-usage/runs',{openKey,contentRef})).json();expect(again.runId).toBe(run.runId);expect(again.token).toBe(run.token);
+ const events=[{clientEventId:crypto.randomUUID(),type:'tool_used',tool:'brush',input:'touch'},{clientEventId:crypto.randomUUID(),type:'tool_used',tool:'bucket',input:'pen'},{clientEventId:crypto.randomUUID(),type:'complete'}];
+ expect((await req(`/creative-coloring-usage/runs/${run.runId}/events`,{events},run.token)).status).toBe(201);expect((await req(`/creative-coloring-usage/runs/${run.runId}/events`,{events},run.token)).status).toBe(201);
+ expect((await pool.query('SELECT count(*)::int n FROM creative_coloring_events WHERE run_id=$1',[run.runId])).rows[0].n).toBe(3);
+ expect((await req(`/creative-coloring-usage/runs/${crypto.randomUUID()}/events`,{events},run.token)).status).toBe(401);
+ expect((await req('/teacher/creative-coloring-usage')).status).toBe(401);
+ const report=await(await req('/teacher/creative-coloring-usage?input=mixed&q=Rùa',undefined,'',cookie)).json();expect(report.items.find((r:any)=>r.contentId==='builtin:turtle').completed).toBeGreaterThanOrEqual(1);expect(report.meta.timezone).toBe('Asia/Ho_Chi_Minh');expect(report.items[0].manualSaved).toBe(0);expect(report.items[0].tools.brush).toBeGreaterThanOrEqual(1);
+ const csv=await(await req('/teacher/creative-coloring-usage/export.csv?input=mixed&q=Rùa',undefined,'',cookie)).text();expect(csv).toContain('Rùa Xanh');expect(csv).not.toContain(run.token);expect(csv).not.toContain(run.runId);
+});

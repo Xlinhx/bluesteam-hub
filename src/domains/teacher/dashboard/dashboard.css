@@ -1,0 +1,45 @@
+.teacher-home { margin:0; padding:14px clamp(16px,1.8vw,34px) 24px; display:grid; gap:16px; }
+.teacher-home-feature { display:grid; grid-template-columns:39% 61%; height:clamp(270px,29vh,350px); border:1px solid var(--home-border); border-radius:26px; overflow:hidden; background:var(--home-surface); }
+.teacher-home-copy { --home-wash-height:38%; --home-wash-opacity:.58; position:relative; isolation:isolate; z-index:1; padding:clamp(24px,2.7vw,44px); display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:24px; background:var(--home-surface); }
+.teacher-home h1 { font-size:clamp(30px,3vw,48px); font-weight:800; line-height:1.15; margin:0 0 14px; text-wrap:balance; }
+.teacher-home-copy p { font-size:clamp(15px,1.4vw,20px); line-height:1.5; font-weight:600; color:var(--home-muted); }
+.teacher-home-primary { background:#17657a; font-size:clamp(16px,1.4vw,21px); }
+.teacher-home-primary:hover { background:#125469; box-shadow:0 4px 0 #0d4253; }
+.teacher-home-photo { position:relative; min-width:0; min-height:0; overflow:hidden; }
+.teacher-home-photo > img { display:block; width:100%; height:100%; object-fit:cover; object-position:65% center; }
+.teacher-home-domains { position:relative; isolation:isolate; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.teacher-home-domains::before { content:''; position:absolute; inset:-8px -12px -4px; background:var(--home-ribbon) center/100% 180% no-repeat,linear-gradient(120deg,#e1f1f6,#fdfcfa 52%,#e6f4f6); border-radius:25px; opacity:.6; pointer-events:none; z-index:-1; }
+.teacher-home-domains > button { position:relative; height:clamp(135px,17vh,185px); overflow:hidden; padding:0; border:1px solid var(--home-border); border-radius:22px; text-align:left; background:#fff; }
+.teacher-home-domains img { display:block; width:100%; height:100%; object-fit:cover; }
+.teacher-domain-label { position:absolute; left:14px; bottom:14px; display:flex; align-items:center; justify-content:center; gap:9px; border-radius:16px; padding:12px 16px; background:var(--home-surface); font-size:18px; font-weight:800; transition:transform 240ms cubic-bezier(.22,.8,.22,1); }
+.teacher-domain-arrow { position:absolute; right:16px; bottom:20px; padding:4px; width:32px; height:32px; border-radius:50%; background:white; opacity:0; transform:translateX(-9px); transition:opacity 180ms,transform 240ms; }
+.teacher-home-domains button:focus-visible .teacher-domain-arrow { opacity:1; transform:translateX(0); }
+@media(hover:hover) and (pointer:fine) {
+ .teacher-home-domains button:hover .teacher-domain-arrow { opacity:1; transform:translateX(0); }
+ .teacher-home-domains button:hover .teacher-domain-label { transform:translateX(3px); }
+}
+.teacher-home-shortcuts { height:clamp(190px,24vh,260px); }
+@media(min-width:768px) {
+ .teacher-home { height:calc(100dvh - var(--home-header-height) - var(--home-bottom-space)); min-height:615px; grid-template-rows:minmax(270px,1.45fr) minmax(125px,.75fr) minmax(150px,1fr); }
+ .teacher-home-feature { height:100%; grid-template-rows:minmax(0,1fr); }
+ .teacher-home-copy { min-height:0; }
+ .teacher-home-domains { min-height:0; }
+ .teacher-home-domains > button, .teacher-home-shortcuts { height:100%; }
+}
+@media(max-width:1023px) and (min-width:768px) {
+ .teacher-home-copy { padding:22px; gap:18px; }
+ .teacher-home h1 { font-size:30px; }
+ .teacher-home-primary { font-size:16px; gap:8px; padding:12px 16px; }
+}
+@media(max-width:767px) {
+ .teacher-home { padding:12px 12px 22px; gap:14px; }
+ .teacher-home-feature { grid-template-columns:1fr; height:auto; }
+ .teacher-home-copy { --home-wash-height:30%; --home-wash-opacity:.44; padding:22px; gap:20px; }
+ .teacher-home-photo { height:clamp(200px,58vw,330px); }
+ .teacher-home-domains { gap:8px; }
+ .teacher-home-domains > button { height:125px; border-radius:16px; }
+ .teacher-domain-label { left:5px; right:5px; bottom:9px; padding:9px 3px; font-size:13px; gap:4px; }
+ .teacher-domain-label > svg { width:18px; height:18px; flex-shrink:0; }
+ .teacher-domain-arrow { display:none; }
+ .teacher-home-shortcuts { height:auto; }
+}

@@ -1,0 +1,413 @@
+{
+  "version": "2026-10-15-r2",
+  "archivedAt": "2026-10-15T15:00:00.000Z",
+  "summary": {
+    "totalSources": 20,
+    "reusableSources": 9,
+    "retiredSources": 6,
+    "demoOnlySources": 1,
+    "fakeResultSources": 4
+  },
+  "sources": [
+    {
+      "sourcePath": "src/shared/data/seed/assets.ts",
+      "archivePath": "shared/data/seed/assets.ts",
+      "sha256": "a8b38243a75d24d64420127fb23ed1cadf01e9a149c05bd02bd358f8b61d03e8",
+      "bytes": 4229,
+      "classification": "reusable_content",
+      "exports": [
+        "SEED_ASSETS"
+      ],
+      "entityIds": [
+        "asset-hero-whale",
+        "asset-water-column-cover",
+        "asset-sediment-terraces-cover",
+        "asset-video-depth-intro",
+        "asset-specimen-anglerfish",
+        "asset-specimen-lanternfish",
+        "asset-specimen-turtleshell",
+        "asset-specimen-triops"
+      ],
+      "notes": "Legacy asset provenance metadata."
+    },
+    {
+      "sourcePath": "src/shared/data/seed/units.ts",
+      "archivePath": "shared/data/seed/units.ts",
+      "sha256": "bc018a04e0364155fdf03d790be1ef33b529bc9240e0a3e78f7dc83d3ac203af",
+      "bytes": 8005,
+      "classification": "retired_curriculum",
+      "exports": [
+        "SEED_UNITS"
+      ],
+      "entityIds": [
+        "unit-ocean-depth",
+        "unit-sediment-movement",
+        "unit-life-in-deep",
+        "unit-light-under-water",
+        "unit-ocean-sounds"
+      ],
+      "notes": "Retired curriculum units (replaced by topics and standalone/room catalogs in r2)."
+    },
+    {
+      "sourcePath": "src/shared/data/seed/experiences.ts",
+      "archivePath": "shared/data/seed/experiences.ts",
+      "sha256": "f42fa8f609739f6326ff6d0f7da57d57b8460d8bb1ea90280f99a441bf450694",
+      "bytes": 13314,
+      "classification": "reusable_content",
+      "exports": [
+        "SEED_EXPERIENCES"
+      ],
+      "entityIds": [
+        "exp-sim-water-column",
+        "exp-sim-sediment-terraces",
+        "exp-video-descent",
+        "exp-challenge-creature-depth",
+        "exp-challenge-sediment-sorting",
+        "exp-prompt-pressure-prediction",
+        "exp-video-biolum",
+        "exp-audio-abyssal-sounds",
+        "exp-story-pebble-journey"
+      ],
+      "notes": "Simulation and challenge configurations migrated into unified activities and resources."
+    },
+    {
+      "sourcePath": "src/shared/data/seed/lessons.ts",
+      "archivePath": "shared/data/seed/lessons.ts",
+      "sha256": "c54812590bcfafef89ce46e118766dc58a5e26fbe61e8aa0b61281b10d65f13d",
+      "bytes": 3652,
+      "classification": "retired_curriculum",
+      "exports": [
+        "SEED_LESSONS"
+      ],
+      "entityIds": [
+        "lesson-depth-expedition",
+        "lesson-sediment-dynamics"
+      ],
+      "notes": "Compulsory 5-step lesson plans retired per r2 product contract; usable sequences preserved as optional room queue presets."
+    },
+    {
+      "sourcePath": "src/shared/data/seed/classes.ts",
+      "archivePath": "shared/data/seed/classes.ts",
+      "sha256": "5c422155e32e90919113beaaf4b4d09d9ca45de670fca7eb555424a51589d1ab",
+      "bytes": 999,
+      "classification": "retired_curriculum",
+      "exports": [
+        "SEED_CLASSES"
+      ],
+      "entityIds": [
+        "class-kindergarten-blue",
+        "class-grade1-discovery"
+      ],
+      "notes": "Permanent class enrollment retired; replaced by per-session rooms."
+    },
+    {
+      "sourcePath": "src/shared/data/seed/students.ts",
+      "archivePath": "shared/data/seed/students.ts",
+      "sha256": "f92311fbab19a44282c154fe0bd88f70aff9fdf19e54157c2f92cffdff336ff3",
+      "bytes": 1831,
+      "classification": "demo_only",
+      "exports": [
+        "SEED_STUDENTS"
+      ],
+      "entityIds": [
+        "student-elena",
+        "student-marcus",
+        "student-kai",
+        "student-ananya",
+        "student-lucas",
+        "student-zara",
+        "student-noah",
+        "student-maya"
+      ],
+      "notes": "Fixed v1 student roster retired; rooms use per-session participants."
+    },
+    {
+      "sourcePath": "src/shared/data/seed/collections.ts",
+      "archivePath": "shared/data/seed/collections.ts",
+      "sha256": "da912206dcd5b490f098cc612e3f743489764e73e39b0a1d4dc6fd3c1049d881",
+      "bytes": 1336,
+      "classification": "retired_curriculum",
+      "exports": [
+        "SEED_COLLECTIONS"
+      ],
+      "entityIds": [
+        "col-vertical-zones",
+        "col-geological-dynamics",
+        "col-deep-adaptations"
+      ],
+      "notes": "Legacy unit collections retired."
+    },
+    {
+      "sourcePath": "src/shared/data/seed/paths.ts",
+      "archivePath": "shared/data/seed/paths.ts",
+      "sha256": "5f4d6c8fd7617ff443d37f6d19199a096098cc9fe3899a7a64189537b2f16d35",
+      "bytes": 2529,
+      "classification": "retired_curriculum",
+      "exports": [
+        "SEED_PATHS"
+      ],
+      "entityIds": [
+        "path-abyssal-expedition",
+        "path-mineral-currents"
+      ],
+      "notes": "Legacy multi-station progression paths retired."
+    },
+    {
+      "sourcePath": "src/shared/data/seed/index.ts",
+      "archivePath": "shared/data/seed/index.ts",
+      "sha256": "48aaf960452edeb9d4aab4cf4f86d3e5723cbc2c06a0fa245217c7b90f481399",
+      "bytes": 1302,
+      "classification": "retired_curriculum",
+      "exports": [
+        "SEED_ASSETS",
+        "SEED_UNITS",
+        "SEED_EXPERIENCES",
+        "SEED_LESSONS",
+        "SEED_CLASSES",
+        "SEED_STUDENTS",
+        "SEED_COLLECTIONS",
+        "SEED_PATHS"
+      ],
+      "entityIds": [],
+      "notes": "Barrel export for v1 seed files."
+    },
+    {
+      "sourcePath": "src/domains/learner/resources/resourcesData.ts",
+      "archivePath": "domains/learner/resources/resourcesData.ts",
+      "sha256": "a32c5cfc2ef47e848b958aac38942fa5a9a637d7e65c1cab4668ef7ce76cac1a",
+      "bytes": 14542,
+      "classification": "reusable_content",
+      "exports": [
+        "OCEAN_RESOURCES"
+      ],
+      "entityIds": [
+        "flashcard-green-turtle",
+        "flashcard-clownfish",
+        "flashcard-lanternfish",
+        "flashcard-anglerfish",
+        "flashcard-blue-whale",
+        "video-ocean-descent",
+        "video-bioluminescence",
+        "print-coloring-turtle",
+        "print-coloring-clownfish",
+        "print-worksheet-depth-matching",
+        "print-worksheet-current-maze"
+      ],
+      "notes": "Core marine educational resources migrated to DB resources table."
+    },
+    {
+      "sourcePath": "src/domains/learner/resources/ResourcesLibraryPage.tsx",
+      "archivePath": "domains/learner/resources/ResourcesLibraryPage.tsx",
+      "sha256": "9df2a24ecae1c50df497313583e51c84301f682f7a00b5a036259dfd79f34f23",
+      "bytes": 80883,
+      "classification": "reusable_content",
+      "exports": [
+        "ResourcesLibraryPage"
+      ],
+      "entityIds": [
+        "turtle",
+        "seagrass",
+        "coral-audio",
+        "octopus-coloring",
+        "mangrove-poster",
+        "whale-shark-video"
+      ],
+      "notes": "Inline canonicalCatalogCards merged with OCEAN_RESOURCES into unified DB resource catalog."
+    },
+    {
+      "sourcePath": "src/domains/learner/game-lab/GameLabPage.tsx",
+      "archivePath": "domains/learner/game-lab/GameLabPage.tsx",
+      "sha256": "2bbfeec50953a28345b25076a26b20117ceccc5748ae4da1131f4162cb90013d",
+      "bytes": 27344,
+      "classification": "reusable_content",
+      "exports": [
+        "GameLabPage"
+      ],
+      "entityIds": [
+        "recognize",
+        "understand",
+        "apply",
+        "shells",
+        "sort-species",
+        "fish-lifecycle",
+        "build-reef"
+      ],
+      "notes": "Inline bloomCards retired as separate cards (kept as 3 steps inside habitat game); inline activities migrated to DB activities."
+    },
+    {
+      "sourcePath": "src/domains/learner/game-lab/habitatTypes.ts",
+      "archivePath": "domains/learner/game-lab/habitatTypes.ts",
+      "sha256": "fa9e5b98729b4d1560ed59defdfa70d2e02a546e58d3cc626e8f871d999a99fc",
+      "bytes": 12976,
+      "classification": "reusable_content",
+      "exports": [
+        "HABITAT_ASSET_PALETTE",
+        "DEFAULT_HABITAT_ITEMS",
+        "HABITAT_SCENE_PRESETS"
+      ],
+      "entityIds": [
+        "sand-dune",
+        "sand-shell-patch",
+        "rock-large",
+        "rock-small",
+        "rock-cluster",
+        "rock-flat",
+        "seagrass-short",
+        "seagrass-tall",
+        "seagrass-cluster",
+        "seagrass-spread",
+        "rock-algae",
+        "seagrass-broad",
+        "seagrass-curly",
+        "turtle-green",
+        "clownfish",
+        "sea-anemone",
+        "coral-branch"
+      ],
+      "notes": "3D habitat builder palette and scene presets migrated to creative_materials and creative_templates."
+    },
+    {
+      "sourcePath": "src/domains/learner/atlas/Ocean3DExplorePage.tsx",
+      "archivePath": "domains/learner/atlas/Ocean3DExplorePage.tsx",
+      "sha256": "85566d664f37ffadd23f4b9d7e71ae57b2b45173620651f8455ae4944d64412b",
+      "bytes": 11882,
+      "classification": "reusable_content",
+      "exports": [
+        "Ocean3DExplorePage"
+      ],
+      "entityIds": [
+        "turtle"
+      ],
+      "notes": "Inline CREATURES_DATA migrated to models_3d table."
+    },
+    {
+      "sourcePath": "src/domains/learner/simulations/SimulationsCatalogPage.tsx",
+      "archivePath": "domains/learner/simulations/SimulationsCatalogPage.tsx",
+      "sha256": "81528b634020a660a233600341fe1deba7deef3e7ae549d3811632d2e52966cb",
+      "bytes": 20680,
+      "classification": "reusable_content",
+      "exports": [
+        "SimulationsCatalogPage"
+      ],
+      "entityIds": [
+        "habitat-choice",
+        "waste-track",
+        "barrier-solution",
+        "mangrove-restore"
+      ],
+      "notes": "Inline simulation cards migrated into unified interactive catalog."
+    },
+    {
+      "sourcePath": "src/domains/teacher/resources/TeacherResourceLibraryPage.tsx",
+      "archivePath": "domains/teacher/resources/TeacherResourceLibraryPage.tsx",
+      "sha256": "8be998b1770ab1ac72b89e287875f1a0e0f564bdb7942bdf141ff06f44f34d5c",
+      "bytes": 43601,
+      "classification": "reusable_content",
+      "exports": [
+        "SAMPLE_RESOURCES",
+        "TeacherResourceLibraryPage"
+      ],
+      "entityIds": [
+        "find-habitat",
+        "marine-creatures-habitat",
+        "coral-ecosystem",
+        "ocean-environments",
+        "coastal-vietnam"
+      ],
+      "notes": "Inline teacher sample resources normalized into shared resource/activity catalog."
+    },
+    {
+      "sourcePath": "src/domains/teacher/dashboard/TeacherDashboardPage.tsx",
+      "archivePath": "domains/teacher/dashboard/TeacherDashboardPage.tsx",
+      "sha256": "03046236cdd3ec6a39a921ac662850a1b1347c702a0ba4e92eb041f8e1ff70da",
+      "bytes": 17716,
+      "classification": "fake_learning_results",
+      "exports": [
+        "TeacherDashboardPage"
+      ],
+      "entityIds": [
+        "res-1",
+        "res-2",
+        "res-3",
+        "res-4"
+      ],
+      "notes": "Hardcoded class KPIs (24 học sinh, 5-step lesson progress) retired per M07 spec."
+    },
+    {
+      "sourcePath": "src/domains/teacher/session-results/TeacherSessionResultsPage.tsx",
+      "archivePath": "domains/teacher/session-results/TeacherSessionResultsPage.tsx",
+      "sha256": "959002cef5b09ce43dcb481a0b8f394f87fde6c8d3e78a9ff8d8c96bbc30b48c",
+      "bytes": 39999,
+      "classification": "fake_learning_results",
+      "exports": [
+        "CLASS_SESSION_STUDENTS",
+        "TeacherSessionResultsPage"
+      ],
+      "entityIds": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24"
+      ],
+      "notes": "Fake engagement percentages (98%, 95%) and fixed 24-student roster archived and excluded from production."
+    },
+    {
+      "sourcePath": "src/domains/learner/profile/LearnerProfilePage.tsx",
+      "archivePath": "domains/learner/profile/LearnerProfilePage.tsx",
+      "sha256": "41a7148d907efe3c6a68a72dfa46ffab16c492af252538767cfc81999827a136",
+      "bytes": 43357,
+      "classification": "fake_learning_results",
+      "exports": [
+        "LearnerProfilePage"
+      ],
+      "entityIds": [
+        "badge-ocean-explorer",
+        "badge-turtle-friend",
+        "badge-reef-guardian",
+        "badge-rescue-hero",
+        "badge-young-artist"
+      ],
+      "notes": "Fake station badges and hardcoded fallback crayon drawing retired in favor of honest device-scoped profile."
+    },
+    {
+      "sourcePath": "src/shared/realtime/demoStore.ts",
+      "archivePath": "shared/realtime/demoStore.ts",
+      "sha256": "20270e0d3427ca97663726fdf2bfbe05ce38c13847940c83b6f5a5bb1eac6cfd",
+      "bytes": 8734,
+      "classification": "fake_learning_results",
+      "exports": [
+        "demoStore",
+        "getDefaultVariantState",
+        "getDefaultProfile",
+        "getDefaultProgress",
+        "getDefaultPreferences"
+      ],
+      "entityIds": [
+        "teacher-demo",
+        "student-elena",
+        "asset-specimen-lanternfish"
+      ],
+      "notes": "Client-side fake progress and teacher auth bypass archived."
+    }
+  ]
+}

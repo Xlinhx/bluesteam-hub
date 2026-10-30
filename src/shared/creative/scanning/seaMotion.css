@@ -1,0 +1,10 @@
+.creative-water-stage{position:relative;isolation:isolate;overflow:hidden}
+.creative-water-stage>.creative-water-backdrop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:-1}
+.creative-water-stage .scan-creature{margin:0;animation-timing-function:cubic-bezier(.4,0,.2,1);animation-iteration-count:infinite;animation-direction:alternate;will-change:transform}
+.creative-water-stage .scan-creature>img{display:block;width:100%;height:calc(100% - 18px);object-fit:contain}
+.creative-water-stage .scan-creature>figcaption{height:18px;line-height:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;text-align:center}
+.creative-water-stage[data-paused=true] .scan-creature{animation-play-state:paused;will-change:auto}
+@keyframes creative-sea-swim{from{transform:translate(0,0)}to{transform:translate(var(--sea-drift-x),var(--sea-drift-y))}}
+@keyframes creative-sea-float{from{transform:translate(0,0)}to{transform:translate(calc(var(--sea-drift-x)*.3),calc(var(--sea-drift-y)*-1))}}
+@keyframes creative-sea-floor{from{transform:translate(0,0)}to{transform:translate(var(--sea-drift-x),0)}}
+@media(prefers-reduced-motion:reduce){.creative-water-stage .scan-creature{animation:none!important;will-change:auto}}

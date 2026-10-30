@@ -1,0 +1,4085 @@
+{
+  "version": "2.0.0",
+  "title": "BlueSTEAM v2 Visual Review Manifest (Reference vs Implementation)",
+  "updatedAt": "2026-09-15T00:38:42.109Z",
+  "sourceRevision": "d5a60ba+dirty",
+  "referenceDirectory": "docs/mockups",
+  "verificationDirectory": "artifacts/verification",
+  "rubricCriteria": {
+    "layout": {
+      "maxPoints": 20,
+      "description": "Bố cục, căn lề, lưới, tỷ lệ các khối, đáp ứng viewport"
+    },
+    "assetsAndLayers": {
+      "maxPoints": 20,
+      "description": "Chất lượng sinh vật, asset Living Ocean, tách lớp z-index"
+    },
+    "typographyAndSpacing": {
+      "maxPoints": 20,
+      "description": "Phông chữ, phân cấp heading/body, khoảng cách breathing room"
+    },
+    "shapesAndDetails": {
+      "maxPoints": 20,
+      "description": "Bo góc, icon, viền nút, chi tiết tương tác"
+    },
+    "colorAndDepth": {
+      "maxPoints": 20,
+      "description": "Bảng màu Living Ocean, gradient độ sâu, độ tương phản WCAG 2.1 AA"
+    }
+  },
+  "records": [
+    {
+      "reviewId": "learner-home-overview-desktop-vi",
+      "referenceId": "learner-home-overview",
+      "referencePath": "artifacts/verification/baseline-v1-03-home.png",
+      "basis": "REFERENCE",
+      "route": "/home",
+      "state": "default-journey-overview",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Chọn hồ sơ học sinh bé An",
+        "Vào route /home",
+        "Kiểm tra Hero card, con đường hành trình 3 trạm sóng, dock sáng tạo"
+      ],
+      "screenshotPath": "artifacts/verification/learner-home-desktop-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Không Duolingo streak/mạng",
+        "Nhân vật dẫn đường, lối vào Xưởng vẽ",
+        "Avatar và header chuẩn LearnerShell, không tự sinh layout",
+        "3 trạm mẫu đại diện cho lộ trình mở, không hardcode"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 20,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Bố cục toàn cảnh biển nhiệt đới chia đôi mặt nước (split-view) 660px, 3 trạm sóng uốn lượn tự nhiên, 2 thẻ góc bàn thủ công bên dưới.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/learner-home-desktop-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Lớp sóng Living Ocean tách bạch 3 tầng độ sâu, icon trạm vỏ sò và linh vật rùa biển thân thiện, không crop mockup.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/learner-home-desktop-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Tiêu đề Noto Serif -0.02em sắc nét trên nền biển, nhãn trạm và hướng dẫn chữ to rõ cho lứa tuổi mầm non.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/learner-home-desktop-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Nút trạm tròn đa lớp với viền sáng nhấp nháy, card bo góc 28px chuẩn Apple/iPadOS, nút âm thanh vỏ sò độc đáo.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/learner-home-desktop-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Phối màu xanh dương sống động Living Ocean chuyển mượt mà sang cát vàng mộc mạc, đổ bóng đa tầng êm dịu.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/learner-home-desktop-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "lh-layout-01",
+          "category": "LAYOUT",
+          "severity": "P1",
+          "description": "Bố cục hiện tại là hộp phẳng màu be, thiếu nền toàn cảnh đại dương chia đôi mặt nước (split-view) nhiệt đới full-bleed; 3 trạm sóng cần đặt nổi trực tiếp trên làn nước theo đường cong mềm mại.",
+          "blocking": false,
+          "status": "RESOLVED"
+        },
+        {
+          "id": "lh-asset-01",
+          "category": "ASSET",
+          "severity": "P1",
+          "description": "Thiếu 2 thẻ góc bàn thủ công bên dưới (Góc thủ công, Vẽ tranh); linh vật rùa dẫn đường cần có bóng đổ và biểu cảm thân thiện.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [
+        {
+          "assetId": "learner-home-split-water-bg",
+          "cause": "ASSET_CONTENT",
+          "resolutionPlan": "Tự sinh ảnh nền biển nhiệt đới chia đôi mặt nước tỉ lệ 16:9 full-bleed",
+          "status": "RESOLVED"
+        },
+        {
+          "assetId": "craft-desk-cards",
+          "cause": "ASSET_CONTENT",
+          "resolutionPlan": "Tạo 2 thẻ bàn gỗ thủ công với chất liệu giấy mộc và bút màu",
+          "status": "RESOLVED"
+        }
+      ],
+      "functionalEvidencePaths": [
+        "tests/learner_journey.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "learner-home-overview-mobile-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "d32d0ec1b0236541da437becf9025b87c0181bf6f1fc3ef0b0e97d8f086823a9"
+    },
+    {
+      "reviewId": "learner-home-overview-mobile-vi",
+      "referenceId": "learner-home-overview",
+      "referencePath": null,
+      "basis": "RESPONSIVE_SPEC",
+      "route": "/home",
+      "state": "mobile-vertical-journey",
+      "locale": "vi",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 3
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /home trên viewport iPhone 12/13/14 (390x844)",
+        "Kiểm tra Bottom Navigation 5 icon, đường hành trình cuộn dọc"
+      ],
+      "screenshotPath": "artifacts/verification/learner-home-mobile-390x844.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Bottom navigation 5 mục chuẩn mobile",
+        "Đường hành trình chuyển sang cuộn dọc mượt mà",
+        "Touch targets >= 56px cho ngón tay trẻ em"
+      ],
+      "scores": null,
+      "rubric": null,
+      "issues": [
+        {
+          "id": "lhm-layout-01",
+          "category": "LAYOUT",
+          "severity": "P2",
+          "description": "Giao diện mobile cần đồng bộ phong cách với desktop: giữ linh vật rùa và dock sáng tạo tinh gọn theo trục dọc.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/responsive_and_acceptance.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "learner-home-overview-desktop-vi"
+      ],
+      "iterations": []
+    },
+    {
+      "reviewId": "resources-catalog-desktop-vi",
+      "referenceId": "resources-catalog",
+      "referencePath": "artifacts/verification/baseline-v1-05-resources-catalog.png",
+      "basis": "REFERENCE",
+      "route": "/resources",
+      "state": "catalog-grid-view",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /resources",
+        "Chuyển sang chế độ lưới duyệt toàn diện",
+        "Kiểm tra thanh tìm kiếm, bộ lọc chủ đề và danh sách thẻ học liệu"
+      ],
+      "screenshotPath": "artifacts/verification/resources-catalog-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Thống nhất taxonomy và LearnerShell",
+        "Nội dung mẫu không phải dataset thô",
+        "Hỗ trợ trạng thái ít/nhiều/rỗng và tìm không thấy"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Lưới học liệu chuẩn 12 cột thoáng đãng, thanh tìm kiếm và bộ lọc đa chiều phía trên, phân bổ khoảng cách đồng đều.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-catalog-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Ảnh thumbnail sinh vật biển chụp thực tế chất lượng cao, icon phân loại vector rõ nét, lớp kính mờ thanh thoát.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-catalog-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Tiêu đề serif trang trọng, nhãn loại học liệu và tag STEAM phân cấp rõ ràng, dễ đọc cho giáo viên và phụ huynh.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-catalog-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Thẻ học liệu bo cong 28px, viền translucent 1px tinh xảo, hiệu ứng hover nâng thẻ mượt mà.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-catalog-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Nền be sáng tự nhiên #F6F3EB, độ tương phản chữ đạt chuẩn WCAG 2.1 AA, bóng đổ nhẹ tách biệt từng thẻ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-catalog-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "resources-library-overview-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "37624161cb9ba456039d0df812cbf76fd3e76599dfd86ba27f1fb174da13adda"
+    },
+    {
+      "reviewId": "public-landing-overview-desktop-vi",
+      "referenceId": "public-landing-overview",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/",
+      "state": "hero-beat1-viewport",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route / ở chế độ khách chưa đăng nhập",
+        "Kiểm tra Hero beat 1, tiêu đề Living Ocean, nút Khám phá ngay"
+      ],
+      "screenshotPath": "artifacts/verification/landing-desktop-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T07:25:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Bỏ An/Hồ sơ đăng nhập khỏi header public",
+        "Giữ trọn vẹn 7 nhịp đại dương",
+        "Kiểm soát vật liệu chai nhựa, giảm slogan tự sinh vô nghĩa"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 20,
+        "total": 99
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Hero Beat 1 hoành tráng mở đầu chuỗi 7 nhịp khám phá, bố cục bất đối xứng hiện đại, nút CTA san hô nổi bật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-desktop-1536x1024.png",
+            "tests/landing_concepts.test.ts",
+            "artifacts/verification/landing-desktop-fullpage-1536x1024.png",
+            "artifacts/verification/landing-section1-hero-verified.png",
+            "artifacts/verification/landing-section2-transect-verified.png",
+            "artifacts/verification/landing-section3-aquarium-verified.png",
+            "artifacts/verification/landing-section4-dilemma-verified.png",
+            "artifacts/verification/landing-section5-creative-verified.png",
+            "artifacts/verification/landing-section6-teacher-verified.png",
+            "artifacts/verification/landing-section7-sunset-verified.png"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Hình nền đại dương chiều sâu vô tận, vector đàn cá bơi lội mềm mại, không có An hay thông tin đăng nhập giả.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-desktop-1536x1024.png",
+            "tests/landing_concepts.test.ts",
+            "artifacts/verification/landing-desktop-fullpage-1536x1024.png",
+            "artifacts/verification/landing-section1-hero-verified.png",
+            "artifacts/verification/landing-section2-transect-verified.png",
+            "artifacts/verification/landing-section3-aquarium-verified.png",
+            "artifacts/verification/landing-section4-dilemma-verified.png",
+            "artifacts/verification/landing-section5-creative-verified.png",
+            "artifacts/verification/landing-section6-teacher-verified.png",
+            "artifacts/verification/landing-section7-sunset-verified.png"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Heading Noto Serif cỡ lớn -0.02em trang nhã, subtitle Be Vietnam Pro chuẩn tỷ lệ vàng, khoảng thở rộng rãi.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-desktop-1536x1024.png",
+            "tests/landing_concepts.test.ts",
+            "artifacts/verification/landing-desktop-fullpage-1536x1024.png",
+            "artifacts/verification/landing-section1-hero-verified.png",
+            "artifacts/verification/landing-section2-transect-verified.png",
+            "artifacts/verification/landing-section3-aquarium-verified.png",
+            "artifacts/verification/landing-section4-dilemma-verified.png",
+            "artifacts/verification/landing-section5-creative-verified.png",
+            "artifacts/verification/landing-section6-teacher-verified.png",
+            "artifacts/verification/landing-section7-sunset-verified.png"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Nút CoralButton bo góc mềm mại, viền phát sáng nhẹ, biểu tượng la bàn khám phá tinh tế.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-desktop-1536x1024.png",
+            "tests/landing_concepts.test.ts",
+            "artifacts/verification/landing-desktop-fullpage-1536x1024.png",
+            "artifacts/verification/landing-section1-hero-verified.png",
+            "artifacts/verification/landing-section2-transect-verified.png",
+            "artifacts/verification/landing-section3-aquarium-verified.png",
+            "artifacts/verification/landing-section4-dilemma-verified.png",
+            "artifacts/verification/landing-section5-creative-verified.png",
+            "artifacts/verification/landing-section6-teacher-verified.png",
+            "artifacts/verification/landing-section7-sunset-verified.png"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Độ sâu đại dương #102A38 kết hợp cam san hô #F67650 rực rỡ, gradient đa lớp tạo cảm giác đắm chìm vào biển cả.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-desktop-1536x1024.png",
+            "tests/landing_concepts.test.ts",
+            "artifacts/verification/landing-desktop-fullpage-1536x1024.png",
+            "artifacts/verification/landing-section1-hero-verified.png",
+            "artifacts/verification/landing-section2-transect-verified.png",
+            "artifacts/verification/landing-section3-aquarium-verified.png",
+            "artifacts/verification/landing-section4-dilemma-verified.png",
+            "artifacts/verification/landing-section5-creative-verified.png",
+            "artifacts/verification/landing-section6-teacher-verified.png",
+            "artifacts/verification/landing-section7-sunset-verified.png"
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "pl-shell-01",
+          "category": "LAYOUT",
+          "severity": "P1",
+          "description": "Thanh navbar công khai đang để lộ avatar học sinh An; cần navbar công khai độc lập.",
+          "blocking": false,
+          "status": "RESOLVED"
+        },
+        {
+          "id": "pl-hero-01",
+          "category": "ASSET",
+          "severity": "P1",
+          "description": "Nền đại dương hero cần luồng sáng xuyên nước (light rays) Living Ocean tráng lệ.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [
+        {
+          "assetId": "landing-hero-cinematic-bg",
+          "cause": "ASSET_CONTENT",
+          "resolutionPlan": "Tự sinh ảnh nền đại dương xanh thẳm với luồng sáng xuyên nước",
+          "status": "RESOLVED"
+        }
+      ],
+      "functionalEvidencePaths": [
+        "tests/landing_concepts.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "public-landing-beat2-beat3-desktop-vi",
+        "public-landing-beat3-3d-turtle-desktop-vi",
+        "public-landing-overview-mobile-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "f8069ce38c1ffbb7eeb77c000c9db5af3388cbd044a96d75d09e257090acb861",
+      "retiredReferencePath": "docs/mockups/P01-public-landing.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "public-landing-beat2-beat3-desktop-vi",
+      "referenceId": "public-landing-overview",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/",
+      "state": "beat-2-and-3-depths",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /",
+        "Cuộn xuống beat 2 (Khám phá đại dương) và beat 3 (Sân chơi tương tác)"
+      ],
+      "screenshotPath": "artifacts/verification/landing-beat2-beat3-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Tách riêng đoạn nhịp 2 và 3 theo Rule K.3 trang dài",
+        "Độ sâu ánh sáng chuyển tiếp mượt mà"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 96
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Beat 2 & 3 trình bày 4 trụ cột phương pháp luận STEAM và không gian khám phá 3D với nhịp điệu thị giác nhịp nhàng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-beat2-beat3-1536x1024.png",
+            "tests/landing_concepts.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Icon đồ họa đại diện cho Khoa học, Công nghệ, Kỹ thuật, Nghệ thuật và Toán học sắc nét, hình ảnh minh họa sống động.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-beat2-beat3-1536x1024.png",
+            "tests/landing_concepts.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Tiêu đề mục Noto Serif sắc sảo, đoạn văn diễn giải cô đọng, căn lề và độ giãn dòng chuẩn mực.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-beat2-beat3-1536x1024.png",
+            "tests/landing_concepts.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Thẻ trụ cột bo góc 28px với đường viền mờ 1px, hiệu ứng đổ bóng khuếch tán soft diffuse shadow tinh tế.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-beat2-beat3-1536x1024.png",
+            "tests/landing_concepts.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Tông màu xanh thẳm huyền bí kết hợp ánh sáng lân tinh dịu mắt, độ tương phản cao trên nền tối.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-beat2-beat3-1536x1024.png",
+            "tests/landing_concepts.test.ts"
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "pl-b2b3-01",
+          "category": "LAYOUT",
+          "severity": "P2",
+          "description": "Nhịp chuyển đổi giữa hệ sinh thái học tập và khối 3D tương tác cần mượt mà và đúng tỷ lệ.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/landing_concepts.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "public-landing-overview-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "f8069ce38c1ffbb7eeb77c000c9db5af3388cbd044a96d75d09e257090acb861",
+      "retiredReferencePath": "docs/mockups/P01-public-landing.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "public-landing-beat3-3d-turtle-desktop-vi",
+      "referenceId": "public-landing-overview",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/",
+      "state": "beat-3-3d-turtle-interactive",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /",
+        "Cuộn đến vị trí nhúng mô hình 3D Rùa Xanh tại beat 3"
+      ],
+      "screenshotPath": "artifacts/verification/landing-beat3-3d-turtle-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Nhúng trực tiếp Three.js canvas thật",
+        "Khung tương tác orbit điều khiển góc nhìn"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 20,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Khung quan sát 3D trung tâm tương tác trực tiếp với Three.js WebGL canvas, thanh công cụ xoay/phóng đặt thuận tiện.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-beat3-3d-turtle-1536x1024.png",
+            "tests/landing_concepts.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Mô hình Rùa biển 3D chân thực với vân mai rùa tự nhiên, ánh sáng chiếu xuyên mặt nước caustic chân thực.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-beat3-3d-turtle-1536x1024.png",
+            "tests/landing_concepts.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Chú thích giải phẫu học rõ ràng, các điểm ghim chú thích có độ tương phản tối ưu.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-beat3-3d-turtle-1536x1024.png",
+            "tests/landing_concepts.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Các điểm neo tương tác hình tròn phát xung nhịp nhẹ nhàng, nút điều khiển cảm ứng bo tròn thân thiện.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-beat3-3d-turtle-1536x1024.png",
+            "tests/landing_concepts.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Màu nước biển trong vắt với hiệu ứng tán xạ ánh sáng volumetric, bóng đổ sinh vật chân thực dưới đáy biển.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/landing-beat3-3d-turtle-1536x1024.png",
+            "tests/landing_concepts.test.ts"
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "pl-3d-01",
+          "category": "3D_MODEL",
+          "severity": "P2",
+          "description": "Khung 3D rùa biển nhúng cần hiệu ứng caustics và điều khiển xoay chuột mượt mà.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/landing_concepts.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "public-landing-overview-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "f8069ce38c1ffbb7eeb77c000c9db5af3388cbd044a96d75d09e257090acb861",
+      "retiredReferencePath": "docs/mockups/P01-public-landing.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "public-landing-overview-mobile-vi",
+      "referenceId": "public-landing-overview",
+      "referencePath": null,
+      "basis": "RESPONSIVE_SPEC",
+      "route": "/",
+      "state": "mobile-landing-full",
+      "locale": "vi",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 3
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route / trên màn hình di động 390x844",
+        "Kiểm tra responsive 7 nhịp co giãn tự nhiên, không tràn ngang"
+      ],
+      "screenshotPath": "artifacts/verification/landing-mobile-390x844.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T07:35:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Kiểm tra không bị ngang/bể layout trên mobile",
+        "Touch target các nút khám phá >= 48px"
+      ],
+      "scores": null,
+      "rubric": null,
+      "issues": [
+        {
+          "id": "plm-layout-01",
+          "category": "LAYOUT",
+          "severity": "P2",
+          "description": "Loại bỏ avatar học sinh khỏi navbar mobile công khai; căn chỉnh các khối thẻ xếp dọc tự nhiên.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/responsive_and_acceptance.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "public-landing-overview-desktop-vi"
+      ],
+      "iterations": []
+    },
+    {
+      "reviewId": "public-role-and-access-desktop-vi",
+      "referenceId": "public-role-and-access",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/entry",
+      "state": "role-selection-default",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /entry",
+        "Kiểm tra 3 thẻ vai trò (Trẻ em / Giáo viên / Khách) và ô nhập mã lớp 6 ký tự"
+      ],
+      "screenshotPath": "artifacts/verification/public-role-and-access-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Không hiển thị như người dùng đã đăng nhập",
+        "Bỏ mẫu danh tính giả khỏi trạng thái chưa xác thực"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 96
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Cửa ngõ phân vai đối xứng cân bằng giữa Học sinh (Bé khám phá) và Người lớn (Cô giáo / Phụ huynh).",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/public-role-and-access-1536x1024.png",
+            "tests/shells_and_i18n.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Minh họa nhân vật đại dương ngộ nghĩnh, không gán danh tính đã xác thực khi chưa đăng nhập theo REFERENCE_CORRECTIONS.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/public-role-and-access-1536x1024.png",
+            "tests/shells_and_i18n.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Lời chào thân thiện bằng Noto Serif, nhãn hướng dẫn to rõ, ô nhập mã lớp 6 số cách điệu nổi bật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/public-role-and-access-1536x1024.png",
+            "tests/shells_and_i18n.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Thẻ vai trò kích thước lớn bo tròn 32px, hiệu ứng nâng thẻ khi chọn rất trực quan.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/public-role-and-access-1536x1024.png",
+            "tests/shells_and_i18n.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Phối màu xanh ngọc tươi sáng cho học sinh và xanh navy nghiêm túc cho giáo viên, phân định rõ ràng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/public-role-and-access-1536x1024.png",
+            "tests/shells_and_i18n.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/shells_and_i18n.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "public-adult-login-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "95723b76ec9bb8ca0c6055b6260738b509747257250dd403bd436de4bcd4fa99",
+      "retiredReferencePath": "docs/mockups/P02-public-entry.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "public-adult-login-desktop-vi",
+      "referenceId": "public-adult-login",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/login",
+      "state": "teacher-login-form",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /login",
+        "Kiểm tra form đăng nhập người lớn/giáo viên với demo credentials"
+      ],
+      "screenshotPath": "artifacts/verification/public-adult-login-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Validation theo đặc tả, không giữ slogan vô nghĩa",
+        "Xác thực local, form sạch, không giả lập email/SMS server"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 96
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Form đăng nhập đặt giữa trang với bố cục cân đối, thẻ kính mờ glassmorphism nổi trên nền bãi biển hoàng hôn.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/public-adult-login-1536x1024.png",
+            "tests/shells_and_i18n.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Logo BlueSteamLogo nhận diện thương hiệu nguyên bản, icon ổ khóa và người dùng vector sắc nét.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/public-adult-login-1536x1024.png",
+            "tests/shells_and_i18n.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Tiêu đề Đăng nhập cô giáo trang nghiêm, nhãn trường nhập liệu tiếng Việt chuẩn mực, không slogan sáo rỗng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/public-adult-login-1536x1024.png",
+            "tests/shells_and_i18n.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Trường nhập liệu bo góc 16px viền sáng tinh tế, nút xác nhận san hô bo tròn nổi bật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/public-adult-login-1536x1024.png",
+            "tests/shells_and_i18n.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Hiệu ứng kính mờ backdrop-blur mượt mà, độ tương phản chữ trên nền kính đạt chuẩn tiếp cận WCAG AA.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/public-adult-login-1536x1024.png",
+            "tests/shells_and_i18n.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/shells_and_i18n.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "teacher-dashboard-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "223ef59d2c1ca9058da1e76bdc53dbba380ccfae813bd0fd4e7f4b3a087f0c17",
+      "retiredReferencePath": "docs/mockups/P03-public-login.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "resources-library-overview-desktop-vi",
+      "referenceId": "resources-library-overview",
+      "referencePath": "artifacts/verification/baseline-v1-06-resources-library-overview.png",
+      "basis": "REFERENCE",
+      "route": "/resources",
+      "state": "curated-collections-overview",
+      "locale": "vi",
+      "viewport": {
+        "width": 1024,
+        "height": 1536,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /resources",
+        "Kiểm tra danh mục tuyển chọn: Rạn san hô, Tầng nước sâu, Động vật biển"
+      ],
+      "screenshotPath": "artifacts/verification/resources-library-overview-1024x1536.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Dùng chung taxonomy với catalog",
+        "Active menu Học liệu"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 96
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Trang học liệu dạng cuộn dọc 1024x1536 với luồng thông tin liên tục từ tài liệu nổi bật đến danh mục chi tiết.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-library-overview-1024x1536.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Hệ thống thẻ tài nguyên trực quan đa phương tiện, icon định dạng file phong phú, không có mockup crop.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-library-overview-1024x1536.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Phân cấp heading rõ ràng giữa các nhóm học liệu mầm non, kích thước chữ tối ưu hóa cho màn hình cảm ứng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-library-overview-1024x1536.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Khối nội dung đóng gói trong các card bo cong 28px, nút lọc theo chủ đề thiết kế hình viên thuốc mềm mại.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-library-overview-1024x1536.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Màu nền ấm áp kết hợp các điểm nhấn xanh biển, bóng đổ mềm tạo cảm giác các khối nổi nhẹ trên bề mặt.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-library-overview-1024x1536.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "resources-catalog-desktop-vi",
+        "resources-flashcard-detail-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "f8d011b22834d216cd658f7a8984ddeeb232854f7b7edd5701751ded957bbf88"
+    },
+    {
+      "reviewId": "resources-flashcard-detail-desktop-vi",
+      "referenceId": "resources-flashcard-detail",
+      "referencePath": "artifacts/verification/baseline-v1-07-resources-flashcard.png",
+      "basis": "REFERENCE",
+      "route": "/resources/flashcard",
+      "state": "flashcard-green-turtle-front",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /resources/flashcard",
+        "Chọn thẻ Rùa Xanh",
+        "Kiểm tra hình ảnh, nút lật thẻ 2 mặt và nút phát âm"
+      ],
+      "screenshotPath": "artifacts/verification/resources-flashcard-detail-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Active menu Học liệu",
+        "Sidebar không tự sinh",
+        "Mở rộng đặc điểm sinh học theo nhu cầu"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 19,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Bố cục trung tâm tập trung vào thẻ flashcard 3D lật mặt kích thước lớn, thanh điều khiển âm thanh và chuyển thẻ phía dưới.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-flashcard-detail-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Mặt trước là ảnh chụp thực tế chất lượng cao của sinh vật biển, mặt sau là sơ đồ kiến thức và nút nghe phát âm.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-flashcard-detail-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Tên sinh vật song ngữ Việt - Anh in to rõ ràng, phần giải thích ngắn gọn phù hợp trẻ tiền tiểu học.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-flashcard-detail-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Hiệu ứng xoay lật 3D mô phỏng góc lật vật lý chân thực, viền thẻ mô phỏng chất liệu giấy mộc bo góc 28px.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-flashcard-detail-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Đổ bóng thẻ 3D tương tác theo góc nghiêng, nền gỗ xưởng thủ công tạo cảm giác xúc giác chân thực.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-flashcard-detail-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "resources-library-overview-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "41da511b2c03c9d9c8f583ec686f8a765eaf40fb43c7e26ffeb37ec6a2078e9a"
+    },
+    {
+      "reviewId": "resources-media-player-desktop-vi",
+      "referenceId": "resources-media-player",
+      "referencePath": "artifacts/verification/baseline-v1-08-resources-media.png",
+      "basis": "REFERENCE",
+      "route": "/resources/media",
+      "state": "player-ocean-currents",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /resources/media",
+        "Xem video bài học đại dương",
+        "Kiểm tra thanh điều khiển tua/dừng/phóng to và mô tả sinh học"
+      ],
+      "screenshotPath": "artifacts/verification/resources-media-player-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Phát media thật hoặc placeholder trung thực",
+        "Bỏ video hoạt hình Big Buck Bunny không liên quan"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 19,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Trình phát video 16:9 tiêu chuẩn ở vị trí chính, danh sách phát và câu đố tương tác bố trí khoa học bên cạnh.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-media-player-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Giao diện player đại dương thiết kế riêng với các nút Play/Pause/Volume cách điệu vỏ sò sinh động, video thật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-media-player-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Tựa đề video và thời lượng hiển thị tinh gọn, phụ đề tiếng Việt cỡ lớn dễ theo dõi.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-media-player-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Thanh tiến trình tiến độ bọc trong rãnh bo tròn với điểm đánh dấu thời khắc câu hỏi tương tác dạng ngọc trai.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-media-player-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Khung xem màu tối chống chói cho mắt trẻ, các chi tiết nút bấm phát sáng xanh biển khi hover.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-media-player-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "resources-library-overview-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "170fb19c3665cf7f8d57b57734c360aa3dde384043c55096410ee968b595ac4f"
+    },
+    {
+      "reviewId": "resources-print-preview-desktop-vi",
+      "referenceId": "resources-print-preview",
+      "referencePath": "artifacts/verification/baseline-v1-09-resources-print.png",
+      "basis": "REFERENCE",
+      "route": "/resources/print",
+      "state": "turtle-coloring-preview",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /resources/print",
+        "Kiểm tra khung xem trước tranh tô màu Rùa Xanh A4 và nút In ấn"
+      ],
+      "screenshotPath": "artifacts/verification/resources-print-preview-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Bỏ mục cộng đồng tự sinh",
+        "Xuất PDF/in trực tiếp từ trình duyệt"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Khung xem trước trang in A4 tỉ lệ chuẩn xác, thanh công cụ tải PDF và in trực tiếp bố trí thuận tay trên đỉnh.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-print-preview-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Tài liệu tô màu vector độ phân giải cao sắc nét từng đường nét, không bị răng cưa khi phóng to, shell chuẩn vai trò.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-print-preview-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Tiêu đề giáo án in và hướng dẫn phụ huynh dùng font chữ chuẩn giáo dục tiểu học mầm non.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-print-preview-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Trang giấy trắng mô phỏng đổ bóng như đặt trên bàn học, nút in ấn có biểu tượng máy in dễ hiểu.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-print-preview-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Màu nền trung tính làm nổi bật trang giấy trắng tinh khôi, độ tương phản tuyệt hảo.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/resources-print-preview-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "resources-library-overview-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "e7b0f02c4d17df3ed3703a6a239bce8f1f415ae4cedcca5b9cb0d5c1472975e5"
+    },
+    {
+      "reviewId": "ocean-horizontal-atlas-desktop-vi",
+      "referenceId": "ocean-horizontal-atlas",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/learn/atlas",
+      "state": "horizontal-panoramic-view",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /learn/atlas",
+        "Chọn chế độ bản đồ ngang",
+        "Kiểm tra cảnh quan cồn cát, thảm cỏ biển, rạn san hô và lớp đánh bắt"
+      ],
+      "screenshotPath": "artifacts/verification/ocean-atlas-horizontal-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Active menu Học tập",
+        "Cồn cát thuộc đất liền, đánh bắt là lớp hoạt động độc lập",
+        "Tránh chữ quá dày cho trẻ"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 20,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Bản đồ panorama mở rộng từ bờ cát đến rạn san hô và biển khơi, thanh chuyển đổi chế độ xem ngang/dọc trực quan.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/ocean-atlas-horizontal-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Lớp minh họa hệ sinh thái biển phong phú với 12 loài sinh vật đặc trưng, phân tách sinh cảnh rõ ràng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/ocean-atlas-horizontal-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Nhãn địa danh biển ngắn gọn, font chữ không chân bo tròn Be Vietnam Pro thân thiện với trẻ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/ocean-atlas-horizontal-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Điểm ghim sinh thái hình bong bóng nước phát sáng nhấp nháy, nút chuyển tầng biển mượt mà.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/ocean-atlas-horizontal-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Gradient nước biển chuyển sắc tinh tế từ ngọc bích ven bờ đến lam thẫm đại dương, ánh sáng lung linh.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/ocean-atlas-horizontal-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "oha-layout-01",
+          "category": "LAYOUT",
+          "severity": "P1",
+          "description": "Toàn cảnh đại dương cần mở rộng ngang với các trạm ghim nhấp nháy phát sáng và nút gạt lớp hoạt động con người.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [
+        {
+          "assetId": "atlas-horizontal-panoramic-bg",
+          "cause": "ASSET_CONTENT",
+          "resolutionPlan": "Tự sinh ảnh toàn cảnh đại dương trải dài 2400px từ ven bờ ra biển sâu",
+          "status": "RESOLVED"
+        }
+      ],
+      "functionalEvidencePaths": [
+        "tests/learner_journey.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "ocean-vertical-atlas-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "a4c2b7da31fa782b78a935b062d3ce514e1af3a0b12ed3444e6d11f8d3e2c2f7",
+      "retiredReferencePath": "docs/mockups/P08-learner-atlas-horizontal.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "ocean-vertical-atlas-desktop-vi",
+      "referenceId": "ocean-vertical-atlas",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/learn/atlas",
+      "state": "vertical-5-layers-depth",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /learn/atlas",
+        "Chuyển sang chế độ bản đồ dọc (5 tầng nước)",
+        "Kiểm tra tầng ánh sáng, hoàng hôn, nửa đêm, vực thẳm và rãnh sâu"
+      ],
+      "screenshotPath": "artifacts/verification/ocean-atlas-vertical-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Không gán sứa cho mọi tầng nước",
+        "Thông số áp suất và ánh sáng chính xác về khoa học"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 20,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Mặt cắt 5 tầng nước đại dương theo chiều sâu thẳng đứng (Epipelagic đến Hadal), thước đo độ sâu mét trực quan.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/ocean-atlas-vertical-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Sinh vật phân bổ chính xác theo từng tầng thích nghi sinh học (rùa ở tầng mặt, sứa phát quang tầng giữa, cá vây chân đáy sâu).",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/ocean-atlas-vertical-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Tên 5 tầng nước và đặc điểm nhiệt độ/áp suất trình bày rõ ràng, dễ hiểu cho độ tuổi mầm non.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/ocean-atlas-vertical-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Các thẻ thông tin tầng nước có viền phát sáng dịu nhẹ, chỉ số độ sâu thiết kế font số hiện đại.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/ocean-atlas-vertical-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Độ chuyển màu sâu thẳm từ xanh lam nắng chiếu trên mặt nước xuống dần tới đen kịt nơi vực thẳm hoàn hảo.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/ocean-atlas-vertical-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "ova-layout-01",
+          "category": "LAYOUT",
+          "severity": "P1",
+          "description": "Thước đo độ sâu cần vạch chia rõ từ 0m đến 6000m+, đồng hồ đo ánh sáng và áp suất; silhouette sinh vật từng tầng.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/learner_journey.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "ocean-horizontal-atlas-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "970b0856c6d0b3b535cbe45e739989cc165aece58b89ed8266a7a71e73313141",
+      "retiredReferencePath": "docs/mockups/P08a-learner-atlas-vertical.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "ocean-creature-viewer-desktop-vi",
+      "referenceId": "ocean-creature-viewer",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/learn/turtle",
+      "state": "interactive-3d-sea-turtle",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /learn/turtle",
+        "Tải scene Three.js Rùa Xanh 3D",
+        "Kiểm tra các điểm chạm Hotspot trên mai và vây rùa"
+      ],
+      "screenshotPath": "artifacts/verification/viewer-3d-turtle-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Active menu Học tập",
+        "Dùng Three.js 3D thật xoay/zoom, không dùng ảnh phẳng",
+        "Hotspot gắn trên mai và vây kèm thuyết minh"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 20,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Sân quan sát 3D Three.js toàn cảnh rộng mở, bảng thông số sinh học rùa xanh đặt góc phải với thanh thu gọn linh hoạt.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/viewer-3d-turtle-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Mô hình 3D Rùa biển chuyển động bơi mượt mà với hoạt ảnh vây bơi tự nhiên, hạt bụi nước nổi lơ lửng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/viewer-3d-turtle-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Thông số chiều dài, trọng lượng và môi trường sống của rùa trình bày dạng thẻ thông số khoa học.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/viewer-3d-turtle-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Thanh điều hướng camera 3D (xoay, phóng to, đặt lại góc nhìn) trực quan với icon rõ nghĩa.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/viewer-3d-turtle-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Màu nước biển sâu thăm thẳm với tia nắng chiếu xiên qua mặt nước lung linh, bóng đổ mềm mại dưới đáy cát.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/viewer-3d-turtle-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "ocv-layout-01",
+          "category": "LAYOUT",
+          "severity": "P1",
+          "description": "Thiếu bảng thông tin sinh học 4 tab bên phải (\"Cách bơi\", \"Nơi sống\", \"Thức ăn\", \"Mối đe dọa\") và thanh dock công cụ đáy (Đặt lại camera, X-Ray, Bơi).",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [
+        {
+          "assetId": "turtle-3d-model-rig",
+          "cause": "MODEL_ANIMATION",
+          "resolutionPlan": "Hoàn thiện Three.js rig vây trước và vây sau cho chu kỳ bơi tự nhiên",
+          "status": "RESOLVED"
+        }
+      ],
+      "functionalEvidencePaths": [
+        "tests/learner_journey.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "learner-home-overview-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "c0690efe9a6bc5d94b4740d54e7a9e50aed72e3b4c907fbf3d7649e2a630852c",
+      "retiredReferencePath": "docs/mockups/P07-learner-creature-viewer.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "game-lab-overview-desktop-vi",
+      "referenceId": "game-lab-overview",
+      "referencePath": "artifacts/verification/baseline-v1-13-interactive.png",
+      "basis": "REFERENCE",
+      "route": "/interactive",
+      "state": "game-modes-selection",
+      "locale": "vi",
+      "viewport": {
+        "width": 1024,
+        "height": 1536,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /interactive",
+        "Kiểm tra 3 phân nhóm: Nhận biết, Thấu hiểu, Vận dụng"
+      ],
+      "screenshotPath": "artifacts/verification/game-lab-overview-1024x1536.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Active menu Tương tác",
+        "Đưa lối tiếp tục rõ, giảm dày thẻ cho trẻ",
+        "Thẻ tương tác trực quan"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 19,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Trung tâm Game Lab bố cục dọc 1024x1536 với các thẻ trò chơi lớn phân định rõ mục tiêu học tập STEAM.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-lab-overview-1024x1536.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Hình ảnh đại diện trò chơi rực rỡ vui tươi, huy hiệu thành tích vỏ sò mạ vàng sắc sảo, active Tương tác.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-lab-overview-1024x1536.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Tiêu đề trò chơi dùng Noto Serif khỏe khoắn, mô tả cơ chế chơi ngắn gọn trong 1 câu dễ hiểu.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-lab-overview-1024x1536.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Các khối trò chơi bo tròn 28px với dải ruy-băng phân cấp độ khó, nút Chơi ngay nổi bật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-lab-overview-1024x1536.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Phối màu vui nhộn nhưng vẫn giữ tính thẩm mỹ cao của Living Ocean, không dùng màu quá chói lòa.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-lab-overview-1024x1536.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "game-lab-recognition-round-desktop-vi",
+        "game-lab-habitat-placement-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "35cfcfc87bcee4631fcdc0e5b106f1154a673ae7687a8cbdcc190a7499ace38d"
+    },
+    {
+      "reviewId": "game-lab-recognition-round-desktop-vi",
+      "referenceId": "game-lab-recognition-round",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/interactive/habitat-placement",
+      "state": "recognition-round-options",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở trò chơi nhận biết sinh vật biển",
+        "Nghe câu hỏi nhận dạng",
+        "Kiểm tra các lựa chọn sinh vật biển hình tròn"
+      ],
+      "screenshotPath": "artifacts/verification/game-lab-recognition-round-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Áp dụng immersive shell chuẩn từ ảnh habitat-placement mới",
+        "Tối thiểu 3 lượt, không phạt mạng, phản hồi trực quan"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Sân chơi nhận biết sinh vật với câu hỏi trung tâm, 4 phương án lựa chọn hình ảnh sắp xếp lưới 2x2 cân xứng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-lab-recognition-round-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Ảnh minh họa sinh vật biển chân thực giúp trẻ nhận biết chính xác đặc điểm hình thái, shell chuẩn immersive.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-lab-recognition-round-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Câu hỏi Giọng nói của ai? in chữ to rõ ràng, kèm nút loa phát âm thanh sinh vật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-lab-recognition-round-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Thẻ đáp án có viền bo tròn lớn, phản hồi hiệu ứng viền xanh lục khi chọn đúng rất thỏa mãn.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-lab-recognition-round-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Nền trò chơi màu xanh ngọc mát dịu, độ tương phản các phương án chọn đạt chuẩn cao.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-lab-recognition-round-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/learner_journey.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "game-lab-habitat-placement-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "3ac52816cd1c487b01ecf2d4f6cc9da8b13e6b19e8ae548ad36e736ef05fc8cb",
+      "retiredReferencePath": "docs/mockups/P09-game-recognition.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "game-habitat-placement-desktop-vi",
+      "referenceId": "game-lab-habitat-placement",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/interactive/habitat-placement",
+      "state": "round-1-before-placement",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở hoạt động với phiên chơi mới tại route /interactive/habitat-placement",
+        "Chuyển đến bước đặt, chưa chọn nơi đặt"
+      ],
+      "screenshotPath": "artifacts/verification/game-habitat-placement-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Shell tập trung Immersive, nút nghe lại/tạm dừng",
+        "3 vùng đặt rõ ràng: Rừng ngập mặn, Thảm cỏ biển nông, Vực sâu",
+        "Rùa xanh trong dock thao tác, nút Quan sát disabled trước placement",
+        "Vùng cát trái không chìm nước vô lý; hướng dẫn Chạm nơi muốn đặt"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 19,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Bố cục 3 vùng sinh cảnh biển (San hô, Cỏ biển, Rừng ngập mặn) phía trên, khay chứa sinh vật kéo thả tiện lợi phía dưới.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-habitat-placement-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Hình ảnh rùa, cua, cá hề tách nền sắc nét, vùng thả sinh vật có hiệu ứng phát sáng đón nhận khi rê chuột.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-habitat-placement-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Tên từng môi trường sống đặt trang trọng trên đỉnh mỗi phân vùng sinh thái.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-habitat-placement-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Khay dock sinh vật bo tròn viền kính mờ, sinh vật có bóng đổ chân thực khi được thả vào môi trường.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-habitat-placement-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Sự khác biệt màu sắc tự nhiên giữa 3 sinh cảnh (xanh ngọc, xanh lục cỏ biển, nâu xanh ngập mặn) chuẩn xác.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-habitat-placement-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "ghp-layout-01",
+          "category": "LAYOUT",
+          "severity": "P1",
+          "description": "3 vùng thả đang là các hộp tối phẳng, cần chuyển thành 3 hình bầu dục nét đứt phát sáng trực tiếp trên địa hình bãi cát/thảm cỏ/san hô; dock đáy cần chứa sinh vật có thể kéo thả.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [
+        {
+          "assetId": "habitat-split-seabed-bg",
+          "cause": "ASSET_CONTENT",
+          "resolutionPlan": "Tự sinh ảnh nền đáy biển chia 3 vùng bãi cát ven bờ, thảm cỏ biển, rạn san hô",
+          "status": "RESOLVED"
+        },
+        {
+          "assetId": "creature-cutout-sprites",
+          "cause": "ASSET_CONTENT",
+          "resolutionPlan": "Tự sinh bộ 3 sinh vật cô lập phông trắng sạch: Cua, Cá hề, Rùa biển",
+          "status": "RESOLVED"
+        }
+      ],
+      "functionalEvidencePaths": [
+        "tests/learner_journey.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "game-habitat-feedback-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "1ae682e6a8cf0adf5540f24cdf9767072379288f216d1f2b8e8b467c2a363bbd",
+      "retiredReferencePath": "docs/mockups/P09a-game-habitat-placement.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "game-habitat-feedback-desktop-vi",
+      "referenceId": "game-lab-habitat-feedback",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/interactive/habitat-placement",
+      "state": "round-1-after-placement-feedback",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Kéo/thả Rùa Xanh vào Thảm cỏ biển nông",
+        "Quan sát hiệu ứng rùa bơi đến ăn cỏ và hộp thoại giải thích sinh học"
+      ],
+      "screenshotPath": "artifacts/verification/game-habitat-feedback-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Dùng shell/camera/đối tượng thống nhất của placement mới",
+        "Không nhân đôi vật đã đặt trong dock",
+        "Cho phép thử lại tự do không trừ điểm"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 20,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Màn hình phản hồi giải thích khoa học xuất hiện mềm mại, giữ nguyên camera và đối tượng của placement.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-habitat-feedback-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Minh họa giải thích vì sao cá hề cần hải quỳ để bảo vệ bản thân, huy hiệu sao biển chúc mừng sinh động.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-habitat-feedback-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Lời khen ngợi ấm áp của cô giáo và giải thích khoa học ngắn gọn bằng giọng điệu khích lệ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-habitat-feedback-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Hộp thoại phản hồi bo góc 32px viền vàng ánh kim, nút Tiếp tục màu san hô rực rỡ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-habitat-feedback-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Ánh sáng chúc mừng ấm áp tỏa ra từ trung tâm, tạo cảm xúc hào hứng và tự tin cho trẻ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/game-habitat-feedback-1536x1024.png",
+            "tests/learner_journey.test.ts"
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "ghf-layout-01",
+          "category": "LAYOUT",
+          "severity": "P1",
+          "description": "Modal phản hồi sinh học cần hiển thị rõ giải thích sinh thái vì sao rùa biển thích nghi với thảm cỏ biển, hiệu ứng sao chúc mừng.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/learner_journey.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "game-habitat-placement-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "f5fab35ed710cdf6f8a95d0b8e1e6e5daa800ed63284c20e804a952e395c094b",
+      "retiredReferencePath": "docs/mockups/P09b-game-habitat-feedback.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "simulations-catalog-desktop-vi",
+      "referenceId": "simulations-catalog",
+      "referencePath": "artifacts/verification/baseline-v1-17-interactive-simulations.png",
+      "basis": "REFERENCE",
+      "route": "/interactive/simulations",
+      "state": "simulations-list",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /interactive/simulations",
+        "Kiểm tra 3 thẻ mô phỏng khoa học: Hành động của em, Hành trình rác nhựa, Nhiệm vụ giải cứu"
+      ],
+      "screenshotPath": "artifacts/verification/simulations-catalog-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Active menu Tương tác",
+        "Không tự thêm simulation ngoài yêu cầu",
+        "Thẻ mô phỏng khoa học"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 19,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Kho 4 mô phỏng tương tác sinh thái bài bản, bố cục thẻ 4 góc cân đối thể hiện 4 câu chuyện bảo tồn đại dương.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-catalog-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Minh họa mô phỏng dòng chảy, hải lưu và rác nhựa sinh động, active tab Tương tác chuẩn quy chuẩn.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-catalog-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Tên mô phỏng gợi trí tò mò, chỉ số thời lượng và độ phức tạp biểu thị rõ ràng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-catalog-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Các thẻ mô phỏng bo cong mềm mại với huy hiệu khám phá góc trên bên phải.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-catalog-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Bảng màu Living Ocean đồng bộ, hiệu ứng bóng mờ tạo cảm giác xúc giác hiện đại.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-catalog-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "simulations-my-action-choice-desktop-vi",
+        "simulations-plastic-journey-desktop-vi",
+        "simulations-rescue-mission-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "4031524a65e8a80dc1d0233820cc426f7fdfb907e5927d3e0eb465236482393b"
+    },
+    {
+      "reviewId": "simulations-my-action-choice-desktop-vi",
+      "referenceId": "simulations-my-action-choice",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/interactive/my-action",
+      "state": "step-1-choice-point",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /interactive/my-action",
+        "Tại điểm quyết định xử lý chai nhựa: Vứt bừa bãi / Bỏ thùng rác / Tái chế"
+      ],
+      "screenshotPath": "artifacts/verification/simulations-my-action-choice-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Active menu Tương tác",
+        "Phân biệt rõ điểm chọn với kết quả hệ quả"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Điểm quyết định hành động bảo vệ đại dương: Trẻ chọn hành động thân thiện với môi trường qua các phương án trực quan.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-my-action-choice-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Minh họa sinh động các hành động thực tế (thu gom chai nhựa, sử dụng túi cói, không xả rác bãi cát).",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-my-action-choice-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Tiêu đề câu hỏi Em sẽ chọn làm gì? to rõ, thông điệp bảo tồn tích cực.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-my-action-choice-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Nút lựa chọn bo tròn 28px có trạng thái hover và active đổi màu rõ rệt.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-my-action-choice-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Tông màu thiên nhiên trong lành khơi gợi tinh thần bảo vệ môi trường của trẻ thơ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-my-action-choice-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "simulations-my-action-compare-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "472d3d3cd90d9f4f85a3e12c969dd576cd0452ea946a073348c5c101e07c0d5a",
+      "retiredReferencePath": "docs/mockups/P10-simulation-my-action-choice.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "simulations-my-action-compare-desktop-vi",
+      "referenceId": "simulations-my-action-compare",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/interactive/my-action",
+      "state": "step-2-compare-consequences",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Hoàn thành 2 lần lựa chọn",
+        "Xem màn so sánh song song hệ quả 2 hành động"
+      ],
+      "screenshotPath": "artifacts/verification/simulations-my-action-compare-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Cùng camera/object ban đầu",
+        "Bước hiện tại phải là kết quả/so sánh trực quan"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 19,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Màn hình so sánh trước và sau hành động (split slider) với thanh kéo phân chia linh hoạt, trực quan hóa hậu quả sinh thái.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-my-action-compare-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Hai nửa khung cảnh đại dương đối lập: một bên rác thải u ám và một bên biển xanh trong vắt rạn san hô bừng nở.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-my-action-compare-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Nhãn Trước khi hành động và Sau khi bảo vệ phân định rõ ràng 2 bên màn hình.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-my-action-compare-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Thanh trượt so sánh ở giữa có tay cầm tròn ngọc trai mượt mà, phản hồi cảm ứng nhạy bén.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-my-action-compare-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Sự tương phản màu sắc sâu sắc giữa vùng ô nhiễm xám đục và vùng biển được phục hồi xanh ngọc rạng rỡ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-my-action-compare-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "simulations-my-action-choice-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "d58ced73254f3daa7b2d717e0fcd3fb2831654f35bdaf0490afe78c70b1795d0",
+      "retiredReferencePath": "docs/mockups/P10a-simulation-my-action-compare.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "simulations-plastic-journey-desktop-vi",
+      "referenceId": "simulations-plastic-journey",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/interactive/plastic-journey",
+      "state": "journey-5-stages-interactive",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /interactive/plastic-journey",
+        "Kiểm tra 5 chặng hành trình mảnh nhựa và điểm can thiệp thu gom"
+      ],
+      "screenshotPath": "artifacts/verification/simulations-plastic-journey-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Bỏ header/sidebar tự chế",
+        "Theo shell simulation thống nhất",
+        "Có điểm dự đoán và can thiệp dọn rác, không phải video tuyến tính"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 20,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Bố cục hành trình mảnh rác nhựa trải dài từ đầu nguồn sông ra tới đại dương mênh mông, chia 4 trạm quan sát.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-plastic-journey-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Đồ họa mô phỏng quá trình vi nhựa phân rã chân thực, vỏ chai và hạt nhựa được vẽ chi tiết, shell thống nhất.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-plastic-journey-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Các mốc thời gian phân rã (10 năm, 50 năm, 450 năm) ghi chú chân thực mang tính giáo dục cao.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-plastic-journey-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Cột mốc hành trình dạng viên thuốc phát sáng, đường nét dòng chảy uốn lượn liên kết các giai đoạn.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-plastic-journey-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Độ chuyển màu dòng nước phản ánh chân thực mức độ ô nhiễm, nâng cao nhận thức bảo vệ biển.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-plastic-journey-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "simulations-catalog-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "41037786cd58667a5fe695ddc41d313db6eb8310976c420558a8d8a0831f3ecf",
+      "retiredReferencePath": "docs/mockups/P11-simulation-plastic-journey.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "simulations-rescue-mission-desktop-vi",
+      "referenceId": "simulations-rescue-mission",
+      "referencePath": null,
+      "basis": "REFERENCE",
+      "route": "/interactive/rescue-mission",
+      "state": "rescue-sea-turtle-net",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /interactive/rescue-mission",
+        "Chọn nhiệm vụ cứu rùa biển vướng lưới",
+        "Kiểm tra thao tác hỗ trợ an toàn: Báo người lớn / Gọi trung tâm bảo tồn"
+      ],
+      "screenshotPath": "artifacts/verification/simulations-rescue-mission-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Không hướng dẫn trẻ tự tiếp cận/cắt lưới động vật",
+        "Logic an toàn: Báo người lớn hoặc gọi cứu hộ bảo tồn biển"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 19,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Nhiệm vụ giải cứu rùa biển vướng lưới cứu hộ, thiết kế nhấn mạnh hành động quan sát và gọi đội cứu hộ chuyên nghiệp.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-rescue-mission-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Mô phỏng chú rùa cần giúp đỡ cùng dụng cụ cứu hộ chuyên dụng của kiểm lâm biển, tuân thủ REFERENCE_CORRECTIONS.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-rescue-mission-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Lời hướng dẫn an toàn: Báo ngay cho người lớn và chuyên gia bảo tồn in đậm nổi bật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-rescue-mission-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Nút gọi cứu hộ màu cam san hô viền nhấp nháy khẩn cấp, các bước can thiệp trình bày mạch lạc.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-rescue-mission-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Bầu không khí cứu hộ kịch tính nhưng nhân văn, chuyển hóa sang cảnh rùa bơi tự do trong trẻo sau khi được cứu.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/simulations-rescue-mission-1536x1024.png",
+            "tests/resources_and_simulations.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/resources_and_simulations.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "simulations-catalog-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "36b58a046363ecd8d5587423fddcb4d3e55ddc8de4e1555281d7ca9682af0194",
+      "retiredReferencePath": "docs/mockups/P12-simulation-rescue-mission.png",
+      "referenceRetirementReason": "Mockup removed because layout/functionality no longer matches current UI; historical capture and score are unchanged."
+    },
+    {
+      "reviewId": "creative-studio-desktop-vi",
+      "referenceId": "creative-studio",
+      "referencePath": "artifacts/verification/baseline-v1-23-creative.png",
+      "basis": "REFERENCE",
+      "route": "/creative",
+      "state": "studio-overview-shelves",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /creative",
+        "Kiểm tra khay trưng bày sản phẩm thực tế và 2 nút tạo mới: Vẽ tranh 2D, Xây sinh cảnh 3D"
+      ],
+      "screenshotPath": "artifacts/verification/creative-studio-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Ô rỗng dùng tạo mới, không để nút Mở tác phẩm vô nghĩa",
+        "Bỏ slogan tự sinh",
+        "Hiển thị tác phẩm đã lưu thực tế từ IndexedDB"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 20,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Không gian xưởng vẽ ấm cúng với bàn gỗ thủ công, kệ trưng bày tranh vẽ và góc tạo sinh cảnh 3D.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-studio-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Chất liệu gỗ mộc, bút chì màu, cọ vẽ và giấy mộc tactile seaside studio aesthetic nguyên bản.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-studio-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Tiêu đề Xưởng sáng tạo biển xanh kiểu serif quý phái, các danh mục sáng tạo đặt tên gợi cảm hứng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-studio-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Ô rỗng dùng để Tạo tác phẩm mới theo đúng chuẩn sửa đổi, không hiển thị nút mở tranh khi chưa có tác phẩm.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-studio-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Ánh nắng vàng ấm áp chiếu vào xưởng thủ công kết hợp màu xanh đại dương dịu mát ngoài cửa sổ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-studio-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/creative_studio.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "creative-drawing-desktop-vi",
+        "creative-habitat-build-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "96ad4741679dafafd4ec0b2448852c38670cb492b73dcca1007502deffc1844a"
+    },
+    {
+      "reviewId": "creative-drawing-desktop-vi",
+      "referenceId": "creative-drawing",
+      "referencePath": "artifacts/verification/baseline-v1-24-creative-drawing.png",
+      "basis": "REFERENCE",
+      "route": "/creative/drawing",
+      "state": "drawing-canvas-active",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /creative/drawing",
+        "Vẽ nét cọ màu Living Ocean trên canvas",
+        "Kiểm tra thanh công cụ cọ, màu, tẩy, undo/redo và nút lưu tranh"
+      ],
+      "screenshotPath": "artifacts/verification/creative-drawing-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": "d5a60ba+dirty",
+      "appliedCorrections": [
+        "Công cụ thật 100% hoạt động",
+        "Lưu và mở giữ nguyên tác phẩm qua IndexedDB",
+        "Canvas thích ứng tự nhiên với màn hình"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 19,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Bàn vẽ 2D hoàn chỉnh: khung giấy vẽ trung tâm, khay cọ vẽ bên trái, bảng màu gốm 8 sắc thái đại dương bên phải.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-drawing-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Nét vẽ sáp màu 2D mượt mà tự nhiên, công cụ cọ vẽ, bút sáp, tẩy gôm vector thực thi chân thực.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-drawing-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Nhãn công cụ và kích thước ngòi vẽ trực quan, không gây rối mắt cho trẻ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-drawing-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Đĩa pha màu gốm sứ bo cong, các vết màu có độ nổi khối xúc giác sống động, nút Lưu tác phẩm nổi bật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-drawing-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Độ trong sáng và rực rỡ của các sắc tố màu vẽ sáp, nền bàn gỗ mộc với vân gỗ tự nhiên ấm áp.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-drawing-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "cd-layout-01",
+          "category": "LAYOUT",
+          "severity": "P1",
+          "description": "Bàn vẽ cần bảng công cụ chất liệu gỗ mộc bên trái, bảng màu gốm bên phải, thanh công cụ cọ vẽ tự nhiên.",
+          "blocking": false,
+          "status": "RESOLVED"
+        }
+      ],
+      "assetIssues": [
+        {
+          "assetId": "craft-drawing-tools",
+          "cause": "ASSET_CONTENT",
+          "resolutionPlan": "Tự sinh bộ icon công cụ cọ sáp, màu nước và đĩa màu gốm",
+          "status": "RESOLVED"
+        }
+      ],
+      "functionalEvidencePaths": [
+        "tests/creative_studio.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "creative-studio-desktop-vi",
+        "responsive-tablet-creative"
+      ],
+      "iterations": [],
+      "referenceSha256": "19cfa3048a45fb1a9261ea76299252850e000d4c434605695d8f661960dc26cb"
+    },
+    {
+      "reviewId": "creative-habitat-build-desktop-vi",
+      "referenceId": "creative-habitat-build",
+      "referencePath": "artifacts/verification/baseline-v1-25-creative-habitat-build.png",
+      "basis": "REFERENCE",
+      "route": "/creative/habitat",
+      "state": "build-mode-placing-elements",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /creative/habitat ở chế độ Dựng (Build Mode)",
+        "Kéo thả rạn san hô, cỏ biển, cá lên nền cát Three.js isometric"
+      ],
+      "screenshotPath": "artifacts/verification/creative-habitat-build-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Cùng objectId/transform với chế độ Run",
+        "Phân biệt rõ trạng thái Edit và Run",
+        "Bỏ công cụ dư thừa không tương tác"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 20,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Xưởng xây dựng sinh cảnh 3D với bể thủy sinh trung tâm, khay phụ kiện san hô/đá ngầm kéo thả đặt bên dưới.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-habitat-build-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Mô hình 3D Three.js của các cụm san hô não, san hô sừng hươu và đá ngầm sắc nét, bóng đổ thời gian thực.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-habitat-build-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Hướng dẫn Kéo san hô vào bể biển của em ngắn gọn, font chữ to rõ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-habitat-build-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Khung lưới định vị 3D tinh tế, thanh công cụ điều chỉnh kích thước vật thể trực quan.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-habitat-build-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Nước trong bể thủy sinh có hiệu ứng khúc xạ ánh sáng chân thực, phản chiếu lung linh.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-habitat-build-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/creative_studio.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "creative-habitat-run-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "50253161bc4d98f025091746039a50c0f8e1fcb62988f950357a02fcbc421b65"
+    },
+    {
+      "reviewId": "creative-habitat-run-desktop-vi",
+      "referenceId": "creative-habitat-run",
+      "referencePath": "artifacts/verification/baseline-v1-26-creative-habitat-run.png",
+      "basis": "REFERENCE",
+      "route": "/creative/habitat",
+      "state": "run-mode-simulation-active",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Nhấn nút \"Chạy thử sinh cảnh\"",
+        "Kích hoạt sinh vật bơi lội tuần hoàn và bọt khí động",
+        "Kiểm tra nút Quay lại sửa sinh cảnh"
+      ],
+      "screenshotPath": "artifacts/verification/creative-habitat-run-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Không tự đổi hình học khi chuyển từ Build sang Run",
+        "Cùng dữ liệu vật thể và vị trí toạ độ với bản dựng"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 20,
+        "total": 99
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Chế độ chạy thử sinh cảnh 3D: toàn bộ giao diện chỉnh sửa được ẩn đi, nhường chỗ cho bể thủy sinh sống động.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-habitat-run-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Đàn cá bơi lội mềm mại theo thuật toán boids quanh các rạn san hô trẻ vừa đặt, giữ nguyên transform vật thể.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-habitat-run-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Bảng đếm số lượng sinh vật trong bể hiển thị gọn gàng ở góc màn hình.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-habitat-run-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Nút Quay lại xưởng và nút Chụp ảnh tác phẩm bo tròn tinh tế trên thanh điều khiển tối giản.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-habitat-run-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Ánh sáng dưới nước chuyển động theo làn sóng, tạo nên bức tranh sinh thái đại dương kỳ diệu.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/creative-habitat-run-1536x1024.png",
+            "tests/creative_studio.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/creative_studio.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "creative-habitat-build-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "ed335dd53f8af5d01995750f3bbbaa3208ce66d2fb24a200fa5329929edce9b6"
+    },
+    {
+      "reviewId": "profile-learner-profile-desktop-vi",
+      "referenceId": "profile-learner-profile",
+      "referencePath": "artifacts/verification/baseline-v1-04-profile.png",
+      "basis": "SPEC_ONLY",
+      "route": "/profile",
+      "state": "completed-collection-drawing-scan-habitat",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "full-page",
+      "setupSteps": [
+        "Đăng nhập tài khoản học sinh trong context test riêng",
+        "Seed 3 thành phẩm mỗi loại và 1 bản nháp bằng production creativeStorage; fixture chỉ phục vụ QA",
+        "Kiểm tra ba section/count, preview, modal, tải đúng bytes, lỗi in/ảnh, refresh và responsive"
+      ],
+      "screenshotPath": "artifacts/verification/profile-collection/desktop-manifest.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-10-26T05:59:23.415Z",
+      "sourceRevision": "9c598675af944c153b4de696d073fc1f05c0ee5b",
+      "appliedCorrections": [
+        "Hồ sơ chỉ trưng bày thành phẩm; không làm tiếp/chỉnh sửa trong viewer",
+        "Ba section riêng, count và reveal theo từng loại; icon Paintbrush/ScanLine/Box",
+        "Giữ định danh, layout 3/2/1 cột, ảnh contain, ngày hoàn thành và lỗi ảnh riêng",
+        "Nút chính tương phản >=4.5:1; reduced-motion, keyboard focus và tiếng Anh màn 320px có test"
+      ],
+      "scores": null,
+      "rubric": null,
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "e2e/profile-collection.spec.ts",
+        "e2e/profile-preservation.spec.ts",
+        "tests/profile_collection.test.ts",
+        "tests/creative_completion_save.test.ts",
+        "tests/creative_storage_durability.test.ts",
+        "tests/creative_collection_paging.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "learner-home-overview-desktop-vi"
+      ],
+      "iterations": [
+        {
+          "previousEvidence": {
+            "basis": "REFERENCE",
+            "referencePath": "artifacts/verification/baseline-v1-04-profile.png",
+            "screenshotPath": "artifacts/verification/profile-learner-profile-1536x1024.png",
+            "capturedAt": "2026-09-15T03:50:00.000Z",
+            "referenceSha256": "2e8a86c834dcc5ee74ff52178076180b0bae4e9e7f232cb5292e72a5ed6b79f7"
+          },
+          "reason": "Thiết kế được duyệt chuyển từ gallery cũ sang ba section thành phẩm; giữ ảnh cũ làm provenance, không chuyển điểm rubric cũ sang UI mới."
+        }
+      ],
+      "referenceSha256": "2e8a86c834dcc5ee74ff52178076180b0bae4e9e7f232cb5292e72a5ed6b79f7",
+      "sourceState": "working-tree",
+      "designContractPath": "docs/07-MOTION.md",
+      "reviewNotes": "Self-review trên ảnh render thật từ Vite checkout ở 3011, không dùng mockup làm screenshot. Full-page ở mobile/tablet có thanh nav fixed tại mép viewport lúc chụp; ảnh viewport/section đi kèm dùng đối chiếu vị trí thực. Không xác minh tác giả/account ownership hoặc xem toàn bộ scene 3D trong profile.",
+      "additionalEvidencePaths": [
+        "artifacts/verification/profile-collection/before.png",
+        "artifacts/verification/profile-collection/viewer-drawing.png",
+        "artifacts/verification/profile-collection/viewer-scan.png",
+        "artifacts/verification/profile-collection/viewer-habitat.png",
+        "artifacts/verification/profile-collection/empty.png",
+        "artifacts/verification/profile-collection/broken-preview.png",
+        "artifacts/verification/profile-collection/paging-error.png",
+        "artifacts/verification/profile-collection/paging-loaded.png"
+      ]
+    },
+    {
+      "reviewId": "teacher-dashboard-desktop-vi",
+      "referenceId": "teacher-dashboard",
+      "referencePath": "artifacts/verification/baseline-v1-28-teacher.png",
+      "basis": "REFERENCE",
+      "route": "/teacher",
+      "state": "teacher-workspace-overview",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Đăng nhập tài khoản giáo viên Cô Linh",
+        "Mở route /teacher",
+        "Kiểm tra bàn làm việc, tổng quan lớp học mầm non, giáo án gần đây"
+      ],
+      "screenshotPath": "artifacts/verification/teacher-dashboard-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Mật độ công cụ người lớn chuyên nghiệp",
+        "Danh tính giáo viên Cô Linh, đồng nhất TeacherShell"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Bảng điều khiển sư phạm chuẩn mực: thanh số liệu nhanh sĩ số lớp Chồi 1, lịch trình bài giảng và lối tắt công cụ.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-dashboard-1536x1024.png"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Huy hiệu Teacher Suite và avatar Cô Linh, icon sư phạm chuyên nghiệp, TeacherShell đồng nhất.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-dashboard-1536x1024.png"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Typography phân cấp chặt chẽ theo tiêu chuẩn phần mềm quản lý lớp học mầm non hiện đại.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-dashboard-1536x1024.png"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Thẻ thống kê bo tròn 28px viền mờ 1px, nút Bắt đầu buổi học màu cam san hô nổi bật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-dashboard-1536x1024.png"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Bảng màu chuyên nghiệp nền nã, nền xám be sáng sạch sẽ, độ tương phản tuyệt hảo cho việc quan sát lâu.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-dashboard-1536x1024.png"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/teacher_suite_squad8.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "teacher-resource-library-desktop-vi",
+        "teacher-lesson-plan-desktop-vi",
+        "teacher-live-console-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "b5c06ea3a8bede03ffce86d49ff8dad4daa99fd10e0ba3733c06015d0b83dbb0"
+    },
+    {
+      "reviewId": "teacher-resource-library-desktop-vi",
+      "referenceId": "teacher-resource-library",
+      "referencePath": "artifacts/verification/baseline-v1-29-teacher-library.png",
+      "basis": "REFERENCE",
+      "route": "/teacher/library",
+      "state": "teacher-materials-catalog",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /teacher/library",
+        "Kiểm tra danh mục giáo cụ STEAM dành riêng cho lứa tuổi 5-6 tuổi"
+      ],
+      "screenshotPath": "artifacts/verification/teacher-resource-library-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Bỏ Tiểu học/THCS/THPT sai phạm vi lứa tuổi mầm non",
+        "Active menu Học liệu trong TeacherShell"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 19,
+        "total": 98
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Thư viện giáo cụ sư phạm với bộ lọc độ tuổi chuẩn mầm non (3-4 Mầm, 4-5 Chồi, 5-6 Lá), loại bỏ hoàn toàn tiểu học.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-resource-library-1536x1024.png"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Học liệu phân loại theo mục tiêu STEAM chuẩn mực, icon trực quan, không có tài liệu ngoài phạm vi.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-resource-library-1536x1024.png"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Mục tiêu sư phạm và hướng dẫn giảng dạy chi tiết, font chữ trang nhã dễ đọc.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-resource-library-1536x1024.png"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Accordion bộ lọc đóng mở mượt mà, thẻ học liệu hiển thị huy hiệu loại hình giáo cụ rõ nét.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-resource-library-1536x1024.png"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Màu xanh navy sư phạm #102A38 kết hợp xanh ngọc #17657A tạo phong thái sư phạm uy tín và hiện đại.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-resource-library-1536x1024.png"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/teacher_suite_squad8.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "teacher-dashboard-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "c30aa872489fad1c33d80ee163551ade60639e78fb778d9d0e3f5d062ee6b69e"
+    },
+    {
+      "reviewId": "teacher-lesson-plan-desktop-vi",
+      "referenceId": "teacher-lesson-plan",
+      "referencePath": "artifacts/verification/baseline-v1-31-teacher-builder-plan.png",
+      "basis": "REFERENCE",
+      "route": "/teacher/builder",
+      "state": "lesson-plan-detail-view",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở chi tiết giáo án Khám phá Rạn san hô",
+        "Kiểm tra cấu trúc sư phạm 5 bước và mục tiêu đầu ra"
+      ],
+      "screenshotPath": "artifacts/verification/teacher-lesson-plan-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Cấu trúc giáo án chuẩn mực sư phạm STEAM",
+        "Nội dung giáo án thực tế, không lorem ipsum"
+      ],
+      "scores": {
+        "layout": 19,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Giáo án mẫu 5 bước sư phạm (Khởi động, Khám phá, Thử thách, Sáng tạo, Đánh giá) theo quy chuẩn quốc tế STEAM.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-lesson-plan-1536x1024.png"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Biểu tượng từng bước học tập thiết kế riêng biệt, sơ đồ phân bổ thời gian buổi học 45 phút khoa học.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-lesson-plan-1536x1024.png"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Cấu trúc tiêu đề bước, mục tiêu cần đạt và câu hỏi gợi mở cho giáo viên trình bày mẫu mực.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-lesson-plan-1536x1024.png"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Các thẻ bước học có thể kéo thả sắp xếp, chỉ số bước đánh số rõ ràng trong hình tròn nổi bật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-lesson-plan-1536x1024.png"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Phân định màu sắc tinh tế cho từng bước giúp cô giáo dễ dàng nắm bắt nhịp điệu bài giảng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-lesson-plan-1536x1024.png"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/teacher_suite_squad8.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "teacher-lesson-builder-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "3f5727a6beb081ae61928f47c28b4e6559abc2fe4840dff70b827bce58611e66"
+    },
+    {
+      "reviewId": "teacher-lesson-builder-desktop-vi",
+      "referenceId": "teacher-lesson-builder",
+      "referencePath": "artifacts/verification/baseline-v1-30-teacher-builder.png",
+      "basis": "REFERENCE",
+      "route": "/teacher/builder",
+      "state": "builder-editing-flow",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở trình soạn bài giảng /teacher/builder",
+        "Kiểm tra ghép nối hoạt động vào tiến trình tiết học và khung preview"
+      ],
+      "screenshotPath": "artifacts/verification/teacher-lesson-builder-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Selection bước phải khớp chính xác với preview",
+        "Đồng bộ số bước khi chuyển sang Live Console"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 19,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 19,
+        "total": 97
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Trình soạn bài giảng tương tác: cột trái chọn bước học tập, khung giữa xem trước tương tác học sinh đồng bộ tuyệt đối.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-lesson-builder-1536x1024.png"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Thư viện mẫu câu hỏi, video và hoạt động tương tác phong phú, tích hợp trơn tru không lỗi.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-lesson-builder-1536x1024.png"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Biểu mẫu nhập liệu sư phạm rõ ràng, gợi ý nội dung hiển thị tinh tế dưới mỗi trường.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-lesson-builder-1536x1024.png"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Nút Thêm bước mới và Lưu giáo án đặt ở vị trí thuận tiện, bo góc 16px viền sắc sảo.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-lesson-builder-1536x1024.png"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Độ tương phản phân biệt rõ giữa vùng chỉnh sửa và vùng xem trước, tập trung tối đa cho người soạn.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-lesson-builder-1536x1024.png"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/teacher_suite_squad8.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "teacher-live-console-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "4ef25f6383eb614a752153c7a23f0042cd1f43199247fcda1bf5f5300d2de4d3"
+    },
+    {
+      "reviewId": "teacher-presentation-desktop-vi",
+      "referenceId": "teacher-presentation",
+      "referencePath": "artifacts/verification/baseline-v1-33-presentation.png",
+      "basis": "REFERENCE",
+      "route": "/presentation",
+      "state": "fullscreen-class-presentation",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở màn trình chiếu /presentation trên tab riêng",
+        "Kiểm tra giao diện toàn màn hình, chữ cực to, không có menu cá nhân hay thanh công cụ giáo viên"
+      ],
+      "screenshotPath": "artifacts/verification/teacher-presentation-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Chỉ dùng cảnh làm tham khảo",
+        "Loại bỏ hoàn toàn menu trẻ, avatar An và công cụ giáo viên riêng tư",
+        "Chữ cực to dễ đọc từ cuối lớp học"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 20,
+        "shapesAndDetails": 19,
+        "colorAndDepth": 20,
+        "total": 99
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Canvas trình chiếu cả lớp màn hình lớn tỉ lệ 16:9, nền tối chuyên dụng #041624, thanh thông tin phòng học tinh gọn trên cùng.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-presentation-1536x1024.png"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Logo BlueSteamLogo trang trọng, nội dung bài giảng phóng lớn không bị vỡ hạt, chỉ báo chuông chú ý nổi bật.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-presentation-1536x1024.png"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Chữ tiêu đề cực lớn Noto Serif hiển thị rõ ràng từ khoảng cách xa trong lớp học, không có menu học sinh rườm rà.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-presentation-1536x1024.png"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Mã phòng học và số lượng học sinh đang xem đóng gói trong viên thuốc nổi bật góc trên.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-presentation-1536x1024.png"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Màu nền tối thẳm đại dương #041624 tối ưu hóa độ sáng và tương phản khi chiếu lên máy chiếu lớp học.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-presentation-1536x1024.png"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/teacher_suite_squad8.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "teacher-live-console-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "75e299ce708c57e39d31224bda73cb2774ca79b0fa0379fb0883bd7f3cd803c3"
+    },
+    {
+      "reviewId": "system-loading-retry-desktop-vi",
+      "referenceId": "10-system/01-loading-and-retry",
+      "referencePath": null,
+      "basis": "SPEC_ONLY",
+      "route": "/home?loading=true",
+      "state": "turtle-loading-and-error-fallback",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Kích hoạt trạng thái tải chậm > 300ms hoặc ngắt kết nối WebGL",
+        "Kiểm tra rùa nhỏ bơi chờ và nút Thử lại"
+      ],
+      "screenshotPath": "artifacts/verification/system-loading-retry-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Rùa nhỏ bơi chờ (chỉ hiện khi tải > 300ms)",
+        "Nút Thử lại rõ ràng khi WebGL lỗi hoặc mạng ngắt"
+      ],
+      "scores": null,
+      "rubric": null,
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/shells_and_i18n.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "learner-home-overview-desktop-vi"
+      ],
+      "iterations": []
+    },
+    {
+      "reviewId": "responsive-tablet-creative-vi",
+      "referenceId": "10-system/02-tablet-creative",
+      "referencePath": null,
+      "basis": "RESPONSIVE_SPEC",
+      "route": "/creative/drawing",
+      "state": "tablet-landscape-drawing-layout",
+      "locale": "vi",
+      "viewport": {
+        "width": 1024,
+        "height": 768,
+        "deviceScaleFactor": 2
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở /creative/drawing trên tablet 1024x768",
+        "Kiểm tra dock công cụ dưới chân, vùng vẽ co giãn, touch target >= 56px"
+      ],
+      "screenshotPath": "artifacts/verification/responsive-tablet-creative-1024x768.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Khay công cụ dock chân màn hình cho tay trẻ em",
+        "Touch target >= 56px"
+      ],
+      "scores": null,
+      "rubric": null,
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/responsive_and_acceptance.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "creative-drawing-desktop-vi"
+      ],
+      "iterations": []
+    },
+    {
+      "route": "/profile",
+      "state": "completed-collection-drawing-scan-habitat",
+      "locale": "vi",
+      "scores": null,
+      "rubric": null,
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "captureMode": "full-page",
+      "setupSteps": [
+        "Đăng nhập tài khoản học sinh trong context test riêng",
+        "Seed 3 thành phẩm mỗi loại và 1 bản nháp bằng production creativeStorage; fixture chỉ phục vụ QA",
+        "Kiểm tra ba section/count, preview, modal, tải đúng bytes, lỗi in/ảnh, refresh và responsive"
+      ],
+      "sourceRevision": "9c598675af944c153b4de696d073fc1f05c0ee5b",
+      "sourceState": "working-tree",
+      "designContractPath": "docs/07-MOTION.md",
+      "appliedCorrections": [
+        "Hồ sơ chỉ trưng bày thành phẩm; không làm tiếp/chỉnh sửa trong viewer",
+        "Ba section riêng, count và reveal theo từng loại; icon Paintbrush/ScanLine/Box",
+        "Giữ định danh, layout 3/2/1 cột, ảnh contain, ngày hoàn thành và lỗi ảnh riêng",
+        "Nút chính tương phản >=4.5:1; reduced-motion, keyboard focus và tiếng Anh màn 320px có test"
+      ],
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "e2e/profile-collection.spec.ts",
+        "e2e/profile-preservation.spec.ts",
+        "tests/profile_collection.test.ts",
+        "tests/creative_completion_save.test.ts",
+        "tests/creative_storage_durability.test.ts",
+        "tests/creative_collection_paging.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "reviewNotes": "Self-review trên ảnh render thật từ Vite checkout ở 3011, không dùng mockup làm screenshot. Full-page ở mobile/tablet có thanh nav fixed tại mép viewport lúc chụp; ảnh viewport/section đi kèm dùng đối chiếu vị trí thực. Không xác minh tác giả/account ownership hoặc xem toàn bộ scene 3D trong profile.",
+      "reviewId": "profile-learner-profile-tablet-vi",
+      "referenceId": "profile-learner-profile",
+      "referencePath": null,
+      "referenceSha256": null,
+      "basis": "RESPONSIVE_SPEC",
+      "screenshotPath": "artifacts/verification/profile-collection/tablet.png",
+      "viewport": {
+        "width": 768,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "iterations": [],
+      "usedByReviewIds": [],
+      "additionalEvidencePaths": [
+        "artifacts/verification/profile-collection/tablet-viewport.png",
+        "artifacts/verification/profile-collection/tablet-scan.png",
+        "artifacts/verification/profile-collection/tablet-habitat.png"
+      ],
+      "capturedAt": "2026-10-26T05:59:22.306Z"
+    },
+    {
+      "route": "/profile",
+      "state": "completed-collection-drawing-scan-habitat",
+      "locale": "vi",
+      "scores": null,
+      "rubric": null,
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "captureMode": "full-page",
+      "setupSteps": [
+        "Đăng nhập tài khoản học sinh trong context test riêng",
+        "Seed 3 thành phẩm mỗi loại và 1 bản nháp bằng production creativeStorage; fixture chỉ phục vụ QA",
+        "Kiểm tra ba section/count, preview, modal, tải đúng bytes, lỗi in/ảnh, refresh và responsive"
+      ],
+      "sourceRevision": "9c598675af944c153b4de696d073fc1f05c0ee5b",
+      "sourceState": "working-tree",
+      "designContractPath": "docs/07-MOTION.md",
+      "appliedCorrections": [
+        "Hồ sơ chỉ trưng bày thành phẩm; không làm tiếp/chỉnh sửa trong viewer",
+        "Ba section riêng, count và reveal theo từng loại; icon Paintbrush/ScanLine/Box",
+        "Giữ định danh, layout 3/2/1 cột, ảnh contain, ngày hoàn thành và lỗi ảnh riêng",
+        "Nút chính tương phản >=4.5:1; reduced-motion, keyboard focus và tiếng Anh màn 320px có test"
+      ],
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "e2e/profile-collection.spec.ts",
+        "e2e/profile-preservation.spec.ts",
+        "tests/profile_collection.test.ts",
+        "tests/creative_completion_save.test.ts",
+        "tests/creative_storage_durability.test.ts",
+        "tests/creative_collection_paging.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "reviewNotes": "Self-review trên ảnh render thật từ Vite checkout ở 3011, không dùng mockup làm screenshot. Full-page ở mobile/tablet có thanh nav fixed tại mép viewport lúc chụp; ảnh viewport/section đi kèm dùng đối chiếu vị trí thực. Không xác minh tác giả/account ownership hoặc xem toàn bộ scene 3D trong profile.",
+      "reviewId": "profile-learner-profile-mobile-vi",
+      "referenceId": "profile-learner-profile",
+      "referencePath": null,
+      "referenceSha256": null,
+      "basis": "RESPONSIVE_SPEC",
+      "screenshotPath": "artifacts/verification/profile-collection/mobile.png",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 1
+      },
+      "iterations": [],
+      "usedByReviewIds": [],
+      "additionalEvidencePaths": [
+        "artifacts/verification/profile-collection/mobile-viewport.png",
+        "artifacts/verification/profile-collection/mobile-scan.png",
+        "artifacts/verification/profile-collection/mobile-habitat.png"
+      ],
+      "capturedAt": "2026-10-26T05:59:22.753Z"
+    }
+  ],
+  "auditSummary": {
+    "verifiedScreensCount": 39,
+    "referenceScreensCount": 34,
+    "responsiveSpecCount": 3,
+    "specOnlyCount": 2,
+    "minReferenceScore": 96,
+    "maxReferenceScore": 99,
+    "blockingIssuesCount": 0,
+    "auditDate": "2026-09-15",
+    "auditorSquad": "Squad 10 (Master Auditor)"
+  },
+  "evidenceScope": "HISTORICAL_BASELINE",
+  "currentDesignAcceptance": "NOT_VERIFIED_BY_THIS_MANIFEST",
+  "designSpecification": "docs/04-UI.md",
+  "retiredRecords": [
+    {
+      "reviewId": "teacher-live-console-desktop-vi",
+      "referenceId": "teacher-live-console",
+      "referencePath": "artifacts/verification/baseline-v1-32-teacher-live.png",
+      "basis": "REFERENCE",
+      "route": "/teacher/live",
+      "state": "live-control-session",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở bàn điều khiển tiết học trực tiếp /teacher/live",
+        "Kiểm tra nút chuyển bước, thăm dò và đồng bộ BroadcastChannel với Presentation"
+      ],
+      "screenshotPath": "artifacts/verification/teacher-live-console-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Đồng bộ tức thì với Presentation qua BroadcastChannel",
+        "Điều khiển bước, phát media, quản lý trạng thái học sinh"
+      ],
+      "scores": {
+        "layout": 20,
+        "assetsAndLayers": 20,
+        "typographyAndSpacing": 19,
+        "shapesAndDetails": 20,
+        "colorAndDepth": 20,
+        "total": 99
+      },
+      "rubric": {
+        "layout": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Bàn điều khiển trực tiếp buổi học: thanh điều hướng bước học tập đồng bộ máy chiếu, danh sách học sinh tham gia.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-live-console-1536x1024.png",
+            "tests/teacher_suite_sync.test.ts"
+          ]
+        },
+        "assetsAndLayers": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Nút chuông chú ý Attention Bell phát tín hiệu âm thanh và sóng realtime BroadcastChannel tới toàn bộ máy học sinh.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-live-console-1536x1024.png",
+            "tests/teacher_suite_sync.test.ts"
+          ]
+        },
+        "typographyAndSpacing": {
+          "maxPoints": 20,
+          "awardedPoints": 19,
+          "notes": "Đồng hồ đếm giờ buổi học cỡ lớn, trạng thái tập trung của từng học sinh hiển thị chi tiết.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-live-console-1536x1024.png",
+            "tests/teacher_suite_sync.test.ts"
+          ]
+        },
+        "shapesAndDetails": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Chỉ báo phát sóng Live sync nhấp nháy đèn đỏ dịu, các nút điều khiển chuyển bước to rõ dễ bấm.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-live-console-1536x1024.png",
+            "tests/teacher_suite_sync.test.ts"
+          ]
+        },
+        "colorAndDepth": {
+          "maxPoints": 20,
+          "awardedPoints": 20,
+          "notes": "Nền điều khiển tối màu chuyên dụng giúp giảm mỏi mắt cho cô giáo trong suốt giờ học.",
+          "discrepancies": [],
+          "evidencePaths": [
+            "artifacts/verification/teacher-live-console-1536x1024.png",
+            "tests/teacher_suite_sync.test.ts"
+          ]
+        }
+      },
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/teacher_suite_sync.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "teacher-presentation-desktop-vi"
+      ],
+      "iterations": [],
+      "referenceSha256": "6d6b71acd9cc763070a27806253741b95e229a26e880db960d79afaee50a6471"
+    },
+    {
+      "reviewId": "teacher-session-results-desktop-vi",
+      "referenceId": "09-teacher/07-results-and-profile",
+      "referencePath": null,
+      "basis": "SPEC_ONLY",
+      "route": "/teacher/results",
+      "state": "class-session-summary-report",
+      "locale": "vi",
+      "viewport": {
+        "width": 1536,
+        "height": 1024,
+        "deviceScaleFactor": 1
+      },
+      "captureMode": "viewport",
+      "setupSteps": [
+        "Mở route /teacher/results sau khi kết thúc buổi dạy",
+        "Kiểm tra thống kê số hoạt động hoàn thành, mức độ tương tác và tác phẩm tiêu biểu của học sinh"
+      ],
+      "screenshotPath": "artifacts/verification/teacher-session-results-1536x1024.png",
+      "sideBySidePath": null,
+      "overlayPath": null,
+      "capturedAt": "2026-09-15T03:50:00.000Z",
+      "sourceRevision": null,
+      "appliedCorrections": [
+        "Đặc tả trong Plan: Báo cáo kết quả buổi học",
+        "Thống kê số hoạt động hoàn thành, tác phẩm tiêu biểu"
+      ],
+      "scores": null,
+      "rubric": null,
+      "issues": [],
+      "assetIssues": [],
+      "functionalEvidencePaths": [
+        "tests/teacher_suite_sync.test.ts"
+      ],
+      "visualStatus": "PASS",
+      "functionalStatus": "PASS",
+      "motionStatus": "PASS",
+      "status": "VERIFIED",
+      "usedByReviewIds": [
+        "teacher-dashboard-desktop-vi"
+      ],
+      "iterations": []
+    }
+  ],
+  "retirementNote": "Room console and session results retired by user request on 2026-10-25. Remaining scores and screenshots are historical baseline evidence, not verification of current UI. Removed test paths are retired evidence; current retirement checks live in tests/room_retirement.test.ts."
+}

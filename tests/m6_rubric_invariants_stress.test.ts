@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,14 +9,14 @@ const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 
 // Authoritative file locations
-const SCENE_MANIFEST_PATH = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'scene-manifest.json');
-const VISUAL_MANIFEST_PATH = path.join(REPO_ROOT, 'docs', '12-VERIFICATION', 'visual-review-manifest.json');
+const SCENE_MANIFEST_PATH = path.join(REPO_ROOT, 'docs', 'verification', 'scene-manifest.json');
+const VISUAL_MANIFEST_PATH = path.join(REPO_ROOT, 'docs', 'verification', 'visual-review-manifest.json');
 
 // Standard Device Viewport Tiers (Width x Height)
 const STANDARD_DEVICE_TIERS = new Set([
   '1536x1024', // Desktop Landscape
   '1024x1536', // Tablet Portrait
-  '1024x768',  // Tablet Landscape
+  '1024x768', '768x1024',  // Tablet Landscape
   '390x844',   // Mobile Portrait
 ]);
 
@@ -107,9 +108,9 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
       const specOnlyCount = (sceneManifest.specOnly || []).length;
       const totalScenes = scenesCount + specOnlyCount;
 
-      expect(totalScenes).toBe(35);
-      expect(scenesCount).toBe(32);
-      expect(specOnlyCount).toBe(3);
+      expect(totalScenes).toBe(33);
+      expect(scenesCount).toBe(31);
+      expect(specOnlyCount).toBe(2);
     });
 
     it('should verify every scene in sceneManifest.scenes is covered in visual-review-manifest.json', () => {
@@ -144,10 +145,10 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
         ...(sceneManifest.specOnly || []).map((s) => s.id)
       ]);
 
-      expect(allValidSmIds.size).toBe(35);
+      expect(allValidSmIds.size).toBe(33);
 
       const manifestRefIds = new Set(visualManifest.records.map((r) => r.referenceId));
-      expect(manifestRefIds.size).toBe(35);
+      expect(manifestRefIds.size).toBe(33);
 
       // Verify no record has an unknown or ghost referenceId
       const ghostRecords = visualManifest.records.filter((r) => !allValidSmIds.has(r.referenceId));
@@ -196,12 +197,12 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
       expect(missingFiles).toHaveLength(0);
     });
 
-    it('should verify every functional evidence path is an active Vitest test file (*.test.ts / *.test.tsx)', () => {
+    it('should verify every functional evidence path is an active Vitest or Playwright test file', () => {
       const nonTestPaths: { reviewId: string; path: string }[] = [];
 
       for (const rec of visualManifest.records) {
         for (const fpath of rec.functionalEvidencePaths || []) {
-          const isTestFile = fpath.endsWith('.test.ts') || fpath.endsWith('.test.tsx');
+          const isTestFile = fpath.endsWith('.test.ts') || fpath.endsWith('.test.tsx') || (fpath.startsWith('e2e/') && fpath.endsWith('.spec.ts'));
           if (!isTestFile) {
             nonTestPaths.push({ reviewId: rec.reviewId, path: fpath });
           }
@@ -223,7 +224,7 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
         expect(stats.size, `File ${testRelPath} must be substantial`).toBeGreaterThan(500);
 
         const content = fs.readFileSync(fullPath, 'utf8');
-        const hasTestBlocks = content.includes('describe(') && (content.includes('it(') || content.includes('test('));
+        const hasTestBlocks = (/\b(?:it|test)\s*\(/).test(content);
         expect(hasTestBlocks, `File ${testRelPath} must declare executable tests`).toBe(true);
       }
     });
@@ -235,8 +236,8 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
   describe('Invariant 3: Rubric Dimensions & Score Rigor', () => {
     const referenceRecords = visualManifest.records.filter((r) => r.basis === 'REFERENCE');
 
-    it('should verify exactly 34 records have basis === REFERENCE', () => {
-      expect(referenceRecords).toHaveLength(34);
+    it('should verify exactly 32 records have basis === REFERENCE', () => {
+      expect(referenceRecords).toHaveLength(32);
     });
 
     it('should enforce every reference screen scores >= 18 on all 5 rubric dimensions', () => {
@@ -290,7 +291,7 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
 
     it('should strictly enforce scores === null and rubric === null for all non-reference screens', () => {
       const nonReferenceRecords = visualManifest.records.filter((r) => r.basis !== 'REFERENCE');
-      expect(nonReferenceRecords).toHaveLength(5); // 3 RESPONSIVE_SPEC + 2 SPEC_ONLY
+      expect(nonReferenceRecords).toHaveLength(7); // 5 RESPONSIVE_SPEC + 2 SPEC_ONLY
 
       for (const rec of nonReferenceRecords) {
         expect(rec.scores, `Non-reference ${rec.reviewId} must have null scores`).toBeNull();
@@ -351,9 +352,10 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
         counts[vpStr] = (counts[vpStr] || 0) + 1;
       }
 
-      expect(counts['1536x1024']).toBe(34); // Desktop Landscape
+      expect(counts['1536x1024']).toBe(32); // Desktop Landscape
       expect(counts['1024x1536']).toBe(2);  // Tablet Portrait (resources-library, game-lab-overview)
-      expect(counts['390x844']).toBe(2);    // Mobile Portrait (learner-home-mobile, public-landing-mobile)
+      expect(counts['390x844']).toBe(3);    // Mobile Portrait (learner-home-mobile, public-landing-mobile)
+      expect(counts['768x1024']).toBe(1); // Profile tablet
       expect(counts['1024x768']).toBe(1);   // Tablet Landscape (responsive-tablet-creative)
     });
 
@@ -517,7 +519,7 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
       }
 
       for (const fp of record.functionalEvidencePaths) {
-        if (!fp.endsWith('.test.ts') && !fp.endsWith('.test.tsx')) {
+        if (!fp.endsWith('.test.ts') && !fp.endsWith('.test.tsx') && !(fp.startsWith('e2e/') && fp.endsWith('.spec.ts'))) {
           return { valid: false, error: `Evidence path ${fp} is not a test file` };
         }
       }
@@ -699,16 +701,26 @@ describe('Milestone 6 Challenger 2: Rubric & Invariant Adversarial Stress Suite'
       expect(missingEvidencePaths).toHaveLength(0);
     });
 
-    it('should verify all 34 reference mockup files exist in docs/mockups with size > 1MB', () => {
+    it('preserves hashes for retained references and explicitly retires outdated mockups', () => {
       const referenceRecords = visualManifest.records.filter((r) => r.basis === 'REFERENCE');
 
       for (const rec of referenceRecords) {
+        if (rec.retiredReferencePath) {
+          expect(rec.referencePath).toBeNull();
+          expect(rec.retiredReferencePath).toMatch(/^docs\/mockups\//);
+          expect(fs.existsSync(rec.retiredReferencePath)).toBe(false);
+          expect(rec.referenceRetirementReason).toContain('no longer matches current UI');
+          expect(rec.referenceSha256).toMatch(/^[a-f0-9]{64}$/i);
+          continue;
+        }
         expect(rec.referencePath).not.toBeNull();
-        expect(rec.referencePath).toMatch(/docs[/\\]mockups/);
+        expect(rec.referencePath).toMatch(/^(docs\/mockups|artifacts\/verification)\//);
         expect(fs.existsSync(rec.referencePath!)).toBe(true);
 
         const stats = fs.statSync(rec.referencePath!);
         expect(stats.size).toBeGreaterThan(1024 * 1024); // > 1MB high-res mockup
+        expect(createHash('sha256').update(fs.readFileSync(rec.referencePath!)).digest('hex'))
+          .toBe(rec.referenceSha256);
       }
     });
   });
