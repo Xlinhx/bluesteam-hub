@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useMovingMarker } from '../../../shared/ui/motion/useMovingMarker';
+import './lesson-builder-motion.css';
 import { useRouter } from '../../../app/router';
 import { TeacherShell } from '../../../shared/shells/TeacherShell';
 import { oceanAudio } from '../../../shared/audio/oceanAudio';
@@ -101,6 +103,7 @@ export function TeacherLessonBuilderPage() {
   // BUILDER STATE (Screen 34)
   // ----------------------------------------------------------------------
   const [activeStepId, setActiveStepId] = useState<number>(1);
+  const stepMarker = useMovingMarker(activeStepId, 'y', 270);
   const [childInstruction, setChildInstruction] = useState(
     STEP_INSTRUCTIONS[1].child
   );
@@ -546,17 +549,23 @@ export function TeacherLessonBuilderPage() {
               {activities.map((act) => {
                 const isActive = act.id === activeStepId;
                 return (
-                  <div
+                  <button
                     key={act.id}
-                    onClick={() => handleSelectStep(act.id)}
-                    className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                    type="button"
+                    aria-current={isActive ? 'step' : undefined}
+                    onClick={event => {
+                      if (act.id !== activeStepId) stepMarker.prepare(event.detail > 0);
+                      handleSelectStep(act.id);
+                    }}
+                    className={`lesson-step-control relative w-full p-3 rounded-2xl border text-left cursor-pointer flex items-center justify-between gap-3 ${
                       isActive
                         ? 'border-[#17657A] ring-2 ring-[#17657A]/20 bg-sky-50/40 shadow-xs'
                         : 'border-slate-200/80 hover:bg-slate-50'
                     }`}
                   >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="flex flex-col items-center gap-1">
+                    {isActive && <span ref={stepMarker.marker} className="lesson-step-marker" data-motion-marker aria-hidden="true" />}
+                    <span className="flex items-center gap-2.5 min-w-0">
+                      <span className="flex flex-col items-center gap-1">
                         <span
                           className={`w-5 h-5 rounded-full text-[11px] font-bold flex items-center justify-center ${
                             isActive
@@ -566,29 +575,29 @@ export function TeacherLessonBuilderPage() {
                         >
                           {act.id}
                         </span>
-                        <GripVertical className="w-3.5 h-3.5 text-slate-300 cursor-grab" />
-                      </div>
+                        <GripVertical className="w-3.5 h-3.5 text-slate-300 cursor-grab" aria-hidden="true" />
+                      </span>
 
-                      <div className="w-14 h-12 rounded-xl overflow-hidden shadow-2xs shrink-0">
+                      <span className="w-14 h-12 rounded-xl overflow-hidden shadow-2xs shrink-0">
                         <img
                           src={act.thumbnail}
-                          alt={act.title}
+                          alt=""
                           className="w-full h-full object-cover"
                         />
-                      </div>
+                      </span>
 
-                      <div className="min-w-0">
-                        <h3 className="font-bold text-xs text-[#102A38] truncate">
+                      <span className="min-w-0">
+                        <span className="block font-bold text-xs text-[#102A38] truncate">
                           {act.title}
-                        </h3>
-                        <p className="text-[10px] text-slate-500 line-clamp-1">
+                        </span>
+                        <span className="text-[10px] text-slate-500 line-clamp-1">
                           {act.subtitle}
-                        </p>
-                      </div>
-                    </div>
+                        </span>
+                      </span>
+                    </span>
 
-                    <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
-                  </div>
+                    <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" aria-hidden="true" />
+                  </button>
                 );
               })}
             </div>
@@ -783,20 +792,21 @@ export function TeacherLessonBuilderPage() {
                   rows={2}
                   value={childInstruction}
                   onChange={(e) => setChildInstruction(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#17657A]/30 resize-none"
+                  className="ui-field w-full leading-relaxed resize-none"
                 />
               </div>
 
               {/* 2. Giọng đọc hướng dẫn */}
               <div className="space-y-1.5">
-                <label className="font-bold text-slate-700 block">
+                <label htmlFor="lesson-voice-actor" className="font-bold text-slate-700 block">
                   Giọng đọc hướng dẫn
                 </label>
                 <div className="flex items-center gap-2">
                   <select
+                    id="lesson-voice-actor"
                     value={voiceActor}
                     onChange={(e) => setVoiceActor(e.target.value)}
-                    className="flex-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 font-medium text-slate-800 focus:outline-none cursor-pointer"
+                    className="min-w-0 flex-1 font-medium"
                   >
                     <option>Giọng nữ (mặc định)</option>
                     <option>Giọng nam ấm áp</option>
@@ -850,7 +860,7 @@ export function TeacherLessonBuilderPage() {
                   rows={2}
                   value={teacherPrompt}
                   onChange={(e) => setTeacherPrompt(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#17657A]/30 resize-none"
+                  className="ui-field w-full leading-relaxed resize-none"
                 />
               </div>
 

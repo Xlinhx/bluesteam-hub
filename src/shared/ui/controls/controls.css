@@ -1,0 +1,233 @@
+:root {
+  --ui-field-radius: 19px 13px 17px 13px;
+  --ui-menu-radius: 16px 13px 20px 14px;
+  --ui-control-height: 46px;
+  --ui-control-gap: 9px;
+  --ui-control-ease: cubic-bezier(.22, .72, .3, 1);
+  --catalog-control-radius: 11px;
+  --catalog-control-line: #a2c0ca;
+  --catalog-control-hover: #548595;
+  --catalog-control-focus: #236d80;
+  --catalog-control-selected: #e4f5f8;
+  --catalog-control-surface: #fff;
+  --catalog-control-ink: #12384b;
+  --catalog-option-selected: #d8f1f4;
+  --catalog-option-hover: #eff8fa;
+}
+
+:is(.ui-search-field, .resource-search, .ui-field, .ui-filter-control, .resource-control, .resource-group-select, select:not([multiple], [size])) {
+  border: 1px solid var(--catalog-control-line);
+  border-radius: var(--ui-field-radius);
+}
+
+.ui-field {
+  box-sizing: border-box;
+  min-block-size: var(--ui-control-height);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding: 9px 12px;
+  background: var(--catalog-control-surface);
+  color: var(--catalog-control-ink);
+  font: inherit;
+}
+
+.ui-field[aria-invalid=true] { border-color: #b53232; }
+
+.ui-field:disabled { opacity: .65; }
+
+:is(.ui-field, .ui-search-field, .resource-search) input::placeholder,
+.ui-field::placeholder {
+  color: #587785;
+  opacity: 1;
+}
+
+:is(.ui-search-field, .resource-search) {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--ui-control-gap);
+  min-width: 0;
+  min-height: var(--ui-control-height);
+  padding-inline: 7px 10px;
+  background: var(--catalog-control-surface);
+  color: var(--catalog-control-ink);
+  cursor: text;
+}
+
+.resource-search {
+  min-height: 48px;
+  width: min(100%, 300px);
+}
+
+:is(.ui-search-field, .resource-search) > svg { flex: none; }
+
+.ui-search-icon {
+  display: grid;
+  flex: 0 0 31px;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  background: #e9f5f8;
+  color: #286779;
+}
+
+.ui-search-field:has(> input:focus) > .ui-search-icon {
+  background: #d6eff3;
+  color: #155a70;
+}
+
+:is(.ui-search-field, .resource-search) > input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  border: 0;
+  border-radius: 0;
+  padding-inline: 0;
+  padding-block: 8px;
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+}
+
+:is(.ui-search-field, .resource-search) > input:focus { outline: none; box-shadow: none; }
+
+:is(.ui-search-field, .resource-search) > input:disabled { cursor: default; }
+
+.ui-search-field:has(> .ui-search-icon) > input::-webkit-search-cancel-button { display: none; }
+
+.ui-search-field > .ui-search-clear {
+  display: grid;
+  flex: 0 0 38px;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #286779;
+  cursor: pointer;
+}
+
+.ui-search-field > .ui-search-clear:focus-visible { outline: 2px solid var(--catalog-control-focus); outline-offset: -3px; }
+
+.ui-search-field > .ui-search-submit {
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 11px 9px 11px 9px;
+  background: #e0f2f5;
+  color: #155a70;
+  cursor: pointer;
+}
+
+.ui-search-field > .ui-search-submit:focus-visible { outline: 2px solid var(--catalog-control-focus); outline-offset: -3px; }
+
+:is(.ui-filter-control, .resource-control)[aria-pressed=true],
+:is(.ui-filter-control[aria-expanded=true], details[open] > .ui-filter-control, select:not([multiple], [size]):open) {
+  background: linear-gradient(105deg, var(--catalog-control-selected), var(--catalog-control-surface));
+  border-color: var(--catalog-control-hover);
+}
+
+@media (hover: hover) {
+  :is(.ui-search-field, .resource-search, .ui-field, .ui-filter-control, .resource-control, .resource-group-select, select:not([multiple], [size])):where(:not(:disabled, [aria-invalid=true])):hover {
+    border-color: var(--catalog-control-hover);
+  }
+  .ui-search-field > .ui-search-clear:hover { background: #e9f5f8; }
+  .ui-search-field > .ui-search-submit:hover { background: #d2ebf1; }
+}
+
+/* The field frame owns focus for its input. Adjacent clear buttons keep their own focus indicator. */
+:is(.ui-search-field, .resource-search):has(> input:focus-visible),
+:is(.ui-field, .ui-filter-control, .resource-control, .resource-group-select, select:not([multiple], [size])):focus-visible {
+  border-color: var(--catalog-control-focus);
+  outline: 1px solid var(--catalog-control-focus);
+  outline-offset: -1px;
+}
+
+.ui-field[aria-invalid=true]:focus-visible { border-color: #b53232; outline-color: #b53232; }
+
+select:not([multiple], [size]) {
+  min-height: var(--ui-control-height);
+  max-inline-size: 100%;
+  padding: 8px 12px;
+  background-color: var(--catalog-control-surface);
+  color: var(--catalog-control-ink);
+  cursor: pointer;
+}
+
+select:not([multiple], [size]):disabled { cursor: default; opacity: .65; }
+
+/* Keep form behavior and let older browsers use their platform picker. */
+@supports (appearance: base-select) and selector(::picker(select)) {
+  select:not([multiple], [size]),
+  select:not([multiple], [size])::picker(select) { appearance: base-select; }
+
+  select:not([multiple], [size])::picker(select) {
+    min-inline-size: min(anchor-size(width, 0px), calc(100vw - 24px));
+    max-inline-size: calc(100vw - 24px);
+    max-block-size: min(300px, 55dvh);
+    padding: 7px;
+    margin-block: 6px;
+    overscroll-behavior: contain;
+    border: 1px solid var(--catalog-control-line);
+    border-radius: var(--ui-menu-radius);
+    background: var(--catalog-control-surface);
+    color: var(--catalog-control-ink);
+    box-shadow: 0 4px 10px #07334d0d, 0 14px 34px #07334d1a;
+    scrollbar-width: thin;
+    scrollbar-color: #aac5ce transparent;
+  }
+
+  select:not([multiple], [size])::picker-icon {
+    content: "";
+    flex: none;
+    width: 16px;
+    height: 16px;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  select:not([multiple], [size]):open::picker-icon { rotate: 180deg; }
+
+  select:not([multiple], [size]) option {
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border-radius: var(--catalog-control-radius);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  select:not([multiple], [size]) option:is(:hover, :focus-visible) { background: var(--catalog-option-hover); }
+  select:not([multiple], [size]) option:checked { background: var(--catalog-option-selected); color: #084a60; }
+  select:not([multiple], [size]) option:focus-visible { outline: 1px solid var(--catalog-control-focus); outline-offset: -1px; }
+  select:not([multiple], [size]) option::checkmark { order: 1; margin-inline-start: auto; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    select:not([multiple], [size])::picker-icon { transition: rotate 160ms var(--ui-control-ease); }
+    select:not([multiple], [size]):open::picker(select) { animation: ui-native-picker-in 145ms var(--ui-control-ease) both; }
+    @keyframes ui-native-picker-in { from { opacity: .25; } to { opacity: 1; } }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :is(.ui-search-field, .resource-search, .ui-field, .ui-filter-control, .resource-control, .resource-group-select, select:not([multiple], [size])) {
+    transition: border-color 150ms var(--ui-control-ease), background-color 150ms var(--ui-control-ease);
+  }
+  .ui-search-icon { transition: background-color 150ms var(--ui-control-ease), color 150ms var(--ui-control-ease); }
+  .ui-search-field > .ui-search-clear { animation: ui-search-clear-in 130ms var(--ui-control-ease) both; }
+  @keyframes ui-search-clear-in { from { opacity: 0; scale: .86; } to { opacity: 1; scale: 1; } }
+}
+
+@media (forced-colors: active) {
+  :root { --catalog-control-focus: Highlight; }
+  :is(.ui-search-field, .resource-search):has(> input:focus),
+  :is(.ui-field, .ui-filter-control, .resource-control, .resource-group-select, select:not([multiple], [size])):focus-visible {
+    outline: 1px solid Highlight;
+    outline-offset: -1px;
+  }
+}

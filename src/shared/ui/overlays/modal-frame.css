@@ -1,0 +1,20 @@
+.ocean-modal-native {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  box-sizing: border-box;
+  max-width: calc(100% - 32px);
+  max-height: calc(100dvh - 32px);
+}
+
+.ocean-modal-native::backdrop {
+  background: rgb(11 43 61 / .55);
+}
+
+.ocean-modal-native.ocean-modal-full {
+  max-width: none;
+}
+
+@media (pointer: fine) {
+  .ocean-modal-native::backdrop { backdrop-filter: blur(3px); }
+}

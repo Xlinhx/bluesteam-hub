@@ -1,0 +1,10 @@
+{
+  "dunes": {
+    "text": "Trên đụn cát ven biển có muống biển, cỏ lông chông và nhiều loài cây khác. Bé có thể tìm các nhóm sinh vật ở đụn cát.",
+    "audio": "/assets/learner-content/v7/audio/world-intro-dunes.mp3"
+  },
+  "fishing": {
+    "text": "Từ vùng có thuyền đánh bắt, bé có thể chọn khám phá Ven bờ hoặc lặn xuống Rạn san hô.",
+    "audio": "/assets/learner-content/v7/audio/world-intro-fishing.mp3"
+  }
+}

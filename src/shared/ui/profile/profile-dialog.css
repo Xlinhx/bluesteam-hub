@@ -1,0 +1,86 @@
+dialog.ocean-modal.profile-dialog {
+  --dialog-gutter: clamp(16px, 2.6vw, 32px);
+  --dialog-header: #eaf9fb;
+  --dialog-ink: #10284b;
+  --dialog-line: #dcebf1;
+  --dialog-accent: #006b79;
+  padding: 0;
+  border: 1px solid #c5e3eb;
+  border-radius: 31px 25px 29px 24px;
+  background: #fff;
+  color: var(--dialog-ink);
+  box-shadow: 0 22px 75px #092b4742;
+  overscroll-behavior: contain;
+}
+
+dialog.ocean-modal.profile-dialog > .profile-dialog-heading {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(8px, 1.4vw, 14px);
+  margin: 0;
+  padding: clamp(12px, 1.5vw, 19px) var(--dialog-gutter);
+  background: radial-gradient(65% 90% at 67% -28%, #f8ffff 94%, transparent 96%),
+    radial-gradient(56% 95% at 103% -30%, #bdeef4 98%, transparent 99%), var(--dialog-header);
+  border-bottom: 1px solid #e1eff3;
+}
+
+.profile-dialog-emblem {
+  display: grid;
+  place-items: center;
+  width: clamp(37px, 4.5vw, 53px);
+  aspect-ratio: 1;
+  border-radius: 46% 54% 47% 53%;
+  background: linear-gradient(140deg, #d9fcfa, #aeeceb);
+  color: var(--dialog-accent);
+}
+.profile-dialog-emblem svg { width: 52%; height: 52%; stroke-width: 1.8; }
+dialog.ocean-modal.profile-dialog .profile-dialog-heading h2 {
+  margin: 0;
+  color: var(--dialog-ink);
+  font-size: clamp(19px, 2.35vw, 32px);
+  font-weight: 850;
+  overflow-wrap: anywhere;
+}
+.profile-dialog-heading h2 i {
+  display: inline-block;
+  width: 24px;
+  height: 19px;
+  margin-inline-start: 7px;
+  background: radial-gradient(circle at 20% 67%, transparent 2px, #51b9cf 2.7px, transparent 3.7px),
+    radial-gradient(circle at 65% 28%, transparent 3px, #51b9cf 3.7px, transparent 4.7px),
+    radial-gradient(circle at 84% 79%, transparent 1.4px, #51b9cf 2px, transparent 3px);
+}
+dialog.ocean-modal.profile-dialog .profile-dialog-heading > button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid #bedee9;
+  border-radius: 50%;
+  background: #faffff;
+  color: #1c5870;
+}
+dialog.ocean-modal.profile-dialog .profile-dialog-heading > button:hover { background: #d9f3f7; }
+.profile-dialog-heading > button svg { width: 21px; height: 21px; }
+.profile-dialog .profile-dialog-body { padding: clamp(13px, 1.9vw, 24px) var(--dialog-gutter); }
+dialog.ocean-modal.profile-dialog :is(button,input,a):focus-visible {
+  outline: 2px solid #287f91;
+  outline-offset: 2px;
+}
+.profile-dialog .profile-dialog-danger {
+  border-color: #e4c3be;
+  background: #fff6f3;
+  color: #963c35;
+}
+.profile-dialog .profile-dialog-danger:hover { background: #ffe8e2; }
+
+@media (max-width: 520px) {
+  dialog.ocean-modal.profile-dialog { max-width: calc(100% - 18px); max-height: calc(100dvh - 24px); border-radius: 23px 20px 24px 20px; }
+  .profile-dialog-heading h2 i { display: none; }
+}

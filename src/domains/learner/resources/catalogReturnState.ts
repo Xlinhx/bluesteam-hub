@@ -5,7 +5,7 @@ export interface CatalogReturnState {
   key: string;
   groups: ResourceGroup[];
   focusedGroup: ResourceGroup | null;
-  groupCursor: string | null;
+  groupTotal: number;
   items: ResourceDto[];
   cursor: string | null;
   total: number;

@@ -9,7 +9,7 @@ import { ShellStudy, JellyfishStudy } from './NaturalHistoryDrawings';
 import { usePublicMotion } from '../components/usePublicMotion';
 import './landing.css';
 
-const ASSETS = '/assets/generated/landing-editorial/';
+const ASSETS = '/assets/generated/landing-chibi/';
 
 function Artwork({ name, alt, className = '', eager = false }: { name: string; alt: string; className?: string; eager?: boolean }) {
   return <img className={className} src={`${ASSETS}${name}-1600.webp`} srcSet={`${ASSETS}${name}-800.webp 800w, ${ASSETS}${name}-1600.webp 1600w`} sizes="(max-width: 700px) 100vw, 70vw" width="1536" height="1024" alt={alt} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : 'auto'} decoding="async" />;
@@ -30,12 +30,13 @@ export function LivingOceanLandingPage() {
 
   return <PublicShell variant="landing">
     <div ref={root} className="editorial-landing">
+      <div className="landing-ocean">
       <section className="landing-hero" aria-labelledby="landing-title" data-artwork-drift>
-        <div className="landing-hero-art"><ShellStudy /><Artwork name="hero" eager className="landing-hero-object" alt={english ? 'A pearlescent nautilus shell cutaway, flowing water and silver fish' : 'Vỏ ốc anh vũ ánh xà cừ, dòng nước và đàn cá bạc'} /></div>
+        <div className="landing-hero-art"><ShellStudy /><Artwork name="hero" eager className="landing-hero-object" alt={english ? 'A pearlescent nautilus shell, chibi shark and small fish' : 'Vỏ ốc anh vũ ánh xà cừ, cá mập chibi và đàn cá nhỏ'} /></div>
         <div className="landing-content landing-hero-copy">
           <h1 id="landing-title">{english ? <>One ocean. <br />Endless discoveries.</> : <>Một đại dương. <br />Muôn cách khám phá.</>}</h1>
           <p>{english ? 'Resources, interaction and creativity.' : 'Học liệu, tương tác và sáng tạo.'}</p>
-          <a className="landing-text-link" href="#discover">{english ? 'Discover BlueSTEAM' : 'Khám phá BlueSTEAM'}<ArrowRight size={27} strokeWidth={1.3} aria-hidden="true" /></a>
+          <a className="landing-text-link" href="#discover">{english ? 'Discover Blue STEAM Hub' : 'Khám phá Blue STEAM Hub'}<ArrowRight size={27} strokeWidth={1.3} aria-hidden="true" /></a>
         </div>
       </section>
 
@@ -66,11 +67,12 @@ export function LivingOceanLandingPage() {
             <p>{english ? 'Explore, connect and learn through experience.' : 'Khám phá, kết nối và học qua trải nghiệm.'}</p>
             <PublicLink href="/entry" className="public-join">{english ? 'Start exploring' : 'Bắt đầu khám phá'}<ArrowRight size={23} strokeWidth={1.2} aria-hidden="true" /></PublicLink>
           </div>
-          <Artwork name="knowledge" className="landing-knowledge-object" alt={english ? 'Whale and coral studies, with a diagram connecting books, people and creativity' : 'Tranh nghiên cứu cá voi, san hô và sơ đồ kết nối học liệu với sáng tạo'} />
+          <Artwork name="knowledge" className="landing-knowledge-object" alt={english ? 'Chibi whale and coral, with a diagram connecting books and creativity' : 'Cá voi chibi, san hô và sơ đồ kết nối học liệu với sáng tạo'} />
           <svg className="landing-connection" viewBox="0 0 1000 160" fill="none" aria-hidden="true"><path d="M20 35C180-5 200 160 390 110S540 140 680 60 835 50 980 20" stroke="currentColor" strokeWidth="1.2" pathLength="1" strokeDasharray="1" /><path pathLength="1" strokeDasharray="1" d="m25 30-8 6 11 2" stroke="currentColor" /></svg>
         </div>
       </section>
-      <footer className="landing-footer"><div className="landing-content"><PublicLink href="/" aria-label="BlueSTEAM"><BlueSteamLogo size="sm" /></PublicLink><span>{english ? 'Learn with the ocean.' : 'Học cùng đại dương.'}</span><PublicLink href="/entry">{english ? 'Explore together' : 'Cùng khám phá'}<ArrowUpRight size={16} aria-hidden="true" /></PublicLink></div></footer>
+      </div>
+      <footer className="landing-footer"><div className="landing-content"><PublicLink href="/" aria-label="Blue STEAM Hub"><BlueSteamLogo size="sm" /></PublicLink><span>{english ? 'Learn with the ocean.' : 'Học cùng đại dương.'}</span><PublicLink href="/entry">{english ? 'Explore together' : 'Cùng khám phá'}<ArrowUpRight size={16} aria-hidden="true" /></PublicLink></div></footer>
     </div>
   </PublicShell>;
 }

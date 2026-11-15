@@ -15,14 +15,11 @@
  [data-creative-motion-host=hub] .creative-hub-scene__edge--right,[data-creative-motion-host=scan] .scan-reef-right{animation:creative-reef-current-right 19s -6s cubic-bezier(.45,0,.55,1) infinite alternate}
  [data-creative-motion-host] .creative-water-wash{animation:creative-wash-expanse 24s cubic-bezier(.45,0,.55,1) infinite alternate}
  [data-creative-motion-host] .creative-edge-garden g:first-child{animation:creative-garden-current 15s cubic-bezier(.45,0,.55,1) infinite alternate;transform-origin:50% 100%}
- [data-creative-motion-host=teacher] .creative-seascape-waves{animation:creative-ocean-breathe 28s cubic-bezier(.45,0,.55,1) infinite alternate}
- [data-creative-motion-host] .creative-seascape-bubbles{animation:creative-coast-bubbles 21s ease-in-out infinite alternate}
 }
 @keyframes creative-ocean-breathe{from{translate:0 -4px;scale:1.005}to{translate:0 9px;scale:1.025}}
 @keyframes creative-reef-current-left{from{rotate:-.7deg;translate:-2px 0}to{rotate:1.1deg;translate:3px -4px}}
 @keyframes creative-reef-current-right{from{rotate:.9deg;translate:2px -2px}to{rotate:-.9deg;translate:-3px 3px}}
 @keyframes creative-wash-expanse{from{translate:-8px -5px;scale:1}to{translate:12px 8px;scale:1.045}}
 @keyframes creative-garden-current{from{skew:-1deg}to{skew:1.4deg}}
-@keyframes creative-coast-bubbles{from{translate:0 12px;opacity:.55}to{translate:0 -22px;opacity:.8}}
-[data-creative-hidden=true] :is(.creative-hub-scene__ocean,.creative-hub-scene__edge,.scan-reef-left,.scan-reef-right,.creative-water-wash,.creative-edge-garden g,.creative-seascape-waves,.creative-seascape-bubbles){animation-play-state:paused!important}
+[data-creative-hidden=true] :is(.creative-hub-scene__ocean,.creative-hub-scene__edge,.scan-reef-left,.scan-reef-right,.creative-water-wash,.creative-edge-garden g){animation-play-state:paused!important}
 @media(prefers-reduced-motion:reduce){[data-creative-motion-host] *{animation:none!important;transition:none!important}}

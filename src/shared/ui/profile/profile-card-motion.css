@@ -1,0 +1,118 @@
+@media (prefers-reduced-motion: no-preference) {
+  [data-profile-card-reveal] {
+    --card-arrival: cubic-bezier(.24,.72,.25,1);
+    --card-rise: 10px;
+    --card-slide: 12px;
+  }
+
+  [data-profile-card-reveal]:is(.profile-summary-panel,.profile-tray,.profile-membership,.overview-card)::before {
+    transform-origin: 18% 70%;
+    animation: profile-card-surface 620ms var(--card-arrival) backwards;
+  }
+
+  [data-profile-card="achievement"][data-profile-card-reveal]::before { transform-origin: 86% 75%; }
+  [data-profile-card-reveal]:is(.profile-summary-progress,.overview-progress) :is(.profile-count > img,.overview-progress-content > img),
+  [data-profile-card="progress"][data-profile-card-reveal] .evidence-corner-art {
+    transform-origin: 40% 84%;
+    animation: profile-card-notebook 680ms var(--card-arrival) 48ms backwards;
+  }
+  [data-profile-card-reveal]:is(.profile-summary-progress,.overview-progress) :is(.profile-count:nth-child(2) > img,.overview-progress-content > img:last-child) {
+    --card-slide: -12px;
+    --notebook-turn: 5deg;
+    transform-origin: 65% 84%;
+    animation-delay: 100ms;
+  }
+  [data-profile-card="achievement"][data-profile-card-reveal] :is(.profile-count > img,.overview-card-art) {
+    transform-origin: 50% 86%;
+    animation: profile-card-medal 720ms cubic-bezier(.2,.68,.26,1) 70ms backwards;
+  }
+
+  [data-profile-card-reveal] :is(.profile-record-tiles .evidence-thumb,.overview-species-list li > :is(img,svg),.overview-game-list li > :is(img,svg),.evidence-panel .evidence-thumb) {
+    animation: profile-card-thumbnail 500ms var(--card-arrival) calc(64ms + var(--card-item-delay, 0ms)) backwards;
+  }
+  [data-profile-card-reveal]:is(.profile-tray-games,.overview-games) :is(.evidence-thumb,.overview-game-list li > :is(img,svg)) {
+    animation-name: profile-card-game;
+  }
+  [data-profile-card-reveal]:is(.profile-tray-artworks,.overview-creations,.profile-collection-section) :is(.profile-preview-media,.overview-creation-list li > :is(img,svg),.profile-art-grid li:nth-child(-n+3) .artwork-preview img) {
+    transform-origin: 50% 84%;
+    animation: profile-card-print 590ms var(--card-arrival) calc(68ms + var(--card-item-delay, 0ms)) backwards;
+  }
+  [data-profile-card-reveal] :is(.profile-section-icon,.profile-membership-title > span,.class-settings-school-art,.class-settings-key,.roster-transfer-art,.badge-preview-list .badge-medallion) {
+    transform-origin: 55% 78%;
+    animation: profile-card-medal 620ms var(--card-arrival) 50ms backwards;
+  }
+  [data-profile-card-reveal] :is(li:nth-child(2),.teacher-member-request:nth-of-type(3)) { --card-item-delay: 43ms; }
+  [data-profile-card-reveal] :is(li:nth-child(3),.teacher-member-request:nth-of-type(4)) { --card-item-delay: 86ms; }
+
+  [data-profile-card="journal"][data-profile-card-reveal] :is(.timeline-dot,time > svg),
+  [data-profile-card="roster"][data-profile-card-reveal] .teacher-member-request:nth-of-type(-n+4) img {
+    animation: profile-card-thumbnail 460ms var(--card-arrival) calc(88ms + var(--card-item-delay, 0ms)) backwards;
+  }
+  [data-profile-card]:is(.profile-journal,.evidence-panel,.teacher-profile-panel) { position: relative; }
+  [data-profile-card-reveal]:is(.profile-journal,.overview-journey,.evidence-panel,.teacher-profile-panel)::after,
+  .profile-membership #profile-join-form:not([hidden])::before {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    inset: 0 14% auto 5%;
+    height: 2px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, transparent, #75c6d5 25%, #adddea 71%, transparent);
+    transform-origin: left;
+    animation: profile-card-journal-line 680ms cubic-bezier(.24,.72,.25,1) both;
+  }
+  .profile-membership #profile-join-form { position: relative; }
+  .profile-membership #profile-join-form::before { inset-block-start: -4px; animation-duration: 330ms; }
+  [data-profile-card="settings"][data-profile-card-reveal]::after {
+    transform-origin: 100% 100%;
+    animation: profile-card-shore 680ms var(--card-arrival) backwards;
+  }
+
+  .profile-membership button[aria-expanded] > svg { transition: rotate 260ms cubic-bezier(.24,.72,.25,1); }
+  .profile-membership button[aria-expanded="true"] > svg { rotate: -24deg; }
+
+  @media (hover: hover) and (pointer: fine) {
+    [data-profile-card] :is(.teacher-profile-action,.evidence-link,.profile-link) > :is(.lucide-chevron-right,.lucide-arrow-right) { transition: translate 210ms cubic-bezier(.22,.71,.28,1); }
+    [data-profile-card] :is(.teacher-profile-action,.evidence-link,.profile-link):hover > :is(.lucide-chevron-right,.lucide-arrow-right) { translate: 3px 0; }
+  }
+  @media (max-width: 600px) {
+    [data-profile-card-reveal] { --card-rise: 7px; --card-slide: 7px; }
+    [data-profile-card-reveal]:is(.profile-summary-progress,.overview-progress) :is(.profile-count:nth-child(2) > img,.overview-progress-content > img:last-child) { --card-slide: -7px; }
+  }
+
+  @keyframes profile-card-surface {
+    from { opacity: .73; transform: translateY(4px) scale(.974,.94); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes profile-card-notebook {
+    from { opacity: .64; transform: translate(calc(-1 * var(--card-slide)), var(--card-rise)) rotate(var(--notebook-turn, -6deg)); }
+    70% { opacity: 1; transform: translateY(-1px) rotate(1deg); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes profile-card-medal {
+    from { opacity: .62; transform: translateY(var(--card-rise)) rotate(-7deg) scale(.94); }
+    65% { opacity: 1; transform: translateY(-2px) rotate(2deg) scale(1.025); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes profile-card-thumbnail {
+    from { opacity: .68; transform: translateY(var(--card-rise)) scale(.96); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes profile-card-game {
+    from { opacity: .66; transform: translateX(calc(-1 * var(--card-slide))) rotate(-3deg); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes profile-card-print {
+    from { opacity: .65; transform: translateY(var(--card-rise)) rotate(3deg) scale(.96); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes profile-card-journal-line {
+    0% { opacity: 0; transform: scaleX(.06); }
+    28% { opacity: .8; }
+    100% { opacity: 0; transform: scaleX(1); }
+  }
+  @keyframes profile-card-shore {
+    from { opacity: .25; transform: translateY(3px) scale(.78,.57); }
+    to { opacity: 1; transform: none; }
+  }
+}

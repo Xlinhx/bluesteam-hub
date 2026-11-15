@@ -198,10 +198,13 @@ test('artwork entrance waits for its bitmap and the tidal shelf remains visible'
   await page.route('**/world-game.webp',async route=>{await held;await route.continue();});
   await page.goto('/interactive?kind=game&view=all',{waitUntil:'domcontentloaded'});
   await expect(page.getByTestId('interactive-tab-game')).toBeVisible();
+  const art=page.locator('.interactive-world--game .interactive-world__art');
+  await art.scrollIntoViewIfNeeded();
+  await expect(art).toBeInViewport();
   expect(await page.locator('.interactive-world--game .interactive-world__light').evaluate(el=>getComputedStyle(el).display)).toBe('block');
-  expect(await page.locator('.interactive-world--game .interactive-world__art').evaluate(el=>el.getAnimations().length)).toBe(0);
+  expect(await art.evaluate(el=>el.getAnimations().length)).toBe(0);
   release();
-  await expect.poll(()=>page.locator('.interactive-world--game .interactive-world__art').evaluate(el=>el.getAnimations().length)).toBeGreaterThan(0);
+  await expect.poll(()=>art.evaluate(el=>el.getAnimations().length)).toBeGreaterThan(0);
   await page.emulateMedia({reducedMotion:'reduce'});
   expect(await page.locator('.interactive-world--game .interactive-world__art').evaluate(el=>el.getAnimations().length)).toBe(0);
 });

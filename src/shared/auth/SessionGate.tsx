@@ -8,7 +8,8 @@ const subscribeToClient = () => () => {};
 
 /** The API remains the authority; cached names are never proof of a session. */
 export function SessionGate({ role, children }: { role: RouteAccountRole; children: ReactNode }) {
-  const { currentPath, navigate } = useRouter();
+  const { currentPath, navigate, query } = useRouter();
+  const inviteCode = currentPath.split('?')[0] === '/profile' ? query.join : undefined;
   const isClient = useSyncExternalStore(subscribeToClient, () => true, () => false);
   const [verifiedPath, setVerifiedPath] = useState<string | null>(null);
   const [error, setError] = useState(''), [retry, setRetry] = useState(0);
@@ -22,10 +23,14 @@ export function SessionGate({ role, children }: { role: RouteAccountRole; childr
         if (!active || request !== version) return;
         if (!account || (role !== 'member' && account.role !== role)) {
           setVerifiedPath(null);
-          navigate('/login', { replace: true, query: { role: role === 'member' ? 'student' : role }, preserveQuery: false });
+          navigate('/login', { replace: true, query: { role: role === 'member' ? 'student' : role, ...(inviteCode ? { join:inviteCode } : {}) }, preserveQuery: false });
           return;
         }
-        if (demoStore.getProfile().id !== account.id) applyAccountIdentity(account);
+        const profile = demoStore.getProfile();
+        if (profile.id !== account.id) applyAccountIdentity(account);
+        else if (account.role === 'student' && account.avatarKey && account.avatarKey !== profile.avatarKey) {
+          demoStore.setProfile({ ...profile, avatarKey:account.avatarKey });
+        }
         setVerifiedPath(currentPath);
       } catch {
         if (active && request === version) setError('Chưa thể kiểm tra phiên đăng nhập. Vui lòng thử lại.');
@@ -35,7 +40,7 @@ export function SessionGate({ role, children }: { role: RouteAccountRole; childr
     const onFocus = () => { void check(); };
     window.addEventListener('focus', onFocus);
     return () => { active = false; window.removeEventListener('focus', onFocus); };
-  }, [currentPath, role, navigate, retry]);
+  }, [currentPath, role, navigate, retry, inviteCode]);
   const allowed = verifiedPath === currentPath;
   return <>
     {allowed && error && <div className="fixed bottom-24 right-4 z-50 max-w-sm rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm text-[#12384B] shadow-lg" role="status">{error} <button className="min-h-11 px-3 font-bold underline" onClick={() => setRetry(value => value + 1)}>Thử lại</button></div>}

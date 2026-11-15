@@ -22,7 +22,7 @@ test('a late login response never takes over a journey the user has left', async
   await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
   await expect(page).toHaveURL(/\/entry$/);
   expect(await page.evaluate(() => sessionStorage.getItem('bluesteam_teacher_session'))).toBeNull();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Bắt đầu cùng BlueSTEAM');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Hãy bắt đầu cùng Blue STEAM Hub');
 });
 
 test('mobile route change never morphs two different labels into one object', async ({ page }) => {

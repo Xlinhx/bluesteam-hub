@@ -24,18 +24,14 @@ function FeatureTile({
 }: FeatureTileProps) {
   return (
     <div
-      className="entry-feature flex flex-col items-center gap-1.5 p-1 sm:p-1.5 rounded-xl transition-colors duration-200 group/icon select-none"
+      data-theme={theme} className="entry-feature flex flex-col items-center gap-1.5 p-1 sm:p-1.5 rounded-xl transition-colors duration-200 group/icon select-none"
     >
       <div
-        className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center transition-colors duration-200  ${
-          theme === 'student'
-            ? 'bg-[#17657A]/10 text-[#17657A] group-hover/icon:bg-[#17657A]/20 group-hover/icon:text-[#0c404f]'
-            : 'bg-[#102A38]/10 text-[#102A38] group-hover/icon:bg-[#102A38]/20 group-hover/icon:text-[#17657A]'
-        }`}
+        className="entry-feature-icon w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center transition-colors duration-200"
       >
         {icon}
       </div>
-      <span className="text-[11px] font-bold text-slate-700 tracking-tight transition-colors group-hover/icon:text-[#102A38]">
+      <span className="text-[11px] font-bold text-slate-700 tracking-tight transition-colors group-hover/icon:text-[#103D70]">
         {label}
       </span>
     </div>
@@ -61,13 +57,13 @@ function PersonaBadge({
 
   return (
     <div
-      className="entry-persona relative -mt-7 z-10 mx-auto px-5 py-2 rounded-full bg-white shadow-lg border border-slate-100 flex items-center gap-2.5 transition-colors duration-200  group/badge"
+      data-theme={theme} className="entry-persona relative -mt-7 z-10 mx-auto px-5 py-2 rounded-full bg-white shadow-lg border border-slate-100 flex items-center gap-2.5 transition-colors duration-200  group/badge"
     >
       <img
         src={imgSrc}
         alt={`${name} - ${role}`}
         className={`w-10 h-10 rounded-full object-cover shadow-xs shrink-0 ring-2 transition-transform duration-200  ${
-          theme === 'student' ? 'ring-[#17657A]/25' : 'ring-[#102A38]/25'
+          'ring-[#103D70]/25'
         }`}
         onError={() => {
           if (fallbackSrc && imgSrc !== fallbackSrc) {
@@ -76,12 +72,12 @@ function PersonaBadge({
         }}
       />
       <div className="flex flex-col text-left">
-        <span className="font-editorial font-black text-base text-[#102A38] leading-tight">
+        <span className="entry-persona-name font-black text-base text-[#103D70] leading-tight">
           {name}
         </span>
         <span
           className={`text-[10px] font-bold leading-tight ${
-            theme === 'student' ? 'text-[#17657A]' : 'text-[#102A38]'
+            'text-[#103D70]'
           }`}
         >
           {role}
@@ -105,7 +101,7 @@ export function RoleGatewayPage() {
   };
 
   return (
-    <div ref={root} className="entry-page relative min-h-screen w-full flex flex-col justify-between overflow-x-hidden font-sans select-none bg-[#EAF2F6]">
+    <div ref={root} className="entry-page relative min-h-screen w-full flex flex-col justify-between overflow-x-hidden font-sans select-none bg-white">
       {/* Background Image: Coastal Study Desk Terrace */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="entry-backdrop w-full h-full">
@@ -115,7 +111,7 @@ export function RoleGatewayPage() {
             className="w-full h-full object-cover object-center"
           />
         </div>
-        <div className="entry-atmosphere absolute inset-0 bg-white/10 backdrop-blur-[1px]" />
+        <div className="entry-atmosphere absolute inset-0" />
       </div>
 
       <OceanFieldwork variant="entry" />
@@ -124,20 +120,20 @@ export function RoleGatewayPage() {
         <button
           type="button"
           onClick={() => navigate('/login')}
-          className="group px-6 py-2.5 min-h-[48px] rounded-full border border-[#102A38]/40 bg-white/60 hover:bg-white/90 backdrop-blur-md text-[#102A38] font-editorial font-semibold text-sm flex items-center gap-2 cursor-pointer transition-colors duration-200 active:scale-95 shadow-xs"
+          className="group px-6 py-2.5 min-h-[48px] rounded-full border border-[#103D70]/40 bg-white/60 hover:bg-white/90 backdrop-blur-md text-[#103D70] font-editorial font-semibold text-sm flex items-center gap-2 cursor-pointer transition-colors duration-200 active:scale-95 shadow-xs"
         >
-          <User className="w-4 h-4 text-[#102A38]" />
+          <User className="w-4 h-4 text-[#103D70]" />
           <span>Đăng nhập giáo viên</span>
         </button>
       </header>
 
       {/* Main Role Selection Area */}
       <main className="relative z-20 max-w-6xl mx-auto w-full px-6 py-4 flex flex-col items-center">
-        <div className="text-center mb-8">
-          <h1 className="font-editorial font-black text-4xl sm:text-5xl text-[#102A38] drop-shadow-sm tracking-[-0.02em] mb-2.5">
-            Bắt đầu cùng BlueSTEAM
+        <div className="entry-intro text-center mb-8">
+          <h1 className="font-black text-4xl sm:text-5xl text-[#103D70] drop-shadow-sm tracking-[-0.02em] mb-2.5">
+            Hãy bắt đầu cùng Blue STEAM Hub
           </h1>
-          <div className="flex flex-col items-center gap-1 text-[#17657A]">
+          <div className="flex flex-col items-center gap-1 text-[#103D70]">
             <svg width="68" height="8" viewBox="0 0 64 8" fill="none" aria-hidden="true">
               <path
                 className="entry-wave" pathLength="1" strokeDasharray="1"
@@ -197,7 +193,7 @@ export function RoleGatewayPage() {
               <button
                 type="button"
                 onClick={handleStudentEntry}
-                className="entry-role-action group/btn w-full py-4 min-h-[56px] rounded-2xl bg-[#17657A] hover:bg-[#125061] text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 transition-colors duration-200 active:scale-[0.97] cursor-pointer"
+                className="entry-role-action group/btn w-full py-4 min-h-[56px] rounded-2xl bg-[#65D0FF] hover:bg-[#41C3FA] text-[#103D70] font-black text-sm shadow-lg flex items-center justify-center gap-2 transition-colors duration-200 active:scale-[0.97] cursor-pointer"
               >
                 <span>Khám phá cùng bé</span>
                 <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1.5" />
@@ -250,7 +246,7 @@ export function RoleGatewayPage() {
               <button
                 type="button"
                 onClick={handleTeacherEntry}
-                className="entry-role-action group/btn w-full py-4 min-h-[56px] rounded-2xl bg-[#102A38] hover:bg-[#0A1D27] text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 transition-colors duration-200 active:scale-[0.97] cursor-pointer"
+                className="entry-role-action group/btn w-full py-4 min-h-[56px] rounded-2xl bg-[#65D0FF] hover:bg-[#41C3FA] text-[#103D70] font-black text-sm shadow-lg flex items-center justify-center gap-2 transition-colors duration-200 active:scale-[0.97] cursor-pointer"
               >
                 <span>Không gian giáo viên</span>
                 <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1.5" />

@@ -3,9 +3,9 @@ import { createMotionScope } from './motionScope';
 import { oceanSceneCue, type OceanScene as Scene, type OceanRole as Role } from './oceanSceneRecipes';
 
 const casts: Record<Scene, [string, Role][]> = {
-  library: [['.resources-banner-art,.resource-group-section>.resource-surface,.resource-group-heading>.resource-surface','surface'],['.resource-group-portrait>img,.resource-group-portrait>svg,.resource-group-heading-portrait','portrait'],['.resource-banner-content>h2,.resource-banner-content>p,.resource-group-content>header h3,.resource-section-heading>h2,.resource-group-heading>h2,.resource-tile-grid article h3','title'],['.resource-tile-grid>article img,.coloring-resource-tile img','image']],
-  profile: [['.profile-seascape>.ocean-cabinet','surface'],['.profile-identity>.profile-portrait','portrait'],['.profile-identity h1,.profile-identity p,.profile-gallery-title>div,.profile-section-heading,.profile-art-caption','title'],['.profile-art .artwork-preview>img','image']],
-  teacher: [['.teacher-resource-sidebar>.resource-surface,.teacher-resource-title>.resource-surface','surface'],['.teacher-group-cover,.teacher-resource-groups>button>svg','portrait'],['.teacher-resource-sidebar>header>h1,.teacher-resource-title-copy>div','title'],['.teacher-resource-filters>.resource-coral','tools'],['.teacher-resource-table tbody>tr','row']],
+  library: [['.resources-banner-art,.resource-group-heading>.resource-surface','surface'],['.resource-group-portrait,.resource-group-heading-portrait','portrait'],['.resource-banner-content>h2,.resource-banner-content>p,.resource-group-name,.resource-section-heading>h2,.resource-group-heading>h2,.resource-tile-grid article h3','title'],['.resource-tile-grid>article img,.coloring-resource-tile img','image']],
+  profile: [['.profile-identity>.profile-portrait','portrait'],['.profile-art-grid li:nth-child(n+4) .artwork-preview>img','image']],
+  teacher: [['.teacher-resource-sidebar>.resource-surface','surface'],['.teacher-group-cover,.teacher-resource-groups>button>svg','portrait'],['.teacher-resource-sidebar>header>h1,.teacher-resource-title-copy>div','title'],['.teacher-resource-table tbody>tr','row']],
   detail: [['.resource-observation>.resource-seascape','surface'],['.observation-title>h1,.observation-fact-copy,.resource-media-title,.resource-media-fact-copy','title'],['.observation-photo>img,.resource-media-cover','image'],['.observation-fact-icon,.resource-media-fact-icon','portrait'],['.resource-detail-toolbar','tools']],
 };
 
@@ -22,11 +22,13 @@ export function useOceanChoreography(root: RefObject<HTMLElement | null>, scene:
     const reveal = (element: Element) => {
       if (seen.current.has(element)) return;
       seen.current.add(element);
+      // The incoming profile already moves as one scene during route navigation.
+      if (scene === 'profile' && document.documentElement.dataset.oceanTransition) return;
       if (document.querySelector('dialog[open],.ocean-modal-backdrop')) return;
       if (restore || (scene === 'detail' && element.matches('.observation-photo>img') && document.documentElement.dataset.oceanResource)) return;
       const role = roles.get(element)!;
       const rect = element.getBoundingClientRect();
-      const section = element.closest('.resource-discovery-banner,.resource-group-section,.profile-collection-section,.profile-seascape,.teacher-resource-title') || host;
+      const section = element.closest('.resource-discovery-banner,.resource-group-section,.profile-collection-section,.profile-personal-sheet,.teacher-resource-title') || host;
       const anchor = section.querySelector('.resource-banner-content,.resource-group-portrait,.profile-section-icon,.profile-portrait,.teacher-resource-title-copy')?.getBoundingClientRect() || section.getBoundingClientRect();
       const compact = innerWidth < 600 || (innerHeight < 600 && matchMedia('(pointer: coarse)').matches);
       const cue = oceanSceneCue(scene, role, { dx: rect.left + rect.width / 2 - anchor.left - anchor.width / 2, dy: rect.top - anchor.top, compact, opacity: getComputedStyle(element).opacity });

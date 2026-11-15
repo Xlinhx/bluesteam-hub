@@ -3,7 +3,7 @@ import { AppError } from './errors.js';
 
 export type Actor =
   | { kind:'teacher'; teacherId:string; email:string; displayName:string; sessionId:string; }
-  | { kind:'student'; learnerId:string; email:string; displayName:string; sessionId:string; };
+  | { kind:'student'; learnerId:string; email:string; displayName:string; avatarKey:string; sessionId:string; };
 
 export function parseCookieHeader(cookieHeader?: string): Record<string, string> {
   const result: Record<string, string> = {};

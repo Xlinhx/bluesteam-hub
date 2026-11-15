@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createDatabasePool } from '../pool.js';
 import { importSeed } from './import-seed.js';
+import { installLearnerPack, loadLearnerPack } from './install-learner-pack.js';
 
 async function main() {
   const args = process.argv.slice(2);
@@ -16,6 +17,21 @@ async function main() {
   const currentDir = path.dirname(fileURLToPath(import.meta.url));
   const repoRoot = path.resolve(currentDir, '../../../..');
   const archiveDir = path.join(repoRoot, 'server', 'seed-data');
+
+  if (args.includes('--learner-pack-only')) {
+    if (dryRun) {
+      const { pack, items, checksum } = loadLearnerPack(archiveDir);
+      console.log(JSON.stringify({ version: pack.version, items: items.length, checksum }));
+      return;
+    }
+    const pool = createDatabasePool();
+    try {
+      console.log(JSON.stringify(await installLearnerPack(pool, archiveDir)));
+    } finally {
+      await pool.end();
+    }
+    return;
+  }
 
   if (dryRun) {
     const result = await importSeed({ mode, dryRun: true, archiveDir });

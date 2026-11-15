@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState, useMemo, useRef 
 import { IAStrategy, ThemeStrategy, VariantId } from '../shared/types/variant';
 import { demoStore } from '../shared/realtime/demoStore';
 import { flushSync } from 'react-dom';
-import { isOceanScene, isInteractiveScene, transitionOceanScene } from '../shared/ui/motion/oceanNavigation';
+import { cancelOceanScene, isOceanScene, isInteractiveScene, transitionOceanScene } from '../shared/ui/motion/oceanNavigation';
 import '../shared/ui/motion/ocean-navigation.css';
 
 export interface RouteMatch {
@@ -233,7 +233,8 @@ export function RouterProvider({
     setCurrentPath(pathPart);
     setSearch(searchStr ? `?${searchStr}` : '');
     };
-    if(transitionCreativeScene(`${currentPath}${search}`,url,()=>flushSync(commitRoute),typeof window!=='undefined'&&window.matchMedia('(prefers-reduced-motion: reduce)').matches,typeof document==='undefined'?undefined:document))return;
+    const sceneDocument = typeof document === 'undefined' ? undefined : document;
+    if(transitionCreativeScene(`${currentPath}${search}`,url,()=>{cancelOceanScene(sceneDocument);flushSync(commitRoute);},typeof window!=='undefined'&&window.matchMedia('(prefers-reduced-motion: reduce)').matches,sceneDocument))return;
     const native = (isOceanScene(currentPath) || isOceanScene(pathPart) || (isInteractiveScene(currentPath) && isInteractiveScene(pathPart))) && typeof document !== 'undefined' && 'startViewTransition' in document;
     transitionOceanScene(currentPath, pathPart, () => native ? flushSync(commitRoute) : commitRoute(), typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches, typeof document === 'undefined' ? undefined : document);
   };
@@ -272,7 +273,10 @@ export function RouterProvider({
     const handlePopState = () => {
       if(typeof window.dispatchEvent==='function' && !window.dispatchEvent(new CustomEvent('bluesteam:before-navigate',{cancelable:true}))){window.history.pushState({},'',acceptedLocation.current);return;}
       const path = window.location.pathname || '/', search = window.location.search || '';
-      if(transitionCreativeScene(acceptedLocation.current,`${path}${search}`,()=>flushSync(()=>{setCurrentPath(path);setSearch(search);}),window.matchMedia('(prefers-reduced-motion: reduce)').matches,document,'back'))return;
+      if(transitionCreativeScene(acceptedLocation.current,`${path}${search}`,()=>{
+        cancelOceanScene(document);
+        flushSync(()=>{setCurrentPath(path);setSearch(search);});
+      },window.matchMedia('(prefers-reduced-motion: reduce)').matches,document,'back'))return;
       transitionOceanScene(acceptedLocation.current.split('?')[0], path, () => flushSync(() => { setCurrentPath(path); setSearch(search); }), window.matchMedia('(prefers-reduced-motion: reduce)').matches, document, 'back');
     };
 

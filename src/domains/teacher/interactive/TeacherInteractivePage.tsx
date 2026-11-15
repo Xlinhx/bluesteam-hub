@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { BarChart3, Eye, Search } from 'lucide-react';
+import { ArrowRight, BarChart3, Eye } from 'lucide-react';
 import type { UsageRow } from '@bluesteam/contracts';
 import { useRouter } from '@/app/router';
 import { TeacherShell } from '@/shared/shells/TeacherShell';
 import { InteractiveSeascape } from '@/shared/ui/visuals/InteractiveSeascape';
 import { InteractiveWorlds, resolveInteractiveKind } from '@/shared/ui/navigation/InteractiveWorlds';
+import { SearchField } from '@/shared/ui/controls/SearchField';
 import { fetchTeacherInteractivePage, fetchInteractiveGroups, type InteractiveGroup } from '@/shared/api/interactiveGroups';
 import { fetchTeacherActivityById, fetchPublicModelById, type ActivityDto, type Model3DDto } from '@/shared/api/catalog';
 import { ActivityExperience } from '@/shared/activities/ActivityExperience';
@@ -67,8 +68,12 @@ export function TeacherInteractivePage() {
       <InteractiveWorlds value={kind} compact={usage} onChange={next=>setQuery({kind:next,contentId:null,version:null,q:null,groupId:null})}/>
       {previewBusy&&<p role="status" className="usage-inline-message">Đang mở xem thử…</p>}{previewError&&<p role="alert" className="usage-inline-error">{previewError}</p>}
       {usage?<TeacherUsagePanel kind={kind} contentId={query.contentId} q={query.q} onPreview={row=>void openPreview(row)}/>:<>
-        <div className="curated-interactive__filters"><form onSubmit={event=>{event.preventDefault();setQuery({q:search.trim()||null});}}><Search size={22}/><input aria-label="Tìm hoạt động" placeholder="Tìm hoạt động…" value={search} onChange={event=>setSearch(event.target.value)}/><button type="submit" aria-label="Tìm hoạt động"><Search size={20}/></button></form>
-          <label><span className="sr-only">Lọc theo nhóm</span><select aria-label="Lọc theo nhóm" disabled={Boolean(groupsError)} value={query.groupId||''} onChange={event=>setQuery({groupId:event.target.value||null})}><option value="">Tất cả nhóm</option>{groups.map(group=><option value={group.id} key={group.id}>{group.title}</option>)}</select></label><span className="curated-interactive__count">{loading&&!items.length?'Đang tải…':`${total} hoạt động`}</span>
+        <div className="curated-interactive__filters"><form onSubmit={event=>{event.preventDefault();setQuery({q:search.trim()||null});}}>
+          <SearchField type="text" label="Tìm hoạt động" placeholder="Tìm hoạt động…" value={search} onChange={setSearch}
+            onClear={()=>{setSearch('');setQuery({q:null});}}
+            trailingAction={<button className="ui-search-submit" type="submit" aria-label="Tìm hoạt động"><ArrowRight size={18} aria-hidden="true"/></button>}/>
+        </form>
+          <label><span className="sr-only">Lọc theo nhóm</span><select className="ui-filter-control" aria-label="Lọc theo nhóm" disabled={Boolean(groupsError)} value={query.groupId||''} onChange={event=>setQuery({groupId:event.target.value||null})}><option value="">Tất cả nhóm</option>{groups.map(group=><option value={group.id} key={group.id}>{group.title}</option>)}</select></label><span className="curated-interactive__count">{loading&&!items.length?'Đang tải…':`${total} hoạt động`}</span>
         </div>
         {groupsError&&<p role="alert" className="usage-inline-error">{groupsError}<button onClick={()=>setRetry(value=>value+1)}>Thử lại nhóm</button></p>}
         <section aria-label="Hoạt động trong thư viện" aria-busy={loading}>

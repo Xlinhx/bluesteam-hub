@@ -1,19 +1,20 @@
-import { ResourceSeascape, ResourceCurrent } from '../../../shared/ui/visuals/ResourceSeascape';
+import { SearchField } from '@/shared/ui/controls/SearchField';
+import { ResourceCurrent, ResourceSeascape } from '../../../shared/ui/visuals/ResourceSeascape';
 import { focusDialogTrigger } from '../../../shared/ui/overlays/nativeDialogFocus';
 import {ResourceGroupHeading} from './ResourceGroupHeading';
-import {ResourceSurface} from '../../../shared/ui/visuals/ResourceSurface';
+import { ResourceGroupGallery } from './ResourceGroupGallery';
+import { ResourceWaterGarden } from './ResourceWaterGarden';
 import { cropImageStyle } from '../../../shared/ui/visuals/resourceCoverCrop';
 import './resources-catalog.css';
-import '../../../shared/ui/catalog/resource-controls.css';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Bookmark, Layers, Search, Volume2, Waves, Printer, PencilLine, Ellipsis, Home, ChevronRight, UserRound } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Bookmark, Layers, Volume2, Printer, PencilLine, Ellipsis, Home, ChevronRight, UserRound } from 'lucide-react';
 import { useRouter } from '../../../app/router';
 import { LearnerShell } from '../../../shared/shells/LearnerShell';
 import { oceanAudio } from '../../../shared/audio/oceanAudio';
 import { fetchPublicResources, type ResourceDto } from '../../../shared/api/catalog';
 import { fetchResourceGroups, fetchResourceGroupById, type ResourceGroup } from '../../../shared/api/resourceGroups';
-import { CatalogToolbar } from '../../../shared/ui/catalog/CatalogToolbar';
 import { MediaTile } from '../../../shared/ui/catalog/MediaTile';
+import { CatalogToolbar } from '../../../shared/ui/catalog/CatalogToolbar';
 import { ResourceGroupChooser } from './ResourceGroupChooser';
 import { rememberCatalog, peekCatalogReturn, takeCatalogReturn } from './catalogReturnState';
 import {ColoringResourceTile} from './ColoringResourceTile';
@@ -22,143 +23,207 @@ import {LearnerCreativeBackdrop} from '../components/creative/LearnerCreativeBac
 import './coloring-catalog.css';
 import { useCatalogMotion } from './useCatalogMotion';
 import { useOceanChoreography } from '../../../shared/ui/motion/useOceanChoreography';
-import { OceanCabinet } from '../../../shared/ui/visuals/OceanCabinet';
-
-const SAVED_KEY = 'bluesteam_saved_resources_v2';
-function readSaved(): Record<string, boolean> {
-  try { return JSON.parse(localStorage.getItem(SAVED_KEY) || '{}'); } catch { return {}; }
-}
+import { CatalogPagination, RESOURCE_PAGE_SIZE } from '../../../shared/ui/catalog/CatalogPagination';
+import { getResourceFormat } from '../../../shared/ui/catalog/sourceResourceFormats';
+import { ResourceFormatNav, SourceLibraryContent } from './SourceLibraryPage';
+import { SourceCatalogItem } from './SourceCatalogItem';
+import { useResourceBookmarks } from './useResourceBookmarks';
+import welcomeNarration from './resource-narration.json';
 
 export function ResourcesLibraryPage() {
   const { query, navigate, currentPath } = useRouter();
   const creativeCatalog = currentPath === '/creative/coloring';
   const groupId = query.group;
+  const sourceView = !creativeCatalog && !groupId && Boolean(
+    query.kind === 'reef' || query.kind === 'collection' || query.habitat || query.item || query.source === '1');
+  const format = getResourceFormat(query.kind);
   const returnState = useRef<ReturnType<typeof takeCatalogReturn>>(null);
   const initializedReturn = useRef(false);
-  const filtered = Boolean(groupId || query.q || query.saved || query.kind==='coloring' || creativeCatalog);
+  const filtered = Boolean(groupId || query.q || query.saved || query.kind || creativeCatalog);
   const [groups, setGroups] = useState<ResourceGroup[]>([]);
   const [focusedGroup, setFocusedGroup] = useState<ResourceGroup | null>(null);
-  const [groupCursor, setGroupCursor] = useState<string | null>(null);
+  const [groupTotal, setGroupTotal] = useState(0);
   const [items, setItems] = useState<ResourceDto[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState(query.q || '');
-  const [saved, setSaved] = useState<Record<string, boolean>>(readSaved);
+  const { saved, toggleSaved } = useResourceBookmarks();
   const [loading, setLoading] = useState(true);
 
   const [error, setError] = useState('');
   const [retry, setRetry] = useState(0);
   const [choosingGroup, setChoosingGroup] = useState(false);
-  const kind = creativeCatalog ? 'coloring' : query.kind === 'image' || query.kind === 'flashcard' ? 'visual' : query.kind || 'visual';
+  const kind = creativeCatalog ? 'coloring' : query.kind || 'all';
+  const groupPage = /^\d{1,9}$/.test(query.catalogPage ?? '') ? Math.max(1, Number(query.catalogPage)) : 1;
+  const resourcePage = /^\d{1,9}$/.test(query.resourcePage ?? '') ? Math.max(1, Number(query.resourcePage)) : 1;
+  const discovery = !sourceView && !filtered;
   const selected = groups.find(g => g.id === groupId) || (focusedGroup?.id === groupId ? focusedGroup : null);
   const savedIds = Object.keys(saved).filter(id => saved[id]);
   const savedSignature = savedIds.join(',');
   const savedFilterSignature = query.saved ? savedSignature : '';
-  const catalogKey = [creativeCatalog?'creative':'resources',groupId || '',kind,query.q || '',query.saved || '',query.saved ? savedSignature : '',query.capability||'all'].join('|');
+  const catalogKey = [creativeCatalog?'creative':'resources',groupId || '',kind,query.q || '',query.saved || '',query.saved ? savedSignature : '',query.capability||'all',filtered ? resourcePage : groupPage,query.cursor || '',query.before || ''].join('|');
   const initialSignature = useRef(`${catalogKey}|${savedSignature}`);
   if (!initializedReturn.current) { returnState.current = peekCatalogReturn(catalogKey); initializedReturn.current = true; }
   const [history,setHistory] = useState<Array<string|undefined>>(()=>peekCatalogReturn(catalogKey)?.history || [undefined]);
   const previousKey=useRef(catalogKey);
+  const pendingScroll = useRef<number | null>(null);
   const motionRoot = useRef<HTMLDivElement>(null);
+  useEffect(() => oceanAudio.subscribe(speaking => {
+    if (speaking) motionRoot.current?.querySelectorAll('audio').forEach(track => track.pause());
+  }), []);
   const restoredCatalog = useRef(Boolean(returnState.current));
-  const restoredScene = useRef({ key: catalogKey, page: history.length });
-  useOceanChoreography(motionRoot, 'library', restoredCatalog.current && restoredScene.current.key === catalogKey && restoredScene.current.page === history.length);
-  useCatalogMotion(motionRoot, catalogKey, history.length, loading, restoredCatalog.current);
-  useEffect(()=>{if(previousKey.current!==catalogKey){previousKey.current=catalogKey;setHistory([undefined]);}},[catalogKey]);
-  const patchQuery = (patch: Record<string, string | null>) => navigate(creativeCatalog ? '/creative/coloring' : '/resources', { preserveQuery: true, query: patch });
+  const page = filtered ? creativeCatalog ? history.length : resourcePage : groupPage;
+  const restoredScene = useRef({ key: catalogKey, page });
+  useOceanChoreography(motionRoot, 'library', restoredCatalog.current && restoredScene.current.key === catalogKey && restoredScene.current.page === page);
+  useCatalogMotion(motionRoot, filtered ? catalogKey : 'resource-groups', page, sourceView || loading, restoredCatalog.current);
+  useEffect(()=>{if(creativeCatalog && previousKey.current!==catalogKey){previousKey.current=catalogKey;setHistory([undefined]);}},[catalogKey,creativeCatalog]);
+  const patchQuery = (patch: Record<string, string | null>) => navigate(creativeCatalog ? '/creative/coloring' : '/resources', { preserveQuery: true, query: {resourcePage:null,cursor:null,before:null,...patch} });
+  const openGroups = () => navigate('/resources', { query: { catalogPage: groupPage > 1 ? String(groupPage) : null } });
 
   useEffect(() => { setSearch(query.q || ''); }, [query.q]);
   useEffect(() => {
+    if (sourceView) return;
     const timer = setTimeout(() => {
       if (search.trim() !== (query.q || '')) patchQuery({ q: search.trim() || null });
     }, 300);
     return () => clearTimeout(timer);
-  }, [search]);
+  }, [search, sourceView]);
 
   useEffect(() => {
+    if (sourceView) return;
     const abort = new AbortController();
     const previous = returnState.current;
     if (previous?.key === catalogKey && initialSignature.current === `${catalogKey}|${savedSignature}`) {
       takeCatalogReturn(catalogKey);
       returnState.current = null;
-      setGroups(previous.groups); setFocusedGroup(previous.focusedGroup); setGroupCursor(previous.groupCursor);
+      setGroups(previous.groups); setFocusedGroup(previous.focusedGroup); setGroupTotal(previous.groupTotal);
       setItems(previous.items); setCursor(previous.cursor); setTotal(previous.total); setLoading(false);
-      const frame = requestAnimationFrame(() => window.scrollTo({top:previous.scrollY,behavior:'instant' as ScrollBehavior}));
-      return () => { cancelAnimationFrame(frame); abort.abort(); };
+      pendingScroll.current = previous.scrollY;
+      return () => abort.abort();
     }
     returnState.current = null;
     setError(''); setLoading(true); setItems([]); setCursor(null);
     if (!filtered) {
-      fetchResourceGroups({ limit: 3, cursor: history[history.length-1] }, abort.signal).then(page => {
-        setGroups(page.items); setGroupCursor(page.nextCursor);if(!page.items.length&&history.length>1)setHistory(prev=>prev.slice(0,-1));
+      const cursor = groupPage > 1 ? String((groupPage - 1) * RESOURCE_PAGE_SIZE) : undefined;
+      fetchResourceGroups({ limit: RESOURCE_PAGE_SIZE, cursor }, abort.signal).then(page => {
+        if (abort.signal.aborted) return;
+        setGroups(page.items);
+        setGroupTotal(page.total);
+        if (!page.items.length && groupPage > 1) {
+          const last = Math.ceil(page.total / RESOURCE_PAGE_SIZE);
+          navigate('/resources', {replace:true,preserveQuery:true,query:{catalogPage:last > 1 ? String(last) : null}});
+        }
       }).catch(err => { if (!abort.signal.aborted) setError(err.message); })
         .finally(() => { if (!abort.signal.aborted) setLoading(false); });
     } else {
-      if (groupId) fetchResourceGroupById(groupId, false, abort.signal).then(setFocusedGroup).catch(err => { if (!abort.signal.aborted) setError(err.message); });
-      if (!groups.length) fetchResourceGroups({}, abort.signal).then(page => { setGroups(page.items); setGroupCursor(page.nextCursor); }).catch(() => { /* Resource request below reports availability. */ });
-      fetchPublicResources({ capability:query.capability==='screen'||query.capability==='print'?query.capability:'all',groupId, kind, q: query.q, savedIds: query.saved ? savedIds : undefined, cursor: history[history.length-1], limit: kind==='coloring'?6:8 }, abort.signal)
-        .then(page => { if (!abort.signal.aborted) { setItems(page.items); setCursor(page.nextCursor); setTotal(page.total);if(!page.items.length&&history.length>1)setHistory(prev=>prev.slice(0,-1)); } })
+      if (groupId && focusedGroup?.id !== groupId && !groups.some(group => group.id === groupId)) fetchResourceGroupById(groupId, false, abort.signal).then(group => { if (!abort.signal.aborted) setFocusedGroup(group); }).catch(err => { if (!abort.signal.aborted) setError(err.message); });
+      if (creativeCatalog && !groups.length) fetchResourceGroups({limit:3}, abort.signal).then(page => { if (!abort.signal.aborted) setGroups(page.items); }).catch(() => { /* Resource request below reports availability. */ });
+      fetchPublicResources({ library:!creativeCatalog && !query.saved, capability:query.capability==='screen'||query.capability==='print'?query.capability:'all',groupId, kind, q: query.q, savedIds: query.saved ? savedIds : undefined,
+        cursor: creativeCatalog ? history.at(-1) : query.cursor, before:creativeCatalog ? undefined : query.before,
+        page:creativeCatalog || query.cursor || query.before ? undefined : resourcePage, limit: creativeCatalog ? 6 : RESOURCE_PAGE_SIZE }, abort.signal)
+        .then(result => {
+          if (abort.signal.aborted) return;
+          setItems(result.items); setCursor(result.nextCursor); setTotal(result.total);
+          if (!result.items.length && history.length > 1) setHistory(prev=>prev.slice(0,-1));
+          if (!result.items.length && resourcePage > 1 && !creativeCatalog) {
+            const last = Math.ceil(result.total / RESOURCE_PAGE_SIZE);
+            navigate('/resources', {replace:true,preserveQuery:true,query:{resourcePage:last > 1 ? String(last) : null,cursor:null,before:null}});
+          }
+        })
         .catch(err => { if (!abort.signal.aborted) setError(err.message); })
         .finally(() => { if (!abort.signal.aborted) setLoading(false); });
     }
     return () => abort.abort();
-  }, [groupId, kind, query.q, query.saved, query.capability, savedFilterSignature, retry, history]);
+  }, [sourceView, groupId, kind, query.q, query.saved, query.capability, query.cursor, query.before, savedFilterSignature, retry, history, groupPage, resourcePage]);
 
-  const more = () => {
-    const next=filtered?cursor:groupCursor;
-    if(!loading && next)setHistory(prev=>[...prev,next]);
+  useEffect(() => {
+    if (loading || pendingScroll.current === null) return;
+    const frame = requestAnimationFrame(() => {
+      if (pendingScroll.current !== null) window.scrollTo({top:pendingScroll.current,behavior:'instant'});
+      pendingScroll.current = null;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [loading]);
+
+  const goToPage = (number: number) => {
+    const value = number > 1 ? String(number) : null;
+    patchQuery(filtered ? {resourcePage:value} : {catalogPage:value});
   };
-  const turnBack=()=>{if(!loading)setHistory(prev=>prev.slice(0,-1));};
-  const toggleSaved = (id: string) => setSaved(prev => {
-    const next = { ...prev, [id]: !prev[id] };
-    try { localStorage.setItem(SAVED_KEY, JSON.stringify(next)); } catch { /* Device storage may be full. */ }
-    return next;
-  });
+  const openResource = (id: string) => {
+    rememberCatalog({key:catalogKey,groups,focusedGroup,groupTotal,items,cursor,total,history,scrollY:window.scrollY});
+    navigate(`/resources/${id}`, { query: { group: groupId, kind: query.kind, q: query.q, saved: query.saved, capability:query.capability,
+      catalogPage:query.catalogPage,resourcePage:query.resourcePage,cursor:query.cursor,before:query.before } });
+  };
   const tile = (item: Pick<ResourceDto, 'id' | 'title' | 'kind' | 'coverUrl'>) => <MediaTile
     key={item.id} id={item.id} variant="resource-catalog" title={item.title} kind={item.kind}
     imageUrl={item.coverUrl} bookmarked={Boolean(saved[item.id])}
-    onOpen={() => {
-      rememberCatalog({key:catalogKey,groups,focusedGroup,groupCursor,items,cursor,total,history,scrollY:window.scrollY});
-      navigate(`/resources/${item.id}`, { query: { group: groupId || null, kind: query.kind || null, q: query.q || null, saved: query.saved || null,capability:query.capability||null } });
-    }}
-    onToggleBookmark={() => toggleSaved(item.id)} />;
+    onOpen={() => openResource(item.id)}
+    onToggleBookmark={() => toggleSaved(item.id)}
+    onSpeak={() => oceanAudio.speak(item.title, { profile: 'learner-resource' })} />;
 
   const catalog = useMemo(() => <>
       <h1 className="sr-only">{creativeCatalog ? "Tranh tô màu" : "Học liệu"}</h1>
-      {kind==='coloring'&&<nav className="coloring-breadcrumb" aria-label="Đường dẫn"><button onClick={()=>navigate('/creative')}><Home size={16}/>Sáng tạo</button><ChevronRight size={13}/><span>Tranh tô màu</span></nav>}
-      <div className="resource-search-row">
-        <label className="resource-search"><Search size={21}/><input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder={kind==='coloring'?'Tìm tranh…':'Tìm học liệu'} aria-label={kind==='coloring'?'Tìm tranh':'Tìm học liệu'} /></label>
-        <button className="resource-control" aria-pressed={Boolean(query.saved)} onClick={() => patchQuery({ saved: query.saved ? null : '1' })}><Bookmark size={22}/> Đã lưu</button>
-      </div>
-      {!groupId && kind!=='coloring' && <section aria-label="Giới thiệu học liệu" className="resources-banner resource-discovery-banner">
-        <div className="resources-banner-art" aria-hidden="true"><OceanCabinet variant="discovery"/></div>
-        <div className="resource-banner-content"><button className="resource-listen" aria-label="Nghe giới thiệu học liệu" onClick={() => oceanAudio.speak('Nghe, xem, khám phá. Chọn một nhóm để khám phá thế giới đại dương!')}><Volume2 size={24}/></button><h2>Nghe · Xem · Khám phá</h2><p>Thế giới đại dương kỳ thú đang chờ bạn!</p></div>
+      {creativeCatalog && <nav className="coloring-breadcrumb" aria-label="Đường dẫn"><button onClick={()=>navigate('/creative')}><Home size={16}/>Sáng tạo</button><ChevronRight size={13}/><span>Tranh tô màu</span></nav>}
+      {!groupId && !creativeCatalog && <section aria-label="Giới thiệu học liệu" className="resources-banner resource-discovery-banner resource-ocean-banner">
+        <div className="resources-banner-art" aria-hidden="true"><img src="/assets/learner-worlds/resource-hero-turtle.webp" alt="" fetchPriority="high"/></div>
+        <div className="resource-banner-content"><button className="resource-listen" aria-label="Nghe giới thiệu học liệu" onClick={() => void oceanAudio.playNarration(welcomeNarration.audio, welcomeNarration.text, { profile: 'learner-resource' })}><Volume2 size={24}/></button><h2>Nghe · Xem · Khám phá</h2><p>Thế giới đại dương kỳ thú đang chờ bạn!</p></div>
       </section>}
-      {groupId && kind!=='coloring' && <ResourceGroupHeading key={groupId} group={selected}/>}
+      {!creativeCatalog && (!groupId || format) && <ResourceFormatNav active={format?.[0]}
+        onSelect={value => {
+          if (sourceView) navigate('/resources', {query:{kind:value},preserveQuery:false});
+          else patchQuery({kind:query.kind === value ? null : value});
+        }}/>}
+      {!sourceView && <div className="resource-search-row" role="group" aria-label="Lọc học liệu">
+        <SearchField className="resource-search" value={search} onChange={setSearch} placeholder={creativeCatalog ? 'Tìm tranh…' : 'Tìm học liệu'} label={creativeCatalog ? 'Tìm tranh' : 'Tìm học liệu'}/>
+        {!creativeCatalog && <button data-ocean-action="group" className="resource-group-select" aria-haspopup="dialog" aria-label="Chọn nhóm học liệu"
+          onClick={event => { focusDialogTrigger(event.currentTarget); setChoosingGroup(true); }}>
+          <Layers size={22}/><span>{selected?.title || 'Chọn nhóm học liệu'}</span>
+        </button>}
+        <button className={`resource-control${creativeCatalog ? '' : ' source-filter-bookmark'}`} aria-pressed={Boolean(query.saved)} onClick={() => patchQuery({ saved: query.saved ? null : '1' })}><Bookmark size={22} aria-hidden="true"/> Đã lưu</button>
+      </div>}
+      {sourceView ? <>
+        <SourceLibraryContent/>
+      </> : <>
+      {groupId && !creativeCatalog && <ResourceGroupHeading key={groupId} group={selected}/>}
       <div className="resource-section-heading">
-        <h2>{kind==='coloring'?'Chọn tranh để tô':groupId ? 'Trong nhóm này' : query.saved ? 'Học liệu đã lưu' : query.q ? 'Kết quả tìm kiếm' : 'Khám phá theo nhóm'}</h2>
-        <button data-ocean-action="group" className="resource-group-select" aria-haspopup="dialog" onClick={event => { focusDialogTrigger(event.currentTarget); setChoosingGroup(true); }}><Layers size={22}/>{kind==='coloring'?'Chọn nhóm tranh':'Chọn nhóm học liệu'}</button>
+        <h2>{creativeCatalog?'Chọn tranh để tô':groupId ? 'Trong nhóm này' : query.saved ? 'Học liệu đã lưu' : query.q ? 'Kết quả tìm kiếm' : format?.[1] || 'Khám phá theo nhóm'}</h2>
+        {creativeCatalog && <button data-ocean-action="group" className="resource-group-select" aria-haspopup="dialog" onClick={event => { focusDialogTrigger(event.currentTarget); setChoosingGroup(true); }}><Layers size={22}/>Chọn nhóm tranh</button>}
       </div>
-      {kind==='coloring'&&<><div className="coloring-quick-groups">{groups.slice(0,3).map((g,index)=><button key={g.id} aria-pressed={groupId===g.id} onClick={()=>patchQuery({group:g.id})}><img src={getColoringGroupIllustration(g.title) || g.coverUrl || getColoringGroupAsset(index)} style={!getColoringGroupIllustration(g.title) && g.coverUrl ? cropImageStyle(g.coverCrop) : undefined} alt=""/><strong>{g.title}</strong></button>)}<button onClick={event=>{focusDialogTrigger(event.currentTarget);setChoosingGroup(true);}}><Ellipsis/><strong>Xem tất cả nhóm</strong></button></div><div className="coloring-capabilities" role="group" aria-label="Cách tô màu"><h3>{selected?.title||'Tất cả tranh'} <small>{total} tranh{selected?' trong nhóm':''}</small></h3>{[['screen','Tô trên màn hình'],['print','Có bản in']].map(([id,label])=><button className="resource-control" data-capability={id} key={id} aria-pressed={(query.capability||'all')===id} onClick={()=>patchQuery({capability:query.capability===id?null:id})}>{id==='screen'?<PencilLine size={16}/>:id==='print'?<Printer size={16}/>:null}{label}</button>)}</div></>}
-      {filtered && kind!=='coloring' && <><button data-ocean-action="group" className="resource-back" onClick={() => navigate('/resources')}><ArrowLeft size={20}/> Các nhóm học liệu</button><CatalogToolbar role="learner" activeFormat={kind} onSelectFormat={(value: string) => patchQuery({ kind: value })}/><p className="resource-count">{total} học liệu</p></>}
+      {creativeCatalog&&<><div className="coloring-quick-groups">{groups.slice(0,3).map((g,index)=><button key={g.id} aria-pressed={groupId===g.id} onClick={()=>patchQuery({group:g.id})}><img src={getColoringGroupIllustration(g.title) || g.coverUrl || getColoringGroupAsset(index)} style={!getColoringGroupIllustration(g.title) && g.coverUrl ? cropImageStyle(g.coverCrop) : undefined} alt=""/><strong>{g.title}</strong></button>)}<button onClick={event=>{focusDialogTrigger(event.currentTarget);setChoosingGroup(true);}}><Ellipsis/><strong>Xem tất cả nhóm</strong></button></div><div className="coloring-capabilities" role="group" aria-label="Cách tô màu"><h3>{selected?.title||'Tất cả tranh'} <small>{total} tranh{selected?' trong nhóm':''}</small></h3>{[['screen','Tô trên màn hình'],['print','Có bản in']].map(([id,label])=><button className="resource-control" data-capability={id} key={id} aria-pressed={(query.capability||'all')===id} onClick={()=>patchQuery({capability:query.capability===id?null:id})}>{id==='screen'?<PencilLine size={16}/>:id==='print'?<Printer size={16}/>:null}{label}</button>)}</div></>}
+      {filtered && !creativeCatalog && <>
+        <button data-ocean-action="group" className="resource-back" onClick={openGroups}><ArrowLeft size={20}/> Các nhóm học liệu</button>
+        {groupId && kind==='visual' && <CatalogToolbar role="learner" activeFormat={kind} onSelectFormat={value => patchQuery({ kind: value })}/>}
+        <p className="resource-count">{total} học liệu</p>
+      </>}
       {error && <div className="resource-error" role="alert">{error} <button onClick={() => setRetry(r => r+1)}>Thử lại</button></div>}
       {loading ? <p role="status" className="resource-empty">Đang mở thư viện…</p> : filtered ?
-        items.length ? <div className="resource-tile-grid" aria-label="Danh sách học liệu">{items.map((item,index)=>kind==='coloring'?<ColoringResourceTile key={item.id} resource={item} index={index} onOpen={()=>{rememberCatalog({key:catalogKey,groups,focusedGroup,groupCursor,items,cursor,total,history,scrollY:window.scrollY});navigate(`${creativeCatalog ? '/creative/coloring' : '/resources'}/${item.id}`,{query:{...query}});}} onDraw={template=>{rememberCatalog({key:catalogKey,groups,focusedGroup,groupCursor,items,cursor,total,history,scrollY:window.scrollY});navigate('/creative/drawing',{query:{...query,template,...(creativeCatalog ? {fromCreative:'1'} : {})}});}}/>:tile(item))}</div> : !error && <p className="resource-empty">Chưa có học liệu phù hợp. <button onClick={() => creativeCatalog ? patchQuery({group:null,q:null,saved:null,capability:null}) : navigate('/resources')}>Xem các nhóm</button></p>
-        : <div className="resource-group-list">{groups.map((g,index) => <section key={g.id} className="resource-group-section" aria-labelledby={`group-${g.id}`}>
-          <ResourceSurface variant={(['shelf-lagoon','shelf-sandbank','shelf-inlet'] as const)[index%3]}/>
-          <button data-ocean-action="group" className="resource-group-portrait" aria-label={`Mở nhóm ${g.title}`} onClick={() => patchQuery({ group: g.id })}>{g.coverUrl ? <img src={g.coverUrl} alt="" style={cropImageStyle(g.coverCrop)}/> : <Waves size={38}/>}</button>
-          <div className="resource-group-content"><header><h3 id={`group-${g.id}`}>{g.title}</h3><button data-ocean-action="group" onClick={() => patchQuery({ group: g.id })}>Mở nhóm <ArrowRight size={22}/></button></header><div className="resource-tile-grid">{g.previews.map(tile)}</div>{!g.previews.length && <p>Nhóm này đang được chuẩn bị.</p>}</div>
-        </section>)}{!groups.length && !error && <p className="resource-empty">Thư viện đang được chuẩn bị.</p>}</div>}
-      {(history.length>1 || (filtered?cursor:groupCursor)) && <nav className="resource-more resource-page-navigation" aria-label="Phân trang học liệu">
-        <button disabled={loading || history.length===1} onClick={turnBack}><ArrowLeft size={22}/>Trang trước</button>
-        <span role="status">Trang {history.length}</span>
-        <button disabled={loading || !(filtered?cursor:groupCursor)} onClick={more}>{filtered?'Trang sau':'Nhóm khác'}<ArrowRight size={22}/></button>
-      </nav>}
-      {kind==='coloring'&&<button className="coloring-profile-link" onClick={()=>navigate('/profile')}><UserRound size={17}/>Tác phẩm đã hoàn thành ở Hồ sơ <ArrowRight size={17}/></button>}
-  </>, [creativeCatalog, groupId, search, query, kind, groups, selected, focusedGroup, groupCursor, items, cursor, total, loading, error, history, saved, catalogKey, navigate]);
+        items.length ? <div className={format && !creativeCatalog ? 'resource-tile-grid source-result-grid' : 'resource-tile-grid'} aria-label="Danh sách học liệu" data-layout={format?.[0]}>{items.map((item,index)=>creativeCatalog?<ColoringResourceTile key={item.id} resource={item} index={index} onOpen={()=>{rememberCatalog({key:catalogKey,groups,focusedGroup,groupTotal,items,cursor,total,history,scrollY:window.scrollY});navigate(`/creative/coloring/${item.id}`,{query:{...query}});}} onDraw={template=>{rememberCatalog({key:catalogKey,groups,focusedGroup,groupTotal,items,cursor,total,history,scrollY:window.scrollY});navigate('/creative/drawing',{query:{...query,template,fromCreative:'1'}});}}/> : format ? <SourceCatalogItem key={item.id}
+          entry={{id:item.id,title:item.title,kind:kind === 'download' ? kind : item.kind,
+            image:item.coverUrl ?? undefined, file:kind === 'download' ? item.content.downloadUrl || item.mediaUrl || undefined : item.mediaUrl ?? undefined}}
+          saved={Boolean(saved[item.id])} onSave={() => toggleSaved(item.id)} onOpen={() => openResource(item.id)}/> : tile(item))}</div> : !error && <p className="resource-empty"><span>{query.saved && !savedIds.length ? 'Bé chưa lưu học liệu nào.' : format && !query.q && !groupId ? 'Chưa có học liệu trong mục này.' : 'Chưa có học liệu phù hợp.'}</span> <button onClick={() => creativeCatalog ? patchQuery({group:null,q:null,saved:null,capability:null}) : openGroups()}>Xem các nhóm</button></p>
+        : groups.length
+          ? <ResourceGroupGallery groups={groups} onOpen={id => patchQuery({group:id})} />
+          : !error && <p className="resource-empty">Thư viện đang được chuẩn bị.</p>}
+      {creativeCatalog ? (page>1 || cursor) && <nav className="resource-more resource-page-navigation" aria-label="Phân trang học liệu">
+        <button disabled={loading || page===1} onClick={()=>setHistory(prev=>prev.slice(0,-1))}><ArrowLeft size={22}/>Trang trước</button>
+        <span role="status">Trang {page}</span>
+        <button disabled={loading || !cursor} onClick={()=>setHistory(prev=>[...prev,cursor!])}>Trang sau<ArrowRight size={22}/></button>
+      </nav> : <CatalogPagination page={page} total={filtered ? total : groupTotal} loading={loading} onPage={goToPage}
+        label={filtered ? 'Phân trang học liệu' : 'Phân trang nhóm'}/>}
+      {creativeCatalog&&<button className="coloring-profile-link" onClick={()=>navigate('/profile')}><UserRound size={17}/>Tác phẩm đã hoàn thành ở Hồ sơ <ArrowRight size={17}/></button>}
+      </>}
+  </>, [creativeCatalog, format, sourceView, groupId, search, query, kind, groups, selected, focusedGroup, groupTotal, items, cursor, total, loading, error, history, page, saved, catalogKey, navigate]);
   return <LearnerShell activeNav={creativeCatalog ? "creative" : "resources"}>
-    <div ref={motionRoot} className={`resource-library ${kind==='coloring'?'learner-creative-page coloring-resource-library':''}`} data-group-view={Boolean(groupId)}>{kind==='coloring'?<LearnerCreativeBackdrop variant="catalog"/>:<><ResourceSeascape tone="learner" sceneKey={groupId || 'overview'}/><ResourceCurrent/></>}{catalog}
+    <div ref={motionRoot} className={`resource-library ${creativeCatalog?'learner-creative-page coloring-resource-library':'resource-library-ocean'}`} data-group-view={Boolean(groupId)} data-source-view={sourceView} data-discovery={discovery}
+      onPlay={event => {
+        if (!(event.target instanceof HTMLAudioElement)) return;
+        oceanAudio.stop();
+        event.currentTarget.querySelectorAll('audio').forEach(track => { if (track !== event.target) track.pause(); });
+      }}>{creativeCatalog?<LearnerCreativeBackdrop variant="catalog"/>:<><ResourceSeascape tone="learner"/>{!discovery && <ResourceWaterGarden/>}<ResourceCurrent/></>}{catalog}
     </div>
-    {choosingGroup && <ResourceGroupChooser onClose={() => setChoosingGroup(false)} onChoose={id => { setChoosingGroup(false); patchQuery({group:id,kind:kind==='coloring'?'coloring':null,q:null,saved:null}); }}/>}
+    {choosingGroup && !sourceView && <ResourceGroupChooser onClose={() => setChoosingGroup(false)} onChoose={id => {
+      setChoosingGroup(false);
+      patchQuery({group:id});
+    }}/>}
   </LearnerShell>;
 }

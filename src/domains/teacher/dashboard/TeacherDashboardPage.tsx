@@ -33,7 +33,16 @@ export function TeacherDashboardPage() {
           {label:'3D',image:HOME_ART.model,icon:Box,route:'/teacher/interactive?kind=model3d'},
           {label:'Học liệu',image:HOME_ART.resources,icon:BookOpen,route:'/teacher/resources'},
           {label:'Trò chơi',image:HOME_ART.games,icon:Gamepad2,route:'/teacher/interactive?kind=game'},
-        ].map(({label,image,icon:Icon,route})=><button key={route} type="button" onClick={()=>navigate(route,{query:{}})}><img src={image} alt="" decoding="async"/><span className="teacher-domain-label"><Icon size={25}/><span>{label}</span></span><ArrowRight className="teacher-domain-arrow" size={24}/></button>)}
+        ].map(({label,image,icon:Icon,route}) => (
+          <button key={route} type="button" onClick={() => navigate(route, { query: {} })}>
+            <span className="teacher-domain-art"><img src={image} alt="" decoding="async" /></span>
+            <span className="teacher-domain-label">
+              <Icon size={22} aria-hidden="true" />
+              <span>{label}</span>
+              <ArrowRight className="teacher-domain-arrow" size={19} aria-hidden="true" />
+            </span>
+          </button>
+        ))}
       </section>
       <section aria-label="Lối tắt sáng tạo" className="home-shortcuts teacher-home-shortcuts">
         <HomeShortcut label="Quản lý sáng tạo" image={HOME_ART.creative} icon={Palette} onClick={()=>navigate('/teacher/creative',{query:{}})}/>

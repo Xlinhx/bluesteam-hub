@@ -25,7 +25,7 @@ for (const width of [320, 360]) {
     expect(bounds.height).toBeGreaterThanOrEqual(44);
     expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
     await action.tap();
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Bắt đầu cùng BlueSTEAM');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Hãy bắt đầu cùng Blue STEAM Hub');
   });
 }
 

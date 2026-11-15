@@ -4,7 +4,7 @@ import {
   migrateLegacyArtworkRecord,
   type LegacySubmissionState,
 } from './localDraftMigration';
-import { collectionIndexKey, collectionPageLimit, COMPLETED_COLLECTION_INDEX, readCompletedPage, type ArtworkPageOptions, type CompletedArtworkPage } from './collectionPaging';
+import { collectionIndexKey, collectionPageLimit, COMPLETED_COLLECTION_INDEX, SCOPED_COLLECTION_INDEX, readCompletedPage, scopedCollectionIndexKey, type ArtworkPageOptions, type CompletedArtworkPage } from './collectionPaging';
 import { readSavedArtwork, type SavedArtworkView } from './artworkCompletion';
 
 export interface HabitatPlacedItem {
@@ -17,6 +17,7 @@ export interface HabitatPlacedItem {
 }
 
 export interface CreativeArtwork {
+  studyContext?: { learnerId: string; contextId: string };
   sourceSnapshot?: import('./contentSnapshot').ImmutableContentSnapshot;
   pendingDelivery?: {code:string;editVersion:number;alias:string;preview:string;document:unknown};
   habitatChallenge?: {sessionId:string;code:string;alias:string;challenge:import('@bluesteam/contracts').HabitatChallengeSnapshot};
@@ -52,7 +53,7 @@ export interface CreativeArtwork {
 }
 
 const DB_NAME = 'ocean_creative_db';
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 const STORE_NAME = 'ocean_artworks';
 
 // In-memory fallback store for Node/Vitest environment
@@ -100,12 +101,16 @@ function openDatabase(): Promise<IDBDatabase> {
       const store = request.transaction!.objectStore(STORE_NAME);
       if (!store.indexNames.contains(COMPLETED_COLLECTION_INDEX)) {
         store.createIndex(COMPLETED_COLLECTION_INDEX, '__collectionKey');
+      }
+      if (!store.indexNames.contains(SCOPED_COLLECTION_INDEX)) {
+        store.createIndex(SCOPED_COLLECTION_INDEX, '__scopedCollectionKey');
         const scan = store.openCursor();
         scan.onsuccess = () => {
           const cursor = scan.result;
           if (!cursor) return;
           const raw = cursor.value;
-          cursor.update({ ...raw, __collectionKey: collectionIndexKey(migrateLegacyArtworkRecord(raw)) });
+          const art = migrateLegacyArtworkRecord(raw);
+          cursor.update({ ...raw, __collectionKey: collectionIndexKey(art), __scopedCollectionKey: scopedCollectionIndexKey(art) });
           cursor.continue();
         };
       }
@@ -143,7 +148,7 @@ export const creativeStorage = {
       return new Promise<void>((resolve, reject) => {
         const tx = db.transaction(STORE_NAME, 'readwrite');
         const store = tx.objectStore(STORE_NAME);
-        const req = store.put({ ...normalized, __collectionKey: collectionIndexKey(normalized) });
+        const req = store.put({ ...normalized, __collectionKey: collectionIndexKey(normalized), __scopedCollectionKey: scopedCollectionIndexKey(normalized) });
 
         tx.oncomplete = () => { db.close(); notifyChange(); resolve(); };
         tx.onabort = tx.onerror = () => { db.close(); reject(tx.error || new Error('Chưa thể lưu thay đổi trên thiết bị.')); };
@@ -163,7 +168,9 @@ export const creativeStorage = {
   async getCompletedArtworkPage(kind: CreativeArtwork['type'], options: ArtworkPageOptions = {}): Promise<CompletedArtworkPage> {
     const limit = collectionPageLimit(options.limit);
     if (!getIDB()) {
-      const all = Object.values(inMemoryStore).map(readSavedArtwork).filter((art): art is SavedArtworkView => art !== null && art.type === kind);
+      const all = Object.values(inMemoryStore)
+        .filter(art => options.scope === undefined || scopedCollectionIndexKey(art)?.[0] === options.scope)
+        .map(readSavedArtwork).filter((art): art is SavedArtworkView => art !== null && art.type === kind);
       const ordered = all.sort((a, b) => (b.savedAt ?? -1) - (a.savedAt ?? -1) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
       const after = options.cursor;
       const available = ordered.filter(art => {

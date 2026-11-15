@@ -1,6 +1,20 @@
 import { creativeStorage, type CreativeArtwork } from './creativeStorage';
+import { oceanApi } from '../api/learnerOcean';
+import { demoStore } from '../realtime/demoStore';
 
 interface SaveOptions { finish: boolean; requirePreview: boolean; editVersion: number; createdAt: number }
+
+async function activeStudyContext() {
+  if (typeof window === 'undefined') return undefined;
+  const actor = demoStore.getProfile();
+  if (actor.role !== 'student') return undefined;
+  try {
+    const scope = await oceanApi<{learnerId:string; contextId:string | null}>('study-context', {signal:AbortSignal.timeout(1800)});
+    if (scope.learnerId === actor.id && scope.contextId && demoStore.getProfile().id === actor.id) {
+      return { learnerId:scope.learnerId, contextId:scope.contextId };
+    }
+  } catch { /* The device collection can still save while offline. */ }
+}
 
 /** One serialized writer per workspace. A completed record is never overwritten. */
 export class CreativeDraftWriter {
@@ -23,6 +37,7 @@ export class CreativeDraftWriter {
         previewDataUrl: working.previewDataUrl || this.base?.previewDataUrl || '',
         submissionState:stored?.submittedEditVersion!==undefined&&stored.submittedEditVersion!==options.editVersion?'local_only':stored?.submissionState??this.base?.submissionState,
         isDraft: !options.finish, completedAt: options.finish ? requestedAt : undefined,
+        studyContext: options.finish ? await activeStudyContext() : undefined,
       };
       await creativeStorage.saveArtwork(next);
       this.base = next;

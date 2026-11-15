@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { seedLocalProfile } from './fixtures/local-profile';
+import { openDeviceProfileCollection, seedLocalProfile } from './fixtures/local-profile';
 
 async function learner(page: Page) {
   expect((await page.request.post('/api/v1/auth/login', { data: { role: 'student', email: 'hocsinh', password: 'hocsinh' } })).ok()).toBe(true);
@@ -9,13 +9,15 @@ async function learner(page: Page) {
 test('learner bookmark, chooser, detail return and mobile reduced motion remain usable', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
   await learner(page);
-  const save = page.getByRole('button', { name: /^Lưu / }).first();
+  await page.getByRole('button', { name: /^Mở nhóm / }).first().click();
+  const results = page.getByLabel('Danh sách học liệu');
+  const save = results.getByRole('button', { name: /^Lưu / }).first();
   await expect(save).toBeVisible();
   const bookmarkRequests: string[] = [];
   const trackCatalog = (request: import('@playwright/test').Request) => { if (/\/api\/v1\/(resources|resource-groups)\?/.test(request.url())) bookmarkRequests.push(request.url()); };
   page.on('request', trackCatalog);
   await save.click();
-  await expect(page.getByRole('button', { name: /^Bỏ lưu / }).first()).toHaveAttribute('aria-pressed', 'true');
+  await expect(results.getByRole('button', { name: /^Bỏ lưu / }).first()).toHaveAttribute('aria-pressed', 'true');
   await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   page.off('request', trackCatalog);
   expect(bookmarkRequests).toEqual([]);
@@ -37,7 +39,7 @@ test('learner bookmark, chooser, detail return and mobile reduced motion remain 
 
 test('profile uses actual artwork geometry, closes during entrance and restores focus', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
-  await learner(page); await seedLocalProfile(page); await page.goto('/profile');
+  await learner(page); await seedLocalProfile(page); await page.goto('/profile'); await openDeviceProfileCollection(page);
   const art = page.locator('.profile-art').first(); await expect(art).toBeVisible();
   await page.evaluate(() => {
     const animate = Element.prototype.animate;
@@ -64,7 +66,7 @@ test('profile uses actual artwork geometry, closes during entrance and restores 
 });
 
 test('closing an unfinished artwork entrance returns to the original thumbnail geometry', async ({ page }) => {
-  await learner(page); await seedLocalProfile(page); await page.goto('/profile');
+  await learner(page); await seedLocalProfile(page); await page.goto('/profile'); await openDeviceProfileCollection(page);
   await page.evaluate(() => {
     const animate = Element.prototype.animate;
     (window as any).__artFrames = [];
@@ -100,8 +102,10 @@ test('teacher dialogs preserve focus, forms and drawer layout when motion is int
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.keyboard.press('Escape');
   const identity = page.getByRole('button', { name: 'Đổi tên và ảnh giáo viên' });
-  await identity.click(); await expect(page.getByRole('dialog', { name: 'Hồ sơ giáo viên' })).toBeVisible();
-  await page.keyboard.press('Escape'); await expect(identity).toBeFocused();
+  await identity.click(); await expect(page).toHaveURL(/\/teacher\/profile/);
+  const personal = page.getByRole('button', { name: 'Thông tin cá nhân' });
+  await personal.click(); await expect(page.getByRole('dialog', { name: 'Thông tin cá nhân' })).toBeVisible();
+  await page.keyboard.press('Escape'); await expect(personal).toBeFocused();
 });
 
 test('cancel buttons use the same exit motion as Escape without saving', async ({ page }) => {
@@ -127,7 +131,7 @@ test('loading more artworks does not steal focus after the user moves elsewhere'
     const original = (await creativeStorage.getCompletedArtworkPage('drawing', { limit: 1 })).items[0];
     for (let index = 0; index < 8; index++) await creativeStorage.saveArtwork({ ...original, id: `motion-more-${index}`, type: 'drawing', title: `Tranh kiểm tra ${index}`, isDraft: false, createdAt: Date.now() + index } as any);
   });
-  await page.goto('/profile');
+  await page.goto('/profile'); await openDeviceProfileCollection(page);
   const drawings = page.locator('[data-artwork-section=drawing]');
   await expect(drawings.locator('.profile-art')).toHaveCount(6);
   await page.evaluate(async () => {
@@ -153,7 +157,9 @@ test('album changes remain immediate during repeated input and reduced motion ch
   const catalog = await (await page.request.get('/api/v1/resources?kind=visual&limit=1')).json();
   const item = await (await page.request.get(`/api/v1/resources/${catalog.items[0].id}`)).json();
   const album = ['/assets/generated/craft/child_crayon_turtle.jpg', '/assets/generated/craft/artwork_crayon_coral.png'];
-  await page.route(`**/api/v1/resources/${item.id}`, route => route.fulfill({ json: { ...item, content: { ...item.content, albumUrls: album } } }));
+  await page.route(`**/api/v1/resources/${item.id}`, route => route.fulfill({ json: {
+    ...item, content: { ...item.content, sourcePdfUrl: undefined, albumUrls: album },
+  } }));
   await page.goto(`/resources/${item.id}`);
   const image = page.locator('.observation-photo > img');
   await expect(image).toHaveAttribute('src', album[0]);

@@ -1,10 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
+import { openDeviceProfileCollection } from './fixtures/local-profile';
 
 async function login(page: Page) {
   const response = await page.request.post('/api/v1/auth/login', { data: { role: 'student', email: 'hocsinh', password: 'hocsinh' } });
   expect(response.ok()).toBe(true);
 }
 async function seedCollection(page: Page) {
+  await openDeviceProfileCollection(page);
   await expect(page.locator('.profile-collection-section')).toHaveCount(3);
   await page.evaluate(async () => {
     const blob = await (await fetch('/assets/generated/craft/child_crayon_turtle.jpg')).blob();
@@ -18,7 +20,7 @@ async function seedCollection(page: Page) {
       };
     });
   });
-  await page.reload();
+  await page.reload(); await openDeviceProfileCollection(page);
   await expect(page.locator('.profile-art')).toHaveCount(3);
 }
 async function settle(page: Page) {
@@ -40,11 +42,11 @@ test('a library scene choreographs shapes, headings, portraits and images with d
     };
   });
   await login(page); await page.goto('/resources');
-  await expect(page.locator('.resource-group-section')).toHaveCount(3);
-  await expect.poll(() => page.evaluate(() => (window as any).__cast.filter((item: any) => Number(item.duration) >= 700).length)).toBeGreaterThan(10);
-  for (const name of ['resource-surface', 'resource-group-portrait', 'resource-banner-content', 'ocean-cabinet-reef']) await expect.poll(() => page.evaluate(name => (window as any).__cast.some((item: any) => item.className?.includes(name)), name), { message: `Motion cast includes ${name}` }).toBe(true);
+  await expect(page.locator('.resource-group-section').first()).toBeVisible();
+  await expect.poll(() => page.evaluate(() => (window as any).__cast.filter((item: any) => Number(item.duration) >= 700).length)).toBeGreaterThan(6);
+  for (const name of ['resource-group-portrait', 'resource-banner-content']) await expect.poll(() => page.evaluate(name => (window as any).__cast.some((item: any) => item.className?.includes(name)), name), { message: `Motion cast includes ${name}` }).toBe(true);
   await settle(page);
-  expect(await page.locator('.ocean-cabinet-reef').first().evaluate((node: HTMLImageElement) => node.naturalWidth)).toBeGreaterThan(1000);
+  await expect(page.locator('.resource-seascape').first()).toHaveCSS('background-image', /resource-group-gallery[.]webp/);
   await page.screenshot({ path: 'artifacts/cabinet-library-1440.png', fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 }); await settle(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

@@ -54,7 +54,7 @@ export function ResourceGroupEditor({ group, onClose, onSaved }: { group?: Resou
   return <ResourceDialog title={group ? 'Sửa nhóm' : 'Tạo nhóm'} onClose={close} beforeClose={beforeClose} busy={busy} wide className="resource-group-dialog">{requestClose =>
     <form onSubmit={e => { e.preventDefault(); void save(); }}>
       <div className="resource-form-body">
-        <label>Tên nhóm <input autoFocus required maxLength={100} value={title} onChange={e => { setTitle(e.target.value); setDirty(true); }} placeholder="Ví dụ: Rạn san hô"/></label>
+        <label>Tên nhóm <input className="ui-field" autoFocus required maxLength={100} value={title} onChange={e => { setTitle(e.target.value); setDirty(true); }} placeholder="Ví dụ: Rạn san hô"/></label>
         <section className="group-photo-editor" onDragOver={e=>e.preventDefault()} onDrop={e=>{e.preventDefault();select(e.dataTransfer.files[0]);}}><div className="group-photo-label"><strong>Ảnh đại diện</strong><small>Không bắt buộc</small></div><div className="group-cover-workspace">
           <div className="group-crop-area"><div className="group-cover-square" data-draggable={Boolean(cover)} tabIndex={0} role="group" aria-label="Vùng cắt ảnh. Dùng phím mũi tên để dịch ảnh." onKeyDown={e=>{if(!cover || !['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key) || busy)return;e.preventDefault();setCrop(prev=>({...prev,x:Math.min(1,Math.max(0,prev.x+(e.key==='ArrowLeft'?-.02:e.key==='ArrowRight'?.02:0))),y:Math.min(1,Math.max(0,prev.y+(e.key==='ArrowUp'?-.02:e.key==='ArrowDown'?.02:0)))}));setDirty(true);}}
           onPointerDown={e=>{if(!cover || busy || e.button!==0)return;e.currentTarget.setPointerCapture(e.pointerId);drag.current={x:e.clientX,y:e.clientY,crop};}}

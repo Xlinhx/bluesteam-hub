@@ -17,7 +17,8 @@ export function AccountAuthPage({ mode = 'login' }: { mode?: AuthMode }) {
 }
 
 function AccountForm({ mode, role }: { mode: AuthMode; role: AccountRole }) {
-  const { navigate } = useRouter();
+  const { navigate, query } = useRouter();
+  const inviteCode = query.join;
   const register = mode === 'register', student = role === 'student';
   const [email, setEmail] = useState(''), [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState(''), [confirmation, setConfirmation] = useState('');
@@ -44,7 +45,7 @@ function AccountForm({ mode, role }: { mode: AuthMode; role: AccountRole }) {
   usePublicMotion(root, 'auth', identity);
   const title = `${register ? 'Đăng ký' : 'Đăng nhập'} ${student ? 'cho bé' : 'giáo viên'}`;
 
-  const go = (nextMode: AuthMode, nextRole = role) => navigate(nextMode === 'login' ? '/login' : '/register', { query: { role: nextRole }, preserveQuery: false });
+  const go = (nextMode: AuthMode, nextRole = role) => navigate(nextMode === 'login' ? '/login' : '/register', { query: { role: nextRole, ...(inviteCode ? { join:inviteCode } : {}) }, preserveQuery: false });
   const edit = (field: string, value: string, setter: (value: string) => void) => {
     setter(value); setErrors(previous => ({ ...previous, [field]: '' })); setServerError('');
   };
@@ -65,7 +66,10 @@ function AccountForm({ mode, role }: { mode: AuthMode; role: AccountRole }) {
     try {
       const account = await authenticateAccount(mode, { role, ...result.data }, controller.signal);
       if (controller.signal.aborted || requestController.current !== controller) return;
-      navigate(account.role === 'teacher' ? '/teacher' : '/home', { preserveQuery: false });
+      const classInvitation = account.role === 'student' && inviteCode;
+      navigate(account.role === 'teacher' ? '/teacher' : classInvitation ? '/profile' : '/home', {
+        preserveQuery: false, query: classInvitation ? {join:classInvitation} : undefined,
+      });
     } catch (error) {
       if (controller.signal.aborted || requestController.current !== controller) return;
       setServerError(error instanceof ApiClientError ? error.message : 'Chưa thể kết nối máy chủ. Vui lòng thử lại.');
@@ -78,7 +82,7 @@ function AccountForm({ mode, role }: { mode: AuthMode; role: AccountRole }) {
     <div className={`account-field${name === 'displayName' || name === 'confirmPassword' ? ' account-field--extra' : ''}`}>
       <label htmlFor={`account-${name}`}>{label}</label>
       <div className="account-input-wrap">
-        <input id={`account-${name}`} name={name} type={options.password ? (showPassword ? 'text' : 'password') : name === 'email' && register ? 'email' : 'text'}
+        <input className="ui-field" id={`account-${name}`} name={name} type={options.password ? (showPassword ? 'text' : 'password') : name === 'email' && register ? 'email' : 'text'}
           value={value} onChange={event => edit(name, event.target.value, setter)} autoComplete={options.autoComplete}
           placeholder={options.placeholder} maxLength={options.maxLength || (options.password ? 200 : name === 'email' ? 254 : 80)}
           required aria-invalid={!!errors[name]} aria-describedby={errors[name] ? `error-${name}` : name === 'password' && register ? 'password-hint' : undefined}
@@ -95,8 +99,8 @@ function AccountForm({ mode, role }: { mode: AuthMode; role: AccountRole }) {
     <aside className="account-coast" aria-label="BlueSTEAM — Khám phá đại dương">
       <div className="account-coast-image" aria-hidden="true" />
       <OceanFieldwork variant="auth" />
-      <button type="button" className="account-logo" onClick={() => navigate('/')} aria-label="Về trang chủ BlueSTEAM"><BlueSteamLogo size="lg" variant="mockup" showTagline /></button>
-      <div className="account-coast-copy"><p>Mỗi khám phá, một điều kỳ diệu</p><h2>Cùng mở ra<br />một đại dương mới.</h2></div>
+      <button type="button" className="account-logo" onClick={() => navigate('/')} aria-label="Về trang chủ BlueSTEAM"><BlueSteamLogo size="lg" variant="mockup" showTagline tagline={student ? 'Khám phá đại dương' : undefined} /></button>
+      <div className="account-coast-copy">{student ? <h2>Chạm để khám phá, chơi để học hỏi!</h2> : <><p>Mỗi khám phá, một điều kỳ diệu</p><h2>Cùng mở ra<br />một đại dương mới.</h2></>}</div>
     </aside>
     <main className="account-main">
       <OceanFieldwork variant="form" />
@@ -124,7 +128,7 @@ function AccountForm({ mode, role }: { mode: AuthMode; role: AccountRole }) {
         <p className="account-switch">{register ? 'Đã có tài khoản?' : 'Chưa có tài khoản?'} <button type="button" className="account-link" disabled={busy} onClick={() => go(register ? 'login' : 'register')}>{register ? 'Đăng nhập' : 'Đăng ký ngay'}</button></p>
         {student && register && <p className="account-hint account-parent-note">Mỗi email phụ huynh tạo một tài khoản bé trong phiên bản này.</p>}
       </section>
-      <footer className="account-footer">BlueSTEAM · Cùng bé khám phá đại dương</footer>
+      <footer className="account-footer">{student ? 'BlueSTEAM Hub - Mở thế giới xanh, khơi nguồn sáng tạo' : 'BlueSTEAM · Cùng bé khám phá đại dương'}</footer>
     </main>
   </div>;
 }

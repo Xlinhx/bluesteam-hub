@@ -1,5 +1,9 @@
 import type { Page } from '@playwright/test';
 
+export async function openDeviceProfileCollection(page: Page) {
+  await page.getByRole('button', { name: /^(Tác phẩm trên thiết bị|Artworks on this device)$/ }).click();
+}
+
 /** Browser-local QA data. Exercises the production app without enabling demo routes or touching existing browser data. */
 export async function seedLocalProfile(page: Page) {
   await page.evaluate(async () => {

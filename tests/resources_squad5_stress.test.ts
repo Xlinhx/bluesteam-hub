@@ -111,7 +111,7 @@ describe('M4 Challenger 1: Squad 5 Media Hub Empirical & Adversarial Stress Suit
       expect(html).toContain('Đang mở thư viện');
       expect(html).not.toContain('Chế độ hiển thị:');
       expect(html).not.toContain('Học liệu tuyển chọn (Màn 10');
-      expect(html).not.toContain('Phiếu học tập');
+      expect(html).toContain('Phiếu học tập');
     });
     it('does not invent catalog entries before API data arrives',()=>{
       const html=renderWithProviders(React.createElement(ResourcesLibraryPage),'');

@@ -1,0 +1,197 @@
+[
+  {
+    "file": "Tầng nước biển, các loại tảo.xlsx",
+    "sha256": "57e15b414ff81a23264a3bdb2affd1f86b31e2401fda75b6111b71dd3ad75604",
+    "media": 235,
+    "sheets": [
+      {
+        "name": "Vùng thượng tầng ",
+        "path": "xl/worksheets/sheet1.xml",
+        "rows": 77,
+        "merges": [
+          "I10:I12",
+          "I13:I14"
+        ],
+        "drawings": [
+          "rId2"
+        ]
+      },
+      {
+        "name": "Sheet1",
+        "path": "xl/worksheets/sheet2.xml",
+        "rows": 1,
+        "merges": [],
+        "drawings": []
+      },
+      {
+        "name": "Vùng trung tầng",
+        "path": "xl/worksheets/sheet3.xml",
+        "rows": 21,
+        "merges": [],
+        "drawings": [
+          "rId1"
+        ]
+      },
+      {
+        "name": "Vùng biển sâu ",
+        "path": "xl/worksheets/sheet4.xml",
+        "rows": 27,
+        "merges": [],
+        "drawings": [
+          "rId1"
+        ]
+      },
+      {
+        "name": "các tầng nước biển ",
+        "path": "xl/worksheets/sheet5.xml",
+        "rows": 6,
+        "merges": [],
+        "drawings": []
+      },
+      {
+        "name": "tảo đỏ , tảo nâu , tảo lục ",
+        "path": "xl/worksheets/sheet6.xml",
+        "rows": 49,
+        "merges": [],
+        "drawings": [
+          "rId2"
+        ]
+      },
+      {
+        "name": "chuỗi thức ăn ",
+        "path": "xl/worksheets/sheet7.xml",
+        "rows": 41,
+        "merges": [
+          "A2:A21",
+          "A22:A31",
+          "A32:A41"
+        ],
+        "drawings": []
+      }
+    ],
+    "anchors": 262,
+    "anchorSamples": [
+      {
+        "drawing": "xl/drawings/drawing1.xml",
+        "row0": "1",
+        "col0": "7"
+      },
+      {
+        "drawing": "xl/drawings/drawing1.xml",
+        "row0": "1",
+        "col0": "7"
+      },
+      {
+        "drawing": "xl/drawings/drawing1.xml",
+        "row0": "2",
+        "col0": "7"
+      },
+      {
+        "drawing": "xl/drawings/drawing1.xml",
+        "row0": "2",
+        "col0": "7"
+      }
+    ]
+  },
+  {
+    "file": "Bảng sinh vật biển theo chiều ngang.xlsx",
+    "sha256": "834ecc6bc7820dddfaecb831ecadfc6ee06a7e3a0a6d339c55f4d17218156fb1",
+    "media": 181,
+    "sheets": [
+      {
+        "name": "Sheet1",
+        "path": "xl/worksheets/sheet1.xml",
+        "rows": 6,
+        "merges": [],
+        "drawings": []
+      },
+      {
+        "name": "BẢNG SINH VẬT VÙNG BỜ BIỂN",
+        "path": "xl/worksheets/sheet2.xml",
+        "rows": 64,
+        "merges": [
+          "A2:A3",
+          "B2:B3",
+          "C2:C3",
+          "E2:E3"
+        ],
+        "drawings": [
+          "rId2"
+        ]
+      },
+      {
+        "name": "BẢNG SINH VẬT VÙNG ĐỤN CÁT",
+        "path": "xl/worksheets/sheet3.xml",
+        "rows": 25,
+        "merges": [
+          "A24:A25",
+          "B24:B25",
+          "C24:C25",
+          "D24:D25",
+          "E24:E25",
+          "A21:A22",
+          "B21:B22",
+          "C21:C22",
+          "D21:D22",
+          "E21:E22"
+        ],
+        "drawings": [
+          "rId2"
+        ]
+      },
+      {
+        "name": "BẢNG SINH VẬT KHU VỰC VEN BỜ",
+        "path": "xl/worksheets/sheet4.xml",
+        "rows": 32,
+        "merges": [],
+        "drawings": [
+          "rId1"
+        ]
+      },
+      {
+        "name": "BẢNG SINH VẬT VÙNG RẠN SAN HÔ",
+        "path": "xl/worksheets/sheet5.xml",
+        "rows": 47,
+        "merges": [],
+        "drawings": [
+          "rId1"
+        ]
+      },
+      {
+        "name": "BẢNG CỎ BIỂN- TẢO VÀ SVQH KHÁC",
+        "path": "xl/worksheets/sheet6.xml",
+        "rows": 22,
+        "merges": [
+          "A1:J1",
+          "A17:J17"
+        ],
+        "drawings": [
+          "rId2"
+        ]
+      }
+    ],
+    "anchors": 182,
+    "anchorSamples": [
+      {
+        "drawing": "xl/drawings/drawing1.xml",
+        "row0": "1",
+        "col0": "5"
+      },
+      {
+        "drawing": "xl/drawings/drawing1.xml",
+        "row0": "2",
+        "col0": "5"
+      },
+      {
+        "drawing": "xl/drawings/drawing1.xml",
+        "row0": "3",
+        "col0": "5"
+      },
+      {
+        "drawing": "xl/drawings/drawing1.xml",
+        "row0": "4",
+        "col0": "5"
+      }
+    ]
+  }
+]

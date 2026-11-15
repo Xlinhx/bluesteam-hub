@@ -9,3 +9,12 @@
 .interactive-worlds--compact{gap:0;padding:0;background:#fff;border:1px solid #b8dde4;border-radius:16px;overflow:hidden}.interactive-worlds--compact .interactive-world{height:52px;padding:0;border-radius:16px;justify-content:center}.interactive-worlds--compact .interactive-world__label{min-height:48px;font-size:16px;border:0;box-shadow:none;background:none;border-radius:0;padding:8px 12px}.interactive-worlds--compact .interactive-world[aria-pressed=true]{background:#dff5f8;box-shadow:none}
 @media(max-width:767px){.interactive-worlds{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 0 24px}.interactive-world{height:148px;padding:0 3px 4px}.interactive-world__art{height:100px}.interactive-world__label{font-size:16px;min-height:44px;padding:6px 4px;gap:6px}.interactive-world__label svg{width:20px;height:20px}.interactive-world__selected{width:24px;height:24px;right:8px;top:8px}.interactive-worlds--compact{gap:8px;border:0;background:none;overflow:visible;padding:0}.interactive-worlds--compact .interactive-world{height:48px;border:1px solid #b8dde4;background:white}.interactive-worlds--compact .interactive-world__label{font-size:15px;padding:8px;min-height:44px}.interactive-worlds--compact .interactive-world[aria-pressed=true]{border:2px solid #00bedc}}
 @media(prefers-reduced-motion:reduce){.interactive-world{transition:none}.interactive-world:hover{transform:none}}
+.interactive-world-entry {position:relative;min-width:0;display:grid}
+.interactive-world-entry>.interactive-world {width:100%}
+.interactive-world-listen {position:absolute;top:.5rem;left:.5rem;z-index:3;width:44px;height:44px;display:grid;place-items:center;border:1px solid #8fc5d5;background:#f4fcfce6;color:#13486b;border-radius:50%;box-shadow:0 2px 5px #13486b22}
+.interactive-world-listen:is(:hover,:focus-visible) {background:#d8f0f3}
+.interactive-world-listen:focus-visible {outline:2px solid #103452;outline-offset:2px}
+@media(prefers-reduced-motion:no-preference) {
+  .interactive-world-listen {transition:background-color 160ms ease,transform 160ms ease}
+  .interactive-world-listen:active {transform:scale(.92)}
+}

@@ -83,7 +83,7 @@ test('selected role photo owns the forward and reverse native page transition', 
   test.skip(!await page.evaluate(() => 'startViewTransition' in document), 'Browser has no native snapshots');
   await page.getByRole('button', { name: 'Khám phá cùng bé', exact: true }).click();
   await expect(page).toHaveURL(/\/login\?role=student$/);
-  await expect(page.locator('.account-main')).toHaveCSS('background-color', 'rgb(250, 248, 245)');
+  await expect(page.locator('.account-main')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
   await expect.poll(() => page.evaluate(() => (window as any).__journeySnapshots.length)).toBe(1);
   expect(await page.evaluate(() => (window as any).__journeySnapshots[0])).toEqual({ direction: 'forward', role: 'student', name: 'public-art', imageOnly: true });
   await expect.poll(() => page.evaluate(() => document.documentElement.dataset.publicJourney)).toBeUndefined();

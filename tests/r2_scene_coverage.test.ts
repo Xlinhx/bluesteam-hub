@@ -175,8 +175,8 @@ describe('Task 9 — R2 18 Mockup Surfaces (M01-M18) & 16 Plan-Only Surfaces (P0
     expect(joinHtml).not.toContain('value="482915"');
     expect(renderRoute('/interactive/3d')).toContain('3D');
     expect(renderRoute('/interactive/simulations')).toContain('Mô phỏng');
-    expect(renderRoute('/creative')).toContain('Đại dương mang dấu ấn của bé');
-    expect(renderRoute('/create')).toContain('Đại dương mang dấu ấn của bé');
+    expect(renderRoute('/creative')).toContain('Góc sáng tạo của nhà thám hiểm nhí.');
+    expect(renderRoute('/create')).toContain('Bé vẽ đại dương - Bé kể chuyện biển xanh');
     expect(renderRoute('/creative/drawing')).toContain('Bức tranh của bé');
     expect(renderRoute('/creative/drawing')).not.toContain('room-submit-artwork-btn');
     expect(renderRoute('/profile')).toContain('Trên thiết bị này');

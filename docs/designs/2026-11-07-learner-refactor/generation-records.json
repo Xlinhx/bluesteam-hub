@@ -1,0 +1,328 @@
+{
+  "date": "2026-11-07",
+  "generator": "image_gen.imagegen",
+  "notes": "Bộ 18 ảnh tĩnh để duyệt mục 3–7. Prompt, ảnh tham chiếu, kích thước và SHA-256 truy xuất từng bản thiết kế. Các tệp trung gian chỉ được giữ trong thư mục mặc định của công cụ tạo ảnh.",
+  "records": [
+    {
+      "key": "resources",
+      "prompt": "Use case: ui-mockup edit. Improve image 1 as ONE 16:10 wide desktop screenshot for Blue STEAM Hub. Keep the visible white header with all six menu links, white hero panel titled “Nghe · Xem · Khám phá”, modern colorful shell and directed sunshine. Keep all eight tabs exactly “Flashcards”, “Hình ảnh”, “Audio”, “Video”, “Tranh tô màu”, “Phiếu học tập”, “Poster”, “Kho học liệu tải về”, Flashcards selected. Change ONLY visual hierarchy and whitespace of the content area. After the eight tabs show a slim row with search “Tìm học liệu”, bookmark “Đã lưu”, two filters “Theo chủ đề” and “Theo tầng biển”. Show groups in two concise white side-by-side preview shelves, first ~29% wide second ~71% wide, each group heading ABOVE its preview content. “Rạn san hô” contains ONE source card Cá hề / Clown fish (PDF p1), centered in a modest width compact white section fit to content with “Mở nhóm” link. The second “Thẻ đại dương” explicitly labeled a collection, contains three thumbnails Cá voi / Whale, Cá heo / Dolphin, Cá mập / Shark (PDF pp3,5,7). Use authentic printed designs from image 2 and small separate speaker and bookmark. No huge blank shelf, no duplicate cards, no fake QR. Show subtle blue underwater perimeter, slightly less saturated than image 1, natural sunlight. Titles and text crisp, exact Vietnamese. Realistic website visual density, fit both sections in screenshot.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-a54b73c9-f9df-4d5c-9a42-e306725245f5.png",
+      "finalFile": "mockups/01-resources.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-e7537690-e478-429d-9a73-990f5b1f0a23.png",
+        "references/cards-contact-1.jpg"
+      ],
+      "dimensions": [
+        1586,
+        992
+      ],
+      "finalSha256": "49f65c1ae08034767d1a6cd8eeff27dc742e2d4dc90105b9cb815a0003325c73"
+    },
+    {
+      "key": "learning-map-vertical",
+      "prompt": "Use case ui-mockup. Generate ONE pixel-sharp 16:10 desktop web UI screenshot, a redesigned Blue STEAM Hub Vietnamese student Learning route selector. Reference screenshot is the current website, use its shark wordmark, simple white top navigation and existing blue brand as continuity. Completely redesign the content below it, avoid its overlay creature card, dense layered controls and incorrect legacy taxonomy. Editorial educational atlas like a finely designed ocean field guide. Flat high-contrast warm white left page (35%) and edge-to-edge naturalistic ocean cross-section (65%), calm teal sunlight piercing from upper right, deep navy darkens smoothly toward the lower half, no creatures in deep empty regions, no 3D device frame, no gradient UI blobs, no generic cards or floating glass boxes. Left simple typographic hierarchy, exact text with Vietnamese accents: 'Học tập', 'Chọn đường khám phá', tabs 'Theo chiều dọc' and 'Theo chiều ngang', active 'Theo chiều dọc'. One well-spaced timeline with EXACTLY five labels: 'Vùng thượng tầng', 'Vùng trung tầng', 'Vùng biển sâu', 'Vùng vực sâu / vùng đáy biển', 'Vùng hadal'. Select the first with a blue marker, no depth numbers or secondary text on the timeline. One primary navy button 'Vào vùng thượng tầng'. Right naturalistic side-view cutaway of water with broad color changes and an unobtrusive pointer line at upper layer; strong top sunlight and dark lower depths, authentic scale hierarchy, finely crafted environmental art. Calm Swiss-style typography, fine horizontal rules, crisp readable controls, zero extra text or numbers, one real interface shown full bleed, not a presentation board. The original screenshot is inspiration for existing shell only; ignore its old label/copy/layout in the content area.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-c82355b8-4c8a-4513-86db-05f7acb7d32f.png",
+      "finalFile": "mockups/02-learning-map-vertical.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "references/current-atlas-vertical.png"
+      ],
+      "finalSha256": "f3497128685bbb70b7f4cf6d548658953b56c7c6ca7f40fb16c31f4e1326aeba",
+      "dimensions": [
+        1586,
+        992
+      ]
+    },
+    {
+      "key": "learning-map-horizontal",
+      "prompt": "Use case ui-mockup. Create the horizontal route variant of the attached Vietnamese Blue STEAM Hub learning UI. Keep the white learner nav exactly in layout and branding, typography, warm white left panel at 35%, exact title 'Chọn đường khám phá', and navy button style. Produce a single 16:10 edge-to-edge desktop screenshot. Toggle 'Theo chiều ngang' is selected in dark navy, 'Theo chiều dọc' inactive. Replace the five current steps with EXACTLY six labels spelled exactly 'Bờ biển', 'Vùng đụn cát', 'Vùng ven bờ', 'Rạn san hô', 'Biển khơi', 'Biển sâu'. Active marker at 'Rạn san hô' and exact primary CTA 'Vào rạn san hô'. No extra numbers or labels. Replace the underwater cross-section visual with a highly crafted naturalistic editorial coastal survey seen from oblique aerial perspective: warm green sandy dunes and curved shoreline on left, shallow transparent tropical turquoise water where seafloor is visible, organic patch reef formation in the middle, ocean off to the right trending deep blue. Clearly defined sunlight from upper right with soft glints, no geological lines, no decorative UI labels, no animals, no human objects, no Google map textures. One subtle white dot and fine leader line over the shallow reef at center; no multiple pins. Quiet, highly polished, balanced, same design family as reference. Do not make a board, collage, mobile frame or fantasy candy world.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-c97b7759-3d75-4111-ba74-57ceed1e611c.png",
+      "finalFile": "mockups/03-learning-map-horizontal.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "mockups/02-learning-map-vertical.png"
+      ],
+      "finalSha256": "f608c95dafcea730d3e4c8156276322d484a5a6ae8afe9bb8cc36631495c52a0",
+      "dimensions": [
+        1585,
+        992
+      ]
+    },
+    {
+      "key": "interactive",
+      "prompt": "Restyle the existing Tương tác page from images 1 and 2, quieter art and improved breathing room, maintaining exact activity entry structure. Realistic muted sunlit backdrop like image 3 with small modern CHIBI coral clusters as material accents only along far left and right, never behind text. Warm navy headline “Chơi và khám phá”. Exactly four navigation tiles across with distinct smaller illustration, thin mono icon and separate visible speaker button for each “Khám phá 3D” (cube), “Trò chơi” (gamepad, selected), “Mô phỏng” (sliders), “Tình huống” (conversation branches). Below, one white area with “Tìm hoạt động…”, “Tất cả nhóm” and group “Ngôi nhà đại dương” with a simple house-over-waves icon (not the old waves alone) and group speaker. Three existing sample game tiles “Tìm đôi bạn”, “Cùng phân loại”, “Về đúng nhà” with small visual and “Chơi ngay”. Start a compact “Giữ biển sạch” group with “Nhặt rác biển” as a list row only if visible. Preserve learning-independent game links. Do not add the water-column simulator as a tile or invent games. Restrained museum shelf layout, not a giant full-screen coral photo and not uniform huge white pills. At most one accent CTA color, no saturated cyan floods.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-893f550b-9d65-4bcf-82fb-06e52d6953d7.png",
+      "finalFile": "mockups/04-interactive.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-d6ad6446-c85d-4938-a24e-f57cfe3a5dab.png",
+        "references/current-interactive.png",
+        "mockups/02-learning-map-vertical.png"
+      ],
+      "dimensions": [
+        1586,
+        992
+      ],
+      "finalSha256": "9b1cee07cf92803f6463093966a5438c3d41e632a413f4f88863918a75720860"
+    },
+    {
+      "key": "creative",
+      "prompt": "Restyle existing Sáng tạo entry using images 1 and 2 for the layout and preserved flows. Image 3 is the existing honest crayon artwork texture guide, Image 4 visual calm. At top Sáng tạo active, exact hero copy in two lines “Góc sáng tạo của nhà thám hiểm nhí.” and “Bé vẽ đại dương - Bé kể chuyện biển xanh”. Beneath the title, modern chibi backdrop rendered like soft clay coral shapes at far edges and a pale daylight water wash, no huge shark or glossy bright blue wall. A tactile creative worktable: left larger project card “Cho tranh của bé sống dậy” shows real crayon drawing on paper + a cutout fish swimming in little viewport (clear before/after); buttons “Quét tranh của bé”, “Vào phiên bằng mã”. Right card “Tô màu” shows one or two simple traceable black line art on clean paper; buttons “Chọn tranh từ Học liệu”, “In ra giấy hoặc tô trên màn hình”. Next slim “Xây một nơi sống” with diorama image and “Bắt đầu xây”; a calm “Làm tiếp” row with “Xem tác phẩm trong Hồ sơ”. White blue family, a small paper texture used only on artwork. Preserve real existing child controls and links, all essential UI comfortably readable, no duplicate marketing lines.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-fe0753ee-aa6f-4d46-8710-eaf9e3da782f.png",
+      "finalFile": "mockups/05-creative.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-063068a8-7921-485c-8cb9-7616763007cc.png",
+        "references/current-creative.png",
+        "P:\\ocean-immerserve-learning\\public\\assets\\generated\\craft\\artwork_crayon_coral.png",
+        "mockups/02-learning-map-vertical.png"
+      ],
+      "dimensions": [
+        1586,
+        992
+      ],
+      "finalSha256": "3efe564541673dc30d6360f0d4fcccc925ac17ba7ec40d11f94457b755525a7e"
+    },
+    {
+      "key": "personal-profile",
+      "prompt": "Precision edit Image 1, preserve exactly its tall desktop Blue STEAM Hub site layout, white and muted blue palette, turtle avatar, all five profile blocks, “Dữ liệu minh họa”, current context, separate gallery and artwork. Keep same copy except progress numerator in “Tiến trình học tập” should be 2/6, consistent with the two organisms marked learned. Use 1 thành tích consistent with highlighted “Sinh vật đầu tiên”. Under that achievement use exactly “Đã ghi vào sổ sinh vật đầu tiên.” Replace only the illustrative San hô cành thumbnail in learned gallery with a recognizable crop of exact pink/purple branch coral in image 3. Make top white header compact enough to preserve all six existing nav text links plus tiny existing language, audio, avatar, logout controls on right like Image 2. No other changes. One tall polished desktop screenshot with full page visible.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-c2145847-4bca-43c2-b99a-3082aba707c2.png",
+      "finalFile": "mockups/06-personal-profile.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-a61febb4-d56e-440d-ba75-88fb714342ca.png",
+        "references/current-profile.png",
+        "references/learning-source/reef-row-4-image-1.jpeg"
+      ],
+      "dimensions": [
+        1122,
+        1402
+      ],
+      "finalSha256": "18cc4c1ef485db16fd2b2f12981f58b1fe328bbdc0f8ddd079feb53827d3fc66"
+    },
+    {
+      "key": "learning-dive",
+      "prompt": "Edit image 1, keep its same realistic bottlenose dolphin swimming upwards, sunlight, dark blue negative space, cinematic crop, exact question and tiny top HUD. Image 2 is the connected notebook, image 3 Excel source for general species appearance only. Preserve top row “Bản đồ”, “Vùng thượng tầng”, audio button, pause, “Sổ thám hiểm”. Replace the unlabeled hairline at right with an easy-to-operate compact clear “Độ sâu” slider: two endpoint captions “Mặt nước”, “Xuống sâu”, without numbers; visible grab thumb and track. Under that control add exactly two large outlined controls minus/plus with title “Thu phóng”, legible over water on a small dark translucent panel; clear hit area. Keep bottom-left title “Cá heo thở dưới nước được không?” and hint “Bơi chậm và quan sát.”, adding one small white “Quan sát” action beneath for keyboard/touch alternative. Keep dolphin fully visible near center/right under the sun, avoid covering subject. No white website nav in this immersion scene. No tech AR graphics, no cursor markers on the animal. One faithful updated full bleed scene screenshot.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-ccb25513-fe4f-469b-82e8-940f4c188784.png",
+      "finalFile": "mockups/07-learning-dive.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-f74aa999-eee8-45a2-8695-309904fddcae.png",
+        "mockups/08-learning-notebook.png",
+        "references/learning-source/upper-row-2-image-1.png"
+      ],
+      "dimensions": [
+        1585,
+        992
+      ],
+      "finalSha256": "8d0890bac671a883bb3cc78b5263fe718e2fd5042212f2a2540125fefcf6ec9c"
+    },
+    {
+      "key": "learning-notebook",
+      "prompt": "Use case ui-mockup. Generate ONE premium 16:10 Vietnamese educational web UI screenshot of a field notebook open over an underwater encounter. Reference anchors the setting, not exact placement; use a more crafted understated marine field-notebook look. Left ~62% preserves a recognizable sunlit underwater scene and soft focused dolphin near surface, with small upper-left '‹ Bản đồ' and dimmed sound icon. Right ~38% one tall warm ivory paper sheet, tiny line of binding at left, subtle real paper texture, no leather, no heavy shadows, ample negative space. A close icon near top right, title exactly 'Sổ thám hiểm', below fine dividing rule and exact species heading 'Cá heo mũi chai'. One rectangular naturalistic photo area of this dolphin at the surface seen side-on, recognizable long snout, slight water spray, no artificial photo borders outside a thin white frame. This image is a placeholder in a UI design screenshot, do not write labels over the image. Then the exact standalone fact 'Cá heo phải ngoi lên mặt nước để thở.' Below one small speaker button 'Nghe' and the exact small status 'Đã học' next to a simple check. Footer two modest text links 'Mục lục' and 'Bơi tiếp' with a hairline. Typography editorial, carefully legible modern Vietnamese font, accents correct, single-column text, clear contrast and spacing. Flat design, no sticker overload, no badges except simple status, no extra captions or tiny placeholder words, no full-width gray blurred overlay that hides the world, no slide/presentation board, one believable app screen.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-fcda2d7b-1502-4156-bd04-2e8d89c89cfc.png",
+      "finalFile": "mockups/08-learning-notebook.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "Ảnh tham chiếu nội bộ của sổ tay, đã dọn sau khi gen"
+      ],
+      "finalSha256": "2c389f2f8b8e3c689fe668ecfc1066567743bd90d8d0aa9473b867793aab5b36",
+      "dimensions": [
+        1586,
+        992
+      ]
+    },
+    {
+      "key": "resources-reef-detail",
+      "prompt": "Image 1 establishes navigation/resources, Image 2 calm typography, Image 3 exact photographed San hô cành from Excel Rạn san hô row 4 F4. Design the Học liệu detail screen “Rạn san hô / San hô cành”, white central reader with a light blue underwater perimeter. Top breadcrumb “Học liệu / Rạn san hô” and “Quay lại”. Left ~43% close-up photographic crop clearly matching reference color and branching morphology, title “San hô cành”, type “Động vật – Ruột khoang”, unobtrusive “Nghe toàn bài”, and bookmark. Right ~57% reading sections in exactly three white stacked rows with navy headings, single small line body and separate circular outline speaker on EACH row. Copy: “Đặc điểm” / “San hô phân nhánh thành nhiều cành.”, “Nơi ở” / “Rạn san hô”, “Cần gì?” / “San hô cần gì để sống?”. The last row visibly says “Câu hỏi cho bé” in small type, since it is a question and no unsupported answer is asserted. Under the bottom divider short “Thẻ cùng nhóm” strip with the clearly sourced labels “San hô não”, “San hô bàn”. Simple white and navy reading panel, no cartoon over the subject. One area per action, clean accents.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-103b5143-0fc1-40a8-9e79-e766f34a69c7.png",
+      "finalFile": "mockups/09-resources-reef-detail.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-8fda8e59-532a-4817-9e09-f155971075e0.png",
+        "mockups/02-learning-map-vertical.png",
+        "references/learning-source/reef-row-4-image-1.jpeg"
+      ],
+      "dimensions": [
+        1586,
+        992
+      ],
+      "finalSha256": "dc30372810837ddb584420d3a891db851813ff782717e4624606871eb8f23e58"
+    },
+    {
+      "key": "resources-media",
+      "prompt": "New Học liệu internal Audio/Video view. Image 1 gives the eight tabs, image 2 source web shell, image 3 the provided book page visuals (p6 blue dolphin illustration, p10 pink octopus), image 4 quiet color and type. Under a compact single white “Nghe · Xem · Khám phá” header, show the same eight menu tabs with Video selected and Audio immediately adjacent; list sidebar at left with two small thumbnails/titles “Cá heo”, “Bạch tuộc bị mắc kẹt”, separate search field “Tìm học liệu”. Main white workspace at right: breadcrumb “Học liệu / Video”; title “Cá heo”; 16:9 paused video frame based on book page 6 with friendly dolphin underwater, subtle transparent playback bar inside frame with play/seek/captions/volume icons and a conspicuous restrained “Minh họa” label near the frame to convey sample layout, with no fabricated media URL or duration. Below, show a separate slim Audio track row “Nghe lời giới thiệu” with a play and waveform, as a preview of the audio-only template on the same specimen, never auto-playing both. Single functional browser frame. No big coral ornament except barely visible backdrop edges.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-64b1d736-1678-45e8-bf4a-7bb81027a77f.png",
+      "finalFile": "mockups/10-resources-media.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-8fda8e59-532a-4817-9e09-f155971075e0.png",
+        "references/current-resources.png",
+        "references/book-contact-1.jpg",
+        "mockups/02-learning-map-vertical.png"
+      ],
+      "dimensions": [
+        1586,
+        992
+      ],
+      "finalSha256": "d2fee2e23460696e7b1178d1c5b178358ba280df573d92f96e3d7bcb5b4c249f"
+    },
+    {
+      "key": "resources-downloads",
+      "prompt": "New Học liệu download catalog screen with document preview. Image 1 shell and exact eight category menu; images 2–4 exact source art guides for document previews. Clean crisp wide white catalog over pale cool-blue ocean light at the far edges. Keep compact Học liệu top, eight-tab row “Flashcards”, “Hình ảnh”, “Audio”, “Video”, “Tranh tô màu”, “Phiếu học tập”, “Poster”, “Kho học liệu tải về”, last tab selected. Heading “Kho học liệu tải về”, search and simple document type filter. Master list left 53% with four distinct real document rows: “Sách học liệu 3”, “Thẻ học liệu 2”, “Bảng Học liệu 3”, and “Phiếu học tập”. Show a thumbnail of the printed document in each row, titles and small PDF label, do not invent file sizes or confirmed print dimensions. Right 47% white preview inspector for selected Sách học liệu 3, current page is the colorful actual cover shown at image 2 page 1, with previous and next controls, “Trang 1 / 32”, buttons “Xem bản in” and “Tải PDF”. List panel can scroll separately; no fabricated posters or line art. Match site logo and spacing. Looks like a real large library that scales, no warehouse of rounded cards.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-05c7dd6b-860c-44f1-91c0-e449c7d551fc.png",
+      "finalFile": "mockups/11-resources-downloads.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-8fda8e59-532a-4817-9e09-f155971075e0.png",
+        "references/book-contact-1.jpg",
+        "references/cards-contact-1.jpg",
+        "references/boards-contact-1.jpg"
+      ],
+      "dimensions": [
+        1586,
+        992
+      ],
+      "finalSha256": "45ff55b780eb4e4fbca4e0ff7b786ed1f4d1c015af91b26c052c643105b27c54"
+    },
+    {
+      "key": "learning-zone-intro",
+      "prompt": "Use case ui-mockup localized text edit. Keep image 1's exact current Blue STEAM Hub screen composition, typography, nav, mood, location strip, controls and Rạn san hô view. Replace ONLY the four lines of body copy directly under “Giới thiệu vùng” with these exact two short Vietnamese sentences, allowing natural line wrap: “Có thể gặp rạn san hô ở vùng ven bờ. Hòn Mun ở Nha Trang là một ví dụ.” This is the exact simple paraphrase allowed for this mockup. Do not add other body claims, depth values, or species labels. Preserve exact “Về bản đồ”, “Nghe giới thiệu”, “Xem giới thiệu”, “Chọn nhóm sinh vật”, and the six horizontal zone labels. Image 2 is only a reference for site shell continuity. A faithful edit, no difference in illustration or layout other than body copy.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-4cbbca6c-22e5-44c2-8bd2-4f6d9c6e5f98.png",
+      "finalFile": "mockups/12-learning-zone-intro.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-4d0491bb-7165-4e76-bb07-8fb8316b6dcf.png",
+        "mockups/03-learning-map-horizontal.png"
+      ],
+      "dimensions": [
+        1585,
+        992
+      ],
+      "finalSha256": "ae025f1f3520de816446df6797d1ea41b17942955a4d7e307a403aba23fcbc6e"
+    },
+    {
+      "key": "learning-species-index",
+      "prompt": "Design missing Học tập choose-group then choose-organism page. Active Học tập. Breadcrumb “Học tập / Theo chiều dọc / Vùng thượng tầng”. Title “Chọn sinh vật”. Left 23% white column titled “Nhóm sinh vật”, actual Excel group names “Động vật có vú biển” selected, “Bò sát”, “Động vật không xương sống”. Main middle 47% is a scalable list, not a decorative tile grid: search “Tìm sinh vật”, status filter “Tất cả trạng thái”, three compact image+title rows “Cá heo mũi chai”, “Cá heo lưng gù”, “Cá heo quay”, small learned badge on the second row solely as sample visual state, one selected row. Visible link/button “Tải thêm” after visible list, no fixed total count. Right 30% anchored white selected-organism card showing realistic bottlenose dolphin head with same species photo look as Image 3, title “Cá heo mũi chai”, speaker “Nghe tên”, one sourced summary “Thân xám, mõm dài, trán tròn.”, primary “Quan sát trong vùng”, secondary “Mở thẻ thông tin”. Do not offer 3D for this dolphin. Image 1 shell, Image 2 color and character of reader, images 3–5 only as biological thumbnail guides for matching rows. Preserve consistent left-to-right flow, generous margins, cool backdrop with only slender ocean edge. No invented zones or species. No wide repeated artwork backgrounds.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-6aed7fd4-be89-4cab-af83-ccdf5b90ad2c.png",
+      "finalFile": "mockups/13-learning-species-index.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "mockups/02-learning-map-vertical.png",
+        "mockups/08-learning-notebook.png",
+        "references/learning-source/upper-row-2-image-1.png",
+        "references/learning-source/upper-row-3-image-3.jpeg",
+        "references/learning-source/upper-row-4-image-6.jpeg"
+      ],
+      "dimensions": [
+        1585,
+        992
+      ],
+      "finalSha256": "01be1c29550c1409418b60f704b4afbb323428f03408f8bca1b04bd774889638"
+    },
+    {
+      "key": "learning-model-inspector",
+      "prompt": "Learning flow's distinct 3D viewer screen entered from Rùa biển xanh in “Vùng thượng tầng”, breadcrumb “Học tập / Vùng thượng tầng / Bò sát / Rùa biển xanh”. Header includes “Về thẻ thông tin”. Main specimen viewer left 67%, restrained dark blue photographic-style virtual water lab, a realistic anatomically faithful green sea turtle with olive hard scutes and flipper, matching image 3. Visible three modest toolbar controls zoom minus/plus and reset, hint “Kéo để xoay · Chụm để thu phóng”. White right-side 33% inspector panel heading “Rùa biển xanh”, subheading “Quan sát 3D”, mode controls visibly labeled “Model Inspector” active and “VR” available to enter, each separate. One true post-success status only: “+100 điểm” with label “Model Inspector”, small muted “Đã ghi nhận”. Do not render a reward for VR or imply the user is in VR. “Mai lớn, chân như mái chèo.” is a brief plain-language Excel row 5 detail. Small foot action “Về Học tập”. No wireframe pretending real native inspector is ready, no VR headset embellishment, no fake provider brand, no countdown or extraneous stats. Image 1 is shell and type, Image 2 is related reader design. Simulate credible visual shape of the product, not an advertising banner.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-1975f422-8837-47d7-9c2c-042c3534935c.png",
+      "finalFile": "mockups/14-learning-model-inspector.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "mockups/02-learning-map-vertical.png",
+        "mockups/08-learning-notebook.png",
+        "P:\\ocean-immerserve-learning\\public\\assets\\generated\\creatures\\green_turtle_hero.jpg"
+      ],
+      "dimensions": [
+        1585,
+        992
+      ],
+      "finalSha256": "d966fe4156b5d8f8f6a30e92fa4d8bd7f8c68d30092eacf9f8a605a73293ff85"
+    },
+    {
+      "key": "profile-collections",
+      "prompt": "Design Hồ sơ drill-down for large personal histories, not the overview. Existing site header Hồ sơ selected. Breadcrumb “Hồ sơ / Sản phẩm đã tạo”. At top white title “Hành trình của bé”, short text strip “Trường của bé · 2026–2027 · Lớp Lá” and back “Thông tin cá nhân”. Five compact tab links “Tiến trình”, “Thành tích”, “Sinh vật đã học”, “Game đã chơi”, “Sản phẩm đã tạo”. Last tab selected. Make one desktop screen with generous white gallery; include filter buttons “Tất cả”, “Tranh vẽ và tô màu”, “Tranh quét”, “Sa bàn”; show 3 coherent populated sample artifacts: genuine kid crayon reef art similar to exact Image 3 labeled “Rạn san hô của bé”, a scanned orange fish drawing “Cá nhỏ”, and a rendered miniature habitat “Ngôi nhà dưới biển”. Under each show small origin type and “Mở”. Label group “Dữ liệu minh họa”, show “Xem thêm” under list. Provide a modest achievements preview strip above the gallery showing exactly two actual criteria labels “Sinh vật đầu tiên” and “Quan sát 3D”, with “Xem thành tích” as link, no invented arbitrary levels or score counts. Quiet natural blue border, photo/artwork gets color, real existing chibi turtle avatar remains only in header. Match image 4 quiet palette.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-8b45b14f-842d-4d51-8d8c-bd2d35e16c43.png",
+      "finalFile": "mockups/15-profile-collections.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-9a6ffa1b-2f51-4f02-af68-ae63a6f7a78b.png",
+        "references/current-profile.png",
+        "P:\\ocean-immerserve-learning\\public\\assets\\generated\\craft\\artwork_crayon_coral.png",
+        "mockups/02-learning-map-vertical.png"
+      ],
+      "dimensions": [
+        1585,
+        992
+      ],
+      "finalSha256": "864add4800ba2af48810733060e570fa3871f9dca00de04f8c6c7dc6cc92840c"
+    },
+    {
+      "key": "resources-visual-print",
+      "prompt": "One targeted UI mockup edit. Image 1 is the exact website screenshot to edit. Keep original proportions, clean white six-tab nav, eight library tabs and “Phiếu học tập” active, all left filters, central worksheet thumbnails and the large p17 preview layout including two CTAs. Change only these: (1) replace museum interior hero with a compact white title block “Nghe · Xem · Khám phá” and very subdued UNDERWATER blue light fading from right, same shared Học liệu shell as Image 2, no shark, no indoor scene, no artificial specimen; (2) remove fabricated worksheet instructions from preview copy by copying only the recognizable layout from actual source image 3 p17/p9, no readable invented sentences; (3) label bottom distinct related row “Bảng Biển sạch / Biển ô nhiễm” and “Bảng Học liệu 3 · Trang 1”, explicitly outside count and worksheet results; (4) use “Sách học liệu 3 · Trang 17” and “Sách học liệu 3 · Trang 9” for source labels. Keep large branching coral line shape, hero and subtle ocean blue. Vietnamese typography clear. One wide shot.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-d993adbe-8a9c-4b76-a8d2-8eed2706ce2a.png",
+      "finalFile": "mockups/16-resources-visual-print.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-a031245c-1e7f-406d-a6d0-0bb1e22927ee.png",
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-05c7dd6b-860c-44f1-91c0-e449c7d551fc.png",
+        "references/book-contact-1.jpg"
+      ],
+      "dimensions": [
+        1585,
+        992
+      ],
+      "finalSha256": "fcaa98923ed9bcda7420e462ed299c5fa2908f31f4d1d72e22861aed39953fb9"
+    },
+    {
+      "key": "learning-mobile-catalog",
+      "prompt": "Precision edit to Image 1, the whole tall mobile Blue STEAM Hub website screenshot. Preserve every pixel of layout, all Vietnamese labels, three list rows and lower selected-species sheet except the small thumbnail in row 2, left of “Cá heo lưng gù”. Replace that single thumbnail with a tight rectangular crop of EXACT Image 2: the pink slender humpback DOLPHIN with a narrow long beak diving nose-down above dark green water. The animal in row 2 must be visibly the pink dolphin from Image 2, absolutely no humpback whale, whale throat ridges, whale long flippers, or blue sky. Do not edit the bottom photo, it is for the other species, Cá heo mũi chai. Retain original portrait aspect and render one mobile screenshot. No other layout or label changes.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-cb2b8345-b631-4338-9d56-0bb664506243.png",
+      "finalFile": "mockups/17-learning-mobile-catalog.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-cd4b6939-e66c-46a7-b77d-fd788b59e5d3.png",
+        "references/learning-source/upper-row-3-image-3.jpeg"
+      ],
+      "dimensions": [
+        852,
+        1846
+      ],
+      "finalSha256": "773ca90ee25ed31eb87d16eb97342bc828dc7cfe13961255d4c3b9871fc76479"
+    },
+    {
+      "key": "learning-model-entry",
+      "prompt": "Use case ui-mockup. Create the second variant of the existing Vietnamese sổ thám hiểm screen shown in image 1 as a full wide straight-on Blue STEAM Hub learner screenshot. It shows the organism BEFORE recording progress, so keep the same proportions and ivory paper texture at right ~41%, but update subject to Rùa biển xanh from Excel Vùng thượng tầng row 5 (image 2 source thumbnail, image 3 scene appearance reference). Left sunlit shallow water with softly blurred green sea turtle, upper left “Bản đồ” and sound button. Right uses exact text “Sổ thám hiểm”, small breadcrumb “Vùng thượng tầng / Bò sát”, title “Rùa biển xanh”, source-inspired horizontal natural photo, and sentence “Rùa có mai to, chân như mái chèo và thích ăn cỏ biển.” Then distinct white-outline speaker “Nghe” and navy “Ghi vào sổ” action, no “Đã học” yet. Directly underneath, a separate outlined action with small cube icon “Quan sát 3D”. Footer links “Mục lục” and “Bơi tiếp”. Show a minimal calm field journal that gives one clear path to enter 3D, no added points or VR claims on this page. Fit all content without cramming, align edges like image 1, true navy text, source design continuity, realistic anatomy not cartoon. No browser frame.",
+      "originalFile": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1af97-f0e1-7e61-9223-f02d13bd2a3d\\exec-522151c5-c37b-43e7-ba6f-da07280c5f36.png",
+      "finalFile": "mockups/18-learning-model-entry.png",
+      "transparent_background": false,
+      "kind": "design-mockup-not-production-asset",
+      "referenceImages": [
+        "mockups/08-learning-notebook.png",
+        "references/learning-source/upper-row-5-image-8.jpeg",
+        "P:\\ocean-immerserve-learning\\public\\assets\\generated\\creatures\\green_turtle_hero.jpg"
+      ],
+      "dimensions": [
+        1585,
+        992
+      ],
+      "finalSha256": "b5b00daa73048c1935a9ff046d5594d593156e2aad007be6bc5f54273601696e"
+    }
+  ]
+}

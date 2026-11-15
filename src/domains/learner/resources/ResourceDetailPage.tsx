@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, matchRoute } from '../../../app/router';
 import { LearnerShell } from '../../../shared/shells/LearnerShell';
-import { ArrowLeft, Bookmark, AlertCircle, Volume2 } from 'lucide-react';
+import { ArrowLeft, AlertCircle, Volume2 } from 'lucide-react';
 import {
   ResourceDto,
   fetchPublicResourceById,
@@ -11,19 +11,8 @@ import { TOPIC_ARTWORK_MAP } from '../../../shared/data/categoryArtworkMap';
 import { ResourceObservation } from '../../../shared/ui/media/ResourceObservation';
 import { oceanAudio } from '../../../shared/audio/oceanAudio';
 import { ApiClientError } from '../../../shared/api/client';
-import { useBookmarkMotion } from '../../../shared/ui/motion/useBookmarkMotion';
-
-const SAVED_RESOURCES_STORAGE_KEY = 'bluesteam_saved_resources_v2';
-
-function loadSavedMap(): Record<string, boolean> {
-  if (typeof window === 'undefined') return {};
-  try {
-    const raw = window.localStorage.getItem(SAVED_RESOURCES_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
-}
+import { LearnerResourceDetailLayout } from './LearnerResourceDetailLayout';
+import { useResourceBookmarks } from './useResourceBookmarks';
 
 export function ResourceDetailPage() {
   const { currentPath, query, navigate } = useRouter();
@@ -50,8 +39,7 @@ export function ResourceDetailPage() {
   const [notFound, setNotFound] = useState<boolean>(false);
   const [loadError, setLoadError] = useState(false);
   const [retry, setRetry] = useState(0);
-  const [savedMap, setSavedMap] = useState<Record<string, boolean>>(() => loadSavedMap());
-  const bookmark = useBookmarkMotion(Boolean(savedMap[resourceId]), resourceId);
+  const { saved: savedMap, toggleSaved } = useResourceBookmarks();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -78,29 +66,21 @@ export function ResourceDetailPage() {
     return () => controller.abort();
   }, [resourceId, retry]);
 
-  const toggleBookmark = (id: string) => {
-    setSavedMap((prev) => {
-      const next = { ...prev, [id]: !prev[id] };
-      if (typeof window !== 'undefined') {
-        try {
-          window.localStorage.setItem(SAVED_RESOURCES_STORAGE_KEY, JSON.stringify(next));
-        } catch {
-          // ignore storage quota errors
-        }
-      }
-      oceanAudio.playChime(next[id] ? 659.25 : 440, 0.15);
-      return next;
-    });
-  };
+  const toggleBookmark = (id: string) => oceanAudio.playChime(toggleSaved(id) ? 659.25 : 440, 0.15);
 
   const handleBackToResources = () => {
     const returnQuery: Record<string, string | null> = {};
+    if (query.view || query.kind) returnQuery.view = query.view || 'catalog';
     if (query.kind) returnQuery.kind = query.kind;
     if (query.topic) returnQuery.topic = query.topic;
     if (query.q) returnQuery.q = query.q;
     if (query.saved) returnQuery.saved = query.saved;
     if (query.group) returnQuery.group = query.group;
     if(query.capability)returnQuery.capability=query.capability;
+    if (query.catalogPage) returnQuery.catalogPage = query.catalogPage;
+    if (query.resourcePage) returnQuery.resourcePage = query.resourcePage;
+    if (query.cursor) returnQuery.cursor = query.cursor;
+    if (query.before) returnQuery.before = query.before;
     navigate(creativeDetail ? '/creative/coloring' : '/resources', { query: returnQuery });
   };
 
@@ -121,6 +101,7 @@ export function ResourceDetailPage() {
                 onClick={() =>
                   oceanAudio.speak(
                     'Học liệu này hiện không có sẵn. Bé hãy bấm quay lại thư viện học liệu nhé.',
+                    { profile: creativeDetail ? undefined : 'learner-resource' },
                   )
                 }
                 aria-label="Nghe thông báo"
@@ -153,66 +134,36 @@ export function ResourceDetailPage() {
   const relatedItems = (activeResource.related || []).slice(0, 3);
 
   return (
-    <div className="resource-detail-shell"><LearnerShell activeNav={creativeDetail ? "creative" : "resources"} compactMobileHeader>
-      <div className="w-full bg-[#FAF8F5] text-[#12384B] font-sans">
-        <div className="resource-detail-page" data-resource-id={activeResource.id}>
-          {/* 1. Top Bar: Back to Resources (preserving query) + Topic Badges + Bookmark */}
-          <div className="resource-detail-toolbar">
-            <div className="resource-detail-trail">
-              <button
-                type="button"
-                onClick={handleBackToResources}
-                className="resource-detail-back"
-              >
-                <ArrowLeft className="w-5 h-5 text-[#17657A]" />
-                <span>{creativeDetail?'Tranh tô màu':'Học liệu'}</span>
-              </button>
+    <LearnerResourceDetailLayout id={activeResource.id} creative={creativeDetail} saved={isSaved}
+      resourceKind={matchDirect.matches?'published':undefined}
+      onBack={handleBackToResources} onSave={() => toggleBookmark(activeResource.id)}
+      topic={primaryTopic && {title: primaryTopic.label,
+        image: ['species', 'creatures'].includes(primaryTopic.key) ? primaryTopic.cutoutSrc : primaryTopic.avatarImage}}>
+      {isObservation ? (
+        <ResourceObservation
+          key={activeResource.id}
+          resource={activeResource}
+          narrationProfile={creativeDetail ? undefined : 'learner-resource'}
+          related={relatedItems.filter(item => item.kind === 'flashcard' || item.kind === 'image')}
+          onOpen={id => navigate(`${creativeDetail ? '/creative/coloring' : '/resources'}/${id}`, { query: { ...query, source:null } })}
+          onOpenDrawing={template => navigate('/creative/drawing', { query: { template,returnResource:resourceId,...(creativeDetail ? {fromCreative:'1'} : {}),...query } })}
+        />
+      ) : <ResourceRenderer
+        key={activeResource.id}
+        resource={activeResource}
+        narrationProfile={creativeDetail ? undefined : 'learner-resource'}
+        onSelectVariant={(variantId, kind, drawingTemplateKey) => {
+          if (kind === 'coloring' && drawingTemplateKey) {
+            navigate('/creative/drawing', { query: { ...query,template: drawingTemplateKey,returnResource:resourceId,...(creativeDetail ? {fromCreative:'1'} : {}) } });
+            return;
+          }
+          navigate(`${creativeDetail ? '/creative/coloring' : '/resources'}/${variantId}`, { query });
+        }}
+        onOpenDrawing={(templateKey) => {
+          navigate('/creative/drawing', { query: { ...query,template: templateKey,returnResource:resourceId,...(creativeDetail ? {fromCreative:'1'} : {}) } });
+        }}
+      />}
 
-              {primaryTopic && <span className="resource-detail-topic">
-                <img src={['species', 'creatures'].includes(primaryTopic.key) ? primaryTopic.cutoutSrc : primaryTopic.avatarImage} alt="" />
-                {primaryTopic.label}
-              </span>}
-            </div>
-
-            <button
-              ref={bookmark}
-              type="button"
-              onClick={() => toggleBookmark(activeResource.id)}
-              aria-pressed={isSaved}
-              aria-label={isSaved ? 'Bỏ lưu học liệu' : 'Lưu học liệu'}
-              className="resource-detail-save"
-              title={isSaved ? 'Bỏ lưu học liệu' : 'Lưu học liệu'}
-            >
-              <Bookmark className={`w-5 h-5 ${isSaved ? 'fill-[#17657A] text-[#17657A]' : ''}`} />
-            </button>
-          </div>
-
-          {/* 2. Main 65/35 Split Renderer */}
-          {loading && !resource ? <div role="status" className="min-h-[500px] grid place-items-center">Đang mở học liệu…</div> : isObservation ? (
-            <ResourceObservation
-              key={activeResource.id}
-              resource={activeResource}
-              related={relatedItems.filter(item => item.kind === 'flashcard' || item.kind === 'image')}
-              onOpen={id => navigate(`${creativeDetail ? '/creative/coloring' : '/resources'}/${id}`, { query })}
-              onOpenDrawing={template => navigate('/creative/drawing', { query: { template,returnResource:resourceId,...(creativeDetail ? {fromCreative:'1'} : {}),...query } })}
-            />
-          ) : <ResourceRenderer
-            resource={activeResource}
-            onSelectVariant={(variantId, kind, drawingTemplateKey) => {
-              if (kind === 'coloring' && drawingTemplateKey) {
-                navigate('/creative/drawing', { query: { ...query,template: drawingTemplateKey,returnResource:resourceId,...(creativeDetail ? {fromCreative:'1'} : {}) } });
-                return;
-              }
-              navigate(`${creativeDetail ? '/creative/coloring' : '/resources'}/${variantId}`, { query });
-            }}
-            onOpenDrawing={(templateKey) => {
-              navigate('/creative/drawing', { query: { ...query,template: templateKey,returnResource:resourceId,...(creativeDetail ? {fromCreative:'1'} : {}) } });
-            }}
-          />}
-
-          {/* 3. Related Resources (max 3 items by topic per UI-SPEC M03.7) */}
-        </div>
-      </div>
-    </LearnerShell></div>
+    </LearnerResourceDetailLayout>
   );
 }

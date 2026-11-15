@@ -13,3 +13,6 @@ export * from './creative-challenge.js';
 export * from './creative-coloring-usage.js';
 
 export * from './creative-environments.js';
+export * from './avatars.js';
+export * from './profile-achievements.js';
+export * from './school-year.js';

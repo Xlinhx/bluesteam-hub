@@ -18,7 +18,7 @@ test.describe('Editorial landing', () => {
     await expect(page.getByRole('button', { name: 'Đăng nhập', exact: true })).toHaveCount(0);
     await page.locator('.public-header-actions a[href="/entry"]').first().click();
     await expect(page).toHaveURL(/\/entry$/);
-    await expect(page.getByText('Bắt đầu cùng BlueSTEAM')).toBeVisible();
+    await expect(page.getByText('Hãy bắt đầu cùng Blue STEAM Hub')).toBeVisible();
   });
 
   test('photo comparison responds to keyboard and pointer without moving the images', async ({ page }) => {

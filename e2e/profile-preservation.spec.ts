@@ -2,7 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import path from 'node:path';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
-import { seedLocalProfile } from './fixtures/local-profile';
+import { openDeviceProfileCollection, seedLocalProfile } from './fixtures/local-profile';
 
 const shots = path.resolve('artifacts/verification/profile-rooms');
 test.use({ actionTimeout: 15000, viewport: { width: 1440, height: 1000 } });
@@ -30,7 +30,7 @@ test('profile shows saved artworks while drafts remain in the creative studio', 
   await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
   await expect(page).toHaveURL(/\/home$/);
   await seedLocalProfile(page);
-  await page.goto('/profile', {waitUntil: 'domcontentloaded'});
+  await page.goto('/profile', {waitUntil: 'domcontentloaded'}); await openDeviceProfileCollection(page);
   await expect(page.locator('.profile-art')).toHaveCount(3);
   await expect(page.locator('.profile-resume')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Bức tranh đang vẽ' })).toHaveCount(0);
@@ -50,7 +50,7 @@ test('profile shows saved artworks while drafts remain in the creative studio', 
       tx.onerror = () => reject(tx.error);
     };
   }));
-  await page.goto('/profile', {waitUntil: 'domcontentloaded'});
+  await page.goto('/profile', {waitUntil: 'domcontentloaded'}); await openDeviceProfileCollection(page);
   await expect(page.locator('.profile-section-count')).toHaveText(['0', '0', '0']);
   await expect(page.locator('.profile-art')).toHaveCount(0);
 });
@@ -61,12 +61,13 @@ test('local identity, artwork download, and both resumable editors preserve real
   await page.getByLabel('Mật khẩu', { exact: true }).fill('hocsinh');
   await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
   await expect(page).toHaveURL(/\/home$/);
-  await page.goto('/profile', {waitUntil: 'domcontentloaded'});
+  await page.goto('/profile', {waitUntil: 'domcontentloaded'}); await openDeviceProfileCollection(page);
   await expect(page.locator('.profile-section-count')).toHaveText(['0', '0', '0']);
   await page.getByRole('button', { name: 'Bắt đầu sáng tạo' }).click();
   await expect(page).toHaveURL(/\/creative$/);
   await page.goto('/profile', {waitUntil: 'domcontentloaded'});
   await seedLocalProfile(page);
+  await openDeviceProfileCollection(page);
   await expect(page.locator('.profile-art')).toHaveCount(3);
   await expect(page.locator('.profile-resume')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Bức tranh đang vẽ' })).toHaveCount(0);
@@ -78,14 +79,14 @@ test('local identity, artwork download, and both resumable editors preserve real
   await dialog.getByRole('textbox').fill('Bé Chi');
   await dialog.getByRole('button', { name: 'Sứa', exact: true }).click();
   await dialog.getByRole('button', { name: 'Hủy', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Góc của An' })).toBeVisible();
+  await expect(page.locator('header[data-role=learner] .bluesteam-header-name')).toHaveText('Bé An');
   await page.getByRole('button', { name: 'Đổi tên và hình', exact: true }).click();
   await dialog.getByRole('textbox').fill('Bé Chi');
   await dialog.getByRole('button', { name: 'Sứa', exact: true }).click();
   await dialog.getByRole('button', { name: 'Lưu', exact: true }).click();
   await page.reload({waitUntil: 'domcontentloaded'});
-  await expect(page.getByRole('heading', { name: 'Góc của Chi' })).toBeVisible();
-  await expect(page.locator('.profile-portrait')).toHaveAttribute('data-avatar', 'jellyfish');
+  await expect(page.locator('header[data-role=learner] .bluesteam-header-name')).toHaveText('Bé Chi');
+  await expect(page.locator('.profile-portrait img')).toHaveAttribute('data-avatar', 'jellyfish');
   await page.locator('.profile-art').first().click();
   await expect(dialog).toHaveClass(/ocean-modal-full/);
   await expect.poll(() => dialog.evaluate(node => {
@@ -128,7 +129,7 @@ test('local identity, artwork download, and both resumable editors preserve real
   expect(savedHabitat.previewDataUrl).toMatch(/^data:image\/png/);
   expect(await localArtwork(page, 'profile-demo-habitat')).toEqual(originalHabitat);
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/profile', {waitUntil: 'domcontentloaded'});
+  await page.goto('/profile', {waitUntil: 'domcontentloaded'}); await openDeviceProfileCollection(page);
   await expect(page.locator('.profile-art')).toHaveCount(4);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
   await capture(page, 'profile-mobile');

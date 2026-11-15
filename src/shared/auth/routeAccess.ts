@@ -8,7 +8,7 @@ export function routeAccountRole(path: string): RouteAccountRole | null {
   const domain = resolveRouteDomain(path);
   if (domain === 'teacher' || path === '/presentation' || path.startsWith('/present/')) return 'teacher';
   if (domain !== 'learner') return null;
-  if (path === '/home' || path === '/student' || path === '/profile') return 'student';
+  if (path === '/home' || path === '/student' || path === '/profile' || path === '/learning') return 'student';
   // Teachers also open drawing and content workspaces from their preview tools.
   return 'member';
 }

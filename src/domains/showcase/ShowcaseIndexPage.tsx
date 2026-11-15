@@ -1,3 +1,4 @@
+import { SearchField } from '@/shared/ui/controls/SearchField';
 ﻿import { useState } from 'react';
 import { useRouter } from '../../app/router';
 import {
@@ -19,7 +20,6 @@ import {
   Compass,
   CheckCircle2,
   Award,
-  Search,
 } from 'lucide-react';
 
 export function ShowcaseIndexPage() {
@@ -223,16 +223,7 @@ export function ShowcaseIndexPage() {
 
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
 
-          <div className="relative min-w-[240px]">
-              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                placeholder="Tìm màn hình, route, squad..."
-                value={v2SearchTerm}
-                onChange={(e) => setV2SearchTerm(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-hidden focus:border-sky-500"
-              />
-            </div>
+          <SearchField className="w-full max-w-xs text-sm" label="Tìm màn hình" placeholder="Tìm màn hình, route, squad…" value={v2SearchTerm} onChange={setV2SearchTerm}/>
         </div>
 
         {/* TAB 1: BLUESTEAM V2 (39 SCREENS) */}

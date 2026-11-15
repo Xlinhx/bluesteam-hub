@@ -1,0 +1,32 @@
+[
+  {
+    "key": "vertical-algae",
+    "fileName": "Tầng nước biển, các loại tảo.xlsx",
+    "bytes": 14405664,
+    "sha256": "57e15b414ff81a23264a3bdb2affd1f86b31e2401fda75b6111b71dd3ad75604"
+  },
+  {
+    "key": "horizontal",
+    "fileName": "Bảng sinh vật biển theo chiều ngang.xlsx",
+    "bytes": 21019061,
+    "sha256": "834ecc6bc7820dddfaecb831ecadfc6ee06a7e3a0a6d339c55f4d17218156fb1"
+  },
+  {
+    "key": "book",
+    "fileName": "Sách học liệu 3 (4200 x 2960 px) (A4).pdf",
+    "bytes": 196608198,
+    "sha256": "db5dc9ffdc90063f6e55562d4fd3b7010c22d81ea5193495ada99fd779fa3a63"
+  },
+  {
+    "key": "flashcards",
+    "fileName": "Thẻ học liệu 2 (12 × 15 cm).pdf",
+    "bytes": 128291283,
+    "sha256": "ce3bd5721eb595be686f461343600ebd22e46369a886bbca22c898117204b40c"
+  },
+  {
+    "key": "boards",
+    "fileName": "Bảng Học liệu 3 90x60 (10 × 7.5 cm).pdf",
+    "bytes": 116835855,
+    "sha256": "e15e4c5128668772d2b8d40974d051a8af39f6f8182a506da540ade8d0237717"
+  }
+]

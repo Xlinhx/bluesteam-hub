@@ -1,0 +1,12 @@
+.lesson-step-marker {
+  position: absolute;
+  z-index: 1;
+  left: -2px;
+  top: 50%;
+  width: 3px;
+  height: 24px;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  background: #17657a;
+  pointer-events: none;
+}

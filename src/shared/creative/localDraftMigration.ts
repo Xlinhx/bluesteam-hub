@@ -97,6 +97,7 @@ export function migrateLegacyArtworkRecord(
       : 'local_only';
 
   return {
+    studyContext:rec.studyContext,
     sourceSnapshot:rec.sourceSnapshot,
     pendingDelivery:rec.pendingDelivery,
     habitatChallenge:rec.habitatChallenge,

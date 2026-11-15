@@ -1,5 +1,6 @@
 import {test,expect} from '@playwright/test';
-const teacher={email:'creative-e2e@test.local',password:'Testing123!'};
+const teacher={role:'teacher',email:'colinh@bluesteam.edu.vn',password:'daiduong2026'};
+const learner={role:'student',email:'hocsinh',password:'hocsinh'};
 
 test('recent sea keeps its environment preview when an old artwork image is unavailable',async({page})=>{
  await page.request.post('/api/v1/auth/login',{data:teacher});
@@ -27,15 +28,16 @@ test('creative water motion stays bounded, stops immediately, and does not repla
 });
 test('sea modal has its own choreography, remains interruptible, and works with reduced motion',async({page})=>{
  await page.addInitScript(()=>{const original=Element.prototype.animate;(window as any).__creativeAnimations=[];Element.prototype.animate=function(frames,options){(window as any).__creativeAnimations.push({cls:this.className,frames,options});return original.call(this,frames,options);};});
- await page.request.post('/api/v1/auth/login',{data:teacher});await page.goto('/teacher/creative');await page.getByRole('button',{name:'Mở biển chung',exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible();
- expect(await page.evaluate(()=>(window as any).__creativeAnimations.some((x:any)=>String(x.cls).includes('ocean-modal')&&x.frames[0].clipPath))).toBe(true);
+ expect((await page.request.post('/api/v1/auth/login',{data:teacher})).ok()).toBe(true);
+ await page.goto('/teacher/creative');await page.getByRole('button',{name:'Mở biển chung',exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible();
+ await expect.poll(()=>page.evaluate(()=>(window as any).__creativeAnimations.some((x:any)=>String(x.cls).includes('ocean-modal')&&x.frames[0].clipPath))).toBe(true);
  await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);
  await page.emulateMedia({reducedMotion:'reduce'});await page.getByRole('button',{name:'Mở biển chung',exact:true}).click();await expect(page.getByRole('textbox',{name:'Tên biển'})).toBeEditable();await page.getByRole('button',{name:'Rạn san hô',exact:true}).click();await page.getByRole('searchbox',{name:'Tìm môi trường'}).fill('bien sau');await page.getByRole('button',{name:'Biển sâu',exact:true}).click();await page.getByRole('button',{name:'Để sau',exact:true}).click();await expect(page.getByRole('dialog')).toHaveCount(0);
 });
 test('learner motion follows actual paper geometry and leaves crop/edit/save usable',async({browser,baseURL})=>{
  const context=await browser.newContext({baseURL,viewport:{width:1280,height:900},recordVideo:{dir:'artifacts/creative-motion-preview',size:{width:1280,height:900}}});const page=await context.newPage();
  await page.addInitScript(()=>{const original=Element.prototype.animate;(window as any).__creativeAnimations=[];Element.prototype.animate=function(frames,options){(window as any).__creativeAnimations.push({cls:this.className,tag:this.tagName,frames,options});return original.call(this,frames,options);};});
- await page.request.post('/api/v1/auth/login',{data:{role:'student',email:'creative-child@test.local',password:'Testing123!'}});await page.goto('/creative');await expect(page.getByRole('heading',{name:'Đại dương mang dấu ấn của bé'})).toBeVisible();
+ await page.request.post('/api/v1/auth/login',{data:learner});await page.goto('/creative');await expect(page.getByRole('heading',{name:'Góc sáng tạo của nhà thám hiểm nhí.'})).toBeVisible();
  await expect.poll(()=>page.evaluate(()=>(window as any).__creativeAnimations.some((x:any)=>String(x.cls).includes('scan-life-fish-water')&&x.frames[0].transform))).toBe(true);
  await page.getByRole('button',{name:'Quét tranh của bé',exact:true}).click();await page.locator('input[type=file]').first().setInputFiles('public/assets/generated/craft/artwork_crayon_clownfish.png');await page.getByRole('button',{name:'Tách nền và xem lại',exact:true}).click();await expect(page.getByRole('checkbox',{name:'Đã xem lại nét vẽ và phần trắng trong con vật'})).toBeVisible();
  await expect.poll(()=>page.evaluate(()=>(window as any).__creativeAnimations.some((x:any)=>x.tag==='CANVAS'&&x.frames[0].transform))).toBe(true);
@@ -51,10 +53,10 @@ test('creative page journeys use layered forward/back transitions without replay
  expect(await page.evaluate(()=>(window as any).__journeys.some((x:any)=>x.direction==='forward'&&x.audience==='teacher'))).toBe(true);
  await page.getByRole('textbox',{name:'Tìm mẫu tranh'}).fill('Rùa');const count=await page.evaluate(()=>(window as any).__journeys.length);await page.getByRole('textbox',{name:'Tìm mẫu tranh'}).fill('Rùa xanh');expect(await page.evaluate(()=>(window as any).__journeys.length)).toBe(count);
  await page.goBack();await expect(page.locator('.ct-active-sea,.ct-sea-empty-hero')).toBeVisible();expect(await page.evaluate(()=>(window as any).__journeys.some((x:any)=>x.direction==='back'))).toBe(true);
- await page.request.post('/api/v1/auth/login',{data:{role:'student',email:'creative-child@test.local',password:'Testing123!'}});await page.goto('/creative');await expect(page.getByRole('button',{name:'Quét tranh của bé',exact:true})).toBeVisible();await page.getByRole('button',{name:'Quét tranh của bé',exact:true}).click();await expect(page.getByRole('button',{name:'Chọn ảnh',exact:true})).toBeVisible();await expect.poll(()=>page.evaluate(()=>document.documentElement.dataset.creativeJourney||'')).toBe('');
+ await page.request.post('/api/v1/auth/login',{data:learner});await page.goto('/creative');await expect(page.getByRole('button',{name:'Quét tranh của bé',exact:true})).toBeVisible();await page.getByRole('button',{name:'Quét tranh của bé',exact:true}).click();await expect(page.getByRole('button',{name:'Chọn ảnh',exact:true})).toBeVisible();await expect.poll(()=>page.evaluate(()=>document.documentElement.dataset.creativeJourney||'')).toBe('');
  expect(await page.evaluate(()=>(window as any).__journeys.some((x:any)=>x.audience==='learner'))).toBe(true);
  await page.evaluate(()=>(window as any).__entrances=[]);
- await page.goBack();await expect(page.getByRole('heading',{name:'Đại dương mang dấu ấn của bé'})).toBeVisible();await expect.poll(()=>page.evaluate(()=>document.documentElement.dataset.creativeJourney||'')).toBe('');
+ await page.goBack();await expect(page.getByRole('heading',{name:'Góc sáng tạo của nhà thám hiểm nhí.'})).toBeVisible();await expect.poll(()=>page.evaluate(()=>document.documentElement.dataset.creativeJourney||'')).toBe('');
  expect(await page.evaluate(()=>(window as any).__entrances.filter((cls:string)=>/scan-life|creative-hub-heading|creative-hub-badge|habitat-entry/.test(cls)))).toEqual([]);
  await page.screenshot({path:'artifacts/creative-motion-v2-hub.png',fullPage:true});
  const video=page.video();await context.close();if(video){const {copyFileSync}=await import('node:fs');copyFileSync(await video.path(),'artifacts/creative-motion-page-journeys.webm');}
@@ -63,7 +65,7 @@ test('creative page journeys use layered forward/back transitions without replay
 test('drawing and habitat tools remain usable through desktop panels, mobile sheets and completion',async({browser,baseURL})=>{
  const context=await browser.newContext({baseURL,viewport:{width:1366,height:900},recordVideo:{dir:'artifacts/creative-workspaces-preview',size:{width:1366,height:900}}});const page=await context.newPage();
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
- await page.request.post('/api/v1/auth/login',{data:{role:'student',email:'creative-child@test.local',password:'Testing123!'}});
+ await page.request.post('/api/v1/auth/login',{data:learner});
  await page.goto('/creative/drawing');await expect(page.getByTestId('drawing-canvas')).toBeVisible();
  await page.getByRole('button',{name:'Thêm màu',exact:true}).click();await expect(page.locator('.drawing-shade-panel .creative-tool-panel')).toBeVisible();
  await page.getByRole('button',{name:'Chọn màu Xanh bọt biển',exact:true}).click();await page.getByRole('button',{name:'Dùng màu này',exact:true}).click();await expect(page.locator('.drawing-shade-panel')).toBeHidden();

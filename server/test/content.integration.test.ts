@@ -73,6 +73,19 @@ describe('Task 4 — Content Catalogs (Topics, Resources, 3D Models) & Teacher C
     fs.rmSync(tempMediaDir, { recursive: true, force: true });
   });
 
+  it('shows another teacher the same published groups without treating their members as unassigned', async () => {
+    const headers = { Cookie: teacherBCookie };
+    const publicGroups = (await (await fetch(`${appUrl}/api/v1/resource-groups`)).json()).items;
+    const teacherGroups = (await (await fetch(`${appUrl}/api/v1/teacher/resource-groups`, { headers })).json()).items;
+    const group = publicGroups.find((g: any) => g.title === 'Rạn san hô');
+    expect(teacherGroups.map((g: any) => g.id)).toContain(group.id);
+    expect(teacherGroups.some((g: any) => g.visibility === 'hidden')).toBe(false);
+    const items = (await (await fetch(`${appUrl}/api/v1/teacher/resources?groupId=${group.id}`, { headers })).json()).items;
+    expect(items.map((r: any) => r.id)).toContain(group.previews[0].id);
+    const unassigned = (await (await fetch(`${appUrl}/api/v1/teacher/resources?groupId=unassigned&limit=50`, { headers })).json()).items;
+    expect(unassigned.map((r: any) => r.id)).not.toContain(group.previews[0].id);
+  });
+
   it('retires drafts in resources and groups, keeps copies hidden and only deletes unreferenced hidden content', async () => {
     const headers={Cookie:teacherACookie,'Content-Type':'application/json'};
     for(const endpoint of ['resources','resource-groups']) {
@@ -247,6 +260,9 @@ describe('Task 4 — Content Catalogs (Topics, Resources, 3D Models) & Teacher C
     expect(variantIds.length).toBeGreaterThan(1);
     expect(roots.items.filter((item: any) => variantIds.includes(item.id))).toHaveLength(0);
     expect(group.previews.filter((item: any) => variantIds.includes(item.id))).toHaveLength(0);
+    const library = await (await fetch(`${appUrl}/api/v1/resources?groupId=${group.id}&library=1&limit=5`)).json();
+    expect(group.libraryMemberCount).toBe(library.total);
+    expect(group.memberCount).toBeGreaterThan(group.libraryMemberCount);
       const coloring = await (await fetch(`${appUrl}/api/v1/resources?groupId=${group.id}&kind=coloring`)).json();
       expect(coloring.items.some((item: any) => variantIds.includes(item.id))).toBe(true);
       const videos = await (await fetch(`${appUrl}/api/v1/resources?groupId=${group.id}&kind=video`)).json();
@@ -304,7 +320,7 @@ describe('Task 4 — Content Catalogs (Topics, Resources, 3D Models) & Teacher C
     const headers = { Cookie: teacherACookie, 'Content-Type': 'application/json' };
     const supported = await (await fetch(`${appUrl}/api/v1/teacher/resources?kind=supported`, {headers})).json();
     expect(supported.items.length).toBeGreaterThan(0);
-    expect(supported.items.some((r: any)=>r.kind==='worksheet')).toBe(false);
+    expect(supported.items.some((r: any)=>r.kind==='worksheet')).toBe(true);
     const group = await (await fetch(`${appUrl}/api/v1/teacher/resource-groups`, {method:'POST',headers,body:JSON.stringify({title:'Editor membership'})})).json();
     const resource = await (await fetch(`${appUrl}/api/v1/teacher/resources`, {method:'POST',headers,body:JSON.stringify({title:'Grouped card',kind:'flashcard',groupIds:[group.id]})})).json();
     expect(resource.groups.map((g: any)=>g.id)).toContain(group.id);

@@ -1,0 +1,101 @@
+.presentation-vote-bar {
+  transform-origin: left center;
+  transition: transform 220ms cubic-bezier(.2,.75,.2,1);
+  pointer-events: none;
+}
+
+.presentation-ceremony-light {
+  position: absolute;
+  inset: -20% 0 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 49% 35%, #70dfd52e, transparent 55%),
+    conic-gradient(from 149deg at 52% 3%, transparent 0deg, #90f0eb10 17deg, #e6c98020 25deg, transparent 51deg);
+  transform-origin: 52% 3%;
+}
+
+.presentation-award {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: clamp(70px, 8vw, 108px);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+.presentation-award::before {
+  content: '';
+  position: absolute;
+  inset: 13% 5% 5%;
+  z-index: -1;
+  border-radius: 46% 53% 48% 52%;
+  border: 1px solid var(--award-edge);
+  box-shadow: inset 0 0 18px var(--award-halo), 0 0 22px var(--award-halo);
+}
+.presentation-award--amber { --award-edge:#fce09b89; --award-halo:#ebbe5140; }
+.presentation-award--mint { --award-edge:#8cefe7a3; --award-halo:#53dac949; }
+.presentation-award--peach { --award-edge:#ffd6ba94; --award-halo:#fda77d41; }
+.presentation-award > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 4px #06182590);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .presentation-story-backdrop {
+    animation: presentation-story-settle 1080ms cubic-bezier(.27,.64,.26,1);
+    transform-origin: 50% 65%;
+  }
+
+  .presentation-specimen-note {
+    --presentation-note-from: 8px;
+    animation: presentation-note-seat 340ms cubic-bezier(.28,.67,.24,1);
+  }
+
+  .presentation-specimen-note--right { --presentation-note-from: -8px; }
+
+  .presentation-award {
+    animation: presentation-award-settle 780ms cubic-bezier(.28,.69,.24,1) backwards;
+    transform-origin: center bottom;
+  }
+
+  .presentation-award::before { animation: presentation-award-halo 1000ms cubic-bezier(.25,.65,.25,1) backwards; }
+  .presentation-ceremony-light { animation: presentation-ceremony-open 1300ms cubic-bezier(.28,.67,.28,1); }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .presentation-awards > :nth-child(2) .presentation-award { animation-delay: 85ms; }
+  .presentation-awards > :nth-child(3) .presentation-award { animation-delay: 170ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .presentation-vote-bar { transition: none; }
+}
+
+@keyframes presentation-story-settle {
+  from { transform: scale(1.025); }
+  to { transform: none; }
+}
+
+@keyframes presentation-note-seat {
+  from { transform: translateX(var(--presentation-note-from)); }
+  to { transform: none; }
+}
+
+@keyframes presentation-award-settle {
+  0% { transform: translateY(12px) rotate(-8deg) scale(.91); opacity: .52; }
+  65% { transform: translateY(-2px) rotate(2deg); opacity: 1; }
+  100% { transform: none; }
+}
+
+@keyframes presentation-award-halo {
+  from { transform: scale(.8); opacity: .05; }
+  65% { opacity: .8; }
+  to { transform: none; opacity: 1; }
+}
+
+@keyframes presentation-ceremony-open {
+  from { transform: rotate(-9deg) scale(1.035); opacity: .12; }
+  to { transform: none; opacity: 1; }
+}

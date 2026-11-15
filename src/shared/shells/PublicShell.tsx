@@ -56,7 +56,7 @@ export function PublicShell({ children, activeNav, variant = 'default' }: Public
       <a href="#public-main" className="public-skip-link">{t('common.skipToContent', 'Đến nội dung chính')}</a>
       <header className="public-header">
         <div className="public-header-inner">
-          <PublicLink href="/" className="public-brand" aria-label="Về trang chủ BlueSTEAM"><BlueSteamLogo size="md" /></PublicLink>
+          <PublicLink href="/" className="public-brand" aria-label="Về trang chủ Blue STEAM Hub"><BlueSteamLogo size="md" /></PublicLink>
           <nav className="public-desktop-nav" aria-label="Điều hướng công khai">
             {items.map(({ key, path, label, icon: Icon }) => (
               <PublicLink key={key} href={path} className="public-nav-link" aria-current={activeNav === key ? 'page' : undefined}>

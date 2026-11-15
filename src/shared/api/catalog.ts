@@ -53,6 +53,9 @@ export interface ResourceDto {
     svgTemplate?: string;
     drawingTemplateKey?: string;
     albumUrls?: string[];
+    sourcePdfUrl?: string;
+    sourcePages?: number[];
+    downloadUrl?: string;
     albumAssets?: Array<{id?:string;url:string;name?:string;byteSize?:number;mimeType?:string}>;
     mediaDetails?: {name?:string;byteSize?:number;mimeType?:string};
       coverOverride?: boolean;
@@ -62,7 +65,7 @@ export interface ResourceDto {
   topicSlugs: string[];
   variants?: ResourceVariantLink[];
   editableVariantIds?: string[];
-  groups?: Array<{ id: string; title: string; isSeed: boolean }>;
+  groups?: Array<{ id: string; title: string; isSeed: boolean; canEdit?: boolean }>;
   groupIds?: string[];
   isGroupMember?: boolean;
   related?: Array<{
@@ -113,6 +116,7 @@ export interface Model3DDto {
 export interface CatalogPage<T> {
   items: T[];
   nextCursor: string | null;
+  previousCursor?: string | null;
   total: number;
 }
 
@@ -706,6 +710,7 @@ function buildQueryString(params: Record<string, string | string[] | number | un
 
 export async function fetchPublicResources(
   params: {
+    library?: boolean;
     capability?:'screen'|'print'|'all';
     groupId?: string;
     kind?: string;
@@ -713,6 +718,8 @@ export async function fetchPublicResources(
     q?: string;
     savedIds?: string[];
     cursor?: string;
+    before?: string;
+    page?: number;
     limit?: number;
   },
   signal?: AbortSignal,
@@ -720,6 +727,7 @@ export async function fetchPublicResources(
   // An empty list is an active saved filter, never an unfiltered catalog.
   if (params.savedIds?.length === 0) return { items: [], total: 0, nextCursor: null };
   const qs = buildQueryString({
+    library:params.library ? '1' : undefined,
     capability:params.capability,
     groupId: params.groupId,
     kind: params.kind && params.kind !== 'all' ? params.kind : undefined,
@@ -727,6 +735,8 @@ export async function fetchPublicResources(
     q: params.q,
     savedIds: params.savedIds,
     cursor: params.cursor,
+    before: params.before,
+    page: params.page,
     limit: params.limit ?? 12,
   });
   return apiRequest<CatalogPage<ResourceDto>>(`/api/v1/resources${qs}`, { signal });
@@ -749,6 +759,7 @@ export async function fetchTeacherResources(
     visibility?: string;
     source?: 'all' | 'owned' | 'seed';
     cursor?: string;
+    page?: number;
     limit?: number;
   },
   signal?: AbortSignal,
@@ -762,6 +773,7 @@ export async function fetchTeacherResources(
     visibility: params.visibility && params.visibility !== 'all' ? params.visibility : undefined,
     source: params.source && params.source !== 'all' ? params.source : undefined,
     cursor: params.cursor,
+    page: params.page,
     limit: params.limit ?? 20,
   });
   return apiRequest<CatalogPage<ResourceDto>>(`/api/v1/teacher/resources${qs}`, { signal });

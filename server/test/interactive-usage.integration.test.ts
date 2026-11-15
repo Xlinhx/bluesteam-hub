@@ -2,8 +2,10 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import crypto from 'node:crypto';
 import { createDatabasePool, assertTestDatabaseUrl } from '../src/database/pool.js';
 import { runMigrations } from '../src/database/migrate.js';
+import { DatabaseService } from '../src/database/database.service.js';
 import { ActivitiesService } from '../src/content/activities/activities.service.js';
 import { ModelsService } from '../src/content/models/models.service.js';
+import { readLearnerProfileJourney } from '../src/content/learner/learner-profile-journey.js';
 import { InteractiveUsageService } from '../src/interactive-usage/interactive-usage.service.js';
 import { InteractiveUsageReportService } from '../src/interactive-usage/interactive-usage-report.service.js';
 const url=process.env.INTERACTIVE_USAGE_TEST_DATABASE_URL || 'postgresql://bluesteam:bluesteam_dev_local@127.0.0.1:5442/bluesteam_interactive_usage_test';
@@ -92,5 +94,21 @@ describe('Standalone usage database truth',()=>{
     expect(prior.rows).toHaveLength(0);
     await pool.query("UPDATE interactive_usage_runs SET expires_at=now()-interval '1 minute' WHERE id=$1",[runs[0].runId]);
     await expect(usage.record(runs[0].runId,runs[0].token,{clientEventId:crypto.randomUUID(),payload:{type:'game_answer',itemId:'fish',answerId:'reef'}})).rejects.toMatchObject({code:'INVALID_USAGE_TOKEN'});
+  });
+  it('records a played game once in a signed-in child’s personal journey before joining a class', async () => {
+    const { id: learnerId } = (await pool.query(`INSERT INTO learners(email,password_hash,display_name)
+      VALUES('personal-game@example.test','test-only','Bé An') RETURNING id`)).rows[0];
+    const run = await usage.open({contentType:'activity',contentId:activity.id,version:activity.version,openKey:crypto.randomUUID()}, learnerId);
+    const context = (await pool.query('SELECT id,personal FROM learner_study_contexts WHERE learner_id=$1', [learnerId])).rows[0];
+    expect(context).toMatchObject({personal:true});
+    const db = new DatabaseService(pool);
+    expect((await readLearnerProfileJourney(db, learnerId, context.id)).games).toEqual([]);
+    for (const answerId of ['sand','reef']) {
+      await usage.record(run.runId, run.token, {clientEventId:crypto.randomUUID(),payload:{type:'game_answer',itemId:'fish',answerId}}, learnerId);
+    }
+    const journey = await readLearnerProfileJourney(db, learnerId, context.id);
+    expect(journey.games).toEqual([expect.objectContaining({id:activity.id})]);
+    expect(journey.achievementCount).toBe(1);
+    expect(journey).not.toHaveProperty('badges');
   });
 });

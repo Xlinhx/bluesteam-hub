@@ -1,7 +1,8 @@
-import { Eye, Search } from 'lucide-react';
+import { ArrowRight, Eye } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { UsageMetric, UsageReport, UsageRow } from '@bluesteam/contracts';
 import { ActivityThumbnail } from '@/shared/activities/ActivityThumbnail';
+import { SearchField } from '@/shared/ui/controls/SearchField';
 import { interactiveContentLabel } from '@/shared/data/interactiveArtwork';
 import { UsageDaily } from './UsageDaily';
 import { UsageTrendOverview } from './UsageTrendOverview';
@@ -21,7 +22,11 @@ export function UsageOverview({ report, onSelectContent, onSearch, onExplain }: 
   return <>
     <UsageSummary metrics={[[ 'Lượt mở', report.summary.opens ], ['Lượt có tương tác', report.summary.interactedRuns], ['Hoạt động đã dùng', report.summary.usedActivities]]}/>
     <div className="usage-analysis-layout"><UsageDaily days={report.daily} caption={caption}/><UsageTrendOverview report={report} onExplain={onExplain}/></div>
-    <section className="usage-activity-list"><header><h2>Hoạt động trong kỳ</h2><form onSubmit={event => { event.preventDefault(); onSearch(search.trim()); }}><button aria-label="Tìm hoạt động trong kỳ" type="submit"><Search size={20}/></button><input aria-label="Tìm trong số liệu hoạt động" placeholder="Tìm hoạt động…" value={search} onChange={event => setSearch(event.target.value)}/></form></header>
+    <section className="usage-activity-list"><header><h2>Hoạt động trong kỳ</h2><form onSubmit={event => { event.preventDefault(); onSearch(search.trim()); }}>
+      <SearchField type="text" label="Tìm trong số liệu hoạt động" placeholder="Tìm hoạt động…" value={search} onChange={setSearch}
+        onClear={() => { setSearch(''); onSearch(''); }}
+        trailingAction={<button className="ui-search-submit" aria-label="Tìm hoạt động trong kỳ" type="submit"><ArrowRight size={18} aria-hidden="true"/></button>}/>
+    </form></header>
       {report.rows.map(row => <article className="usage-activity-row" key={row.contentId}><ActivityThumbnail content={{ id: row.contentId, coverUrl: row.coverUrl }} kind={row.kind} variant="row"/><div className="usage-activity-row__title"><h3>{row.title}</h3><span className="usage-badge">{interactiveContentLabel(row.contentId, row.kind)}</span></div><p>{row.opens} lượt mở{row.interactedRuns !== null && ` · ${row.interactedRuns} có tương tác`}</p><button className="usage-button" onClick={() => onSelectContent(row)}><Eye size={18}/>Xem chi tiết</button></article>)}
     </section>
   </>;

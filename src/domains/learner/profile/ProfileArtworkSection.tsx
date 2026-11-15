@@ -43,7 +43,7 @@ export function ProfileArtworkSection({ section, onOpen, onLoadMore, refreshing 
     if(!succeeded){focusIntent.current=null;return;}
     intent.confirmed=true; setFocusRevision(value=>value+1);
   };
-  return <section className={`profile-collection-section profile-kind-${section.kind}`} data-artwork-section={section.kind} aria-labelledby={`profile-${section.kind}-heading`}>
+  return <section className={`profile-collection-section profile-kind-${section.kind}`} data-profile-card="prints" data-artwork-section={section.kind} aria-labelledby={`profile-${section.kind}-heading`}>
     <header className="profile-section-heading"><span className="profile-section-icon"><Icon aria-hidden="true" size={24} strokeWidth={2} /></span><div><div className="profile-section-title"><h3 id={`profile-${section.kind}-heading`}>{t(meta.titleKey)}</h3><span className="profile-section-count" aria-label={t('profile.count').replace('{count}', String(section.total))}>{section.total}</span></div><p>{t(meta.descriptionKey)}</p></div></header>
     {section.items.length ? <>
       <ul className="profile-art-grid" ref={list}>{visible.map(art => {

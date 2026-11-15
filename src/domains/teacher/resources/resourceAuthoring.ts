@@ -12,8 +12,8 @@ export function coverFromResource(item?:ResourceDto):AuthoringMedia|null{
 export function mediaRule(kind:string){
  if(kind==='video')return {label:'Video',types:['video/mp4'],accept:'video/mp4',maxMB:200,hint:'MP4 · tối đa 200 MB'};
  if(kind==='audio')return {label:'Âm thanh',types:['audio/mpeg'],accept:'audio/mpeg',maxMB:20,hint:'MP3 · tối đa 20 MB'};
- if(isVisual(kind)||kind==='cover')return {label:kind==='cover'?'Ảnh bìa riêng':'Ảnh thẻ',types:imageTypes,accept:imageTypes.join(','),maxMB:10,hint:'JPG, PNG, WebP · tối đa 10 MB mỗi ảnh'};
- return {label:kind==='coloring'?'Bản in tô màu':'File poster',types:[...imageTypes,'application/pdf'],accept:[...imageTypes,'application/pdf'].join(','),maxMB:30,hint:'PDF tối đa 30 MB · JPG, PNG, WebP tối đa 10 MB'};
+ if(isVisual(kind)||kind==='cover')return {label:kind==='cover'?'Ảnh bìa riêng':kind==='image'?'Hình ảnh':'Ảnh thẻ',types:imageTypes,accept:imageTypes.join(','),maxMB:10,hint:'JPG, PNG, WebP · tối đa 10 MB mỗi ảnh'};
+ return {label:kind==='coloring'?'Bản in tô màu':kind==='worksheet'?'File phiếu học tập':'File poster',types:[...imageTypes,'application/pdf'],accept:[...imageTypes,'application/pdf'].join(','),maxMB:30,hint:'PDF tối đa 30 MB · JPG, PNG, WebP tối đa 10 MB'};
 }
 export function validateUpload(file:{type:string;size:number},kind:string){
  const rule=mediaRule(kind);
@@ -40,7 +40,7 @@ export function validateResourceDraft(value:{title:string;kind:string;visibility
  if(!value.title.trim())return {field:'title',message:'Nhập tên để cô dễ tìm lại học liệu.'};
  if(value.visibility!=='published')return null;
  const hasContent=isVisual(value.kind)?value.hasImage:value.kind==='coloring'?value.hasMedia||value.hasTemplate:value.hasMedia;
- if(!hasContent)return {field:'media',message:isVisual(value.kind)?'Thêm ít nhất một ảnh trước khi hiển thị cho bé.':value.kind==='coloring'?'Thêm bản in hoặc chọn mẫu tô tương tác trước khi hiển thị cho bé.':`Thêm ${value.kind==='video'?'video':value.kind==='audio'?'âm thanh':'file poster'} trước khi hiển thị cho bé.`};
+ if(!hasContent)return {field:'media',message:isVisual(value.kind)?'Thêm ít nhất một ảnh trước khi hiển thị cho bé.':value.kind==='coloring'?'Thêm bản in hoặc chọn mẫu tô tương tác trước khi hiển thị cho bé.':`Thêm ${mediaRule(value.kind).label.toLocaleLowerCase('vi')} trước khi hiển thị cho bé.`};
  return null;
 }
 export function fileDescription(media:AuthoringMedia){

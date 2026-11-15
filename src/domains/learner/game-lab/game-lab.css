@@ -11,11 +11,10 @@
 .ocean-play-catalog__intro>.ocean-audio-button svg{width:26px;height:26px}
 .ocean-audio-button:hover{transform:scale(1.04);background:#9fdfeb}
 .ocean-catalog-toolbar{display:flex;align-items:center;gap:16px;margin-bottom:16px}
-.ocean-catalog-toolbar select{width:240px;min-width:0;min-height:52px;max-width:100%;padding:10px 38px 10px 16px;border:1px solid var(--interactive-border);border-radius:16px;background:#fff;font:inherit;font-weight:700;color:var(--interactive-ink)}
-.ocean-play-search{flex:1;min-width:0;display:flex;gap:12px;align-items:center;background:#fffdf8;border:1px solid var(--interactive-border);border-radius:16px;min-height:52px;padding:0 8px 0 14px}
-.ocean-play-search input{width:100%;min-width:0;font:inherit;color:var(--interactive-ink);outline:none;background:transparent}
-.ocean-play-search button{width:44px;min-width:44px;height:44px;display:grid;place-items:center;border-radius:12px;cursor:pointer}
-.ocean-play-search button:hover{background:var(--interactive-aqua)}
+.ocean-catalog-toolbar select{width:240px;min-width:0;min-height:52px;max-width:100%;padding:10px 14px;background:#fff;font:inherit;font-weight:700;color:var(--interactive-ink)}
+.ocean-play-search{flex:1;min-width:0}
+.ocean-play-search .ui-search-field{min-height:52px}
+.ocean-play-search input{font:inherit;color:var(--interactive-ink)}
 .ocean-catalog-count{margin:0;min-width:112px;font-size:15px;font-weight:600;color:var(--interactive-muted);white-space:nowrap}
 .ocean-group-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0}
 .ocean-group-heading h2{font-family:inherit;font-size:26px;font-weight:800;line-height:1.25;margin:0;min-width:0;overflow-wrap:anywhere}
@@ -39,7 +38,7 @@
 .ocean-catalog-message h2{font-size:26px;font-weight:800;font-family:inherit;color:var(--interactive-ink)}
 .ocean-catalog-message button{display:inline-flex;align-items:center;gap:8px;min-height:48px;margin-top:16px;padding:8px 20px;background:var(--interactive-teal);color:white;border-radius:16px;font-weight:700;cursor:pointer}
 .ocean-activity-skeleton{height:280px;background:linear-gradient(110deg,#e2eeec,#f3f8f6,#e2eeec);border-radius:24px}
-.ocean-play-catalog button:focus-visible,.ocean-play-search:focus-within{outline:3px solid var(--interactive-ink);outline-offset:4px}
+.ocean-play-catalog button:focus-visible{outline:3px solid var(--interactive-ink);outline-offset:4px}
 @media(max-width:1199px){
  .ocean-play-catalog__intro{flex-wrap:wrap}
  .ocean-activity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}

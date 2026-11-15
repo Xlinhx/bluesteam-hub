@@ -5,6 +5,7 @@ import { ArrowLeft, Pause, Play } from 'lucide-react';
 import { ScallopHintButton } from '../ui/buttons/ScallopHintButton';
 import { AudioControlButton } from '../ui/badges/AudioControlButton';
 import { BlueSteamLogo } from '../ui/badges/BlueSteamLogo';
+import './activity-shell.css';
 
 export interface ActivityShellProps {
   title?: string;
@@ -63,17 +64,19 @@ export function ActivityShell({
     >
       {/* Activity Top Bar - Frosted glass, tactile controls, matching habitat-placement */}
       <header
-        className={`relative z-50 w-full h-16 lg:h-[68px] ${
+        data-extra-controls={Boolean(onHint || onTogglePause)}
+        data-wide-controls={Boolean(headerLeft || headerRight || (onHint && onTogglePause))}
+        className={`activity-top-bar relative z-50 w-full min-h-16 lg:min-h-[68px] ${
           isLight
             ? 'bg-[#FAF8F5]/95 backdrop-blur-xl border-b border-[#12384B]/10 shadow-[0_2px_12px_rgba(16,42,56,0.04)] text-[#102A38]'
             : 'bg-[#12384B]/85 backdrop-blur-md border-b border-white/10 text-white'
-        } px-4 lg:px-8 flex items-center justify-between gap-4`}
+        } px-4 lg:px-8`}
       >
         {/* Left: Custom headerLeft OR Back Button & Optional BlueSTEAM Wordmark */}
         {headerLeft ? (
-          <div className="flex items-center gap-3">{headerLeft}</div>
+          <div className="activity-top-bar-start flex items-center gap-3">{headerLeft}</div>
         ) : (
-          <div className="flex items-center gap-3">
+          <div className="activity-top-bar-start flex items-center gap-3">
             {!hideBackButton && (
               <button
                 type="button"
@@ -100,13 +103,13 @@ export function ActivityShell({
 
         {/* Center: Custom headerCenter OR Default Activity Title & Progress Beads */}
         {headerCenter ? (
-          <div className="flex items-center justify-center flex-1 max-w-xl">
+          <div className="activity-top-bar-center flex min-w-0 items-center justify-center">
             <span className="sr-only font-serif tracking-[-0.02em]">{title}</span>
             {headerCenter}
           </div>
         ) : (
-          <div className="flex flex-col items-center max-w-md text-center">
-            <h1 className={`font-serif font-black text-base sm:text-lg lg:text-xl tracking-[-0.02em] truncate max-w-[240px] sm:max-w-md ${isLight ? 'text-[#102A38]' : 'text-white'}`}>
+          <div className="activity-top-bar-center flex min-w-0 flex-col items-center text-center">
+            <h1 className={`max-w-full truncate font-serif font-black text-base sm:text-lg lg:text-xl tracking-[-0.02em] ${isLight ? 'text-[#102A38]' : 'text-white'}`}>
               {title}
             </h1>
 
@@ -132,11 +135,11 @@ export function ActivityShell({
 
         {/* Right: Custom headerRight OR (Hint Scallop + Audio Control + Pause) */}
         {headerRight ? (
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="activity-top-bar-end flex items-center gap-2 sm:gap-3">
             {headerRight}
           </div>
         ) : (
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="activity-top-bar-end flex items-center gap-2 sm:gap-3">
             {onHint && <ScallopHintButton size="sm" onClick={onHint} />}
 
             <AudioControlButton

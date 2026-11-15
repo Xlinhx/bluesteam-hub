@@ -137,6 +137,7 @@ describe('Task 2 — Shared Shells, Unified Category Registry, Routes, and Entry
       'octopus',
       'seahorse',
       'jellyfish',
+      'shark', 'whale', 'seal', 'otter', 'stingray', 'pufferfish', 'shrimp', 'squid', 'duck', 'penguin', 'frog', 'crocodile',
     ]);
 
     for (const avatar of ANIMAL_AVATARS) {
@@ -156,6 +157,7 @@ describe('Task 2 — Shared Shells, Unified Category Registry, Routes, and Entry
     expect(LEARNER_NAV_ITEMS.map((item) => item.label)).toEqual([
       'Trang chủ',
       'Học liệu',
+      'Học tập',
       'Tương tác',
       'Sáng tạo',
       'Hồ sơ',
@@ -181,7 +183,8 @@ describe('Task 2 — Shared Shells, Unified Category Registry, Routes, and Entry
     const profileHtml = renderWithProviders(<LearnerShell activeNav="profile">Profile</LearnerShell>, '/profile');
     expect(profileHtml).toMatch(/aria-current="page" data-nav-key="profile"/);
     expect(html).not.toContain('Bản đồ đại dương');
-    expect(html).not.toContain('>Học tập<');
+    expect(html).toContain('>Học tập<');
+    expect(resolveLearnerActiveNav('/learning')).toBe('learning');
 
     // Child route active resolution
     expect(resolveLearnerActiveNav('/interactive/sort')).toBe('interactive');
@@ -189,13 +192,17 @@ describe('Task 2 — Shared Shells, Unified Category Registry, Routes, and Entry
     expect(resolveLearnerActiveNav('/resources/flashcard/1')).toBe('resources');
   });
 
-  it('TeacherShell renders exact 5 r2 navigation items (Trang chủ, Học liệu, Tương tác, Sáng tạo, Phòng học) without Giáo án or Sổ tay', () => {
+  it('TeacherShell renders the requested order and shares the learner interaction icon', () => {
     expect(TEACHER_NAV_ITEMS.map((item) => item.label)).toEqual([
       'Trang chủ',
       'Học liệu',
+      'Học tập',
       'Tương tác',
       'Sáng tạo',
+      'Hồ sơ',
     ]);
+    expect(TEACHER_NAV_ITEMS.find(item => item.key === 'interactive')?.icon)
+      .toEqual(LEARNER_NAV_ITEMS.find(item => item.key === 'interactive')?.icon);
 
     const html = renderWithProviders(
       <TeacherShell activeNav="overview">
@@ -214,7 +221,10 @@ describe('Task 2 — Shared Shells, Unified Category Registry, Routes, and Entry
     expect(html).not.toContain('>Giáo án<');
     expect(html).not.toContain('>Bài giảng<');
     expect(html).not.toContain('>Sổ tay lớp<');
-    expect(html).not.toContain('>Hồ sơ<');
+    expect(html).toContain('>Hồ sơ<');
+    expect(html).toMatch(/disabled=""[^>]*data-nav-key="learning"/);
+    expect(html).toContain('>Sắp có<');
+    expect(html).toMatch(/aria-haspopup="dialog"[^>]*data-nav-key="profile"/);
 
     // Child route active resolution
     expect(resolveTeacherActiveNav('/teacher/interactive/games/new')).toBe('interactive');
@@ -250,12 +260,23 @@ describe('Task 2 — Shared Shells, Unified Category Registry, Routes, and Entry
 
   it('RoleGatewayPage (/entry) renders Vào phòng của cô entry button and does not show fake Giáo án / Hồ sơ tiles', () => {
     const html = renderWithProviders(<RoleGatewayPage />, '/entry');
-    expect(html).toContain('Bắt đầu cùng BlueSTEAM');
+    expect(html).toContain('Hãy bắt đầu cùng Blue STEAM Hub');
     expect(html).toContain('Khám phá cùng bé');
     expect(html).toContain('Không gian giáo viên');
     expect(html).not.toContain('Vào phòng của cô');
     expect(html).not.toContain('>Giáo án<');
     expect(html).not.toContain('>Hồ sơ<');
+  });
+
+  it('student login uses the requested exploration copy without changing teacher copy', () => {
+    const student = renderWithProviders(<AccountAuthPage />, '/login?role=student');
+    expect(student).toContain('Khám phá đại dương');
+    expect(student).toContain('Chạm để khám phá, chơi để học hỏi!');
+    expect(student).toContain('BlueSTEAM Hub - Mở thế giới xanh, khơi nguồn sáng tạo');
+    expect(student).not.toContain('Mỗi khám phá, một điều kỳ diệu');
+    expect(student).not.toContain('Học cùng đại dương');
+    const teacher = renderWithProviders(<AccountAuthPage />, '/login?role=teacher');
+    expect(teacher).toContain('Mỗi khám phá, một điều kỳ diệu');
   });
 
   it('AccountAuthPage (/login) provides real registration and explicit roles', () => {

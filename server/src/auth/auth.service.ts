@@ -122,7 +122,7 @@ export class AuthService {
     const email = emailRaw.trim().toLowerCase();
     const rateKey = `student:${email}:${clientIp}`;
     this.checkRateLimit(rateKey);
-    const result = await this.pool.query('SELECT id, email, password_hash, display_name, status FROM learners WHERE email=$1', [email]);
+    const result = await this.pool.query('SELECT id, email, password_hash, display_name, avatar_key, status FROM learners WHERE email=$1', [email]);
     const row = result.rows[0];
     if (!row || !(await verify(row.password_hash, password).catch(() => false))) {
       this.recordLoginFailure(rateKey);
@@ -132,7 +132,7 @@ export class AuthService {
     this.clearLoginFailures(rateKey);
     const rawToken = generateOpaqueToken(), expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
     await this.pool.query('INSERT INTO auth_sessions(learner_id,token_hash,expires_at) VALUES($1,$2,$3)', [row.id, hashToken(rawToken), expiresAt]);
-    return { rawToken, expiresAt, account: { id: row.id, email: row.email, displayName: row.display_name, role: 'student' as const } };
+    return { rawToken, expiresAt, account: { id: row.id, email: row.email, displayName: row.display_name, avatarKey: row.avatar_key, role: 'student' as const } };
   }
 
   async loginTeacher(emailRaw: string, password: string, clientIp = 'local') {
@@ -253,13 +253,13 @@ export class AuthService {
     const teacher = await this.resolveTeacherFromToken(token);
     if (teacher || !token) return teacher;
     const result = await this.pool.query(
-      `SELECT s.id AS session_id, l.id, l.email, l.display_name FROM auth_sessions s
+      `SELECT s.id AS session_id, l.id, l.email, l.display_name, l.avatar_key FROM auth_sessions s
        JOIN learners l ON l.id=s.learner_id
        WHERE s.token_hash=$1 AND s.revoked_at IS NULL AND s.expires_at>NOW() AND l.status='active'`, [hashToken(token)]);
     const row = result.rows[0];
     if (!row) return null;
     await this.pool.query('UPDATE auth_sessions SET last_seen_at=NOW() WHERE id=$1', [row.session_id]);
-    return { kind: 'student', learnerId: row.id, email: row.email, displayName: row.display_name, sessionId: row.session_id };
+    return { kind: 'student', learnerId: row.id, email: row.email, displayName: row.display_name, avatarKey: row.avatar_key, sessionId: row.session_id };
   }
 
   async revokeSessionByToken(rawToken?: string | null): Promise<void> {

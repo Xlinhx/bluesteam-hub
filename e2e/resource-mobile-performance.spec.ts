@@ -29,7 +29,7 @@ async function observe(page: Page) {
 for (const slowdown of [1, 4]) for (const scenario of ['learner', 'teacher', 'profile']) test(`${scenario} mobile settled-scene touch response and motion lifecycle at ${slowdown}x CPU slowdown`, async ({ page }, testInfo) => {
   const teacher=scenario==='teacher', profile=scenario==='profile';
   const scene=teacher?'.teacher-resource-library':profile?'.learner-profile':'.resource-library';
-  const ready=teacher?'.teacher-resource-table-wrap[aria-busy=false]':profile?'.profile-collection-section':'.resource-group-section';
+  const ready=teacher?'.teacher-resource-table-wrap[aria-busy=false]':profile?'.profile-journey-artworks':'.resource-group-section';
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
   expect((await page.request.post('/api/v1/auth/login', { data: teacher ? { role: 'teacher', email: 'colinh@bluesteam.edu.vn', password: 'daiduong2026' } : { role: 'student', email: 'hocsinh', password: 'hocsinh' } })).ok()).toBe(true);
   await observe(page);
@@ -74,9 +74,9 @@ for (const slowdown of [1, 4]) for (const scenario of ['learner', 'teacher', 'pr
     await tap(editor.getByRole('button', { name: 'Hủy', exact: true })); await expect(editor).toHaveCount(0);
   } else if (profile) {
     await tap(page.getByRole('button', { name:'Đổi tên và hình',exact:true }));
-    const identity=page.getByRole('dialog',{name:'Tên và hình của con',exact:true});
+    const identity=page.getByRole('dialog',{name:'Tên và hình của bé',exact:true});
     await expect(identity).toBeVisible();
-    const name=identity.getByRole('textbox',{name:'Tên của con',exact:true});
+    const name=identity.getByRole('textbox',{name:'Tên của bé',exact:true});
     await tap(name); await expect(name).toBeFocused();
     const avatarName=await identity.locator('.animal-option[aria-pressed=false]').first().getAttribute('aria-label');
     const avatar=identity.getByRole('button',{name:avatarName!,exact:true});

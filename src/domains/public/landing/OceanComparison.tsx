@@ -5,7 +5,7 @@ export function OceanComparison({ english }: { english: boolean }) {
   const [position, setPosition] = useState(48);
   return (
     <div className="ocean-comparison" data-testid="ocean-comparison" style={{ '--split': `${position}%` } as CSSProperties}>
-      <img className="comparison-art" src="/assets/generated/landing-editorial/reef-art-1600.webp" srcSet="/assets/generated/landing-editorial/reef-art-800.webp 800w, /assets/generated/landing-editorial/reef-art-1600.webp 1600w" sizes="100vw" width="1672" height="941" alt={english ? 'The reef reimagined in coloured pencil and paper' : 'Rạn san hô được vẽ lại bằng chì màu và giấy thủ công'} loading="lazy" />
+      <img className="comparison-art" src="/assets/generated/landing-chibi/reef-art-1600.webp" srcSet="/assets/generated/landing-chibi/reef-art-800.webp 800w, /assets/generated/landing-chibi/reef-art-1600.webp 1600w" sizes="100vw" width="1672" height="941" alt={english ? 'The reef reimagined with chibi ocean characters' : 'Rạn san hô với các nhân vật đại dương chibi'} loading="lazy" />
       <div className="comparison-photo"><img src="/assets/generated/landing-editorial/reef-1600.webp" srcSet="/assets/generated/landing-editorial/reef-800.webp 800w, /assets/generated/landing-editorial/reef-1600.webp 1600w" sizes="100vw" width="1672" height="941" alt={english ? 'Clownfish, anemone and branching coral' : 'Cá hề, hải quỳ và san hô phân nhánh'} loading="lazy" /></div>
       <span className="comparison-label comparison-label--left">{english ? 'Observe' : 'Quan sát'}</span>
       <span className="comparison-label comparison-label--right">{english ? 'Create' : 'Sáng tạo'}</span>

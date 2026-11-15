@@ -8,12 +8,14 @@ import {
   RoleNavigation,
   LEARNER_NAV_ITEMS,
   TEACHER_NAV_ITEMS,
+  type NavItemSpec,
 } from './RoleNavigation';
 import {
   getAnimalAvatar,
 } from '../../data/categoryArtworkMap';
 import { LearnerIdentityDialog } from '../identity/LearnerIdentityDialog';
 import { getTeacherAvatar } from '../../data/teacherAvatars';
+import { AnimalAvatar } from '../identity/AnimalAvatar';
 import './header-motion.css';
 import { useHeaderLayout } from './useHeaderLayout';
 import {
@@ -95,6 +97,13 @@ export function AppHeader({
   const displayLearnerName = identityName || 'Bé An';
   const displayTeacherName = identityName || 'Cô Linh';
   const teacherInitials = getTeacherInitials(displayTeacherName);
+  const selectNav = (item: NavItemSpec, trigger: HTMLButtonElement) => {
+    if (item.route) navigate(item.route);
+    if (item.action === 'profile') {
+      focusDialogTrigger(trigger);
+      onEditIdentity?.();
+    }
+  };
   useEffect(() => {
     const open = () => setAvatarPickerOpen(true);
     window.addEventListener('bluesteam:edit-learner', open);
@@ -127,7 +136,7 @@ export function AppHeader({
           collapsed={navigationCollapsed}
           role={role}
           activeKey={activeNavKey}
-          onNavigate={(route) => navigate(route)}
+          onSelect={selectNav}
         />
 
         {/* Shared order: language, audio, identity, logout. */}
@@ -148,13 +157,16 @@ export function AppHeader({
             {role === 'learner' ? (
               <button type="button" onClick={() => setAvatarPickerOpen(true)} aria-label="Đổi tên và ảnh đại diện"
                 className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#15586E]">
-                <span className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden border"
-                  style={{ backgroundColor: selectedAnimal.bgHex, borderColor: selectedAnimal.ringHex }}>
-                  <img src={selectedAnimal.imageSrc} alt={selectedAnimal.label} className="w-6 h-6 object-contain" />
-                </span>
+                <AnimalAvatar artwork={selectedAnimal} alt={selectedAnimal.label} />
               </button>
             ) : (
-                <button type="button" aria-haspopup="dialog" onClick={event=>{focusDialogTrigger(event.currentTarget);onEditIdentity?.();}} aria-label="Đổi tên và ảnh giáo viên" className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center cursor-pointer"><span className={`w-8 h-8 rounded-full flex items-center justify-center overflow-hidden ${teacherAvatarUrl ? 'bluesteam-header-photo' : 'border'}`} style={teacherAvatarUrl ? undefined : { backgroundColor: avatarKey ? selectedTeacherAnimal.bgHex : '#E4F3F3', borderColor: avatarKey ? selectedTeacherAnimal.ringHex : '#7DADB3', color: '#15586E' }}>{teacherAvatarUrl ? <img src={teacherAvatarUrl} alt={displayTeacherName} className="w-full h-full object-cover bluesteam-header-photo-image" /> : avatarKey ? <img src={selectedTeacherAnimal.imageSrc} alt={selectedTeacherAnimal.label} className="w-full h-full object-contain" /> : teacherInitials}</span><span className="sr-only">Giáo viên · Teacher Suite</span>
+              <button type="button" aria-haspopup="dialog" onClick={event=>{focusDialogTrigger(event.currentTarget);onEditIdentity?.();}}
+                aria-label="Đổi tên và ảnh giáo viên" className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center cursor-pointer">
+                {avatarKey && !teacherAvatarUrl ? <AnimalAvatar artwork={selectedTeacherAnimal} alt={selectedTeacherAnimal.label} />
+                  : <span className="avatar-frame flex items-center justify-center overflow-hidden text-[#15586E]">
+                      {teacherAvatarUrl ? <img src={teacherAvatarUrl} alt={displayTeacherName} className="bluesteam-header-photo-image" /> : teacherInitials}
+                    </span>}
+                <span className="sr-only">Giáo viên · Teacher Suite</span>
               </button>
             )}
             <span className="bluesteam-header-name font-bold truncate">
@@ -188,7 +200,9 @@ export function AppHeader({
               <button
                 key={item.key}
                 type="button"
-                onClick={() => navigate(item.route)}
+                onClick={event => selectNav(item, event.currentTarget)}
+                disabled={item.action === 'coming-soon'}
+                aria-haspopup={item.action === 'profile' ? 'dialog' : undefined}
                 aria-current={isActive ? 'page' : undefined}
                 data-nav-key={item.key}
                 title={item.label}
@@ -199,7 +213,7 @@ export function AppHeader({
                 }`}
               >
                 <span className="bluesteam-nav-icon">{item.icon}</span>
-                <span className="text-[11px] leading-none">{item.label}</span>
+                <span className="text-[11px] leading-none">{item.label}{item.action === 'coming-soon' && <small className="bluesteam-nav-status">Sắp có</small>}</span>
               </button>
             );
           },

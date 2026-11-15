@@ -53,39 +53,49 @@ export class InteractiveUsageService {
   constructor(@Inject(DB_POOL) private readonly pool: pg.Pool, @Inject(ActivitiesService) private readonly activities: ActivitiesService, @Inject(ModelsService) private readonly models: ModelsService) {}
   private tokenFor(id: string, key: string) { return crypto.createHmac('sha256',this.secret).update(`${id}:${key}`).digest('base64url'); }
 
-  async open(raw: unknown) {
+  async open(raw: unknown, learnerId: string | null = null) {
     const parsed = usageOpenSchema.safeParse(raw);
     if (!parsed.success) throw new AppError('INVALID_USAGE_INPUT', 'Thông tin lượt mở không hợp lệ.');
     const input = parsed.data;
     const existing = await this.pool.query('SELECT * FROM interactive_usage_runs WHERE open_key=$1', [input.openKey]);
-    if (existing.rows[0]) return this.reopen(existing.rows[0], input);
+    if (existing.rows[0]) return this.reopen(existing.rows[0], input, learnerId);
     const content = input.contentType === 'model3d' ? await this.models.getModelById(input.contentId, { isTeacher: false }) : await this.activities.getActivityById(input.contentId, { isTeacher: false });
     if (content.version !== input.version) throw new AppError('CONTENT_VERSION_CHANGED', 'Nội dung đã cập nhật. Hãy mở lại hoạt động.', 409);
     const snapshot: UsageSnapshot = { kind: input.contentType === 'model3d' ? 'model3d' : (content as any).kind, title: content.title, coverUrl: content.coverUrl, templateKey: (content as any).templateKey, config: (content as any).config };
     if(snapshot.kind==='simulation') snapshot.runtimeDefinition = INTERACTIVE_SIMULATION_DEFINITIONS[snapshot.templateKey || ''];
     const runId = crypto.randomUUID();
     const token = this.tokenFor(runId,input.openKey);
-    const result = await this.pool.query(`INSERT INTO interactive_usage_runs(id,open_key,content_type,content_id,content_version,kind,snapshot,token_hash,expires_at)
-      VALUES($8,$1,$2,$3,$4,$5,$6,$7,now()+interval '2 hours') ON CONFLICT(open_key) DO NOTHING RETURNING *`, [input.openKey,input.contentType,input.contentId,input.version,snapshot.kind,snapshot,hash(token),runId]);
-    if (!result.rows[0]) return this.reopen((await this.pool.query('SELECT * FROM interactive_usage_runs WHERE open_key=$1',[input.openKey])).rows[0],input);
+    const result = await this.pool.query(`WITH scope AS (
+        SELECT CASE WHEN $5='game' THEN learner_recording_context($9) END AS id
+      ) INSERT INTO interactive_usage_runs(id,open_key,content_type,content_id,content_version,kind,snapshot,token_hash,expires_at,learner_id,study_context_id)
+      SELECT $8,$1,$2,$3,$4,$5,$6,$7,now()+interval '2 hours',CASE WHEN scope.id IS NOT NULL THEN $9 END,scope.id
+      FROM scope ON CONFLICT(open_key) DO NOTHING RETURNING *`, [input.openKey,input.contentType,input.contentId,input.version,snapshot.kind,snapshot,hash(token),runId,learnerId]);
+    if (!result.rows[0]) return this.reopen((await this.pool.query('SELECT * FROM interactive_usage_runs WHERE open_key=$1',[input.openKey])).rows[0],input,learnerId);
     return this.openResult(result.rows[0],token);
   }
   private openResult(row: any, token: string) { return { runId: row.id, token, openedAt: new Date(row.opened_at).toISOString(), expiresAt: new Date(row.expires_at).toISOString(), definitionVersion: row.definition_version }; }
-  private async reopen(row: any, input: ReturnType<typeof usageOpenSchema.parse>) {
+  private async reopen(row: any, input: ReturnType<typeof usageOpenSchema.parse>, learnerId: string | null) {
+    if (row.learner_id && row.learner_id !== learnerId) throw new AppError('INVALID_USAGE_TOKEN', 'Lượt chơi thuộc tài khoản khác.',401);
     if (row.content_id !== input.contentId || row.content_type !== input.contentType || row.content_version !== input.version) throw new AppError('OPEN_KEY_CONFLICT', 'Lượt mở đã thuộc nội dung khác.', 409);
     // Concurrent retries receive the same token, so neither invalidates the other.
     const token = this.tokenFor(row.id,row.open_key);
     const updated = await this.pool.query(`UPDATE interactive_usage_runs SET token_hash=$2,expires_at=now()+interval '2 hours' WHERE id=$1 RETURNING *`,[row.id,hash(token)]);
     return this.openResult(updated.rows[0], token);
   }
-  async record(runId: string, token: string, raw: unknown) {
+  async record(runId: string, token: string, raw: unknown, learnerId: string | null = null) {
     if (!/^[a-f0-9-]{36}$/i.test(runId) || typeof token !== 'string' || token.length > 200) throw new AppError('INVALID_USAGE_TOKEN', 'Lượt ghi nhận không hợp lệ.', 401);
     if (JSON.stringify(raw ?? null).length > 16384) throw new AppError('USAGE_PAYLOAD_TOO_LARGE', 'Thao tác quá lớn.',413);
     const parsed = usageInteractionSchema.safeParse(raw);
     if (!parsed.success) throw new AppError('INVALID_USAGE_INPUT','Thao tác không hợp lệ.');
     const found = await this.pool.query('SELECT * FROM interactive_usage_runs WHERE id=$1 AND token_hash=$2 AND expires_at>now()', [runId,hash(token)]);
     const run = found.rows[0];
-    if (!run) throw new AppError('INVALID_USAGE_TOKEN','Lượt ghi nhận đã hết hạn hoặc không hợp lệ.',401);
+    if (!run || (run.learner_id && run.learner_id !== learnerId)) throw new AppError('INVALID_USAGE_TOKEN','Lượt ghi nhận đã hết hạn hoặc không hợp lệ.',401);
+    if (run.study_context_id) {
+      const closed = await this.pool.query(`SELECT 1 FROM learner_study_contexts x JOIN school_classes c ON c.id=x.class_id
+        LEFT JOIN class_enrollments e ON e.class_id=c.id AND e.learner_id=x.learner_id
+        WHERE x.id=$1 AND (c.archived OR e.status IS DISTINCT FROM 'active')`, [run.study_context_id]);
+      if (closed.rowCount) throw new AppError('CLASS_CLOSED','Lớp đã ngừng nhận hoạt động mới.',409);
+    }
     const result = validateUsagePayload(run.snapshot,parsed.data.payload);
     const inserted = await this.pool.query(`INSERT INTO interactive_usage_interactions(run_id,client_event_id,payload,item_id,result) VALUES($1,$2,$3,$4,$5) ON CONFLICT(run_id,client_event_id) DO NOTHING RETURNING id`,[runId,parsed.data.clientEventId,parsed.data.payload,result.itemId,result]);
     if (!inserted.rowCount) {

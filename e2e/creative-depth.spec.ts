@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test';
+import { openDeviceProfileCollection } from './fixtures/local-profile';
 import fs from 'node:fs';
 const out='artifacts/verification/creative-depth';
 const learner={role:'student',email:`creative-proof-${Date.now()}@example.test`,password:'Creative-proof-123',displayName:'Bé kiểm tra sáng tạo'};
@@ -19,7 +20,7 @@ test('progress stays in creative resume and a separate revision preserves the re
  const read=()=>page.evaluate(async(id)=>{const db=await new Promise<IDBDatabase>((resolve,reject)=>{const r=indexedDB.open('ocean_creative_db');r.onsuccess=()=>resolve(r.result);r.onerror=reject;});return await new Promise<any>((resolve,reject)=>{const r=db.transaction('ocean_artworks').objectStore('ocean_artworks').get(id);r.onsuccess=()=>{db.close();resolve(r.result);};r.onerror=reject;});},originalId);
  const original=await read();expect(original.isDraft).toBe(false);
  await page.goto('/creative');await expect(page.locator('.creative-progress-item')).toHaveCount(0);
- await page.goto('/profile');await page.getByRole('heading',{name:original.title,exact:true}).click();
+ await page.goto('/profile'); await openDeviceProfileCollection(page);await page.getByRole('heading',{name:original.title,exact:true}).click();
  await expect(page.getByRole('button',{name:'Chỉnh sửa bản mới',exact:true})).toHaveCount(0);
  await page.keyboard.press('Escape');
  // A separate working revision is fixture setup; profile has no editor action.
@@ -46,7 +47,7 @@ test('paper scan, durable teacher delivery, moderation, and display',async({brow
  await expect(page.getByRole('button',{name:/Bé nét trắng/})).toBeVisible({timeout:12000});await page.screenshot({path:`${out}/C07-teacher-console.png`,fullPage:true});await page.getByRole('button',{name:/Bé nét trắng/}).click();await page.getByRole('button',{name:'Thả vào biển',exact:true}).click();await expect(page.getByRole('status')).toContainText('Đã lưu');await page.getByRole('button',{name:'Đóng',exact:true}).click();
  const after=await (await page.request.get('/api/v1/teacher/creative-sessions/'+sessionId)).json();expect(after.counts.total).toBe(1);expect(after.counts.released).toBe(1);
  await page.request.post(`/api/v1/teacher/creative-sessions/${sessionId}/state`,{data:{state:'ended'}});await scan.getByLabel('Tên người vẽ').fill('Bé nét trắng thử lại');await scan.getByRole('button',{name:'Xác nhận và gửi cho cô'}).click();await expect(scan.getByRole('alert')).toBeVisible();await expect(scan.getByRole('button',{name:'Hoàn thành',exact:true})).toBeEnabled();await scan.getByLabel('Tên tác phẩm',{exact:true}).fill('Tranh quét của Bé nét trắng');await scan.getByRole('button',{name:'Hoàn thành',exact:true}).click();await expect(scan.getByRole('status')).toContainText('Đã hoàn thành');await scan.reload();
- await scan.goto('/profile');await expect(scan.getByRole('heading',{name:'Tranh quét của Bé nét trắng',exact:true})).toBeVisible();
+ await scan.goto('/profile'); await openDeviceProfileCollection(scan);await expect(scan.getByRole('heading',{name:'Tranh quét của Bé nét trắng',exact:true})).toBeVisible();
  await page.request.post(`/api/v1/teacher/creative-sessions/${sessionId}/state`,{data:{state:'ended'}});await child.close();expect(errors).toEqual([]);
 });
 test('color palette cancel, paint layers, erase, reload, and mobile targets',async({page})=>{

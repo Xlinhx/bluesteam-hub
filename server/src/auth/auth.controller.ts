@@ -12,6 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { z } from 'zod';
+import { PERSISTED_ANIMAL_AVATAR_KEYS } from '@bluesteam/contracts';
 import { AuthService, TEACHER_SESSION_COOKIE } from './auth.service.js';
 import { TeacherSessionGuard } from './session.guard.js';
 import { parseWithZod } from '../common/validation.js';
@@ -91,7 +92,7 @@ export class AuthController {
     if (!actor) throw new AppError('UNAUTHORIZED', 'Phiên đã hết hạn. Vui lòng đăng nhập lại.', 401);
     const account = actor.kind === 'teacher'
       ? { ...await this.authService.getTeacherProfile(actor.teacherId), role: 'teacher' }
-      : { id: actor.learnerId, email: actor.email, displayName: actor.displayName, role: 'student' };
+      : { id: actor.learnerId, email: actor.email, displayName: actor.displayName, avatarKey: actor.avatarKey, role: 'student' };
     return { account };
   }
 
@@ -113,7 +114,7 @@ export class AuthController {
   async updateMe(@Req() req: any, @Body() body: unknown) {
     const input = parseWithZod(z.object({
       displayName: z.string().trim().min(1).max(80),
-      avatarKey: z.enum(['turtle', 'crab', 'clownfish', 'starfish', 'dolphin', 'octopus', 'seahorse', 'jellyfish']).nullable(),
+      avatarKey: z.enum(PERSISTED_ANIMAL_AVATAR_KEYS).nullable(),
       avatarMediaId: z.string().uuid().nullable(),
     }).refine(v => !(v.avatarKey && v.avatarMediaId), 'Chỉ chọn một nguồn ảnh'), body, 'INVALID_PROFILE');
     return { teacher: await this.authService.updateTeacherProfile(req.actor.teacherId, {

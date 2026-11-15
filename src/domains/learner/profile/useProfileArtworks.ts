@@ -4,7 +4,7 @@ import type { ProfileArtworkPage } from './profileCollection';
 import { readCollectionLimit, rememberCollectionLimit } from './collectionViewState';
 
 const kinds = ['drawing', 'scan', 'habitat'] as const;
-export function useProfileArtworks() {
+export function useProfileArtworks(scope?: string) {
   const [records, setRecords] = useState<ProfileArtworkPage[] | null>(null);
   const current = useRef(records); current.current = records;
   const [error, setError] = useState(false), [refreshing, setRefreshing] = useState(false);
@@ -16,7 +16,7 @@ export function useProfileArtworks() {
   const reload = useCallback(async () => {
     const version = ++request.current; refreshingRef.current = true; setRefreshing(true);
     try {
-      const result = await Promise.all(kinds.map(async kind => ({ kind, ...await creativeStorage.getCompletedArtworkPage(kind, { limit: Math.max(readCollectionLimit(kind), current.current?.find(s => s.kind === kind)?.items.length || 0) }), loadingMore: false, moreError: false })));
+      const result = await Promise.all(kinds.map(async kind => ({ kind, ...await creativeStorage.getCompletedArtworkPage(kind, { scope, limit: Math.max(readCollectionLimit(kind), current.current?.find(s => s.kind === kind)?.items.length || 0) }), loadingMore: false, moreError: false })));
       if (active.current && version === request.current) { update(result); setError(false); setBlocked(false); }
     } catch (error) {
       if (active.current && version === request.current) {
@@ -25,14 +25,14 @@ export function useProfileArtworks() {
         update(current.current?.map(section => ({ ...section, loadingMore: false })) || null);
       }
     } finally { if (active.current && version === request.current) { refreshingRef.current = false; setRefreshing(false); } }
-  }, [update]);
+  }, [scope, update]);
   const loadMore = useCallback(async (kind: CreativeArtwork['type']) => {
     const section = current.current?.find(s => s.kind === kind), version = request.current;
     if (refreshingRef.current || !section?.nextCursor || pending.current.get(kind) === version) return false;
     pending.current.set(kind, version);
     update(current.current!.map(s => s.kind === kind ? { ...s, loadingMore: true, moreError: false } : s));
     try {
-      const page = await creativeStorage.getCompletedArtworkPage(kind, { cursor: section.nextCursor, limit: 6 });
+      const page = await creativeStorage.getCompletedArtworkPage(kind, { scope, cursor: section.nextCursor, limit: 6 });
       if (!active.current || request.current !== version) return false;
       const ids = new Set(section.items.map(art => art.id));
       const items = [...section.items, ...page.items.filter(art => !ids.has(art.id))];
@@ -43,7 +43,7 @@ export function useProfileArtworks() {
       if (active.current && request.current === version) update(current.current!.map(s => s.kind === kind ? { ...s, loadingMore: false, moreError: true } : s));
       return false;
     } finally { if (pending.current.get(kind) === version) pending.current.delete(kind); }
-  }, [update]);
+  }, [scope, update]);
   useEffect(() => {
     active.current = true; void reload();
     const refresh = () => { void reload(); };

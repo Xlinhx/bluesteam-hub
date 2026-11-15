@@ -240,16 +240,17 @@ describe('M5 Challenger 1 (Round 2): Teacher 5-Step Parity & Navigation Synchron
       for (const currentStep of [1, 2, 3, 4, 5]) {
         const { capturedTree } = renderBuilderWithStep(currentStep);
 
-        // Find only the activity cards (divs with p-3 rounded-2xl border)
+        // The activity controls expose the same selection to keyboard and pointer users.
         const cards = findNodes(
           capturedTree,
-          (n) => n.type === 'div' && n.props && typeof n.props.className === 'string' && n.props.className.includes('p-3 rounded-2xl border') && n.props.onClick
+          (n) => n.type === 'button' && n.props?.className?.includes('lesson-step-control')
         );
 
         expect(cards.length).toBe(5);
 
         // The active card must have the teal border / sky ring classes
         const activeCard = cards[currentStep - 1];
+        expect(cards.filter(card => card.props['aria-current'] === 'step')).toEqual([activeCard]);
         expect(activeCard.props.className).toContain('border-[#17657A]');
         expect(activeCard.props.className).toContain('ring-2 ring-[#17657A]/20');
 

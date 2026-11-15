@@ -1,0 +1,68 @@
+.source-stage.observation-photo {
+  display: grid;
+  place-items: center;
+  position: relative;
+  background: #deeff2;
+}
+.source-stage > img,
+.source-stage > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.source-stage > video { background: #0b2230; }
+.source-stage[data-fill="true"] > img { object-fit: cover; }
+.source-stage[data-presentation="document"] > img { padding: clamp(10px, 2cqw, 24px); }
+.source-stage-empty { display: grid; justify-items: center; gap: 10px; color: #365973; }
+.source-stage > audio,
+.source-stage-controls { position: absolute; inset: auto 16px 16px; margin-inline: auto; max-width: 460px; }
+.source-stage > audio { width: calc(100% - 32px); }
+.source-stage[data-kind="audio"] {
+  background: linear-gradient(180deg, #7fc1d377, #10526aab), url('/assets/learner-worlds/resource-sunlit-ocean.webp') center top / cover;
+}
+.source-stage[data-kind="audio"] > img {
+  inset: 8% 8% auto;
+  width: 84%;
+  height: 68%;
+  object-fit: scale-down;
+}
+.source-stage-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid #d2dce2;
+  border-radius: 16px;
+  background: #faf8f5;
+  font-size: .875rem;
+}
+.source-stage:has(.source-stage-controls) > img { height: calc(100% - 70px); }
+.source-stage[data-kind="audio"]:not(:has(img)) { align-content: center; }
+.source-stage-controls button, .source-detail-actions :is(a,button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 6px 10px;
+  font-weight: 700;
+  border-radius: 12px;
+  background: var(--detail-water);
+}
+.source-stage-controls button:disabled { opacity: .56; cursor: default; }
+.source-stage-controls span { white-space: nowrap; }
+.source-facts { gap: 16px; }
+.source-facts .observation-fact { align-items: flex-start; }
+.source-facts .ocean-content-listen {
+  align-self: start;
+  border: 0;
+  border-radius: 22px;
+  background: var(--detail-water);
+  color: var(--detail-ink);
+}
+.source-detail-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.source-detail-note { margin-top: 12px; color: #365973; }
+.source-detail-frame .observation-title h1 { min-width: 0; }
+@container (max-width: 800px) {
+  .source-detail-actions, .source-detail-note { order: 3; }
+}
+@container (max-width: 350px) {
+  .source-stage-controls button svg { display: none; }
+}

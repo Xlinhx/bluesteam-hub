@@ -1,3 +1,5 @@
+import { LearnerOceanController } from './learner/learner-ocean.controller.js';
+import { ClassroomController } from './classroom/classroom.controller.js';
 import { Module } from '@nestjs/common';
 import { TopicsController, TopicsService } from './topics/topics.controller.js';
 import { ResourcesService } from './resources/resources.service.js';
@@ -16,6 +18,8 @@ import { CreativeController } from './creative/creative.controller.js';
 @Module({
   controllers: [
     TopicsController,
+    LearnerOceanController,
+    ClassroomController,
     ResourcesController,
     ResourceGroupsController,
     ModelsController,

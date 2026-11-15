@@ -92,9 +92,17 @@ describe('indexed completed collection paging', () => {
     await expect(creativeStorage.getCompletedArtworkPage('scan')).rejects.toThrow('Đóng các tab');
     old.close();
     await new Promise<void>((resolve, reject) => {
-      const check = factory.open('ocean_creative_db', 3);
+      const check = factory.open('ocean_creative_db', 4);
       check.onsuccess = () => { check.result.close(); resolve(); }; check.onerror = () => reject(check.error);
     });
     expect((await creativeStorage.getCompletedArtworkPage('drawing')).items.map(a => a.id)).toEqual(['blocked-legacy']);
+  });
+  it('keeps indexed class collections separate from the legacy device collection', async () => {
+    await creativeStorage.saveArtwork(art('device'));
+    await creativeStorage.saveArtwork({...art('first'),studyContext:{learnerId:'na',contextId:'1a'}});
+    await creativeStorage.saveArtwork({...art('second'),studyContext:{learnerId:'na',contextId:'2a'}});
+    expect((await creativeStorage.getCompletedArtworkPage('drawing', {scope:'na:1a'})).items.map(item => item.id)).toEqual(['first']);
+    expect((await creativeStorage.getCompletedArtworkPage('drawing', {scope:'na:2a'})).items.map(item => item.id)).toEqual(['second']);
+    expect((await creativeStorage.getCompletedArtworkPage('drawing', {scope:''})).items.map(item => item.id)).toEqual(['device']);
   });
 });

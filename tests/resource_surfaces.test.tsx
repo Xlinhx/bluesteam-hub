@@ -4,7 +4,7 @@ import {expect,it} from 'vitest';
 import {ResourceSurface} from '../src/shared/ui/visuals/ResourceSurface';
 
 it('gives every layout role a distinct scalable contour instead of stretching painted bitmaps',()=>{
- const variants=['shelf-lagoon','shelf-sandbank','shelf-inlet','group','index','workspace','tools','observation'] as const;
+ const variants=['shelf-lagoon','shelf-sandbank','shelf-inlet','group','index','observation'] as const;
  const paths=variants.map(variant=>{
   const html=renderToString(<ResourceSurface variant={variant}/>);
   expect(html).toContain(`data-surface="${variant}"`);

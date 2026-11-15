@@ -1,3 +1,0 @@
-.resource-search { display:flex; align-items:center; gap:12px; min-height:48px; width:min(100%,300px); padding:0 18px; background:#fff; border:1px solid #d7e4e7; border-radius:24px; }
-.resource-search input { width:100%; min-width:0; background:transparent; outline:none; }
-.resource-search:focus-within { outline:3px solid #17657a; outline-offset:3px; }

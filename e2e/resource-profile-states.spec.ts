@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { openDeviceProfileCollection } from './fixtures/local-profile';
 
 async function login(page: Page) {
   expect((await page.request.post('/api/v1/auth/login', { data: { role: 'student', email: 'hocsinh', password: 'hocsinh' } })).ok()).toBe(true);
@@ -27,7 +28,7 @@ test('profile handles storage recovery, all collection kinds, pagination, invali
       return open.apply(this, args);
     };
   });
-  await page.goto('/profile');
+  await page.goto('/profile'); await openDeviceProfileCollection(page);
   await expect(page.locator('.profile-read-error [role=alert]')).toBeVisible();
   await page.evaluate(() => { (window as any).__storageUnavailable = false; sessionStorage.setItem('acceptance-storage-recovered', 'true'); });
   await page.locator('.profile-read-error').getByRole('button', { name: 'Thử lại ngay', exact: true }).click();
@@ -72,17 +73,17 @@ test('profile handles storage recovery, all collection kinds, pagination, invali
   await expect(viewer.getByRole('button', { name: 'In tác phẩm', exact: true })).toBeDisabled();
   await screenshot(page, 'profile-invalid-preview-mobile'); await page.keyboard.press('Escape');
   await page.getByRole('button', { name: 'Đổi tên và hình', exact: true }).click();
-  const identity = page.getByRole('dialog', { name: 'Tên và hình của con' });
-  await identity.getByRole('textbox', { name: 'Tên của con' }).fill('Bé Khám Phá');
+  const identity = page.getByRole('dialog', { name: 'Tên và hình của bé' });
+  await identity.getByRole('textbox', { name: 'Tên của bé' }).fill('Bé Khám Phá');
   await identity.locator('.animal-option').nth(1).click();
   const avatar = await identity.locator('.animal-option[aria-pressed=true] img').getAttribute('data-avatar');
   await screenshot(page, 'profile-identity-mobile');
   await identity.getByRole('button', { name: 'Lưu', exact: true }).click();
   await expect(identity).toHaveCount(0);
-  await expect(page.locator('.profile-identity h1')).toContainText('Khám Phá');
-  await page.reload();
-  await expect(page.locator('.profile-identity h1')).toContainText('Khám Phá');
-  await expect(page.locator('.profile-portrait')).toHaveAttribute('data-avatar', avatar!);
+  await expect(page.locator('header[data-role=learner] .bluesteam-header-name')).toContainText('Khám Phá');
+  await page.reload(); await openDeviceProfileCollection(page);
+  await expect(page.locator('header[data-role=learner] .bluesteam-header-name')).toContainText('Khám Phá');
+  await expect(page.locator('.profile-portrait img')).toHaveAttribute('data-avatar', avatar!);
   await expect(drawings.locator('.profile-art')).toHaveCount(8);
   expect(errors).toEqual([]);
 });

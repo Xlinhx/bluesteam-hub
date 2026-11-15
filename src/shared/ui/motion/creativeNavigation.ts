@@ -1,4 +1,5 @@
 import './creative-navigation.css';
+import { isProfileScene } from './oceanNavigation';
 type Snapshot={finished:Promise<unknown>;ready:Promise<unknown>;updateCallbackDone:Promise<unknown>;skipTransition:()=>void};
 type MotionDocument=Pick<Document,'documentElement'|'querySelector'|'addEventListener'|'removeEventListener'>&{startViewTransition?:(update:()=>void|Promise<void>)=>Snapshot};
 let active:Snapshot|undefined,revision=0,cleanup:()=>void=()=>{};
@@ -24,6 +25,7 @@ export function transitionCreativeScene(from:string,to:string,commit:()=>void,re
  if(!fromKey&&!toKey)return false;
  if(fromKey===toKey){commit();return true;}
  const version=++revision;active?.skipTransition();active=undefined;cleanup();cleanup=()=>{};
+ if ((!fromKey || !toKey) && [from, to].some(url => isProfileScene(url.split('?')[0]))) return false;
  if(!fromKey||!toKey||reduced||!doc?.startViewTransition){commit();return true;}
  const data=doc.documentElement.dataset;data.creativeJourney=direction;
  data.creativeAudience=toKey.startsWith('teacher:')?'teacher':'learner';

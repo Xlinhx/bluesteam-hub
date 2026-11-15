@@ -19,5 +19,5 @@ export function ResourceActionMenu({label,children}: {label:string;children:Reac
     const panel=e.currentTarget.querySelector('div')!;
     e.currentTarget.style.setProperty('--menu-top',`${Math.max(8,Math.min(bounds.bottom+6,window.innerHeight-panel.offsetHeight-8))}px`);
     e.currentTarget.style.setProperty('--menu-left',`${Math.max(8,Math.min(bounds.right-210,window.innerWidth-218))}px`);
-  }}><summary aria-label={label}><MoreHorizontal size={22}/></summary><div onClick={e=>{if((e.target as HTMLElement).closest('button') && ref.current){ref.current.open=false;ref.current.querySelector('summary')?.focus({preventScroll:true});}}}>{children}</div></details>;
+  }}><summary className="ui-filter-control" aria-label={label}><MoreHorizontal size={22}/></summary><div className="ui-option-panel" onClick={e=>{if((e.target as HTMLElement).closest('button') && ref.current){ref.current.open=false;ref.current.querySelector('summary')?.focus({preventScroll:true});}}}>{children}</div></details>;
 }

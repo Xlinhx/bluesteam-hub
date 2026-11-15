@@ -37,17 +37,22 @@ export class ResourcesController {
     @Query('q') q?: string,
     @Query('savedIds') savedIds?: string | string[],
     @Query('cursor') cursor?: string,
+    @Query('before') before?: string,
     @Query('limit') limit?: string,
     @Query('groupId') groupId?: string,
+    @Query('library') library?: string,
+    @Query('page') page?: string,
   ) {
     return this.resourcesService.listResources({
-      isTeacher: false,capability,
+      isTeacher: false,capability, library: library === '1',
       groupId,
       kind,
       topicIds: parseStringList(topicIds),
       q,
       savedIds: savedIds !== undefined ? parseStringList(savedIds) || [] : undefined,
       cursor,
+      before,
+      page: page === undefined ? undefined : Number(page),
       limit: limit ? Number(limit) : 12,
     });
   }
@@ -70,6 +75,7 @@ export class ResourcesController {
     @Query('cursor') cursor?: string,
     @Query('limit') limit?: string,
     @Query('groupId') groupId?: string,
+    @Query('page') page?: string,
   ) {
     return this.resourcesService.listResources({
       isTeacher: true,
@@ -82,6 +88,7 @@ export class ResourcesController {
       visibility,
       source,
       cursor,
+      page: page === undefined ? undefined : Number(page),
       limit: limit ? Number(limit) : 20,
     });
   }

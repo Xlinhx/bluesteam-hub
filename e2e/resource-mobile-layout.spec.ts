@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { openDeviceProfileCollection } from './fixtures/local-profile';
 
 async function login(page: Page, teacher = false) {
   expect((await page.request.post('/api/v1/auth/login', { data: teacher ? { role: 'teacher', email: 'colinh@bluesteam.edu.vn', password: 'daiduong2026' } : { role: 'student', email: 'hocsinh', password: 'hocsinh' } })).ok()).toBe(true);
@@ -12,17 +13,17 @@ test('learner layouts and identity controls stay usable at 320px, 360px and land
   await login(page); await page.emulateMedia({ reducedMotion: 'reduce' });
   for (const size of [{ width: 320, height: 568 }, { width: 360, height: 740 }, { width: 844, height: 390 }]) {
     await page.setViewportSize(size); await page.goto('/resources');
-    await expect(page.locator('.resource-group-section')).toHaveCount(3); await fits(page);
+    await expect(page.locator('.resource-group-section').first()).toBeVisible(); await fits(page);
     const title = page.locator('.resource-banner-content h2'); await expect(title).toBeInViewport();
     await page.getByRole('button', { name: 'Chọn nhóm học liệu', exact: true }).click();
     const chooser = page.locator('.resource-group-chooser');
     await chooser.getByRole('searchbox').fill('Rạn');
     await expect(chooser.getByRole('button', { name: 'Đóng chọn nhóm' })).toBeInViewport(); await fits(page);
     await chooser.getByRole('button', { name: 'Đóng chọn nhóm' }).click();
-    await page.goto('/profile'); await expect(page.locator('.profile-collection-section')).toHaveCount(3); await fits(page);
+    await page.goto('/profile'); await openDeviceProfileCollection(page); await expect(page.locator('.profile-collection-section')).toHaveCount(3); await fits(page);
     await page.getByRole('button', { name: 'Đổi tên và hình', exact: true }).click();
     const identity = page.getByRole('dialog');
-    const input = identity.getByRole('textbox', { name: 'Tên của con' });
+    const input = identity.getByRole('textbox', { name: 'Tên của bé' });
     await input.fill('Tên đang nhập trên điện thoại');
     await page.setViewportSize({ width: size.width, height: Math.min(size.height, 340) });
     await input.focus(); await expect(input).toBeInViewport({ ratio: 1 });

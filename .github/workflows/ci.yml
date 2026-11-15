@@ -56,6 +56,11 @@ jobs:
             createdb --host=127.0.0.1 --port=5442 --username=bluesteam "$database"
           done
       - run: npm --workspace @bluesteam/server run db:migrate
+      - name: Verify versioned learner pack installation
+        run: |
+          npm --workspace @bluesteam/server run db:seed -- --learner-pack-only --dry-run
+          npm --workspace @bluesteam/server run db:seed -- --learner-pack-only
+          npm --workspace @bluesteam/server run db:seed -- --learner-pack-only
       - run: npm run db:seed:demo
       - run: npm test
       - run: npm --workspace @bluesteam/server test

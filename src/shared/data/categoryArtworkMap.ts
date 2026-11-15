@@ -1,23 +1,16 @@
 export type RoleKind = 'learner' | 'teacher' | 'public';
 
-export type LearnerNavKey = 'home' | 'resources' | 'interactive' | 'creative' | 'profile';
-export type TeacherNavKey = 'overview' | 'resources' | 'interactive' | 'creative';
+export type LearnerNavKey = 'home' | 'resources' | 'interactive' | 'creative' | 'learning' | 'profile';
+export type TeacherNavKey = 'overview' | 'resources' | 'learning' | 'interactive' | 'creative' | 'profile';
 export type InteractiveCategoryKind = 'model3d' | 'game' | 'simulation' | 'scenario';
 
 export type OceanTopicKey = 'creatures' | 'coral' | 'layers' | 'conservation' | 'species' | 'habitats' | 'environment';
 export type TopicKey = 'all' | 'species' | 'creatures' | 'habitats' | 'environment' | 'conservation' | 'coral' | 'layers';
 export type TopicFilterKey = 'all' | 'creatures' | 'habitats' | 'conservation' | 'species';
 
-export type AnimalAvatarKey =
-  | 'turtle'
-  | 'crab'
-  | 'clownfish'
-  | 'starfish'
-  | 'dolphin'
-  | 'octopus'
-  | 'seahorse'
-  | 'jellyfish';
-
+import { AVATAR_KEY_ALIASES, type AnimalAvatarKey } from '@bluesteam/contracts';
+export type { AnimalAvatarKey } from '@bluesteam/contracts';
+export type AvatarGroup = 'sea' | 'shore' | 'freshwater';
 
 export interface CategoryArtworkSpec {
   id: string;
@@ -342,6 +335,7 @@ export const CANONICAL_TOPICS: TopicMeta[] = [
 
 export interface AnimalAvatarSpec {
   key: AnimalAvatarKey;
+  group?: AvatarGroup;
   label: string;
   labelVi?: string;
   shortName: string;
@@ -418,14 +412,31 @@ const RAW_ANIMAL_AVATARS: AnimalAvatarSpec[] = [
   },
 ];
 
-export const ANIMAL_AVATARS: Array<Required<AnimalAvatarSpec>> = RAW_ANIMAL_AVATARS.map((a) => ({
+const ALL_ANIMAL_AVATARS = [...RAW_ANIMAL_AVATARS,
+  { key: 'shark', label: 'Cá mập', shortName: 'Cá mập', group: 'sea', imageSrc: '/assets/generated/profile/chibi/avatar-shark.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'whale', label: 'Cá voi', shortName: 'Cá voi', group: 'sea', imageSrc: '/assets/generated/profile/chibi/avatar-whale.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'seal', label: 'Hải cẩu', shortName: 'Hải cẩu', group: 'shore', imageSrc: '/assets/generated/profile/chibi/avatar-seal.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'otter', label: 'Rái cá', shortName: 'Rái cá', group: 'shore', imageSrc: '/assets/generated/profile/chibi/avatar-otter.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'stingray', label: 'Cá đuối', shortName: 'Cá đuối', group: 'sea', imageSrc: '/assets/generated/profile/chibi/avatar-stingray.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'pufferfish', label: 'Cá nóc', shortName: 'Cá nóc', group: 'sea', imageSrc: '/assets/generated/profile/chibi/avatar-pufferfish.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'shrimp', label: 'Tôm', shortName: 'Tôm', group: 'sea', imageSrc: '/assets/generated/profile/chibi/avatar-shrimp.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'squid', label: 'Mực', shortName: 'Mực', group: 'sea', imageSrc: '/assets/generated/profile/chibi/avatar-squid.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'duck', label: 'Vịt', shortName: 'Vịt', group: 'freshwater', imageSrc: '/assets/generated/profile/chibi/avatar-duck.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'penguin', label: 'Chim cánh cụt', shortName: 'Chim cánh cụt', group: 'shore', imageSrc: '/assets/generated/profile/chibi/avatar-penguin.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'frog', label: 'Ếch', shortName: 'Ếch', group: 'freshwater', imageSrc: '/assets/generated/profile/chibi/avatar-frog.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+  { key: 'crocodile', label: 'Cá sấu', shortName: 'Cá sấu', group: 'freshwater', imageSrc: '/assets/generated/profile/chibi/avatar-crocodile.webp', bgHex: '#E7F5FF', ringHex: '#3185C4' },
+] satisfies AnimalAvatarSpec[];
+
+export const ANIMAL_AVATARS: Array<Required<AnimalAvatarSpec>> = ALL_ANIMAL_AVATARS.map((a) => ({
   ...a,
+  group: a.group ?? 'sea',
+  imageSrc: `/assets/generated/profile/chibi/avatar-${a.key}.webp`,
   labelVi: a.label,
-  imagePath: a.imageSrc,
+  imagePath: `/assets/generated/profile/chibi/avatar-${a.key}.webp`,
 }));
 
 export function getAnimalAvatar(key?: string | null): Required<AnimalAvatarSpec> {
-  return ANIMAL_AVATARS.find((item) => item.key === (key === 'octo' ? 'octopus' : key)) ?? ANIMAL_AVATARS[0];
+  return ANIMAL_AVATARS.find((item) => item.key === (AVATAR_KEY_ALIASES[key ?? ''] ?? key)) ?? ANIMAL_AVATARS[0];
 }
 
 export const getAvatarMeta = getAnimalAvatar;

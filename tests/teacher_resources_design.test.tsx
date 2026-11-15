@@ -18,7 +18,7 @@ it('offers one stable creation action and no retired draft state',()=>{
   const html=renderToString(<TeacherResourceLibraryPage/>);
   expect(html).not.toContain('Nháp');
   expect(html).not.toContain('teacher-create-group');
-  expect(html).toContain('Phân trang nhóm');
+  expect(html).not.toContain('Phân trang nhóm');
 });
 it('keeps the group image workspace and footer geometry stable from first opening',()=>{
   const html=renderToString(<ResourceGroupEditor onClose={()=>{}} onSaved={()=>{}}/>);
@@ -36,5 +36,5 @@ it('identifies the target group and supports clearing, counted additions and pag
   expect(html).toContain('Rạn san hô');
   expect(html).toContain('Bỏ chọn');
   expect(html).toContain('Thêm 0 học liệu');
-  expect(html).toContain('Trang học liệu sau');
+  expect(html).not.toContain('Phân trang chọn học liệu');
 });

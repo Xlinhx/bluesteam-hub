@@ -1,4 +1,10 @@
 /* The header stays in place. Only the content scene passes through the tide. */
+:root[data-learning-journey] .learning-world { view-transition-name: learning-world; }
+:root[data-learning-journey]::view-transition-group(learning-world) { animation-duration: 340ms; }
+:root[data-learning-journey]::view-transition-new(learning-world) { animation: learning-scene-in 340ms cubic-bezier(.22,.8,.3,1) both; }
+:root[data-learning-journey]::view-transition-old(learning-world) { animation: learning-scene-out 210ms ease-in both; }
+@keyframes learning-scene-in { from { opacity: 0; transform: translateY(11px) scale(1.012); } }
+@keyframes learning-scene-out { to { opacity: 0; transform: translateY(5px); } }
 :root[data-ocean-transition] :is(.resource-library,.resource-detail-page,.learner-profile,.teacher-resource-library){view-transition-name:ocean-scene}
 :root[data-ocean-transition]::view-transition{pointer-events:none}
 :root[data-ocean-transition]::view-transition-old(root),:root[data-ocean-transition]::view-transition-new(root){animation:none;mix-blend-mode:normal}
@@ -14,6 +20,49 @@
 @keyframes ocean-scene-return{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:none}}
 @keyframes ocean-scene-recede{to{opacity:0;transform:translateX(30px) scale(.99)}}
 @media(max-width:600px){:root[data-ocean-transition]::view-transition-new(ocean-scene){animation-duration:640ms}}
+
+/* The profile desk and the shoal at its edge settle on separate layers. */
+:root[data-ocean-profile-flow] :is(.interactive-seascape,.learner-creative-page,.creative-teacher-hub){view-transition-name:ocean-scene}
+:root[data-ocean-profile-flow] :is(.profile-lagoon,.interactive-seascape__artwork,.creative-hub-scene){view-transition-name:ocean-profile-water}
+:root[data-ocean-profile-flow] .profile-lagoon-sprig{view-transition-name:ocean-profile-foreground}
+:root[data-ocean-profile-flow] :is(.learner-profile,.interactive-seascape){background:transparent}
+:root[data-ocean-profile-flow] .bluesteam-app-header{view-transition-name:ocean-profile-navigation}
+:root[data-ocean-profile-flow] .bluesteam-mobile-nav[data-visible=true]{view-transition-name:ocean-profile-mobile-navigation}
+:root[data-ocean-profile-flow]::view-transition-group(ocean-profile-navigation),
+:root[data-ocean-profile-flow]::view-transition-group(ocean-profile-mobile-navigation){animation:none;z-index:5}
+:root[data-ocean-profile-flow]::view-transition-new(ocean-profile-navigation),
+:root[data-ocean-profile-flow]::view-transition-new(ocean-profile-mobile-navigation){animation:none;mix-blend-mode:normal}
+:root[data-ocean-profile-flow]::view-transition-old(ocean-profile-navigation),
+:root[data-ocean-profile-flow]::view-transition-old(ocean-profile-mobile-navigation){animation:none;opacity:0}
+:root[data-ocean-profile-flow]::view-transition-group(ocean-scene){animation-duration:660ms;z-index:3}
+:root[data-ocean-profile-flow]::view-transition-group(ocean-profile-water){animation-duration:900ms;animation-timing-function:cubic-bezier(.28,.7,.26,1);z-index:1}
+:root[data-ocean-profile-flow]::view-transition-group(ocean-profile-foreground){animation-duration:970ms;z-index:2}
+:root[data-ocean-profile-flow]::view-transition-new(ocean-profile-foreground){animation:profile-foreground-arrive 970ms cubic-bezier(.29,.68,.23,1) both;transform-origin:50% 88%}
+:root[data-ocean-profile-flow]::view-transition-old(ocean-profile-foreground){animation:profile-water-depart 500ms cubic-bezier(.3,.59,.45,1) both}
+:root[data-ocean-profile-flow]::view-transition-image-pair(ocean-scene),
+:root[data-ocean-profile-flow]::view-transition-image-pair(ocean-profile-water){isolation:isolate}
+:root[data-ocean-profile-flow]::view-transition-old(ocean-scene){animation:profile-desk-depart 195ms cubic-bezier(.25,.62,.31,1) both}
+:root[data-ocean-profile-flow]::view-transition-new(ocean-scene){animation:profile-desk-arrive 660ms cubic-bezier(.29,.76,.28,1) both}
+:root[data-ocean-profile-flow]::view-transition-old(ocean-profile-water){animation:profile-water-depart 540ms cubic-bezier(.3,.59,.45,1) both}
+:root[data-ocean-profile-flow]::view-transition-new(ocean-profile-water){animation:profile-water-arrive 900ms cubic-bezier(.27,.68,.25,1) both}
+:root[data-ocean-profile-flow=leave]{--profile-desk-x:-13px;--profile-water-x:20px}
+:root[data-ocean-profile-flow=enter]{--profile-desk-x:13px;--profile-water-x:-20px}
+@keyframes profile-desk-depart{
+  from{opacity:1;transform:none}
+  52%,to{opacity:0;transform:translateX(calc(var(--profile-desk-x) * -.55))}
+}
+@keyframes profile-desk-arrive{
+  0%,18%{opacity:0;transform:translate(var(--profile-desk-x),6px)}
+  40%{opacity:1}
+  to{opacity:1;transform:none}
+}
+@keyframes profile-water-depart{to{opacity:0;transform:translateX(calc(var(--profile-water-x) * -.45))}}
+@keyframes profile-water-arrive{from{opacity:.28;transform:translate(var(--profile-water-x),-9px) scale(1.023)}to{opacity:1;transform:none}}
+@keyframes profile-foreground-arrive{from{opacity:.18;transform:translateY(12px) rotate(-7deg)}to{opacity:1;transform:none}}
+@media(max-width:600px){
+  :root[data-ocean-profile-flow]{--profile-desk-x:0px;--profile-water-x:0px}
+  :root[data-ocean-profile-flow]::view-transition-new(ocean-scene){animation-duration:580ms}
+}
 @media(prefers-reduced-motion:reduce){:root[data-ocean-transition]::view-transition-group(*),:root[data-ocean-transition]::view-transition-new(*),:root[data-ocean-transition]::view-transition-old(*){animation:none!important}}
 
 /* The role photograph becomes the coast; returning follows the same object. */

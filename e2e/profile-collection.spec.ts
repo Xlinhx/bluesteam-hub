@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { openDeviceProfileCollection } from './fixtures/local-profile';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -28,7 +29,7 @@ async function seed(page: Page, count = 2, broken = false) {
     }
     await creativeStorage.saveArtwork({ id: 'unfinished', type: 'drawing', title: 'Bản nháp không trưng bày', isDraft: true, createdAt: Date.now(), previewDataUrl: images[0], drawingData: { canvasDataUrl: images[0] } });
   }, { count, broken });
-  await page.goto('/profile');
+  await page.goto('/profile'); await openDeviceProfileCollection(page);
 }
 const region = (page: Page, kind: string) => page.locator(`[data-artwork-section="${kind}"]`);
 const shoot = async (page: Page, name: string) => {
@@ -74,7 +75,7 @@ test('profile reads bounded indexed batches and retries a failed next page witho
       return request;
     };
   });
-  await page.reload();
+  await page.reload(); await openDeviceProfileCollection(page);
   await expect(region(page, 'drawing').locator('.profile-art')).toHaveCount(6);
   await expect(region(page, 'scan').locator('.profile-art')).toHaveCount(6);
   await expect(region(page, 'habitat').locator('.profile-art')).toHaveCount(6);
@@ -136,7 +137,10 @@ test('actual desktop tablet mobile renders and readonly viewers retain focus and
     await page.evaluate(() => { window.open = () => null; });
     await dialog.getByRole('button', { name: 'In tác phẩm', exact: true }).click();
     await expect(dialog.getByRole('status')).toContainText('cửa sổ in');
-    await expect.poll(() => dialog.evaluate(el => ({ x: Math.round(el.getBoundingClientRect().x), y: Math.round(el.getBoundingClientRect().y), fillsBackdrop: Math.abs(el.getBoundingClientRect().width - el.parentElement!.clientWidth) <= 1, height: Math.round(el.getBoundingClientRect().height) }))).toEqual({ x: 0, y: 0, fillsBackdrop: true, height: 900 });
+    await expect.poll(() => dialog.evaluate(el => {
+      const { x, y, width, height } = el.getBoundingClientRect();
+      return { x: Math.round(x), y: Math.round(y), fillsViewport: Math.abs(width - window.innerWidth) <= 1, height: Math.round(height) };
+    })).toEqual({ x: 0, y: 0, fillsViewport: true, height: 900 });
     await page.screenshot({ path: path.join(shots, `viewer-${kind}-print-blocked.png`), animations: 'disabled' });
     await page.evaluate(() => {
       window.open = () => {
@@ -229,7 +233,7 @@ test('an initial database error is not presented as an empty collection and retr
     (window as any).__restoreDatabase = () => { indexedDB.open = open; };
     indexedDB.open = () => { throw new DOMException('Blocked', 'SecurityError'); };
   });
-  await page.goto('/profile');
+  await page.goto('/profile'); await openDeviceProfileCollection(page);
   await expect(page.getByRole('alert')).toContainText('Chưa đọc được tác phẩm');
   await expect(page.locator('[data-artwork-section]')).toHaveCount(0);
   await page.evaluate(() => (window as any).__restoreDatabase());
@@ -252,13 +256,13 @@ test('a legacy tab blocking the collection upgrade has a recoverable message and
         tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error);
       };
     }));
-    await login(page); await page.goto('/profile');
+    await login(page); await page.goto('/profile'); await openDeviceProfileCollection(page);
     await expect(page.getByRole('alert')).toContainText('Đóng các tab BlueSTEAM cũ');
     await oldTab.evaluate(() => (window as any).__legacyDatabase.close());
     await page.getByRole('button', { name: /Thử lại/ }).click();
     await expect(page.getByRole('heading', { name: 'Tranh cũ được giữ lại', exact: true })).toBeVisible();
     await expect(region(page, 'drawing').locator('.profile-section-count')).toHaveText('1');
-    await page.reload();
+    await page.reload(); await openDeviceProfileCollection(page);
     await expect(region(page, 'drawing').locator('.profile-art')).toHaveCount(1);
   } finally { await oldTab.close(); }
 });
@@ -270,8 +274,8 @@ test('collection details remain readable with long titles, English, reduced moti
     const art = (await creativeStorage.getArtworkById('drawing-0'))!;
     await creativeStorage.saveArtwork({ ...art, title: 'Đại dương của con '.repeat(8) });
   });
-  await page.reload(); await expect(page.locator('.profile-art')).toHaveCount(9);
-  const contrast = await page.locator('.profile-gallery-title .coral').evaluate(el => {
+  await page.reload(); await openDeviceProfileCollection(page); await expect(page.locator('.profile-art')).toHaveCount(9);
+  const contrast = await page.locator('.profile-gallery-title .profile-primary').evaluate(el => {
     const css = getComputedStyle(el);
     const luminance = (color: string) => color.match(/[\d.]+/g)!.slice(0, 3).map(Number).map(v => { const n = v / 255; return n <= .04045 ? n / 12.92 : ((n + .055) / 1.055) ** 2.4; }).reduce((sum, n, i) => sum + n * [.2126, .7152, .0722][i], 0);
     const values = [luminance(css.color), luminance(css.backgroundColor)].sort((a, b) => b - a);
@@ -286,7 +290,7 @@ test('collection details remain readable with long titles, English, reduced moti
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
   }
   await page.evaluate(() => localStorage.setItem('ocean:v2:locale', 'en'));
-  await page.reload();
+  await page.reload(); await openDeviceProfileCollection(page);
   await expect(page.locator('[data-artwork-section] h3')).toHaveText(['Drawing & colouring', 'Scanned drawings', 'Dioramas / Habitats']);
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
   await page.screenshot({ path: path.join(shots, 'english-small.png'), fullPage: true, animations: 'disabled' });
@@ -303,7 +307,7 @@ test('real drawing, scan and habitat producers complete into the matching sectio
   await page.getByRole('button', { name: 'Lưu tiến trình', exact: true }).click();
   await expect(page.getByRole('status')).toContainText('Đã lưu tiến trình');
   const drawingUrl = page.url();
-  await page.goto('/profile'); await expect(region(page, 'drawing').locator('.profile-art')).toHaveCount(0);
+  await page.goto('/profile'); await openDeviceProfileCollection(page); await expect(region(page, 'drawing').locator('.profile-art')).toHaveCount(0);
   await page.goto(drawingUrl); await page.getByRole('button', { name: 'Hoàn thành', exact: true }).click();
   await expect(page.locator('.creative-finished')).toContainText('Đã lưu vào Hồ sơ');
   const original = await page.evaluate(async () => { const { creativeStorage } = await import('/src/shared/creative/creativeStorage.ts'); return (await creativeStorage.getArtworks()).find(a => a.isDraft === false)!; });
@@ -311,14 +315,14 @@ test('real drawing, scan and habitat producers complete into the matching sectio
   await page.goto('/creative/drawing?id=' + revisionId);
   await expect(paint).toBeVisible();
   await page.getByRole('button', { name: 'Lưu tiến trình', exact: true }).click();
-  await page.goto('/profile'); await expect(region(page, 'drawing').locator('.profile-art')).toHaveCount(1);
+  await page.goto('/profile'); await openDeviceProfileCollection(page); await expect(region(page, 'drawing').locator('.profile-art')).toHaveCount(1);
   expect(await page.evaluate(async id => { const { creativeStorage } = await import('/src/shared/creative/creativeStorage.ts'); return creativeStorage.getArtworkById(id); }, original.id)).toEqual(original);
 
   await page.goto('/creative/habitat');
   await page.getByRole('button', { name: 'Thêm cảnh', exact: true }).click(); await page.getByRole('button', { name: 'Tạo cảnh', exact: true }).click();
   await page.getByRole('button', { name: 'Hoàn thành', exact: true }).click();
   await expect(page.locator('.creative-finished')).toContainText('Đã lưu vào Hồ sơ');
-  await page.goto('/profile'); await expect(region(page, 'habitat').locator('.profile-art')).toHaveCount(1);
+  await page.goto('/profile'); await openDeviceProfileCollection(page); await expect(region(page, 'habitat').locator('.profile-art')).toHaveCount(1);
   await expect(region(page, 'habitat').getByText('2 cảnh', { exact: true })).toBeVisible();
 
   await page.goto('/creative/scan');
@@ -328,6 +332,6 @@ test('real drawing, scan and habitat producers complete into the matching sectio
   await page.getByRole('checkbox', { name: 'Đã xem lại nét vẽ và phần trắng trong con vật' }).check();
   await page.getByRole('button', { name: 'Hoàn thành', exact: true }).click();
   await expect(page.locator('.creative-finished')).toContainText('Đã lưu vào Hồ sơ');
-  await page.goto('/profile'); await expect(region(page, 'scan').locator('.profile-art')).toHaveCount(1);
-  await page.reload(); await expect(page.locator('.profile-art')).toHaveCount(3);
+  await page.goto('/profile'); await openDeviceProfileCollection(page); await expect(region(page, 'scan').locator('.profile-art')).toHaveCount(1);
+  await page.reload(); await openDeviceProfileCollection(page); await expect(page.locator('.profile-art')).toHaveCount(3);
 });

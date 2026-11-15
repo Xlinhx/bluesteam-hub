@@ -1,0 +1,149 @@
+.teacher-class-overview {
+  --overview-ink: var(--profile-ink);
+  --overview-blue: var(--profile-accent);
+}
+
+.teacher-class-overview { display: grid; gap: 20px; padding-top: 24px; }
+.overview-heading,.overview-filters { display: flex; align-items: center; gap: 12px; }
+.overview-heading { justify-content: space-between; flex-wrap: wrap; }
+.teacher-class-overview .overview-heading h2 { margin: 0; font-size: clamp(24px,3.2vw,38px); letter-spacing: -.04em; }
+.overview-heading h2 .overview-bubbles { display: inline-block; width: 25px; height: 23px; margin-left: 11px; }
+.overview-bubbles {
+  background: radial-gradient(circle at 28% 70%,transparent 4px,#55cce9 4.5px,transparent 5.6px),
+    radial-gradient(circle at 78% 27%,transparent 3px,#4ac6e8 3.5px,transparent 4.5px);
+}
+.overview-filters { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); width: min(100%,440px); gap: 8px; }
+.overview-summary,.overview-collections { display: grid; gap: 17px; }
+.overview-summary { grid-template-columns: minmax(0,1.62fr) minmax(0,1fr); }
+.overview-collections { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.overview-card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: clamp(15px,2vw,25px);
+  border-radius: 25px 31px 24px 33px / 24px 29px 22px 26px;
+  background: var(--card-wash, #f3fafc);
+}
+.overview-card::before {
+  content: '';
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--card-shore,transparent);
+  clip-path: ellipse(77% 22% at 64% 100%);
+  pointer-events: none;
+}
+@supports (clip-path: shape(from 0 0, line to 100% 100%, close)) {
+  .overview-card:not(.overview-journey) {
+    --overview-contour: shape(from 0 23%,
+      curve to 13% 1% with 0 7% / 5% 0%, curve to 46% 3% with 23% 0% / 31% 5%,
+      curve to 87% 1% with 58% 2% / 78% 0%, curve to 100% 20% with 96% 2% / 100% 8%,
+      curve to 99.6% 77% with 100% 39% / 99% 58%, curve to 87% 99% with 100% 91% / 96% 99%,
+      curve to 51% 98% with 75% 100% / 65% 97%, curve to 13% 99% with 38% 99% / 23% 101%,
+      curve to .6% 75% with 4% 98% / 0 91%, curve to 0 23% with 1% 55% / 0 42%, close);
+    background: none;
+  }
+  .overview-card:not(.overview-journey)::before {
+    background: var(--card-shore), var(--card-wash);
+    clip-path: var(--overview-contour);
+  }
+}
+.overview-progress {
+  --card-wash: linear-gradient(140deg,#d7f4f4,#bfecef 72%,#c5f0f3);
+  --card-shore: radial-gradient(ellipse at 90% 105%,#8cd9e48a,transparent 64%);
+  border-radius: 31px 45px 29px 26px / 33px 30px 28px 25px;
+}
+.overview-achievements {
+  --card-wash: linear-gradient(120deg,#fff1df 10%,#faedf3 66%,#f4e8fa);
+  --card-shore: radial-gradient(ellipse at 15% 100%,#ffe1d4a8,transparent 66%);
+}
+.overview-species { --card-wash: linear-gradient(153deg,#e9f8fc,#ccecf5); --card-shore: radial-gradient(ellipse at 86% 100%,#aee2f05c,transparent 71%); }
+.overview-games { --card-wash: linear-gradient(148deg,#eff8e9,#dcefe1); --card-shore: radial-gradient(ellipse at 90% 100%,#b7e4c65c,transparent 69%); }
+.overview-creations { --card-wash: linear-gradient(150deg,#f8eff9,#eae1f6); --card-shore: radial-gradient(ellipse at 82% 100%,#d4c4f15c,transparent 67%); }
+.teacher-class-overview .overview-card h3 { margin: 0 0 8px; gap: 9px; color: var(--overview-ink); font-size: clamp(17px,1.85vw,24px); letter-spacing: -.028em; }
+.teacher-class-overview .overview-card h3 svg { width: 24px; height: 24px; color: var(--overview-blue); }
+.overview-summary .overview-card { min-height: 174px; padding-block: clamp(15px,1.5vw,21px); }
+.overview-progress-content { display: grid; grid-template-columns: minmax(0,.7fr) minmax(0,2.3fr) minmax(0,.7fr); align-items: center; gap: 9px; }
+.overview-progress-content > img { width: 100%; height: clamp(70px,8vw,109px); object-fit: contain; }
+.overview-progress-content > img:first-child { rotate: -7deg; }
+.overview-progress-content > img:last-child { rotate: 6deg; }
+.overview-progress dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin: 0; }
+.overview-progress dl>div {
+  display: flex; flex-direction: column-reverse; justify-content: center; align-items: center; gap: 3px;
+  padding: 9px 6px; border-radius: 18px 23px 17px 19px;
+  background: #f3ffff87; text-align: center;
+}
+.overview-progress dt { font-size: clamp(12px,1.15vw,16px); font-weight: 700; }
+.overview-progress dd { margin: 0; color: var(--overview-ink); font-size: clamp(28px,3.65vw,48px); font-weight: 850; line-height: 1.05; }
+.overview-achievements { padding-right: clamp(103px,14vw,192px); }
+.overview-achievements::after {
+  content: ''; position: absolute; z-index: -1; inset: auto 2% 7px auto;
+  width: min(22%,97px); aspect-ratio: 1; pointer-events: none;
+  background: url('/assets/generated/profile/dive-log/teacher-coral.webp') center / contain no-repeat;
+}
+.overview-card-art { position: absolute; inset: auto 3% 6px auto; width: min(37%,169px); max-height: 90%; object-fit: contain; pointer-events: none; }
+.teacher-class-overview .overview-total { margin: 0 0 10px; color: var(--overview-ink); font-size: clamp(14px,1.65vw,21px); font-weight: 750; line-height: 1.2; }
+.overview-total strong { margin-inline-end: .08em; color: var(--overview-ink); font-size: clamp(25px,2.7vw,36px); font-weight: 850; letter-spacing: -.04em; }
+.overview-achievements .overview-total { margin-top: 5px; }
+.overview-achievements .overview-total strong { display: block; font-size: clamp(35px,4vw,55px); }
+.overview-card-heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px 8px; margin-bottom: 5px; }
+.teacher-class-overview .overview-card-heading h3 { margin-bottom: 0; }
+.overview-achievements .teacher-profile-action { align-self: flex-start; margin-top: auto; }
+.overview-card :is(ul,ol) { margin: 0; padding: 0; list-style: none; }
+.overview-species-list,.overview-creation-list { display: grid; gap: 8px; }
+.overview-species-list { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.overview-species-list li {
+  display: grid; justify-items: center; align-content: start; gap: 4px;
+  min-width: 0; padding: 6px 5px 7px; background: #f9fdffac;
+  border-radius: 15px 17px 16px 13px;
+}
+.overview-species-list img { width: 100%; height: clamp(46px,6vw,82px); object-fit: contain; }
+.overview-species-list li>span {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  overflow: hidden; font-size: clamp(10px,1.1vw,14px); font-weight: 750; text-align: center; overflow-wrap: anywhere;
+}
+.overview-species-list li>svg { width: 34px; height: 34px; color: var(--overview-blue); }
+.overview-game-list { display: grid; gap: 7px; }
+.overview-game-list li { display: flex; align-items: center; gap: 9px; min-height: 43px; padding: 3px 10px 3px 5px; background: #fcfffcbb; border-radius: 13px 17px 15px 15px; font-size: clamp(12px,1.25vw,16px); font-weight: 750; }
+.overview-game-list :is(img,svg) { width: 47px; height: 38px; flex: none; object-fit: contain; color: var(--overview-blue); }
+.overview-creation-list { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.overview-creation-list li { display: grid; place-items: center; min-width: 0; padding: 5px; border-radius: 14px 12px 15px 12px; background: #fffaffc9; }
+.overview-creation-list :is(img,svg) { width: 100%; height: clamp(64px,7.2vw,103px); object-fit: contain; }
+.overview-creation-list svg { width: 32px; color: var(--overview-blue); }
+.overview-chip { display: inline-flex; align-items: center; align-self: flex-start; gap: 6px; padding: 5px 9px; border-radius: 25px; background: #dff5f6; color: #00586b; font-size: 12px; font-weight: 700; }
+.overview-chip svg { width: 14px; height: 14px; padding: 2px; border-radius: 50%; color: #fff; background: #007586; stroke-width: 3; }
+.overview-games .overview-chip { margin-top: 7px; }
+.teacher-profile .overview-empty { margin: 6px 0 12px; font-size: 14px; }
+.overview-journey {
+  --card-wash: linear-gradient(140deg,#f8fcfd,#edf8fb);
+  display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 14px;
+  padding-block: 13px; border: 1px solid #d7ebf2;
+}
+.teacher-profile .overview-journey h3 { margin: 0; }
+.overview-journey ol { display: flex; }
+.overview-journey li { flex: 1 1 0; min-width: 0; padding-inline: 11px; border-inline-start: 1px solid #c9e2e9; }
+.overview-journey time { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 800; }
+.overview-journey time svg { width: 16px; height: 16px; flex: none; color: var(--overview-blue); }
+.overview-journey li strong { display: block; font-size: clamp(12px,1.15vw,15px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 920px) {
+  .overview-collections .overview-card { padding: 13px; }
+  .overview-journey { grid-template-columns: minmax(0,1fr) auto; }
+  .overview-journey :is(ol,.overview-empty) { grid-row: 2; grid-column: 1/-1; }
+}
+@media (max-width: 760px) {
+  .teacher-class-overview { gap: 14px; padding-top: 18px; }
+  .overview-summary,.overview-collections { gap: 10px; }
+  .overview-collections { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .overview-creations { grid-column: 1 / -1; }
+  .overview-creation-list { width: min(100%,365px); }
+}
+@media (max-width: 520px) {
+  .overview-summary,.overview-collections { grid-template-columns: minmax(0,1fr); }
+  .overview-summary .overview-card { min-height: 140px; }
+  .overview-filters { grid-template-columns: minmax(0,1fr); }
+  .overview-journey ol { display: grid; gap: 8px; }
+  .overview-journey li { padding-inline: 0; border-inline-start: 0; }
+}

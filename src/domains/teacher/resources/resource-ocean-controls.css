@@ -1,29 +1,6 @@
-.ocean-select { display:inline-flex; position:relative; min-width:0; font-size:16px; }
-.ocean-select > button { display:flex; align-items:center; gap:10px; min-height:50px; width:100%; padding:10px 14px; border:1.5px solid #b9d0d8; border-radius:16px 16px 16px 8px; background:#fffefa; color:#12384b; font-weight:500; text-align:left; box-shadow:0 2px 0 #dcebed55; }
-.ocean-select > button > span:not(.resource-kind) { flex:1; }
-.ocean-select > button > svg { flex:none; transition:transform 160ms; }
-.ocean-select > button[aria-expanded=true] { background:#e9f5f5; border-color:#137e93; }
-.ocean-select > button[aria-expanded=true] > svg { transform:rotate(180deg); }
-.ocean-select > button .resource-kind svg { width:21px; height:21px; }
-.ocean-select-options { position:fixed; inset:auto; margin:0; padding:7px; display:none; overflow-y:auto; border:1.5px solid #8dbdc9; border-radius:16px 16px 16px 8px; background:#fffefa; box-shadow:0 12px 32px #07334d20; color:#12384b; font-family:inherit; font-size:16px; z-index:100; }
-.ocean-select-options:popover-open { display:flex; flex-direction:column; gap:3px; }
-.ocean-select-options::before { content:''; height:3px; flex:none; margin:0 12px 4px; border-radius:50%; background:linear-gradient(90deg,#cfebee,#76bfc9,#cfebee); }
-.ocean-select-options [role=option] { cursor:pointer; display:flex; align-items:center; gap:10px; padding:10px 12px; min-height:44px; border-radius:10px; flex:none; }
-.ocean-select-options [role=option] > span:not(.resource-kind) { flex:1; }
-.ocean-select-options [role=option][data-active=true] { background:#edf5f5; outline:1px solid #c5e2e7; outline-offset:-1px; }
-.ocean-select-options [role=option][aria-selected=true] { background:#d8eef2; color:#084a60; }
-.ocean-select-options svg { width:22px; height:22px; flex:none; }
-.ocean-select-options:focus-visible,.ocean-select > button:focus-visible { outline:3px solid #1685a1; outline-offset:3px; }
 .resource-form-body > label > .ocean-select { width:100%; font-weight:400; }
-.resource-form-body .resource-search.ocean-search,.teacher-resource-library .resource-search.ocean-search { position:relative; border:1.5px solid #b9d0d8; border-radius:16px 16px 8px 16px; background:#fffefa; min-height:50px; }
-.ocean-search input::-webkit-search-cancel-button { display:none; }
-.ocean-search > button { display:grid; place-items:center; min-width:36px; min-height:36px; border:0; border-radius:50%; color:#466777; }
-.resource-search-wave { position:absolute; width:52px; height:7px; bottom:-3px; right:18px; color:#9bcfd5; pointer-events:none; }
-.ocean-search:focus-within .resource-search-wave { color:#137e93; }
-.teacher-resource-filters { position:relative; }
-.teacher-resource-filters > .ocean-select { min-width:165px; }
-.resource-coral { pointer-events:none; width:48px; height:48px; color:#ed947c; }
-.teacher-resource-filters > .resource-coral { position:absolute; right:0; top:-51px; opacity:.75; }
+
+
 .teacher-group-picker { padding:12px; border:1.5px solid #b9d0d8; border-radius:16px; background:#fffefa; width:100%; min-width:0; }
 .teacher-group-picker .ocean-search { width:100%; }
 .teacher-group-picker-list { display:flex; flex-direction:column; gap:4px; min-height:76px; max-height:350px; overflow:auto; margin-top:10px; }
@@ -40,31 +17,21 @@
 .resource-link-filters { display:grid; grid-template-columns:minmax(0,1fr) 174px; gap:10px; }
 .resource-link-filters .resource-search { width:100%; }
 .resource-form-body .resource-upload { border:1.5px dashed #8dbdc9; background:#f0f8f7; border-radius:16px 16px 8px 16px; color:#145e72; }
-.resource-form-body input:not([type=checkbox]):not([type=file]):not([type=range]):not([type=search]),.resource-form-body textarea { border:1.5px solid #b9d0d8; border-radius:12px; background:#fffefa; }
 .resource-facts-editor .ocean-select { width:100%; }
 .resource-motion { pointer-events:none; position:fixed; inset:0; z-index:140; overflow:clip; }
 @media(prefers-reduced-motion:no-preference) {
- .resource-coral > g > path:first-child { stroke-dasharray:1; animation:resource-current-reveal 850ms ease-out both; }
- .ocean-select-options:popover-open { animation:resource-select-open 150ms cubic-bezier(.23,1,.32,1); }
  .teacher-group-picker-check { transition:background-color 140ms,border-color 140ms; }
  .resource-linked-list > [data-new=true] { animation:resource-link-arrive 480ms cubic-bezier(.23,1,.32,1); }
- @keyframes resource-current-reveal { from { stroke-dashoffset:1; } to { stroke-dashoffset:0; } }
- @keyframes resource-select-open { from { opacity:.5; transform:translateY(-3px) scale(.98); } to { opacity:1; transform:none; } }
  @keyframes resource-link-arrive { from { opacity:.6; transform:translateX(12px); background:#d8eef2; } to { opacity:1; transform:none; background:transparent; } }
 }
-@media(hover:hover) and (pointer:fine) { .ocean-select > button:hover { border-color:#5998aa; }.teacher-group-picker-list > button:hover { background:#e7f3f4; } }
-@media(prefers-reduced-motion:reduce) { .resource-motion { display:none; }.resource-coral *, .ocean-select-options,.resource-linked-list > div { animation:none!important; }.ocean-select > button > svg { transition:none; } }
+@media(hover:hover) and (pointer:fine) {.teacher-group-picker-list > button:hover { background:#e7f3f4; } }
+@media(prefers-reduced-motion:reduce) { .resource-motion { display:none; }.resource-linked-list > div { animation:none!important; } }
 @media(max-width:700px) {
- .teacher-resource-filters > .ocean-select { min-width:0; flex:1; }
- .ocean-select > button { font-size:14px; padding:10px; gap:6px; }
- .teacher-resource-filters > .resource-coral { width:32px; height:32px; top:-36px; }
  .resource-link-filters { grid-template-columns:minmax(0,1fr); }
  .teacher-group-picker-list { max-height:280px; }
  .resource-group-picker-cover { width:44px; height:44px; }
 }
 
-.resource-dialog .ocean-search input:focus-visible,.teacher-resource-library .ocean-search input:focus-visible { outline:none; }
-.ocean-select > button > span:not(.resource-kind) { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .resource-link-filters { grid-template-columns:minmax(0,1fr) 210px; }
 .resource-linked-group-label { font-size:13px; font-weight:700; color:#4c7482; padding:14px 0 0; }
 @media(max-width:700px) { .resource-link-filters { grid-template-columns:minmax(0,1fr); }.teacher-resource-filters .ocean-select > button .resource-kind { display:none; } }

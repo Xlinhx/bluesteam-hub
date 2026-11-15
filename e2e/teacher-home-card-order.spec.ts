@@ -27,4 +27,34 @@ test('teacher top cards match the learner order, artwork and corresponding teach
   await expect(page.locator('.teacher-home-shortcuts > button')).toHaveCount(1);
   await expect(page.locator('.teacher-home-shortcuts')).toContainText('Quản lý sáng tạo');
   await expect(page.locator('.teacher-home-shortcuts')).not.toContainText('Phòng sinh hoạt');
+
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+    const nav = page.getByRole('navigation', {
+      name: viewport.width < 800 ? 'Điều hướng giáo viên di động' : 'Điều hướng giáo viên',
+      exact: true,
+    });
+    await expect(nav).toBeVisible();
+    await expect(nav.getByRole('button')).toHaveText([
+      'Trang chủ', 'Học liệu', /Học tập.*Sắp có/, 'Tương tác', 'Sáng tạo', 'Hồ sơ',
+    ]);
+    await expect(nav.getByRole('button', { name: /Học tập/ })).toBeDisabled();
+    await expect(nav.getByRole('button', { name: 'Tương tác' }).locator('svg')).toHaveClass(/lucide-gamepad-2/);
+
+    for (const card of await teacherCards.all()) {
+      const art = await card.locator('.teacher-domain-art').boundingBox();
+      const label = await card.locator('.teacher-domain-label').boundingBox();
+      expect(label!.y).toBeGreaterThanOrEqual(art!.y + art!.height);
+      expect(label!.height).toBeGreaterThanOrEqual(44);
+    }
+
+    const profile = nav.getByRole('button', { name: 'Hồ sơ', exact: true });
+    await profile.click();
+    const dialog = page.getByRole('dialog', { name: 'Hồ sơ giáo viên' });
+    await expect(dialog).toBeVisible();
+    await expect(page).toHaveURL(/\/teacher$/);
+    await page.keyboard.press('Escape');
+    await expect(dialog).toBeHidden();
+    await expect(profile).toBeFocused();
+  }
 });

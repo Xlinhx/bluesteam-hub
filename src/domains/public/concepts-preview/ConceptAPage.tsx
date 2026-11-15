@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from '../../../app/router';
+import { SearchField } from '@/shared/ui/controls/SearchField';
 import {
   ArrowRight,
   Search,
@@ -160,23 +161,15 @@ export function ConceptAPage() {
         {/* Quick Search Drawer */}
         {searchOpen && (
           <div className="border-t border-slate-200 bg-white px-6 py-4 animate-in slide-in-from-top-2 duration-200 shadow-sm">
-            <div className="max-w-2xl mx-auto flex items-center gap-3 bg-slate-100 rounded-full px-4 py-2 border border-slate-300">
-              <Search className="w-4 h-4 text-slate-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm kiếm: Cá voi lưng gù, Rạn san hô, Dòng chảy, Vực thẳm..."
-                className="w-full bg-transparent text-sm text-slate-800 focus:outline-none"
-                autoFocus
-              />
-              <button
+            <SearchField className="max-w-2xl mx-auto text-sm" label="Tìm sinh vật và chủ đề"
+              value={searchQuery} onChange={setSearchQuery} placeholder="Tìm kiếm: Cá voi lưng gù, Rạn san hô, Dòng chảy, Vực thẳm..." autoFocus
+              trailingAction={<button type="button" aria-label="Đóng tìm kiếm"
                 onClick={() => setSearchOpen(false)}
-                className="text-slate-400 hover:text-slate-600 cursor-pointer"
+                className="ui-search-submit"
               >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
+                <X className="w-4 h-4" aria-hidden="true" />
+              </button>}
+            />
           </div>
         )}
       </header>

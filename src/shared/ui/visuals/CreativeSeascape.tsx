@@ -1,3 +1,5 @@
-import {CreativeWaterlines} from './CreativeWaterlines';
 import './creative-seascape.css';
-export function CreativeSeascape({teacher=false}:{teacher?:boolean}){return <div className={`creative-seascape ${teacher?'creative-seascape-teacher':''}`} aria-hidden="true">{teacher&&<CreativeWaterlines kind="sea"/>}<div className="creative-seascape-waves"/><img className="creative-reef creative-reef-left" src="/assets/creative/bottom_left_corals.png" alt=""/><img className="creative-reef creative-reef-right" src="/assets/creative/bottom_left_corals.png" alt=""/><div className="creative-seascape-bubbles"/><div className="creative-seascape-sand"/></div>;}
+
+export function CreativeSeascape() {
+  return <div className="creative-seascape" aria-hidden="true"><span className="creative-seascape-crayon"/></div>;
+}

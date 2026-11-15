@@ -11,12 +11,14 @@ export interface ResourceGroup {
   coverUrl: string | null;
   coverCrop: { x: number; y: number; scale: number };
   memberCount: number;
+  libraryMemberCount?: number;
   previews: Pick<ResourceDto, 'id' | 'title' | 'kind' | 'coverUrl'>[];
 }
-export function fetchResourceGroups(params: { teacher?: boolean; q?: string; cursor?: string; limit?: number } = {}, signal?: AbortSignal) {
+export function fetchResourceGroups(params: { teacher?: boolean; ownedOnly?: boolean; q?: string; cursor?: string; limit?: number } = {}, signal?: AbortSignal) {
   const query = new URLSearchParams();
   if (params.q) query.set('q',params.q);
   if (params.cursor) query.set('cursor',params.cursor);
+  if (params.teacher && params.ownedOnly) query.set('owned','1');
   query.set('limit',String(params.limit || 12));
   return apiRequest<CatalogPage<ResourceGroup>>(`/api/v1/${params.teacher ? 'teacher/' : ''}resource-groups?${query}`, { signal });
 }

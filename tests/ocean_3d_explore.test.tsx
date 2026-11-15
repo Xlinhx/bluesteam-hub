@@ -146,7 +146,7 @@ describe('BlueSTEAM v2 - Khám Phá 3D (Ocean 3D Exploration)', () => {
 
     // Main section title and search
     expect(html).toContain('Bé muốn ngắm bạn nào?');
-    expect(html).toContain('Tìm sinh vật...');
+    expect(html).toContain('aria-label="Tìm sinh vật"');
     expect(html).toContain('Rùa biển');
 
     // Representative generated sea turtle image

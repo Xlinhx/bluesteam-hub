@@ -44,7 +44,7 @@ export function ShowcaseToolbar({ viewportMode: controlledViewport, onViewportCh
         <div className="flex items-center gap-2">
           <button onClick={() => navigate('/showcase')} title="Về Showcase" className="p-2 cursor-pointer"><Grid3X3 className="w-4 h-4" /></button>
           <button onClick={() => openScreen((currentScreen?.index || 1) - 1)} disabled={!currentScreen || currentScreen.index <= 1} title="Màn hình trước" className="p-2 disabled:opacity-30 cursor-pointer"><ChevronLeft className="w-4 h-4" /></button>
-          <select aria-label="Chọn màn hình" value={currentScreen?.index || ''} onChange={e => openScreen(Number(e.target.value))} className="bg-neutral-900 border border-neutral-800 rounded-lg px-2 py-1.5 max-w-[260px]">
+          <select aria-label="Chọn màn hình" value={currentScreen?.index || ''} onChange={e => openScreen(Number(e.target.value))} className="max-w-[260px]">
             <option value="" disabled>Chọn màn hình</option>
             {BLUESTEAM_V2_SCREENS.map(screen => <option key={screen.reviewId} value={screen.index}>{screen.index}. {screen.name}</option>)}
           </select>

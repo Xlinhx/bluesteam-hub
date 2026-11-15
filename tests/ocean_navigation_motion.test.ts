@@ -38,6 +38,33 @@ describe('ocean scene navigation', () => {
     await done; await Promise.resolve();
     expect(dataset.oceanTransition).toBeUndefined();
   });
+
+  it('interrupts an in-flight content snapshot on input and releases the listeners', async () => {
+    const doc = new EventTarget();
+    const dataset: Record<string, string> = {};
+    let finish!: () => void;
+    const finished = new Promise<void>(resolve => { finish = resolve; });
+    const skip = vi.fn();
+    const commit = vi.fn();
+    const fake = Object.assign(doc, {
+      documentElement: { dataset },
+      startViewTransition(update: () => void) {
+        update();
+        return { finished, ready: Promise.resolve(), updateCallbackDone: Promise.resolve(), skipTransition: skip };
+      },
+    });
+    transitionOceanScene('/resources/abc', '/resources', commit, false, fake as any);
+    doc.dispatchEvent(new Event('pointerdown'));
+    doc.dispatchEvent(new Event('keydown'));
+    expect(skip).toHaveBeenCalledTimes(1);
+    expect(commit).toHaveBeenCalledOnce();
+    finish();
+    await finished;
+    await Promise.resolve();
+    doc.dispatchEvent(new Event('pointerdown'));
+    expect(skip).toHaveBeenCalledTimes(1);
+    expect(dataset.oceanTransition).toBeUndefined();
+  });
   it('ignores an outdated snapshot callback when the user navigates again', () => {
     const updates: (() => void)[] = [], skip = vi.fn();
     const pending = new Promise(() => {});

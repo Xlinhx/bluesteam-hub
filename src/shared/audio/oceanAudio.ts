@@ -2,6 +2,8 @@
 // Web Audio chime generator + multi-locale Speech Synthesis with fallback safety
 
 export type AudioLocale = 'vi' | 'en';
+export type SpeechProfile = 'learner-resource';
+type SpeechOptions = { profile?: SpeechProfile; onStart?: () => void; onEnd?: () => void };
 
 export interface AudioStateListener {
   (isSpeaking: boolean): void;
@@ -16,10 +18,11 @@ class OceanAudioPlayer {
   private volume = 1.0;
   private recording: HTMLAudioElement | null = null;
 
-  public async playNarration(url: string | undefined, fallbackText: string): Promise<void> {
+  public async playNarration(url: string | undefined, fallbackText: string, fallbackOptions?: SpeechOptions): Promise<void> {
     this.stop();
     if (this.speechMuted) return;
-    if (!url || typeof Audio === 'undefined') { this.speak(fallbackText); return; }
+    const speakFallback = () => fallbackOptions ? this.speak(fallbackText, fallbackOptions) : this.speak(fallbackText);
+    if (!url || typeof Audio === 'undefined') { speakFallback(); return; }
     const recording = new Audio(url);
     this.recording = recording;
     recording.volume = this.volume;
@@ -33,7 +36,7 @@ class OceanAudioPlayer {
       if (this.recording !== recording) return;
       recording.pause();
       finish();
-      this.speak(fallbackText);
+      speakFallback();
     };
     recording.onended = finish;
     recording.onerror = fail;
@@ -114,8 +117,8 @@ class OceanAudioPlayer {
   // Speak instructional text in Vietnamese or English
   public speak(
     text: string,
-    localeOrOptions?: AudioLocale | { onStart?: () => void; onEnd?: () => void } | (() => void),
-    optionsParam?: { onStart?: () => void; onEnd?: () => void }
+    localeOrOptions?: AudioLocale | SpeechOptions | (() => void),
+    optionsParam?: SpeechOptions
   ): boolean {
     let locale: AudioLocale = 'vi';
     let options = optionsParam;
@@ -137,18 +140,22 @@ class OceanAudioPlayer {
     this.stop();
 
     try {
-      const utterance = new SpeechSynthesisUtterance(text);
+      const learnerResource = options?.profile === 'learner-resource' && locale === 'vi';
+      const spokenText = learnerResource
+        ? text.trim().replace(/\s+/g, ' ').replace(/;\s*(\p{L})/gu, (_, letter: string) => '. ' + letter.toLocaleUpperCase('vi'))
+        : text;
+      const utterance = new SpeechSynthesisUtterance(spokenText);
       utterance.lang = locale === 'vi' ? 'vi-VN' : 'en-US';
-      utterance.rate = locale === 'vi' ? 0.95 : 0.92;
-      utterance.pitch = 1.08;
+      utterance.rate = learnerResource ? 0.87 : locale === 'vi' ? 0.95 : 0.92;
+      utterance.pitch = learnerResource ? 1.04 : 1.08;
       utterance.volume = this.volume;
 
       // Match system voice for target locale
       const voices = window.speechSynthesis.getVoices();
       if (locale === 'vi') {
-        const viVoice = voices.find(
-          (v) => v.lang.toLowerCase().includes('vi') || v.name.toLowerCase().includes('vietnam')
-        );
+        const viVoices = voices.filter(v => /^vi(?:[-_]|$)/i.test(v.lang) || /vietnam/i.test(v.name));
+        const preferredVoice = learnerResource && viVoices.find(v => /natural|neural|online|google/i.test(v.name));
+        const viVoice = preferredVoice || viVoices[0];
         if (viVoice) utterance.voice = viVoice;
       } else {
         const enVoice = voices.find(
@@ -173,7 +180,7 @@ class OceanAudioPlayer {
       };
 
       // Play soft pre-chime
-      this.playChime(587.33, 0.3);
+      if (!learnerResource) this.playChime(587.33, 0.3);
       window.speechSynthesis.speak(utterance);
       return true;
     } catch {

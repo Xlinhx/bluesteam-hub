@@ -6,7 +6,7 @@
 .account-main{display:flex;flex-direction:column;min-width:0;padding:28px 48px 22px}.account-top{display:flex;align-items:center;justify-content:space-between;gap:16px}.account-link{display:inline-flex;align-items:center;gap:7px;color:#15586e;font-weight:650;font-size:14px;border:0;background:none;padding:7px 0;text-decoration:underline;text-underline-offset:4px}
 .account-content{max-width:420px;width:100%;margin:auto;padding:30px 0}.account-roles{display:flex;background:#eeeae2;padding:4px;border-radius:14px;gap:4px;margin-bottom:27px}.account-roles button{flex:1;min-height:44px;border:0;border-radius:10px;background:transparent;color:#436475;font-weight:650;font-size:14px}.account-roles button[aria-pressed=true]{background:#fff;color:#12384b;box-shadow:0 2px 6px #12384b0c}
 .account-eyebrow{font-size:10px;letter-spacing:.14em;font-weight:750;color:#567482;margin-bottom:9px}.account-content h1{font-family:var(--font-editorial,Georgia,serif);font-weight:700;letter-spacing:-.035em;font-size:clamp(30px,3vw,42px);line-height:1.2;margin-bottom:12px}.account-description{font-size:14px;line-height:1.7;color:#436475;margin-bottom:24px}
-.account-content fieldset{border:0;padding:0;margin:0;display:grid;gap:16px;min-width:0}.account-field label{display:block;font-size:13px;font-weight:650;margin-bottom:7px}.account-input-wrap{position:relative}.account-field input{width:100%;height:49px;border:1px solid #12384b33;border-radius:12px;background:white;color:#12384b;padding:12px 46px 12px 14px;font-size:15px;box-sizing:border-box}.account-field input[aria-invalid=true]{border-color:#b53232}.account-field input:focus{outline:2px solid #17657a;outline-offset:2px}.account-field input::placeholder{color:#71838d;font-weight:400}.account-eye{position:absolute;right:4px;top:3px;display:grid;place-items:center;width:43px;height:43px;background:none;border:0;color:#567482;border-radius:8px}
+.account-content fieldset{border:0;padding:0;margin:0;display:grid;gap:16px;min-width:0}.account-field label{display:block;font-size:13px;font-weight:650;margin-bottom:7px}.account-input-wrap{position:relative}.account-field input{width:100%;height:49px;padding-inline:14px;font-size:15px}.account-input-wrap:has(.account-eye) input{padding-inline-end:46px}.account-field input:focus-visible{outline:1px solid var(--catalog-control-focus);outline-offset:-1px}.account-field input[aria-invalid=true]:focus-visible{outline-color:#b53232}.account-field input::placeholder{color:#71838d;font-weight:400}.account-eye{position:absolute;right:4px;top:3px;display:grid;place-items:center;width:43px;height:43px;background:none;border:0;color:#567482;border-radius:8px}
 .account-hint{font-size:12px;line-height:1.6;color:#567482;margin-top:6px}.account-field-error{font-size:12px;color:#b53232;margin-top:6px}.account-alert{display:flex;gap:9px;align-items:flex-start;color:#a52b2b;background:#fff0ee;border:1px solid #edc6c0;border-radius:12px;padding:12px;font-size:13px;line-height:1.6;margin-top:16px}.account-alert svg{flex-shrink:0;margin-top:2px}
 .account-submit{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;border:0;border-radius:999px;background:#bc4b36;color:white;font-size:14px;font-weight:700;margin-top:23px;transition:background .15s}.account-submit:hover{background:#a63d2b}.account-switch{text-align:center;font-size:13px;color:#436475;margin-top:17px}.account-switch .account-link{margin-left:4px}.account-parent-note{text-align:center}.account-footer{text-align:center;color:#567482;font-size:11px;padding-top:16px}
 @media(max-width:900px){.account-main{padding:24px 28px}.account-coast{padding:48px 24px}.account-coast-copy h2{font-size:36px}}
@@ -32,7 +32,6 @@
 .account-page[data-role=student] .account-roles::before{transform:translateX(calc(100% + 4px))}
 .account-roles button[aria-pressed=true]{background:transparent;box-shadow:none}
 .account-roles button{transition:color 140ms ease}
-.account-field input{transition:border-color 140ms ease,box-shadow 140ms ease}
 .account-submit{transition:background-color 150ms ease,box-shadow 150ms ease,transform 120ms ease}
 .account-submit:not(:disabled):active{transform:translateY(1px)}
 .account-submit:disabled{opacity:1;background:#945247}
@@ -58,3 +57,21 @@
  .account-page button:active,.account-submit svg{transform:none!important}
  .account-page .account-coast-image{transform:none!important}
 }
+
+/* Both account roles share the homepage blue palette. */
+.account-page{color:#103d70;background:#fff}
+.account-page .account-main{background:#fff}
+.account-page .account-coast{background:#103d70}
+.account-page .account-coast-image{background:linear-gradient(180deg,#103d7033 20%,#103d70e6),url('/assets/generated/public-fieldwork/marine-field-station.webp') center/cover}
+.account-page .account-logo{background:#fffffff2}
+.account-page[data-role=student] .account-content h1,
+.account-page[data-role=student] .account-coast-copy h2{font-family:'Be Vietnam Pro',sans-serif;font-weight:800}
+.account-page .account-roles{background:#e8f5ff}
+.account-page .account-roles button[aria-pressed=true],
+.account-page .account-link,
+.account-page .account-eyebrow,
+.account-page .account-footer{color:#103d70}
+.account-page .account-submit{background:#65d0ff;color:#103d70}
+.account-page .account-submit:hover{background:#41c3fa}
+.account-page .account-submit:disabled{background:#bce8ff}
+.account-page .ocean-fieldwork{color:#71c6ff}

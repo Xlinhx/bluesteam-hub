@@ -1,28 +1,12 @@
 import {useEffect,useRef,useState} from 'react';
 import './resource-seascape.css';
 import {ResourceSurface} from './ResourceSurface';
-import {createMotionScope} from '../motion/motionScope';
 
-/** Generated transparent watercolor stays at the edges; live content owns the centre. */
-export function ResourceSeascape({tone,sceneKey='overview'}:{tone:'learner'|'teacher'|'detail';sceneKey?:string}) {
- const ref=useRef<HTMLDivElement>(null);
- useEffect(()=>{
-  const media=window.matchMedia('(prefers-reduced-motion: reduce)');
-  const layers=ref.current?.querySelectorAll('.resource-seascape-art,.resource-seascape-current');
-  if(media.matches || document.activeElement?.matches(':focus-visible') || ref.current?.parentElement?.dataset.resourceInput==='keyboard')return;
-  const scope=createMotionScope(media);
-  [...(layers||[])].forEach((layer,index)=>scope.play(layer,[
-   {opacity:0,transform:`translateY(${index?0:12}px)`},{opacity:getComputedStyle(layer).opacity,transform:'translateY(0)'}
-  ],{duration:tone==='teacher'?380:760,delay:index*60,easing:'cubic-bezier(.22,1,.36,1)'}));
-  const host=ref.current?.parentElement;
-  const covered=(event:Event)=>{if(event.target instanceof Element && event.target.closest('button[aria-haspopup="dialog"]'))scope.cancel();};
-  host?.addEventListener('click',covered,true);
-  return()=>{host?.removeEventListener('click',covered,true);scope.dispose();};
- },[tone,sceneKey]);
- return <div ref={ref} className="resource-seascape" data-resource-scene={tone} aria-hidden="true">
+/** Scene layer shared by the resource library and detail pages. */
+export function ResourceSeascape({tone}:{tone:'learner'|'teacher'|'detail'}) {
+ return <div className="resource-seascape" data-resource-scene={tone} aria-hidden="true">
   {tone==='detail' && <ResourceSurface variant="observation"/>}
-  <div className="resource-seascape-wash"/><div className="resource-seascape-art"/>
-  <svg className="resource-seascape-current" viewBox="0 0 1440 140" preserveAspectRatio="none"><path d="M-20 83C200 10 310 134 520 76S860 5 1060 73 1300 112 1460 36"/><path d="M-20 98C200 25 310 149 520 91S860 20 1060 88 1300 127 1460 51"/></svg>
+  {tone==='teacher' && <div className="resource-seascape-wash"/>}
  </div>;
 }
 

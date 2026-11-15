@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { openDeviceProfileCollection } from './fixtures/local-profile';
 
 test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
 async function login(page: Page) {
@@ -20,28 +21,30 @@ test('touch mobile keeps layered choreography, immediate taps and spatial image 
     };
   });
   await login(page); await page.goto('/resources');
-  await expect(page.locator('.resource-group-section')).toHaveCount(3);
-  await expect.poll(() => page.evaluate(() => (window as any).__mobileCast.some((item: any) => item.classes === 'ocean-cabinet-reef'))).toBe(true);
+  await expect(page.locator('.resource-group-section').first()).toBeVisible();
+  await expect.poll(() => page.evaluate(() => (window as any).__mobileCast.some((item: any) => item.classes === 'resource-group-portrait'))).toBe(true);
   const cast = await page.evaluate(() => (window as any).__mobileCast);
-  const reef = cast.find((item: any) => item.classes === 'ocean-cabinet-reef');
-  expect(reef.duration).toBe(1150);
-  expect(reef.frames[0].transform).toContain('rotate(');
+  const portrait = cast.find((item: any) => item.classes === 'resource-group-portrait');
+  expect(portrait.frames[0].transform).toBeTruthy();
   const surface = cast.find((item: any) => item.classes === 'resources-banner-art');
   expect(surface.frames[0].clipPath).toBe('inset(82% 0 0 0 round 36px)');
-  expect(cast.some((item: any) => item.frames[0]?.strokeDashoffset === '1' && item.duration === 1500)).toBe(true);
-  await page.locator('.ocean-cabinet-reef').first().evaluate((image: HTMLImageElement) => image.decode());
+  await expect(page.locator('.resource-seascape').first()).toHaveCSS('background-image', /resource-group-gallery[.]webp/);
   for (const time of [180, 650]) {
     await page.evaluate(time => { for (const animation of (window as any).__mobileEntrances as Animation[]) animation.currentTime = Number(animation.effect?.getTiming().delay || 0) + time; }, time);
     await page.screenshot({ path: `artifacts/mobile-motion-library-${time}.png` });
   }
-  const save = page.getByRole('button', { name: /^Lưu / }).first();
-  await save.tap(); await expect(page.getByRole('button', { name: /^Bỏ lưu / }).first()).toHaveAttribute('aria-pressed', 'true');
   await page.evaluate(() => { for (const animation of (window as any).__mobileEntrances as Animation[]) { try { animation.finish(); } catch {} } });
   const choose = page.getByRole('button', { name: 'Chọn nhóm học liệu', exact: true });
   await choose.tap(); await expect(page.locator('dialog[open]')).toBeVisible();
   expect(await page.locator('.resource-library').evaluate(node => node.getAnimations({ subtree: true }).filter(animation => !(animation instanceof CSSAnimation) && animation.effect instanceof KeyframeEffect && animation.effect.target instanceof Element && !animation.effect.target.closest('dialog')).map(animation => ({ type: animation.constructor.name, target: (animation.effect as KeyframeEffect).target?.getAttribute('class') })))).toEqual([]);
   await expect(page.locator('.resource-current-pulse')).toHaveCount(0);
   await page.getByRole('button', { name: 'Đóng chọn nhóm' }).tap(); await expect(page.locator('dialog[open]')).toHaveCount(0);
+  await page.getByRole('button', { name: /^Mở nhóm / }).first().tap();
+  const save = page.getByRole('button', { name: /^Lưu / }).first();
+  await save.tap();
+  const saved = page.getByRole('button', { name: /^Bỏ lưu / }).first();
+  await expect(saved).toHaveAttribute('aria-pressed', 'true');
+  await saved.tap();
   await page.evaluate(() => {
     (window as any).__touchBridge = false;
     const start = document.startViewTransition.bind(document);
@@ -55,16 +58,15 @@ test('touch mobile keeps layered choreography, immediate taps and spatial image 
   await expect(page.locator('.observation-photo')).toBeVisible();
   await expect.poll(() => page.evaluate(() => (window as any).__touchBridge)).toBe(true);
   await expect.poll(() => page.evaluate(() => document.documentElement.dataset.oceanTransition || '')).toBe('');
-  await page.getByRole('button', { name: 'Hồ sơ', exact: true }).tap();
+  await page.getByRole('button', { name: 'Hồ sơ', exact: true }).tap(); await openDeviceProfileCollection(page);
   await expect(page.locator('.profile-collection-section')).toHaveCount(3);
-  await expect.poll(() => page.evaluate(() => (window as any).__mobileCast.some((item: any) => item.classes === 'ocean-cabinet-reef' && item.duration === 1250))).toBe(true);
   await expect.poll(() => page.evaluate(() => document.documentElement.dataset.oceanTransition || '')).toBe('');
   expect(errors).toEqual([]);
 });
 
 test('touch mobile reduced motion keeps content and tap feedback usable without decorative motion', async ({ page }) => {
   await login(page); await page.emulateMedia({ reducedMotion: 'reduce' }); await page.goto('/resources');
-  await expect(page.locator('.resource-group-section')).toHaveCount(3);
+  await expect(page.locator('.resource-group-section').first()).toBeVisible();
   expect(await page.locator('.resource-library').evaluate(node => node.getAnimations({ subtree: true }).length)).toBe(0);
   await page.getByRole('button', { name: 'Chọn nhóm học liệu', exact: true }).tap();
   await expect(page.locator('dialog[open]')).toBeVisible(); await expect(page.locator('.resource-current-pulse')).toHaveCount(0);
@@ -73,7 +75,7 @@ test('touch mobile reduced motion keeps content and tap feedback usable without 
 
 test('group chooser keeps its position while delayed results arrive', async ({ page }) => {
   await login(page); await page.goto('/resources');
-  await expect(page.locator('.resource-group-section')).toHaveCount(3);
+  await expect(page.locator('.resource-group-section').first()).toBeVisible();
   let release!: () => void;
   const pending = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/api/v1/resource-groups?**', async route => { await pending; await route.continue(); });
@@ -91,7 +93,7 @@ test('group chooser keeps its position while delayed results arrive', async ({ p
 });
 
 test('dialog taps activate once, scrolling stays scrolling and keyboard activation remains native', async ({ page }) => {
-  await login(page); await page.goto('/resources'); await expect(page.locator('.resource-group-section')).toHaveCount(3);
+  await login(page); await page.goto('/resources'); await expect(page.locator('.resource-group-section').first()).toBeVisible();
   await page.evaluate(() => {
     (window as any).__dialogActivations = 0;
     document.addEventListener('click', event => { if ((event.target as Element).closest('.resource-group-select')) (window as any).__dialogActivations++; });

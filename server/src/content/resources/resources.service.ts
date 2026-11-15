@@ -6,6 +6,8 @@ import { assertOwnerMatch } from '../../common/authorization.js';
 import { assertValidUuid } from '../../common/validation.js';
 import { withTransaction } from '../../database/pool.js';
 import { parseResourceInput } from './resource-input.js';
+import { readableResourceGroup } from './resource-group-access.js';
+import { visibleAsGroupEntry, visibleInResourceLibrary } from './resource-library-visibility.js';
 
 export function encodeCursor(updatedAt: Date | string, id: string): string {
   // PostgreSQL timestamps carry microseconds; Date truncates them to milliseconds.
@@ -45,7 +47,7 @@ export function resolveMediaPublicUrl(
 function expandKindFilter(kind?: string): string[] | null {
   if (!kind || kind === 'all') return null;
   const k = kind.trim().toLowerCase();
-  if (k === 'supported') return ['flashcard','card','image','audio','video','coloring','poster'];
+  if (k === 'supported') return ['flashcard','card','image','audio','video','coloring','worksheet','poster'];
   if (k === 'card' || k === 'flashcard') return ['flashcard', 'card'];
   if (k === 'visual') return ['flashcard', 'card', 'image'];
   if (k === 'print' || k === 'printable') return ['coloring', 'worksheet', 'poster', 'print'];
@@ -80,6 +82,7 @@ export class ResourcesService {
 
   async listResources(params: {
     isTeacher: boolean;
+    library?: boolean;
     capability?:'screen'|'print'|'all';
     teacherId?: string;
     groupId?: string;
@@ -91,11 +94,18 @@ export class ResourcesService {
     visibility?: string;
     source?: 'all' | 'owned' | 'seed';
     cursor?: string;
+    before?: string;
+    page?: number;
     limit?: number;
   }) {
     if(params.visibility && !['all','published','hidden'].includes(params.visibility))throw new AppError('INVALID_VISIBILITY','Chọn Đang hiện hoặc Đã ẩn.');
-    const limit = Math.min(Math.max(Number(params.limit) || (params.isTeacher ? 20 : 12), 1), 50);
-    const decodedCursor = decodeCursor(params.cursor);
+    const limit = Math.trunc(Math.min(Math.max(Number(params.limit) || (params.isTeacher ? 20 : 12), 1), 50));
+    const page = params.page;
+    if (page !== undefined && (!Number.isSafeInteger(page) || page < 1 || page > 999_999_999)) {
+      throw new AppError('INVALID_PAGE', 'Số trang không hợp lệ.');
+    }
+    const before = page === undefined ? decodeCursor(params.before) : null;
+    const decodedCursor = page === undefined ? before || decodeCursor(params.cursor) : null;
 
     const whereClauses: string[] = [];
     const values: unknown[] = [];
@@ -106,6 +116,7 @@ export class ResourcesService {
 
     if (!params.isTeacher) {
       whereClauses.push(`r.visibility = 'published'`);
+      if (params.library) whereClauses.push(visibleInResourceLibrary);
     } else {
       const teacherParam = pushParam(params.teacherId);
       if (params.source === 'owned') {
@@ -121,31 +132,30 @@ export class ResourcesService {
       }
     }
 
-    const kinds = expandKindFilter(params.kind);
+    const downloadable = params.kind === 'download';
+    const kinds = downloadable ? null : expandKindFilter(params.kind);
     if (params.groupId === 'unassigned' && params.isTeacher) {
       const teacher = pushParam(params.teacherId);
-      whereClauses.push(`NOT EXISTS (SELECT 1 FROM resource_group_members gm JOIN resource_groups g ON g.id=gm.group_id WHERE gm.resource_id=r.id AND (g.owner_id=${teacher} OR g.owner_id IS NULL))`);
+      whereClauses.push(`NOT EXISTS (SELECT 1 FROM resource_group_members gm JOIN resource_groups g ON g.id=gm.group_id WHERE gm.resource_id=r.id AND ${readableResourceGroup(teacher)})`);
     } else if (params.groupId) {
       const group = pushParam(assertValidUuid(params.groupId, 'groupId'));
-      const groupAccess = params.isTeacher
-        ? `(g.owner_id=${pushParam(params.teacherId)} OR g.owner_id IS NULL)`
-        : `g.visibility='published'`;
+      const groupAccess = readableResourceGroup(params.isTeacher ? pushParam(params.teacherId) : undefined);
       whereClauses.push(`EXISTS (SELECT 1 FROM resource_group_members gm JOIN resource_groups g ON g.id=gm.group_id WHERE gm.resource_id=r.id AND g.id=${group} AND ${groupAccess})`);
       // A teacher-authored flashcard link makes that card the entry point for
       // its variants. Explicit media filters, search and saved items stay exact.
       if (!params.isTeacher && (!params.kind || ['all','visual'].includes(params.kind)) && !params.q?.trim() && params.savedIds === undefined) {
-        whereClauses.push(`NOT EXISTS (
-          SELECT 1 FROM resource_links rl
-          JOIN resources main ON main.id=rl.source_resource_id
-          JOIN resource_group_members member ON member.resource_id=main.id AND member.group_id=${group}
-          WHERE rl.target_resource_id=r.id AND main.kind='flashcard'
-            AND main.visibility='published' AND r.kind<>'flashcard'
-        )`);
+        whereClauses.push(visibleAsGroupEntry(group));
       }
     }
     if (kinds && kinds.length > 0) {
       const kindParam = pushParam(kinds);
       whereClauses.push(`r.kind = ANY(${kindParam}::text[])`);
+    }
+    if (downloadable) {
+      whereClauses.push(`(coalesce(r.content->>'downloadUrl','')<>'' OR EXISTS (
+        SELECT 1 FROM media_assets media WHERE media.id=r.media_id
+        AND (media.kind='pdf' OR r.kind IN ('coloring','worksheet','poster','print'))
+      ))`);
     }
 
     if (params.topicIds && params.topicIds.length > 0) {
@@ -189,6 +199,8 @@ export class ResourcesService {
       values,
     );
     const total = Number(countRes.rows[0]?.total || 0);
+    const offset = page === undefined ? 0 : (page - 1) * limit;
+    if (page !== undefined && offset >= total) return { items: [], nextCursor: null, total };
 
     // 2. Cursor pagination
     const pageClauses = [...whereClauses];
@@ -198,11 +210,12 @@ export class ResourcesService {
       const tsIdx = `$${pageValues.length}`;
       pageValues.push(decodedCursor.id);
       const idIdx = `$${pageValues.length}`;
-      pageClauses.push(`(r.updated_at, r.id) < (${tsIdx}::timestamptz, ${idIdx}::uuid)`);
+      pageClauses.push(`(r.updated_at, r.id) ${before ? '>' : '<'} (${tsIdx}::timestamptz, ${idIdx}::uuid)`);
     }
 
     pageValues.push(limit + 1);
     const limitIdx = `$${pageValues.length}`;
+    const offsetSql = offset ? `OFFSET $${pageValues.push(offset)}` : '';
     const pageWhereSql = pageClauses.length > 0 ? `WHERE ${pageClauses.join(' AND ')}` : '';
 
     const itemsRes = await this.pool.query(
@@ -220,28 +233,33 @@ export class ResourcesService {
        LEFT JOIN media_assets cm ON cm.id = r.cover_media_id
        LEFT JOIN media_assets mm ON mm.id = r.media_id
        ${pageWhereSql}
-       ORDER BY r.updated_at DESC, r.id DESC
-       LIMIT ${limitIdx}`,
+       ORDER BY r.updated_at ${before ? 'ASC' : 'DESC'}, r.id ${before ? 'ASC' : 'DESC'}
+       LIMIT ${limitIdx} ${offsetSql}`,
       pageValues,
     );
 
     const hasMore = itemsRes.rows.length > limit;
-    const slice = hasMore ? itemsRes.rows.slice(0, limit) : itemsRes.rows;
+    const slice = itemsRes.rows.slice(0, limit);
+    if (before) slice.reverse();
     const items = slice.map((r) => this.mapResourceRow(r));
     if (params.isTeacher && params.membershipGroupId) {
       const members = await this.pool.query(`SELECT gm.resource_id FROM resource_group_members gm JOIN resource_groups g ON g.id=gm.group_id
-        WHERE g.id=$1 AND gm.resource_id=ANY($2::uuid[]) AND (g.owner_id=$3 OR g.owner_id IS NULL)`,
+        WHERE g.id=$1 AND gm.resource_id=ANY($2::uuid[]) AND ${readableResourceGroup('$3')}`,
         [assertValidUuid(params.membershipGroupId,'membershipGroupId'),items.map(r=>r.id),params.teacherId]);
       const ids = new Set(members.rows.map(row=>row.resource_id));
       for (const item of items) Object.assign(item,{isGroupMember:ids.has(item.id)});
     }
     const lastRow = slice[slice.length - 1];
+    const firstRow = slice[0];
     const nextCursor =
-      hasMore && lastRow ? encodeCursor(lastRow.cursor_updated_at, lastRow.id) : null;
+      (before || hasMore) && lastRow ? encodeCursor(lastRow.cursor_updated_at, lastRow.id) : null;
+    const previousCursor =
+      (before ? hasMore : decodedCursor) && firstRow ? encodeCursor(firstRow.cursor_updated_at, firstRow.id) : null;
 
     return {
       items,
       nextCursor,
+      previousCursor,
       total,
     };
   }
@@ -351,7 +369,7 @@ export class ResourcesService {
          AND t.slug = ANY($2::text[])
        ORDER BY r.updated_at DESC, r.id DESC
        LIMIT 3`,
-      [resolvedId, base.topicSlugs.length > 0 ? base.topicSlugs : ['species']],
+      [resolvedId, base.topicSlugs.length > 0 || base.content.sourcePdfUrl ? base.topicSlugs : ['species']],
     );
 
     const related = relatedRes.rows.map((rel) => ({
@@ -362,9 +380,9 @@ export class ResourcesService {
       coverUrl: resolveMediaPublicUrl(rel.cover_storage_key, rel.cover_media_id),
     }));
 
-    const groups = await this.pool.query(`SELECT g.id,g.title,(g.owner_id IS NULL) AS "isSeed" FROM resource_groups g
+    const groups = await this.pool.query(`SELECT g.id,g.title,(g.owner_id IS NULL) AS "isSeed",coalesce(g.owner_id=$2,false) AS "canEdit" FROM resource_groups g
       JOIN resource_group_members gm ON gm.group_id=g.id WHERE gm.resource_id=$1
-      AND (($2::uuid IS NOT NULL AND (g.owner_id=$2 OR g.owner_id IS NULL)) OR ($2::uuid IS NULL AND g.visibility='published'))
+      AND ${readableResourceGroup('$2')}
       ORDER BY g.sort_order,g.title,g.id`, [resolvedId,options.isTeacher ? options.teacherId : null]);
     return {
       ...base,

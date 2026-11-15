@@ -12,6 +12,7 @@ export type LearnerNavDestination =
   | 'interactive'
   | 'creative'
   | 'learn'
+  | 'learning'
   | 'profile';
 
 export interface LearnerShellProps {

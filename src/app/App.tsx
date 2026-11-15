@@ -13,6 +13,7 @@ import { StudentUnitPage } from '../domains/learner/legacy-journey/StudentUnitPa
 import { StudentSimulationPage } from '../domains/learner/legacy-journey/StudentSimulationPage';
 import { StudentProgressPage } from '../domains/learner/legacy-journey/StudentProgressPage';
 import { TeacherDashboardPage } from '../domains/teacher/dashboard/TeacherDashboardPage';
+import { TeacherProfilePage } from '../domains/teacher/account/TeacherProfilePage';
 import { TeacherResourceLibraryPage } from '../domains/teacher/resources/TeacherResourceLibraryPage';
 import { TeacherInteractivePage } from '../domains/teacher/interactive/TeacherInteractivePage';
 import { TeacherCreativePage } from '../domains/teacher/creative/TeacherCreativePage';
@@ -26,30 +27,32 @@ import { NotFoundPage } from '../domains/public/not-found/NotFoundPage';
 
 // BlueSTEAM Learner Pages
 import { LearnerHomePage } from '../domains/learner/home/LearnerHomePage';
+import { LearningPage } from '../domains/learner/learning/LearningPage';
 import { OceanCreatureViewerPage } from '../domains/learner/creature-viewer/OceanCreatureViewerPage';
 import { GameLabPage } from '../domains/learner/game-lab/GameLabPage';
 import { ActivityPlayPage } from '../domains/learner/game-lab/ActivityPlayPage';
 import { LearnerProfilePage } from '../domains/learner/profile/LearnerProfilePage';
 import { ResourcesLibraryPage } from '../domains/learner/resources/ResourcesLibraryPage';
 import { ResourceDetailPage } from '../domains/learner/resources/ResourceDetailPage';
+import { SourceResourcePage } from '../domains/learner/resources/SourceResourcePage';
 import { FlashcardDetailPage } from '../domains/learner/resources/FlashcardDetailPage';
 import { PrintPreviewPage } from '../domains/learner/resources/PrintPreviewPage';
 import { VideoPlayerPage } from '../domains/learner/resources/VideoPlayerPage';
 import { CreativeStudioPage } from '../domains/learner/creative-studio/CreativeStudioPage';
 import { CreativeDrawingPage } from '../domains/learner/creative-studio/CreativeDrawingPage';
 import { HabitatStudioPage } from '../domains/learner/creative-studio/HabitatStudioPage';
-import { OceanAtlasPage } from '../domains/learner/atlas/OceanAtlasPage';
 
 // Auxiliary Pages
 import { RoleGatewayPage } from '../domains/public/onboarding/RoleGatewayPage';
 import { StudentExplorePage } from '../domains/learner/legacy-journey/StudentExplorePage';
 
 export function App() {
-  const { currentPath } = useRouter();
+  const { currentPath, query } = useRouter();
   useTheme();
   const cleanPath = (currentPath || '/').split('?')[0];
 
   const renderRoute = () => {
+    if (cleanPath === '/teacher/profile') return <TeacherProfilePage />;
     // Showcase Hub / Overview
     if (cleanPath === '/showcase' || cleanPath === '/showcase/index') {
       return <ShowcaseIndexPage />;
@@ -73,7 +76,8 @@ export function App() {
 
     // Canonical Learner Routes (r2 + v2 aliases)
     if (cleanPath === '/home' || cleanPath === '/student') return <LearnerHomePage />;
-    if (cleanPath === '/learn/atlas') return <OceanAtlasPage />;
+    if (cleanPath === '/learning') return <LearningPage />;
+    if (cleanPath === '/learn/atlas') return <LearningPage legacy />;
     if (cleanPath === '/learn') return <GameLabPage />;
     if (
       cleanPath.startsWith('/3dmodel') ||
@@ -143,9 +147,10 @@ export function App() {
     }
     if (cleanPath === '/resources' || cleanPath === '/creative/coloring') return <ResourcesLibraryPage />;
     if (matchRoute('/creative/coloring/:resourceId', cleanPath).matches) return <ResourceDetailPage />;
-    if (matchRoute('/resources/:resourceId', cleanPath).matches) {
-      return <ResourceDetailPage />;
-    }
+    const resourceMatch = matchRoute('/resources/:resourceId', cleanPath);
+    if (resourceMatch.matches) return query.source === '1' && !/^flashcards-\d+$/.test(resourceMatch.params.resourceId)
+      ? <SourceResourcePage id={resourceMatch.params.resourceId}/>
+      : <ResourceDetailPage />;
 
     if (
       cleanPath === '/studio/paint' ||

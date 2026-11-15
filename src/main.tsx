@@ -7,6 +7,7 @@ import { App } from './app/App';
 import './shared/theme/fonts.css';
 import './index.css';
 import './shared/ui/identity/identity.css';
+import './shared/ui/controls/controls.css';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Failed to find root element');

@@ -1,5 +1,5 @@
 import { ResourceFactIcon } from '../visuals/ResourceFactIcon';
-import { getLinkedChoices } from '../../api/resourceLinks';
+import { ResourceDetailFrame, ResourceDetailFormats } from './ResourceDetailFrame';
 import { useState, useRef, useEffect } from 'react';
 import {
   Volume2,
@@ -7,34 +7,33 @@ import {
   Printer,
   Download,
   Palette,
-  Image as ImageIcon,
-  Video,
   ChevronDown,
   ChevronUp,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
 import { ResourceDto } from '../../api/catalog';
-import { oceanAudio } from '../../audio/oceanAudio';
+import { oceanAudio, type SpeechProfile } from '../../audio/oceanAudio';
 import { useOceanChoreography } from '../motion/useOceanChoreography';
 
 export interface ResourceRendererProps {
   resource: ResourceDto;
   onSelectVariant?: (variantId: string, kind: string, drawingTemplateKey?: string | null) => void;
   onOpenDrawing?: (templateKey: string) => void;
+  narrationProfile?: SpeechProfile;
 }
 
 export function ResourceRenderer({
   resource,
   onSelectVariant,
   onOpenDrawing,
+  narrationProfile,
 }: ResourceRendererProps) {
   const scene = useRef<HTMLDivElement>(null);
   useOceanChoreography(scene, 'detail');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [showAdultDetails, setShowAdultDetails] = useState(false);
   const [albumIndex, setAlbumIndex] = useState(0);
-  const [choiceKind, setChoiceKind] = useState<string | null>(null);
   const [videoError, setVideoError] = useState<string | null>(null);
   const [videoDuration, setVideoDuration] = useState<number>(
     resource.content?.durationSeconds || 0,
@@ -46,7 +45,6 @@ export function ResourceRenderer({
   useEffect(() => {
     setIsSpeaking(false);
     setAlbumIndex(0);
-    setChoiceKind(null);
     setVideoError(null);
     setVideoCurrentTime(0);
     setVideoDuration(resource.content?.durationSeconds || 0);
@@ -69,8 +67,8 @@ export function ResourceRenderer({
       setIsSpeaking(false);
       return;
     }
-    oceanAudio.playChime(523.25, 0.2);
-    setIsSpeaking(oceanAudio.speak(narrationText, {onEnd:()=>setIsSpeaking(false)}));
+    if (!narrationProfile) oceanAudio.playChime(523.25, 0.2);
+    setIsSpeaking(oceanAudio.speak(narrationText, {profile:narrationProfile,onEnd:()=>setIsSpeaking(false)}));
   };
 
   const isCutoutSpecimen =
@@ -82,7 +80,6 @@ export function ResourceRenderer({
 
   const currentImage = albumUrls[albumIndex] || albumUrls[0];
   const shortFacts = (resource.content?.shortFacts || []).slice(0, 3);
-  const variants = resource.variants || [];
   const isPrintable = ['coloring', 'worksheet', 'poster'].includes(resource.kind);
   const isPdf = resource.mediaMimeType === 'application/pdf' || /\.pdf(?:[?#]|$)/i.test(resource.mediaUrl || '');
   const hasVideoMedia = Boolean(resource.mediaUrl) && !/\.(?:jpe?g|png|webp|svg)(?:[?#]|$)/i.test(resource.mediaUrl || '');
@@ -111,9 +108,10 @@ export function ResourceRenderer({
   };
 
   return (
-    <div ref={scene} className="resource-media-renderer grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      {/* LEFT 65% STAGE (7 cols on 12-col grid) */}
-      <div className="lg:col-span-7 flex flex-col gap-4">
+    <ResourceDetailFrame sceneRef={scene} title={resource.title} listening={isSpeaking} className="resource-media-renderer"
+      titleAction={<button type="button" onClick={handleToggleNarration} aria-label={`Nghe tên ${resource.title}`}
+        className="observation-name-audio"><Volume2 /></button>}
+      stage={<div className="observation-photo observation-photo--media flex flex-col gap-4">
         <div className="relative w-full min-h-[320px] max-h-[620px] rounded-[20px] bg-[#F6F3EB] border border-[#D7E4E7] overflow-hidden flex flex-col items-center justify-center p-6">
           {/* 1. VIDEO RENDERER */}
           {resource.kind === 'video' && (
@@ -160,7 +158,7 @@ export function ResourceRenderer({
                           if (videoRef.current) {
                             videoRef.current.currentTime = ch.timeSeconds;
                           }
-                          oceanAudio.speak(ch.title);
+                          oceanAudio.speak(ch.title, { profile: narrationProfile });
                         }}
                         className="px-3 py-1.5 min-h-[44px] rounded-full bg-white border border-[#D7E4E7] text-xs font-bold text-[#17657A] hover:bg-[#D8EDF0] cursor-pointer"
                       >
@@ -349,24 +347,8 @@ export function ResourceRenderer({
             )}
           </div>
         )}
-      </div>
-
-      {/* RIGHT 35% SIDE PANEL (5 cols on 12-col grid) matching 03-learner-resource-detail.png */}
-      <div className="lg:col-span-5 flex flex-col gap-5">
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="resource-media-title min-w-0 break-words text-[30px] sm:text-[36px] leading-tight font-extrabold text-[#12384B]">
-            {resource.title}
-          </h1>
-          <button
-            type="button"
-            onClick={handleToggleNarration}
-            aria-label={`Nghe tên ${resource.title}`}
-            className="w-12 h-12 rounded-full bg-[#D8EDF0] hover:bg-[#c5e4e9] text-[#17657A] flex items-center justify-center cursor-pointer shrink-0"
-          >
-            <Volume2 className="w-6 h-6" />
-          </button>
-        </div>
-
+      </div>}
+      notes={<div className="resource-media-notes flex flex-col gap-5">
         {/* Up to 3 Short Facts with 64px Circular Pictogram & 2-4 word label (UI-SPEC 2.4 & M03.4) */}
         {shortFacts.length > 0 && (
           <div className="flex flex-col gap-2.5" aria-label="Đặc điểm nổi bật cho bé">
@@ -375,8 +357,8 @@ export function ResourceRenderer({
                 key={idx}
                 type="button"
                 onClick={() => {
-                  oceanAudio.playChime(587.33, 0.15);
-                  oceanAudio.speak(`${fact.label}. ${fact.detail || ''}`);
+                  if (!narrationProfile) oceanAudio.playChime(587.33, 0.15);
+                  oceanAudio.speak(`${fact.label}. ${fact.detail || ''}`, { profile: narrationProfile });
                 }}
                 className="w-full p-3 rounded-[20px] bg-[#F6F3EB] hover:bg-[#D8EDF0]/70 border border-[#D7E4E7] flex items-center gap-4 text-left cursor-pointer transition-colors"
               >
@@ -393,49 +375,9 @@ export function ResourceRenderer({
           </div>
         )}
 
-        {/* Format Variant Pills matching 03-learner-resource-detail.png (Ảnh, Video, Nghe, Tô màu) */}
-        <div className="grid grid-cols-4 gap-2 pt-1">
-          {[
-            { key: 'image', label: 'Ảnh', icon: ImageIcon, active: resource.kind === 'flashcard' || resource.kind === 'image' },
-            { key: 'video', label: 'Video', icon: Video, active: resource.kind === 'video' },
-            { key: 'audio', label: 'Nghe', icon: Volume2, active: resource.kind === 'audio' },
-            { key: 'coloring', label: 'Tô màu', icon: Palette, active: resource.kind === 'coloring' },
-          ].filter(tab => tab.active || getLinkedChoices(variants,tab.key).length > 0 || (tab.key === 'coloring' && Boolean(resource.content.drawingTemplateKey))).map((tab) => {
-            const Icon = tab.icon;
-            const choices = getLinkedChoices(variants,tab.key);
-            const linked = choices[0];
-            return (
-              <button
-                key={tab.key}
-                type="button"
-                onClick={() => {
-                  if (choices.length > 1) {setChoiceKind(current => current === tab.key ? null : tab.key); return;}
-                  setChoiceKind(null);
-                  if (linked) {
-                    onSelectVariant?.(linked.id, linked.kind, linked.drawingTemplateKey);
-                  } else if (tab.key === 'coloring' && onOpenDrawing && resource.content?.drawingTemplateKey) {
-                    onOpenDrawing(resource.content.drawingTemplateKey);
-                  }
-                }}
-                className={`min-h-[48px] px-3 rounded-[14px] border font-bold text-sm flex items-center justify-center gap-1.5 cursor-pointer transition-colors ${
-                  tab.active
-                    ? 'bg-[#D8EDF0] border-[#17657A] text-[#12384B]'
-                    : 'bg-[#F6F3EB] border-[#D7E4E7] text-[#12384B] hover:bg-white'
-                }`}
-              >
-                <Icon className="w-4 h-4 text-[#17657A] shrink-0" />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {choiceKind && <div className="grid grid-cols-2 gap-3" aria-label="Chọn học liệu liên kết">
-          {getLinkedChoices(variants,choiceKind).map(item => <button key={item.id} className="min-h-[64px] border border-[#D7E4E7] rounded-xl p-2 flex items-center gap-2 text-left cursor-pointer" onClick={() => onSelectVariant?.(item.id,item.kind,item.drawingTemplateKey)}>
-            {item.coverUrl && <img src={item.coverUrl} alt="" className="w-16 h-12 object-cover rounded-lg"/>}<span>{item.title}</span>
-          </button>)}
-        </div>}
-
+        <ResourceDetailFormats key={resource.id} kind={resource.kind} id={resource.id}
+          variants={resource.variants} drawingTemplate={resource.content.drawingTemplateKey}
+          onOpen={onSelectVariant} onOpenDrawing={onOpenDrawing}/>
         {/* Related Sea Creatures Strip in Right Column matching 03-learner-resource-detail.png */}
         {Boolean(resource.related?.length) && <div className="pt-2">
           <div className="text-base font-extrabold text-[#12384B] mb-2.5">
@@ -487,7 +429,6 @@ export function ResourceRenderer({
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </div>}/>
   );
 }

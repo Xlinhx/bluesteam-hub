@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useI18n } from '../../i18n/I18nContext';
 import { Globe, ChevronDown, Check } from 'lucide-react';
+import '../catalog/option-popover.css';
 
 export interface LanguageToggleProps {
   variant?: 'dropdown' | 'pill';
@@ -62,39 +63,38 @@ export function LanguageToggle({ variant = 'dropdown', className = '', compact =
     );
   }
 
-  // Authentic Dropdown Style (Ảnh 3)
   return (
     <div ref={dropdownRef} className={`relative inline-block text-left select-none ${className}`}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Chuyển đổi ngôn ngữ / Language toggle"
-        className="inline-flex items-center gap-2 py-1.5 px-2 rounded-lg text-[#102A38] hover:text-[#17657A] hover:bg-black/5 transition-colors cursor-pointer group focus:outline-none"
+        className="ui-filter-control inline-flex min-h-11 items-center gap-2 px-2 bg-[var(--catalog-control-surface)] text-[var(--catalog-control-ink)] cursor-pointer"
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        {!compact && <Globe className="w-4 h-4 text-[#102A38] group-hover:text-[#17657A] transition-colors" />}
+        {!compact && <Globe className="size-4 shrink-0" aria-hidden="true" />}
         <span className="text-xs sm:text-sm font-semibold tracking-normal">
           {compact ? locale.toUpperCase() : locale === 'vi' ? 'Tiếng Việt' : 'English'}
         </span>
         <ChevronDown
-          className={`w-3.5 h-3.5 text-[#102A38] group-hover:text-[#17657A] transition-transform duration-200 ${
+          aria-hidden="true"
+          className={`size-3.5 shrink-0 motion-safe:transition-transform ${
             isOpen ? 'rotate-180' : ''
           }`}
         />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-1.5 w-36 rounded-xl bg-white/95 backdrop-blur-md shadow-lg border border-slate-200/80 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+        <div className="ui-option-panel absolute right-0 mt-1.5 w-36 z-50 flex flex-col gap-[3px]">
           <button
             type="button"
             onClick={() => {
               setLocale('vi');
               setIsOpen(false);
             }}
-            className={`w-full flex items-center justify-between px-3 py-2 text-xs font-bold transition-colors cursor-pointer ${
-              locale === 'vi' ? 'text-[#17657A] bg-teal-50/70' : 'text-[#102A38] hover:bg-slate-50'
-            }`}
+            aria-pressed={locale === 'vi'}
+            className="ui-option-row w-full justify-between text-sm"
           >
             <span>Tiếng Việt</span>
             {locale === 'vi' && <Check className="w-3.5 h-3.5 text-[#17657A]" />}
@@ -105,9 +105,8 @@ export function LanguageToggle({ variant = 'dropdown', className = '', compact =
               setLocale('en');
               setIsOpen(false);
             }}
-            className={`w-full flex items-center justify-between px-3 py-2 text-xs font-bold transition-colors cursor-pointer ${
-              locale === 'en' ? 'text-[#17657A] bg-teal-50/70' : 'text-[#102A38] hover:bg-slate-50'
-            }`}
+            aria-pressed={locale === 'en'}
+            className="ui-option-row w-full justify-between text-sm"
           >
             <span>English</span>
             {locale === 'en' && <Check className="w-3.5 h-3.5 text-[#17657A]" />}

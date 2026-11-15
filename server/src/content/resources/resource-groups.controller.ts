@@ -10,8 +10,8 @@ export class ResourceGroupsController {
     return this.groups.list({ q, cursor, limit: Number(limit) });
   }
   @Get('teacher/resource-groups') @UseGuards(TeacherSessionGuard)
-  teacherList(@Req() req: any, @Query('q') q?: string, @Query('cursor') cursor?: string, @Query('limit') limit?: string) {
-    return this.groups.list({ teacherId: req.actor.teacherId, q, cursor, limit: Number(limit) });
+  teacherList(@Req() req: any, @Query('q') q?: string, @Query('cursor') cursor?: string, @Query('limit') limit?: string, @Query('owned') owned?: string) {
+    return this.groups.list({ teacherId: req.actor.teacherId, q, cursor, limit: Number(limit), ownedOnly: owned === '1' });
   }
   @Post('teacher/resource-groups') @UseGuards(TeacherSessionGuard)
   create(@Req() req: any, @Body() body: unknown) { return this.groups.save(req.actor.teacherId, body); }

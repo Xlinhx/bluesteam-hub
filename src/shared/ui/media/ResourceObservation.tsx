@@ -1,21 +1,22 @@
 import {ResourceSeascape} from '../visuals/ResourceSeascape';
 import { useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Image, CirclePlay, Volume2, VolumeX, Pencil } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Volume2, VolumeX } from 'lucide-react';
 import { ResourceFactIcon } from '../visuals/ResourceFactIcon';
 import type { ResourceDto } from '../../api/catalog';
-import { oceanAudio } from '../../audio/oceanAudio';
+import { oceanAudio, type SpeechProfile } from '../../audio/oceanAudio';
 import './resource-detail.css';
-import { getLinkedChoices } from '../../api/resourceLinks';
+import { ResourceDetailFrame, ResourceDetailFormats } from './ResourceDetailFrame';
 import { createMotionScope, motionTiming } from '../motion/motionScope';
 import { useOceanChoreography } from '../motion/useOceanChoreography';
 
 type RelatedResource = NonNullable<ResourceDto['related']>[number];
 
-export function ResourceObservation({ resource, related, onOpen, onOpenDrawing }: {
+export function ResourceObservation({ resource, related, onOpen, onOpenDrawing, narrationProfile }: {
   resource: ResourceDto;
   related: RelatedResource[];
   onOpen: (id: string) => void;
   onOpenDrawing: (key: string) => void;
+  narrationProfile?: SpeechProfile;
 }) {
   const [albumIndex, setAlbumIndex] = useState(0);
   const scene = useRef<HTMLDivElement>(null);
@@ -23,8 +24,6 @@ export function ResourceObservation({ resource, related, onOpen, onOpenDrawing }
   const [speaking, setSpeaking] = useState(false);
   const [activeFact, setActiveFact] = useState<number | null>(null);
   const [notice, setNotice] = useState('');
-  const [choiceKind, setChoiceKind] = useState<string | null>(null);
-  const choices = choiceKind ? getLinkedChoices(resource.variants, choiceKind) : [];
   const photoRef = useRef<HTMLImageElement>(null);
   const imageMotion = useRef<ReturnType<typeof createMotionScope> | null>(null);
   const imageDirection = useRef(0);
@@ -34,6 +33,7 @@ export function ResourceObservation({ resource, related, onOpen, onOpenDrawing }
       ? (resource.content as ResourceDto['content'] & { albumImages: string[] }).albumImages
       : [resource.mediaUrl || resource.coverUrl || ''];
   const currentImage = album[albumIndex] || album[0];
+  const doubleSidedCard = Boolean(resource.content.sourcePdfUrl && album.length === 2);
   const facts = (resource.content.shortFacts || []).slice(0, 3);
 
   useEffect(() => () => {
@@ -55,7 +55,7 @@ export function ResourceObservation({ resource, related, onOpen, onOpenDrawing }
     setNotice('');
     setActiveFact(fact);
     setSpeaking(true);
-    const started = oceanAudio.speak(text, { onEnd: () => {
+    const started = oceanAudio.speak(text, { profile: narrationProfile, onEnd: () => {
       if (version === speechVersion.current) { setSpeaking(false); setActiveFact(null); }
     } });
     if (!started) {
@@ -77,16 +77,16 @@ export function ResourceObservation({ resource, related, onOpen, onOpenDrawing }
   };
 
   return (
-    <div ref={scene} className="resource-observation" data-listening={speaking}><ResourceSeascape tone="detail" sceneKey={resource.id}/>
-      <div className="observation-title">
-        <h1>{resource.title}</h1>
-        <button className="observation-name-audio" aria-label={`Nghe tên ${resource.title}`}
-          onClick={() => speak(resource.title)}><Volume2 /></button>
-      </div>
-      <div className="observation-photo" aria-label={`Ảnh ${resource.title}`}>
+    <ResourceDetailFrame sceneRef={scene} title={resource.title} listening={speaking}
+      backdrop={<ResourceSeascape tone="detail"/>}
+      titleAction={<button className="observation-name-audio" aria-label={`Nghe tên ${resource.title}`}
+        onClick={() => speak(resource.title)}><Volume2 /></button>}
+      stage={<div className="observation-photo" aria-label={`Ảnh ${resource.title}`}>
         {currentImage ? <img ref={photoRef} src={currentImage} alt={resource.title}
-          className={/\.png(?:\?|$)/i.test(currentImage) ? 'is-cutout' : ''} /> : <p role="status">Chưa có hình ảnh.</p>}
-        {album.length > 1 && <>
+          className={resource.content.sourcePdfUrl || /\.png(?:\?|$)/i.test(currentImage) ? 'is-cutout' : ''} /> : <p role="status">Chưa có hình ảnh.</p>}
+        {doubleSidedCard ? <button className="observation-arrow observation-flip next" onClick={() => changeImage(1)}>
+          {albumIndex === 0 ? 'Mặt sau' : 'Mặt trước'}
+        </button> : album.length > 1 && <>
           <button className="observation-arrow previous" aria-label="Ảnh trước" onClick={() => changeImage(-1)}><ChevronLeft /></button>
           <button className="observation-arrow next" aria-label="Ảnh tiếp theo" onClick={() => changeImage(1)}><ChevronRight /></button>
           <span className="sr-only" aria-live="polite">Ảnh {albumIndex + 1} trên {album.length}</span>
@@ -97,9 +97,8 @@ export function ResourceObservation({ resource, related, onOpen, onOpenDrawing }
           <span>{speaking ? 'Dừng nghe' : 'Nghe'}</span>
           <span className="observation-listen-ripple" aria-hidden="true"><i/><i/></span><span className="listening-wave" aria-hidden="true" data-playing={speaking}><i /><i /><i /></span>
         </button>
-      </div>
-
-      <div className="observation-notes">
+      </div>}
+      notes={<>
         <div className="observation-facts" aria-label="Đặc điểm nổi bật cho bé">
           {facts.map((fact, index) => {
             return <button key={fact.label} className="observation-fact" data-speaking={activeFact === index}
@@ -109,41 +108,10 @@ export function ResourceObservation({ resource, related, onOpen, onOpenDrawing }
             </button>;
           })}
         </div>
-        <div className="observation-formats" aria-label="Định dạng học liệu">
-          {[
-            { key: 'image', label: 'Ảnh', icon: Image },
-            { key: 'video', label: 'Video', icon: CirclePlay },
-            { key: 'audio', label: 'Nghe', icon: Volume2 },
-            { key: 'coloring', label: 'Tô màu', icon: Pencil },
-          ].filter(format => format.key === 'image' || getLinkedChoices(resource.variants,format.key).length > 0 || (format.key === 'coloring' && Boolean(resource.content.drawingTemplateKey))).map(format => {
-            const Icon = format.icon;
-            const linkedChoices = getLinkedChoices(resource.variants, format.key);
-            const linked = linkedChoices[0];
-            return <button key={format.key} className="observation-format" aria-current={format.key === 'image' ? 'true' : undefined}
-              title={format.label}
-              onClick={() => {
-                setNotice('');
-                if (linkedChoices.length > 1) {
-                  setChoiceKind(current => current === format.key ? null : format.key);
-                  return;
-                }
-                setChoiceKind(null);
-                if (format.key === 'image') { if (linked) onOpen(linked.id); return; }
-                const template = linked?.drawingTemplateKey || resource.content.drawingTemplateKey;
-                if (format.key === 'coloring' && template) onOpenDrawing(template);
-                else if (linked) onOpen(linked.id);
-              }}><Icon /><span>{format.label}</span></button>;
-          })}
-        </div>
-        {choices.length > 1 && <section className="observation-media-choices" aria-label="Chọn học liệu liên kết">
-          {choices.map(item => <button key={item.id} onClick={() => {
-            if (item.kind === 'coloring' && item.drawingTemplateKey) onOpenDrawing(item.drawingTemplateKey);
-            else onOpen(item.id);
-          }}>
-            {item.coverUrl && <img src={item.coverUrl} alt="" />}
-            <span>{item.title}</span>
-          </button>)}
-        </section>}
+        <ResourceDetailFormats key={resource.id} kind={resource.kind} id={resource.id} variants={resource.variants}
+          drawingTemplate={resource.content.drawingTemplateKey} onOpen={onOpen} onOpenDrawing={onOpenDrawing}/>
+        {resource.content.sourcePdfUrl && <a className="observation-source-document" target="_blank" rel="noreferrer"
+          href={resource.content.sourcePdfUrl + (resource.content.sourcePages?.[albumIndex] ? `#page=${resource.content.sourcePages[albumIndex]}` : '')}>Xem trang trong PDF</a>}
         {notice && <p className="observation-notice" role="status">{notice}</p>}
         {related.length > 0 && <section className="observation-related" aria-label="Sinh vật liên quan">
           <h2>Sinh vật liên quan</h2>
@@ -157,7 +125,6 @@ export function ResourceObservation({ resource, related, onOpen, onOpenDrawing }
             </div>)}
           </div>
         </section>}
-      </div>
-    </div>
+      </>}/>
   );
 }

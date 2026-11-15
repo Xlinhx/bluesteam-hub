@@ -65,7 +65,7 @@ describe('M1 Challenger 2: Adversarial Shells & Regression Test Suite', () => {
       );
 
       // Verify unauthenticated controls
-      expect(html).toContain('Về trang chủ BlueSTEAM');
+      expect(html).toContain('Về trang chủ Blue STEAM Hub');
       expect(html).toContain('Điều hướng công khai');
       expect(html).toContain('Mở menu điều hướng');
       expect(html).toContain('min-w-[48px]');
@@ -129,16 +129,16 @@ describe('M1 Challenger 2: Adversarial Shells & Regression Test Suite', () => {
       // Geometry and bottom clearance are exercised in header-consistency.spec.ts.
       expect(html).toContain('bluesteam-role-shell');
 
-      // Verify all five canonical learner items exist in output.
+      // Verify all six learner destinations exist in output.
       expect(html).toContain('Trang chủ');
       expect(html).toContain('Học liệu');
       expect(html).toContain('Tương tác');
       expect(html).toContain('Sáng tạo');
       expect(html).toContain('Hồ sơ');
-      expect(html).not.toContain('Học tập');
+      expect(html).toContain('Học tập');
 
       const mobileNav = html.split('aria-label="Điều hướng chính di động"')[1].split('</nav>')[0];
-      expect(mobileNav.match(/data-nav-key=/g)).toHaveLength(5);
+      expect(mobileNav.match(/data-nav-key=/g)).toHaveLength(6);
 
       // Verify learner avatar
       expect(html).toContain('Bé An');

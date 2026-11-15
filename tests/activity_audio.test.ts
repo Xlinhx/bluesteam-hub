@@ -39,3 +39,20 @@ describe('Activity audio ownership', () => {
     expect(speak).toHaveBeenCalledWith('Mới');
   });
 });
+
+it('uses a calm Vietnamese resource voice without playing a chime over the first word', () => {
+  class Utterance { constructor(public text: string) {} }
+  const defaultVoice = { lang: 'en-US', name: 'Default English' };
+  const basicVoice = { lang: 'vi-VN', name: 'Tiếng Việt' };
+  const naturalVoice = { lang: 'vi-VN', name: 'Vietnamese Natural' };
+  const synthesis = { cancel: vi.fn(), speak: vi.fn(), getVoices: () => [defaultVoice, basicVoice, naturalVoice] };
+  vi.stubGlobal('window', { speechSynthesis: synthesis });
+  vi.stubGlobal('SpeechSynthesisUtterance', Utterance);
+  const chime = vi.spyOn(oceanAudio, 'playChime').mockImplementation(() => {});
+  expect(oceanAudio.speak('Bé nhìn xem!   Đây là san hô não; có những đường rãnh nhỏ.', { profile:'learner-resource' })).toBe(true);
+  expect(synthesis.speak).toHaveBeenCalledWith(expect.objectContaining({
+    text:'Bé nhìn xem! Đây là san hô não. Có những đường rãnh nhỏ.',
+    lang:'vi-VN', rate:0.87, pitch:1.04, voice:naturalVoice,
+  }));
+  expect(chime).not.toHaveBeenCalled();
+});

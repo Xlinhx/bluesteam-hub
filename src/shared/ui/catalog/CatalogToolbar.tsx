@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-  Search,
-  X,
   LayoutGrid,
   BookOpen,
   Image as ImageIcon,
@@ -10,6 +8,7 @@ import {
   FileText,
   Palette,
 } from 'lucide-react';
+import { SearchField } from '../controls/SearchField';
 
 export type ResourceFilterKind =
   | 'all'
@@ -166,27 +165,12 @@ export function CatalogToolbar({
         {(onSearchChange || typeof totalCount === 'number' || rightSlot) && (
           <div className="flex flex-wrap items-center gap-2.5">
             {onSearchChange && (
-              <div className="relative min-w-[240px] sm:min-w-[280px] flex-1 sm:flex-initial">
-                <Search className="w-4 h-4 text-[#436475] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => onSearchChange(e.target.value)}
-                  placeholder={searchPlaceholder}
-                  aria-label={searchPlaceholder}
-                  className="w-full h-11 pl-10 pr-9 rounded-full bg-white border border-[#12384B]/15 text-sm font-semibold text-[#12384B] placeholder-[#6B8594] focus:outline-none focus:ring-2 focus:ring-[#15586E]"
-                />
-                {searchQuery && (
-                  <button
-                    type="button"
-                    onClick={() => onSearchChange('')}
-                    aria-label="Xóa từ khóa tìm kiếm"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#436475] hover:text-[#12384B] cursor-pointer"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
+              <SearchField
+                className="min-w-[min(100%,240px)] sm:min-w-[280px] flex-1 sm:flex-initial text-sm font-semibold"
+                label={searchPlaceholder}
+                value={searchQuery}
+                onChange={onSearchChange}
+              />
             )}
 
             {typeof totalCount === 'number' && (

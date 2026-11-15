@@ -6,6 +6,10 @@ import { AppError } from '../../common/errors.js';
 import { parseWithZod, assertValidUuid } from '../../common/validation.js';
 import { assertOwnerMatch } from '../../common/authorization.js';
 import { withTransaction } from '../../database/pool.js';
+import { readableResourceGroup } from './resource-group-access.js';
+import { visibleAsGroupEntry, visibleInResourceLibrary } from './resource-library-visibility.js';
+
+const visibleInGroupLibrary = `${visibleInResourceLibrary} AND ${visibleAsGroupEntry('g.id')}`;
 
 const GroupInput = z.object({
   title: z.string().trim().min(1).max(100),
@@ -19,18 +23,21 @@ const MembersInput = z.object({ resourceIds: z.array(z.string().uuid()).min(1).m
 export class ResourceGroupsService {
   constructor(@Inject(DB_POOL) private readonly pool: pg.Pool) {}
 
-  async list(params: { teacherId?: string; q?: string; cursor?: string; limit?: number; id?: string }) {
+  async list(params: { teacherId?: string; q?: string; cursor?: string; limit?: number; id?: string; ownedOnly?: boolean }) {
     const limit = Math.min(Math.max(Number(params.limit) || 12, 1), 50);
+    const groupAccess = params.ownedOnly ? 'g.owner_id=$1' : readableResourceGroup('$1');
     const offset = params.cursor ? Number(params.cursor) : 0;
     if (!Number.isSafeInteger(offset) || offset < 0) throw new AppError('INVALID_CURSOR', 'Trang không hợp lệ.');
     const result = await this.pool.query(`
-      SELECT g.*, m.storage_key, COALESCE(c.total,0)::int AS "memberCount",
+      SELECT g.*, m.storage_key, c.total AS "memberCount", c.library_total AS "libraryMemberCount",
         COALESCE(p.items, '[]'::jsonb) AS previews,
         COUNT(*) OVER()::int AS total
       FROM resource_groups g
       LEFT JOIN media_assets m ON m.id=g.cover_media_id
       LEFT JOIN LATERAL (
-        SELECT count(*)::int AS total FROM resource_group_members gm JOIN resources r ON r.id=gm.resource_id
+        SELECT count(*)::int AS total,
+          (count(*) FILTER (WHERE $1::uuid IS NULL AND ${visibleInGroupLibrary}))::int AS library_total
+        FROM resource_group_members gm JOIN resources r ON r.id=gm.resource_id
         WHERE gm.group_id=g.id AND (r.visibility='published' OR ($1::uuid IS NOT NULL AND (r.owner_id=$1 OR r.owner_id IS NULL)))
       ) c ON true
       LEFT JOIN LATERAL (
@@ -41,28 +48,24 @@ export class ResourceGroupsService {
           FROM resource_group_members gm JOIN resources r ON r.id=gm.resource_id
           LEFT JOIN media_assets cm ON cm.id=r.cover_media_id
           WHERE gm.group_id=g.id AND (r.visibility='published' OR ($1::uuid IS NOT NULL AND (r.owner_id=$1 OR r.owner_id IS NULL)))
-            AND ($1::uuid IS NOT NULL OR NOT EXISTS (
-              SELECT 1 FROM resource_links rl
-              JOIN resources main ON main.id=rl.source_resource_id
-              JOIN resource_group_members member ON member.resource_id=main.id AND member.group_id=g.id
-              WHERE rl.target_resource_id=r.id AND main.kind='flashcard'
-                AND main.visibility='published' AND r.kind<>'flashcard'
-            ))
+            AND ($1::uuid IS NOT NULL OR (${visibleInGroupLibrary}))
           ORDER BY gm.sort_order,r.updated_at DESC,r.id DESC LIMIT 4
         ) v
       ) p ON true
-      WHERE (($1::uuid IS NULL AND g.visibility='published') OR ($1::uuid IS NOT NULL AND (g.owner_id=$1 OR g.owner_id IS NULL)))
+      WHERE ${groupAccess}
         AND ($2::text='' OR g.title ILIKE '%'||$2||'%')
         AND ($5::uuid IS NULL OR g.id=$5)
       ORDER BY g.sort_order,g.created_at DESC,g.id LIMIT $3 OFFSET $4`, [params.teacherId || null, (params.q || '').trim(), limit, offset, params.id ? assertValidUuid(params.id, 'groupId') : null]);
     const total = result.rows.length ? Number(result.rows[0].total) : Number((await this.pool.query(`SELECT count(*)::int AS total FROM resource_groups g
-      WHERE (($1::uuid IS NULL AND g.visibility='published') OR ($1::uuid IS NOT NULL AND (g.owner_id=$1 OR g.owner_id IS NULL)))
+      WHERE ${groupAccess}
       AND ($2::text='' OR g.title ILIKE '%'||$2||'%') AND ($3::uuid IS NULL OR g.id=$3)`,[params.teacherId||null,(params.q||'').trim(),params.id||null])).rows[0].total);
     return { items: result.rows.map(({ total: _total, ...r }) => ({
       id: r.id, title: r.title, ownerId: r.owner_id, isSeed: r.owner_id === null,
       coverMediaId: r.cover_media_id, coverCrop: r.cover_crop, visibility: r.visibility,
       coverUrl: r.storage_key?.startsWith('/assets/') ? r.storage_key : r.cover_media_id ? `/api/v1/media/${r.cover_media_id}` : null,
-      memberCount: r.memberCount, previews: r.previews,
+      memberCount: r.memberCount,
+      ...(params.teacherId ? {} : { libraryMemberCount: r.libraryMemberCount }),
+      previews: r.previews,
     })), total, nextCursor: offset + result.rows.length < total ? String(offset + limit) : null };
   }
 

@@ -6,7 +6,6 @@ import { type TeacherNavKey } from '../data/categoryArtworkMap';
 import { demoStore } from '../realtime/demoStore';
 import { getCachedTeacherProfile, fetchCurrentTeacherApi } from '../api/auth';
 import { logoutAccount } from '../auth/accountSession';
-import { TeacherIdentityDialog } from '../../domains/teacher/account/TeacherIdentityDialog';
 
 export type TeacherNavDestination =
   | 'overview'
@@ -40,7 +39,6 @@ export function TeacherShell({
 
   const { currentPath, navigate } = useRouter();
   const [account, setAccount] = useState(getCachedTeacherProfile);
-  const [editing, setEditing] = useState(false);
   const [logoutError, setLogoutError] = useState('');
   useEffect(() => {
     const update = () => setAccount(getCachedTeacherProfile());
@@ -91,15 +89,13 @@ export function TeacherShell({
         identityName={resolvedName}
         teacherAvatarUrl={account?.avatarUrl || undefined}
         avatarKey={account?.avatarKey || undefined}
-        onEditIdentity={() => setEditing(true)}
+        onEditIdentity={() => navigate('/teacher/profile')}
 
         onLogout={handleLogout}
       />
 
       {logoutError && <p role="alert" className="p-4 text-red-700">{logoutError}</p>}
       <main className="flex-1 w-full relative">{children}</main>
-      {editing && account && <TeacherIdentityDialog profile={account} onClose={() => setEditing(false)} />}
-      {editing && !account && <div className="ocean-modal-backdrop"><div className="ocean-modal"><p>Cô đăng nhập để thay đổi hồ sơ nhé.</p><button className="ocean-button" onClick={() => navigate('/login')}>Đăng nhập</button><button className="ocean-button quiet" onClick={() => setEditing(false)}>Đóng</button></div></div>}
     </div>
   );
 }

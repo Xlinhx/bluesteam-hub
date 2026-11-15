@@ -1,0 +1,142 @@
+.learning-page,.learner-source-library,.personal-ocean {--navy:#0b3154;--teal:#006e73;--line:#d3e3eb;--pale:#eaf6fa;color:var(--navy)}
+.learning-page {min-height:calc(100svh - 70px);background:#e2f3fa}
+.learning-page button,.learner-source-library button:not(:where(.ui-filter-control)),.personal-ocean button,.ocean-content-listen,.learner-source-library a {min-height:44px}
+.learning-page button:not(:where(.ui-filter-control)),.learner-source-library button:not(:where(.ui-filter-control,.resource-control)),.personal-ocean button {border-radius:.65rem}
+.learning-page button:not(:where(.ui-filter-control)):focus-visible,.learner-source-library :is(button,a,input):not(:where(.ui-filter-control,.resource-control,.ui-search-field > input,.resource-search > input)):focus-visible,.personal-ocean :is(button,input):focus-visible {outline:3px solid #0096a7;outline-offset:3px}
+.learning-page h1,.learner-source-library h1,.personal-ocean h1 {font-size:clamp(2rem,4vw,3.75rem);line-height:1.06;letter-spacing:-.035em;font-weight:850;margin:.4em 0 .48em}
+.learning-page h2,.learner-source-library h2,.personal-ocean h2 {font-size:clamp(1.3rem,2.4vw,2rem);line-height:1.17;font-weight:780}
+.learning-page :is(input,select):not([type=range]),.learner-source-library :is(input,select),.personal-ocean :is(input,select) {width:100%;min-height:44px;color:var(--navy)}
+:is(.learning-page,.learner-source-library,.personal-ocean) input:not(:where([type=range],.ui-search-field > input,.resource-search > input,.ui-filter-control,.resource-control)) {border:1px solid #aac4d3;border-radius:.65rem;padding:.45rem .75rem;background:white}
+.learning-map {display:grid;grid-template-columns:minmax(310px,35%) 1fr;min-height:calc(100svh - 76px)}
+.learning-map-menu {background:#fbfaf7;display:flex;flex-direction:column;align-items:flex-start;padding:clamp(1.25rem,4vw,4rem)}
+.learning-kicker {display:inline-flex;gap:.45rem;align-items:center;color:#006971;font-weight:750;letter-spacing:.035em}
+.learning-axes,.learning-actions {display:flex;gap:.55rem;flex-wrap:wrap;align-items:center}
+.learning-axes button,.learning-actions button,.learning-preview button,.learning-dive button,.ocean-content-listen,.learner-source-library .source-actions button,.learner-source-library .source-actions a,.personal-ocean button {display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.52rem .9rem;border:1px solid #a8c7d4;background:#fff;color:var(--navy);font-weight:720}
+.learning-axes button[aria-pressed=true] {background:#d8eff4;border-color:#84b3c3}
+.learning-zones {width:100%;margin:1.2rem 0 1.5rem}
+.learning-zones button {display:flex;align-items:center;gap:.9rem;text-align:left;width:100%;padding:.65rem 0;border-bottom:1px solid #d8e5e9;border-radius:0;color:#25445e}
+.learning-zones button span,.learning-map-marker span {height:.85rem;width:.85rem;border:2px solid #94b4c3;border-radius:50%;flex:none}
+.learning-zones button[aria-pressed=true] {font-weight:800;color:#00676e}
+.learning-zones button[aria-pressed=true] span {background:#008994;border-color:#008994;box-shadow:0 0 0 4px #d4edf3}
+@media(min-width:1100px) {
+  .learning-zones--horizontal {display:grid;grid-template-columns:repeat(6,minmax(0,1fr));position:relative;margin-block:2rem}
+  .learning-zones--horizontal::before {content:"";position:absolute;inset:16px 8.33% auto;border-top:1px solid #aac4d3}
+  .learning-zones--horizontal button {position:relative;display:flex;flex-direction:column;gap:.6rem;align-items:center;text-align:center;border:0;padding:.6rem .2rem;font-size:.78rem;line-height:1.2}
+  .learning-zones--horizontal button span {background:#fbfaf7}
+}
+.learning-page .learning-primary,.learner-source-library .learning-primary {display:inline-flex;gap:.45rem;align-items:center;justify-content:center;color:white;background:#006c72;font-weight:780;padding:.55rem 1.15rem;border-radius:.6rem;border:1px solid #006c72}
+.learning-page button:disabled {opacity:.58;cursor:default}
+.learning-map-art,.learning-dive-water {background:#064369 url('/assets/learner-worlds/ocean-depth.webp') center / cover no-repeat}
+.learning-map-art {position:relative;min-height:22rem;overflow:hidden}
+.learning-map-art--horizontal {background-image:url('/assets/learner-worlds/ocean-coast.webp')}
+.learning-map-marker {position:absolute;left:28%;display:flex;align-items:center;gap:.6rem;color:white;background:#062b44e8;padding:.5rem .7rem;border:1px solid #91d8e8;border-radius:.45rem;max-width:52%;transform:translateY(-50%)}
+.learning-map-marker span {background:#86eff8;border-color:white}
+.learning-map-art--horizontal .learning-map-marker {top:43%;transform:translate(-50%,-50%);max-width:28%;overflow-wrap:anywhere}
+.learning-map-art--horizontal.learning-map-chart { background-image: url('/assets/learner-worlds/ocean-depth.webp'); }
+.learning-map-coast {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: url('/assets/learner-worlds/ocean-coast.webp') center / cover no-repeat;
+}
+.learning-map-art--horizontal .learning-map-coast { opacity: 1; }
+.learning-map-chart .learning-map-marker {
+  isolation: isolate;
+  min-height: 35px;
+  gap: .65rem;
+  border-radius: 16px 19px 16px 13px;
+  background: linear-gradient(133deg,#144764ee,#08263ded);
+  border-color: #a6ebefbf;
+  box-shadow: inset 0 1px #d5fffb60, 0 3px 12px #03182c70;
+}
+.learning-map-chart .learning-map-beacon {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #ddffff;
+  border-radius: 48% 53% 46% 52%;
+  background: radial-gradient(circle at 40% 29%,#fff 0 11%,#9cf5ef 42%,#299aaf);
+  box-shadow: 0 0 0 3px #80deeb40;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .learning-map-coast { transition: opacity 730ms cubic-bezier(.28,.68,.24,1); }
+}
+.learning-notebook {display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);min-height:calc(100svh - 68px)}
+.learning-notebook .learning-dive {position:sticky;top:0;align-self:start}
+.learning-notebook .learning-dive > :not(.learning-dive-scene) {visibility:hidden}
+.learning-notebook .learning-paper {width:100%;margin:0;border-radius:0;background:#fffcf4}
+.learning-notebook .learning-reader-grid {grid-template-columns:1fr}
+@media(max-width:800px) {
+  .learning-notebook {display:block}
+  .learning-notebook .learning-dive {display:none}
+}
+.learning-map-slider {position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:grid;gap:.3rem;text-align:center;border-radius:.75rem;background:#062b44e8;color:white;padding:.55rem 1rem;width:min(80%,28rem)}
+.learning-map-slider input {width:100%;min-height:44px;accent-color:#68ddec}
+.learning-paper {background:#fff;border:1px solid #d3e7ee;border-radius:1.25rem;padding:clamp(1rem,3vw,2.4rem);margin:clamp(.55rem,2vw,1.6rem) auto;width:min(94%,90rem)}
+.learning-page:has(.learning-paper) {padding:.4rem 0 2rem;background:#e2f3fa url('/assets/learner-worlds/reef.webp') top center / max(1100px,100%) auto no-repeat}
+.learning-back {display:inline-flex;align-items:center;gap:.4rem;color:#135574;font-weight:750}
+.learning-intro-grid,.learning-reader-grid {display:grid;grid-template-columns:1fr 1.08fr;gap:clamp(1rem,3vw,3rem);align-items:start}
+.learning-intro-grid .learning-map-art,.learning-preview img,.learning-reader img {border-radius:.8rem;width:100%}
+.learning-intro p,.learning-reader p {line-height:1.65;margin:.7rem 0 1.05rem}
+.learning-intro .learning-actions {margin:1rem 0}
+.learning-index-grid {display:grid;grid-template-columns:minmax(10rem,1fr) minmax(0,1.6fr) minmax(0,1.15fr);gap:1.3rem}
+.learning-desktop-groups {display:grid;gap:.45rem}
+.learning-desktop-groups button,.learning-species-list button {display:flex;gap:.7rem;justify-content:space-between;align-items:center;width:100%;background:#f8fbfc;padding:.52rem .7rem;text-align:left}
+.learning-species-list button {border:1px solid var(--line)}
+.learning-species-list button[aria-pressed=true] {background:#e5f5f6;border-color:#008894}
+.learning-mobile-groups,.learning-preview-close {display:none!important}
+.learning-search {margin-bottom:.65rem}
+.learning-species-list {display:grid;gap:.5rem;margin:.8rem 0}
+.learning-species-list img {width:4.4rem;height:3.5rem;border-radius:.4rem;object-fit:cover}
+.learning-species-list strong {flex:1}
+.learning-preview {min-width:0;border-left:1px solid var(--line);padding-left:1rem}
+.learning-preview img {margin:.6rem 0;max-height:21rem;object-fit:contain;background:#f2f7f9}
+.learning-preview button {margin:.25rem .2rem .25rem 0}
+.learning-reader img {display:block;margin-bottom:.7rem;max-height:34rem;object-fit:contain;background:#f0f7fa}
+.learning-reader-photos {overflow:auto;max-height:42rem;min-width:0;margin-top:.6rem}
+.learning-reader-photos img {max-width:none}
+.learning-reader article {padding:1rem 0;border-bottom:1px solid var(--line)}
+.learning-reader .learning-actions {margin-top:1rem}
+.learning-learned {display:inline-flex;align-items:center;gap:.3rem;background:#c9f1dc;color:#095a3d;border-radius:2rem;padding:.25rem .65rem;font-weight:800;white-space:nowrap}
+.learning-dive {position:relative;isolation:isolate;min-height:calc(100svh - 68px);overflow:hidden;color:white;background:#07314c;display:flex;flex-direction:column;justify-content:space-between}
+.learning-dive-scene,.learning-dive-gesture,.learning-dive-water {position:absolute;inset:0}
+.learning-dive-scene {z-index:-2;overflow:hidden;transition:filter .25s}
+.learning-dive-gesture {z-index:-1;touch-action:none;cursor:grab}
+.learning-dive-gesture:active {cursor:grabbing}
+.learning-dive-water {background-position:center 18%;background-size:cover;will-change:transform}
+.learning-dive-dolphin {position:absolute;left:24%;top:23%;width:min(57%,54rem);will-change:transform}
+.learning-dive-dolphin img {width:100%;animation:dive-swim 7s ease-in-out infinite}
+.learning-dive[data-observing=true] .learning-dive-dolphin img {animation:dive-rise 2.8s ease-in-out both}
+.learning-dive[data-paused=true] .learning-dive-dolphin img {animation-play-state:paused}
+@keyframes dive-swim {50% {transform:translate(4%,8%) rotate(5deg)}}
+@keyframes dive-rise {to {transform:translate(10%,-32%) rotate(-13deg)}}
+.learning-dive-top {display:flex;justify-content:space-between;align-items:center;padding:1rem;gap:.75rem;background:linear-gradient(#082838d9,transparent);pointer-events:none}
+.learning-dive-top button {pointer-events:auto}
+.learning-dive-top h1 {font-size:clamp(1.2rem,3vw,2rem);margin:0}
+.learning-dive-controls,.learning-dive-caption {position:relative;align-self:start;margin:1rem;padding:.85rem;background:#072b47ed;color:white;border:1px solid #6eacba;border-radius:.9rem}
+.learning-dive-controls label {display:grid;gap:.15rem;margin-bottom:.55rem}
+.learning-dive-controls input {height:44px;accent-color:#65e5ee;width:100%}
+.learning-dive-caption {align-self:center;text-align:center;max-width:min(40rem,94%);margin-inline:auto}
+.learning-dive-caption h2 {font-size:clamp(1.15rem,2.4vw,1.65rem)}
+.learning-dive-caption p {margin:.3rem 0 .7rem}
+.learning-dive-caption button {margin:.2rem}
+@media(max-width:760px) {
+  .learning-map,.learning-intro-grid,.learning-reader-grid,.learning-index-grid {grid-template-columns:minmax(0,1fr)}
+  .learning-map-art {min-height:18rem}
+  .learning-map-menu {padding:1rem 5vw}
+  .learning-zones {margin:.5rem 0 1rem}
+  .learning-desktop-groups {display:none}
+  .learning-mobile-groups,.learning-preview-close {display:block!important}
+  .learning-preview {display:none;border-left:0;padding:1rem}
+  .learning-preview--open {display:block;position:fixed;z-index:40;bottom:0;left:0;right:0;background:white;border:1px solid var(--line);border-radius:1.2rem 1.2rem 0 0;box-shadow:0 -12px 42px #092f5744;max-height:75svh;overflow:auto}
+  .learning-preview-close {float:right}
+  .learning-preview img {max-height:12rem}
+  .learning-dive-controls {align-self:start;margin:.45rem;font-size:.8rem}
+  .learning-dive-dolphin {top:36%;left:18%;width:69%}
+}
+@media(prefers-reduced-motion:reduce) {.learning-dive-dolphin img {animation:none!important}.learning-dive-scene {transition:none}}
+.learning-model-canvas {height:clamp(18rem,55vh,35rem);overflow:hidden;border-radius:1rem;background:#d8eff7;margin-bottom:.85rem}
+.learning-model-canvas canvas {width:100%;height:100%;display:block;touch-action:none}
+.learning-model p {margin:.5rem 0}
+.learning-model a {text-decoration:underline}

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from '../../../app/router';
 import { PresentationShell } from '../../../shared/shells/PresentationShell';
 import { oceanAudio } from '../../../shared/audio/oceanAudio';
+import './presentation-motion.css';
 import {
   Sparkles,
   Volume2,
@@ -15,6 +16,8 @@ import {
   HelpCircle,
   Trophy,
 } from 'lucide-react';
+
+const awardArt = '/assets/generated/profile/dive-log/';
 
 export function PresentationPage() {
   const { navigate, query } = useRouter();
@@ -76,9 +79,9 @@ export function PresentationPage() {
       <div className="relative w-full h-full flex flex-col justify-between overflow-hidden">
         {/* Step 1: Câu chuyện mở đầu (Story & Warm-up) */}
         {currentStep === 1 && (
-          <div className="relative w-full h-full flex items-center justify-center p-8 lg:p-16 animate-in fade-in duration-300">
+          <div className="relative w-full h-full flex items-center justify-center p-8 lg:p-16">
             {/* Cinematic Ocean Backdrop */}
-            <div className="absolute inset-0 z-0">
+            <div className="presentation-story-backdrop absolute inset-0 z-0">
               <img
                 src="/assets/ocean/landing-ocean-bg.jpg"
                 alt="Đại dương bao la"
@@ -134,7 +137,7 @@ export function PresentationPage() {
 
         {/* Step 2: Quan sát Rùa biển 3D (Specimen Deep-dive) */}
         {currentStep === 2 && (
-          <div className="relative w-full h-full flex flex-col justify-between p-8 lg:p-12 animate-in fade-in duration-300">
+          <div className="relative w-full h-full flex flex-col justify-between p-8 lg:p-12">
             {/* Background */}
             <div className="absolute inset-0 z-0">
               <img
@@ -164,16 +167,16 @@ export function PresentationPage() {
               <div className="relative w-full max-w-4xl aspect-[16/9] flex items-center justify-center">
                 {/* 3D Specimen Image with oceanic glow */}
                 <div className="relative group cursor-grab">
-                  <div className="absolute -inset-4 bg-radial from-[#2EE6CA]/30 via-transparent to-transparent blur-2xl rounded-full animate-pulse" />
+                  <div className="absolute -inset-4 bg-radial from-[#2EE6CA]/30 via-transparent to-transparent blur-2xl rounded-full" />
                   <img
                     src="/assets/generated/creatures/turtle_isolated.png"
                     alt="Rùa Biển 3D"
-                    className="relative w-72 sm:w-96 lg:w-[460px] object-contain drop-shadow-[0_15px_45px_rgba(46,230,202,0.45)] transition-transform duration-500 hover:scale-105"
+                    className="relative w-72 sm:w-96 lg:w-[460px] object-contain drop-shadow-[0_15px_45px_rgba(46,230,202,0.45)]"
                   />
                 </div>
 
                 {/* Callout 1: Mai rùa rẽ nước */}
-                <div className="absolute top-8 left-4 lg:left-12 bg-[#071E2E]/90 backdrop-blur-md border border-[#2EE6CA]/40 p-4 rounded-2xl shadow-xl max-w-[220px] text-left animate-in slide-in-from-left duration-500">
+                <div className="presentation-specimen-note absolute top-8 left-4 lg:left-12 bg-[#071E2E]/90 backdrop-blur-md border border-[#2EE6CA]/40 p-4 rounded-2xl shadow-xl max-w-[220px] text-left">
                   <div className="flex items-center gap-2 text-[#2EE6CA] font-black text-sm mb-1">
                     <Sparkles className="w-4 h-4 shrink-0" />
                     <span>Mai Dẹp Khí Động</span>
@@ -184,7 +187,7 @@ export function PresentationPage() {
                 </div>
 
                 {/* Callout 2: Vây trước hình mái chèo */}
-                <div className="absolute bottom-12 left-6 lg:left-16 bg-[#071E2E]/90 backdrop-blur-md border border-[#2EE6CA]/40 p-4 rounded-2xl shadow-xl max-w-[220px] text-left animate-in slide-in-from-left duration-700">
+                <div className="presentation-specimen-note absolute bottom-12 left-6 lg:left-16 bg-[#071E2E]/90 backdrop-blur-md border border-[#2EE6CA]/40 p-4 rounded-2xl shadow-xl max-w-[220px] text-left">
                   <div className="flex items-center gap-2 text-[#2EE6CA] font-black text-sm mb-1">
                     <Compass className="w-4 h-4 shrink-0" />
                     <span>Vây Chèo Mạnh Mẽ</span>
@@ -195,7 +198,7 @@ export function PresentationPage() {
                 </div>
 
                 {/* Callout 3: Hô hấp bằng phổi */}
-                <div className="absolute top-10 right-4 lg:right-12 bg-[#071E2E]/90 backdrop-blur-md border border-[#F67650]/40 p-4 rounded-2xl shadow-xl max-w-[220px] text-left animate-in slide-in-from-right duration-500">
+                <div className="presentation-specimen-note presentation-specimen-note--right absolute top-10 right-4 lg:right-12 bg-[#071E2E]/90 backdrop-blur-md border border-[#F67650]/40 p-4 rounded-2xl shadow-xl max-w-[220px] text-left">
                   <div className="flex items-center gap-2 text-[#F67650] font-black text-sm mb-1">
                     <CheckCircle2 className="w-4 h-4 shrink-0" />
                     <span>Thở Bằng Phổi</span>
@@ -232,7 +235,7 @@ export function PresentationPage() {
           EXACT REFERENCE MOCKUP SCENE FROM C:/Users/ADMIN/Downloads/ocean/bluesteam-v2-teacher-presentation.png
         */}
         {currentStep === 3 && (
-          <div className="relative w-full h-full flex flex-col justify-between overflow-hidden animate-in fade-in duration-300">
+          <div className="relative w-full h-full flex flex-col justify-between overflow-hidden">
             {/* Full-bleed Coastal Underwater Background with Seagrass, Sand & Coral */}
             <div className="absolute inset-0 z-0">
               <img
@@ -275,8 +278,8 @@ export function PresentationPage() {
               {/* Center Floating Turtle & Zone 2: Thảm cỏ biển */}
               <div className="relative flex flex-col items-center">
                 {/* Floating Sea Turtle with luminous cyan glow contour matching mockup */}
-                <div className="relative -mb-6 z-30 transition-transform duration-700 hover:scale-110">
-                  <div className="absolute -inset-4 bg-radial from-[#2EE6CA]/50 via-transparent to-transparent blur-xl rounded-full animate-pulse" />
+                <div className="relative -mb-6 z-30">
+                  <div className="absolute -inset-4 bg-radial from-[#2EE6CA]/50 via-transparent to-transparent blur-xl rounded-full" />
                   <img
                     src="/assets/generated/creatures/turtle_isolated.png"
                     alt="Rùa biển bơi lội"
@@ -378,7 +381,7 @@ export function PresentationPage() {
 
         {/* Step 4: Đố vui tương tác cả lớp (Classroom Quiz Polling) */}
         {currentStep === 4 && (
-          <div className="relative w-full h-full flex flex-col justify-between p-8 lg:p-12 animate-in fade-in duration-300">
+          <div className="relative w-full h-full flex flex-col justify-between p-8 lg:p-12">
             {/* Background */}
             <div className="absolute inset-0 z-0">
               <img
@@ -412,25 +415,26 @@ export function PresentationPage() {
                 const isWinner = opt.isCorrect && state.quiz.isRevealed;
 
                 return (
-                  <div
+                  <button
                     key={opt.id}
+                    type="button"
                     onClick={() => controls.submitQuizVote(opt.id)}
-                    className={`relative overflow-hidden rounded-2xl p-5 border transition-all cursor-pointer select-none ${
+                    className={`relative w-full text-left overflow-hidden rounded-2xl p-5 border cursor-pointer select-none ${
                       isWinner
                         ? 'border-emerald-400 bg-emerald-950/70 shadow-[0_0_30px_rgba(52,211,153,0.5)]'
                         : 'border-white/20 bg-[#071E2E]/80 hover:bg-[#071E2E]'
                     }`}
                   >
                     {/* Live Progress Fill Bar */}
-                    <div
-                      className={`absolute inset-y-0 left-0 transition-all duration-700 ${
+                    <span aria-hidden="true"
+                      className={`presentation-vote-bar absolute inset-0 ${
                         isWinner ? 'bg-emerald-500/30' : 'bg-[#17657A]/40'
                       }`}
-                      style={{ width: `${percentage}%` }}
+                      style={{ transform: `scaleX(${percentage / 100})` }}
                     />
 
-                    <div className="relative z-10 flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-3">
+                    <span className="relative z-10 flex items-center justify-between gap-4">
+                      <span className="flex items-center gap-3">
                         <span
                           className={`w-8 h-8 rounded-full font-black text-sm flex items-center justify-center ${
                             isWinner ? 'bg-emerald-400 text-[#041624]' : 'bg-white/15 text-white'
@@ -439,9 +443,9 @@ export function PresentationPage() {
                           {opt.id.slice(-1).toUpperCase()}
                         </span>
                         <span className="font-bold text-lg text-white">{opt.label}</span>
-                      </div>
+                      </span>
 
-                      <div className="flex items-center gap-3">
+                      <span className="flex items-center gap-3">
                         <span className="font-mono font-black text-xl text-white">
                           {opt.votes} phiếu ({percentage}%)
                         </span>
@@ -450,9 +454,9 @@ export function PresentationPage() {
                             Đúng
                           </span>
                         )}
-                      </div>
-                    </div>
-                  </div>
+                      </span>
+                    </span>
+                  </button>
                 );
               })}
             </div>
@@ -488,7 +492,7 @@ export function PresentationPage() {
 
         {/* Step 5: Vinh danh & Trao Huy hiệu STEAM */}
         {currentStep === 5 && (
-          <div className="relative w-full h-full flex flex-col justify-between p-8 lg:p-14 text-center animate-in fade-in duration-300">
+          <div className="relative w-full h-full flex flex-col justify-between p-8 lg:p-14 text-center">
             {/* Background with golden celebratory ocean lights */}
             <div className="absolute inset-0 z-0">
               <img
@@ -497,12 +501,13 @@ export function PresentationPage() {
                 className="w-full h-full object-cover brightness-[0.55]"
               />
               <div className="absolute inset-0 bg-radial from-amber-500/20 via-[#041624]/60 to-[#041624]" />
+              <div className="presentation-ceremony-light" aria-hidden="true" />
             </div>
 
             {/* Heading */}
             <div className="relative z-10 pt-16 space-y-3">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-sm font-black uppercase tracking-wider">
-                <Trophy className="w-4 h-4" />
+                <Trophy className="w-4 h-4" aria-hidden="true" />
                 <span>Lớp Học Xuất Sắc</span>
               </div>
               <h1 className="font-serif font-black text-4xl sm:text-6xl text-white tracking-[-0.02em]">
@@ -514,11 +519,11 @@ export function PresentationPage() {
             </div>
 
             {/* 3 Core Badges Awarded to Class */}
-            <div className="relative z-10 max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-6 my-auto">
+            <div className="presentation-awards relative z-10 max-w-4xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-6 my-auto">
               {/* Badge 1 */}
               <div className="bg-[#071E2E]/80 backdrop-blur-xl border border-amber-400/30 rounded-3xl p-6 text-center space-y-3 shadow-xl">
-                <div className="w-18 h-18 mx-auto rounded-full bg-amber-400/15 border-2 border-amber-400 flex items-center justify-center text-3xl shadow-[0_0_25px_rgba(251,191,36,0.4)]">
-                  🐢
+                <div className="presentation-award presentation-award--amber" aria-hidden="true">
+                  <img src={awardArt + 'badge-explore-2.webp'} alt="" />
                 </div>
                 <h3 className="font-serif font-black text-lg text-white">Bạn Của Rùa Xanh</h3>
                 <p className="text-xs text-slate-300 leading-relaxed">
@@ -531,8 +536,8 @@ export function PresentationPage() {
 
               {/* Badge 2 */}
               <div className="bg-[#071E2E]/80 backdrop-blur-xl border border-[#2EE6CA]/30 rounded-3xl p-6 text-center space-y-3 shadow-xl">
-                <div className="w-18 h-18 mx-auto rounded-full bg-[#2EE6CA]/15 border-2 border-[#2EE6CA] flex items-center justify-center text-3xl shadow-[0_0_25px_rgba(46,230,202,0.4)]">
-                  🌿
+                <div className="presentation-award presentation-award--mint" aria-hidden="true">
+                  <img src={awardArt + 'badge-interact-3.webp'} alt="" />
                 </div>
                 <h3 className="font-serif font-black text-lg text-white">Bảo Vệ Cỏ Biển</h3>
                 <p className="text-xs text-slate-300 leading-relaxed">
@@ -545,8 +550,8 @@ export function PresentationPage() {
 
               {/* Badge 3 */}
               <div className="bg-[#071E2E]/80 backdrop-blur-xl border border-[#F67650]/30 rounded-3xl p-6 text-center space-y-3 shadow-xl">
-                <div className="w-18 h-18 mx-auto rounded-full bg-[#F67650]/15 border-2 border-[#F67650] flex items-center justify-center text-3xl shadow-[0_0_25px_rgba(246,118,80,0.4)]">
-                  🎨
+                <div className="presentation-award presentation-award--peach" aria-hidden="true">
+                  <img src={awardArt + 'badge-create-2.webp'} alt="" />
                 </div>
                 <h3 className="font-serif font-black text-lg text-white">Họa Sĩ Đại Dương</h3>
                 <p className="text-xs text-slate-300 leading-relaxed">

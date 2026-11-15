@@ -26,7 +26,7 @@ export function LocalArtworkViewer({ artwork, onClose, motionSource }: { artwork
     img.onerror = () => { view.close(); setMessage(t('profile.printError')); };
     view.document.body.appendChild(img); img.src = artwork.previewDataUrl;
   };
-  return <ModalFrame title={title} onClose={onClose} fullScreen motionSource={source.current} header={close =>
+  return <ModalFrame title={title} onClose={onClose} topLayer fullScreen motionSource={source.current} header={close =>
     <header className="artwork-viewer-header"><BlueSteamLogo size="lg" variant="dark" /><button onClick={close} aria-label={t('profile.close')}><X aria-hidden="true" />{t('profile.close')}</button></header>
   }>
     {close => <div className={`local-artwork-viewer profile-kind-${artwork.type}`}>

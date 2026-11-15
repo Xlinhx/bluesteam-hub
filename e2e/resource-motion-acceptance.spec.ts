@@ -18,11 +18,12 @@ async function shot(page: Page, name: string) { await calm(page); await fits(pag
 test('the uploaded image bridges catalog/detail in both directions and back does not replay the shelf', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
   await authenticate(page); await page.goto('/resources');
-  await expect(page.locator('.resource-group-section')).toHaveCount(3); await calm(page);
+  await page.getByRole('button', {name:/^Mở nhóm /}).first().click();
+  await expect(page.getByLabel('Danh sách học liệu')).toBeVisible(); await calm(page);
   await page.evaluate(() => {
     (window as any).__shelfEntrances = 0;
     const animate = Element.prototype.animate;
-    Element.prototype.animate = function (frames, options) { if (this.matches('.resource-surface,.resource-group-portrait>img,.resource-tile-grid article img')) (window as any).__shelfEntrances++; return animate.call(this, frames, options); };
+    Element.prototype.animate = function (frames, options) { if (this.matches('.resource-surface,.resource-group-portrait,.resource-tile-grid article img')) (window as any).__shelfEntrances++; return animate.call(this, frames, options); };
     (window as any).__bridges = [];
     const start = document.startViewTransition.bind(document);
     document.startViewTransition = (update: any) => {
@@ -31,14 +32,14 @@ test('the uploaded image bridges catalog/detail in both directions and back does
       return transition;
     };
   });
-  const first = page.locator('.resource-group-section article').first();
+  const first = page.getByLabel('Danh sách học liệu').locator('article').first();
   const id = await first.getAttribute('data-resource-id');
   await first.getByRole('button', { name: /^Mở học liệu:/ }).first().click();
   await expect(page.locator('.observation-photo')).toBeVisible(); await calm(page);
   let bridges = await page.evaluate(() => (window as any).__bridges);
   expect(bridges[0]).toEqual({ names: ['ocean-resource-image'], id });
   await shot(page, 'learner-observation-desktop');
-  await page.goBack(); await expect(page.locator('.resource-group-section')).toHaveCount(3); await calm(page);
+  await page.goBack(); await expect(first).toBeVisible(); await calm(page);
   bridges = await page.evaluate(() => (window as any).__bridges);
   expect(bridges[1]).toEqual({ names: ['ocean-resource-image'], id });
   expect(await page.evaluate(() => (window as any).__shelfEntrances)).toBe(0);
@@ -57,7 +58,7 @@ test('group selection, search error/retry, empty saved and keyboard focus stay c
   // Native search consumes the first Escape to clear its nonempty value.
   await page.keyboard.press('Escape'); await expect(chooser.getByRole('searchbox')).toHaveValue('');
   await page.keyboard.press('Escape'); await expect(chooser).toHaveCount(0); await expect(open).toBeFocused();
-  await page.locator('.resource-group-portrait').first().click();
+  await page.getByRole('button', {name:/^Mở nhóm /}).first().click();
   await expect(page.locator('.resource-group-heading')).toHaveAttribute('data-ready', 'true');
   await expect(page.locator('.resource-tile-grid[aria-label] article').first()).toBeVisible();
   await page.setViewportSize({ width: 1024, height: 768 }); await shot(page, 'learner-group-tablet');
@@ -68,7 +69,7 @@ test('group selection, search error/retry, empty saved and keyboard focus stay c
   failure = false; await page.getByRole('alert').getByRole('button', { name: 'Thử lại' }).click();
   await expect(page.getByRole('alert')).toHaveCount(0);
   await page.goto('/resources?saved=1');
-  await expect(page.locator('.resource-empty')).toContainText('Chưa có học liệu phù hợp');
+  await expect(page.locator('.resource-empty')).toContainText('Bé chưa lưu học liệu nào.');
   await page.setViewportSize({ width: 390, height: 844 }); await shot(page, 'learner-empty-saved-mobile');
 });
 
@@ -138,7 +139,7 @@ test('background session verification preserves a live chooser and draft on focu
 
 test('disabled animation and mid-navigation cancellation keep all content usable', async ({ page }) => {
   await authenticate(page); await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/resources'); await expect(page.locator('.resource-group-section')).toHaveCount(3);
+  await page.goto('/resources'); await expect(page.locator('.resource-group-section').first()).toBeVisible();
   expect(await page.locator('.resource-library').evaluate(node => node.getAnimations({ subtree: true }).length)).toBe(0);
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.getByRole('button', { name: 'Hồ sơ', exact: true }).first().click();

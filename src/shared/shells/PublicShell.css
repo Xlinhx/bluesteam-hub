@@ -1,7 +1,7 @@
 .public-shell{background:#f6f3eb;color:#12384b;font-family:'Be Vietnam Pro',sans-serif}
-.public-shell--landing{background:#f5f1e8;color:#193c43}
+.public-shell--landing{background:#fff;color:#103d70}
 .public-header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.95);border-bottom:1px solid #12384b12;backdrop-filter:blur(16px)}
-.public-shell--landing .public-header{background:rgba(245,241,232,.93);border-color:#193c4318}
+.public-shell--landing .public-header{background:rgba(255,255,255,.96);border-color:#c4e8ff}
 .public-header-inner{max-width:1320px;min-height:76px;padding:0 48px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .public-brand{display:flex;align-items:center;flex-shrink:0;border-radius:4px}
 .public-brand img{max-width:172px}
@@ -43,3 +43,9 @@
 @media(max-width:1023px){.public-shell:not(.public-shell--landing) .public-header-inner{min-height:64px;padding-inline:16px}}
 .public-header-inner{position:relative}
 .public-shell--landing .public-desktop-nav{position:absolute;left:50%;transform:translateX(-50%)}
+
+/* Approved Blue STEAM Hub landing identity. */
+.public-shell--landing .public-join{background:#65d0ff;color:#103d70;border-radius:9px;font-weight:700}
+.public-shell--landing .public-join:hover{background:#41c3fa}
+.public-shell--landing .public-brand img{max-width:210px;width:210px}
+@media(max-width:540px){.public-shell--landing .public-brand img{max-width:142px;width:142px}}

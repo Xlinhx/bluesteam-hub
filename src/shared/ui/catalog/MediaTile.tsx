@@ -57,6 +57,7 @@ export function MediaTile({
   const bookmark = useBookmarkMotion(bookmarked, title);
   const KIND_VI_LABELS: Record<string, string> = {
     flashcard: 'Thẻ hình',
+    collection: 'Thẻ học liệu',
     image: 'Hình ảnh',
     audio: 'Âm thanh',
     video: 'Video',
@@ -82,7 +83,7 @@ export function MediaTile({
     if (kind === 'video') return <Film className="w-4 h-4 text-[#15586E] shrink-0" />;
     if (kind === 'audio') return <Volume2 className="w-4 h-4 text-[#15586E] shrink-0" />;
     if (kind === 'coloring' || kind === 'worksheet') return <Palette className="w-4 h-4 text-[#15586E] shrink-0" />;
-    if (kind === 'flashcard') return <BookOpen className="w-5 h-5 text-[#15586E] shrink-0" />;
+    if (kind === 'flashcard' || kind === 'collection') return <BookOpen className="w-5 h-5 text-[#15586E] shrink-0" />;
     return <ImageIcon className="w-4 h-4 text-[#15586E] shrink-0" />;
   };
 
@@ -99,6 +100,7 @@ export function MediaTile({
   return (
     <article
       data-resource-id={id}
+      data-resource-kind={kind}
       className={
         resourceCatalog
           ? 'group relative min-w-0 bg-transparent flex flex-col overflow-visible'

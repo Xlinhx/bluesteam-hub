@@ -2,6 +2,7 @@ export interface BlueSteamLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   variant?: 'dark' | 'light' | 'landing' | 'editorial' | 'mockup';
   showTagline?: boolean;
+  tagline?: string;
   className?: string;
   onClick?: () => void;
 }
@@ -10,6 +11,7 @@ export function BlueSteamLogo({
   size = 'md',
   variant = 'dark',
   showTagline = false,
+  tagline = 'Học cùng đại dương',
   className = '',
   onClick,
 }: BlueSteamLogoProps) {
@@ -28,7 +30,7 @@ export function BlueSteamLogo({
   };
 
   const isLight = variant === 'light';
-  const logoSrc = '/assets/branding/bluesteam-manta-wordmark.png';
+  const logoSrc = '/assets/branding/bluesteam-hub-ocean.webp';
 
   const taglineColor = isLight ? '#E0F2FE' : '#0A2540';
 
@@ -39,17 +41,16 @@ export function BlueSteamLogo({
     >
       <img
         src={logoSrc}
-        alt="BlueSTEAM — khám phá đại dương"
+        alt="Blue STEAM Hub — khám phá đại dương"
         width={2172}
         height={724}
-        className={`${logoWidths[size]} h-auto max-w-full object-contain shrink-0`}
-        style={isLight ? { filter: 'brightness(0) invert(1)' } : undefined}
+        className={`${logoWidths[size]} h-auto max-w-full object-contain shrink-0${isLight ? ' rounded-lg' : ''}`}
         loading="eager"
         decoding="async"
       />
       {/* Screen reader semantic brand name */}
       <span className="sr-only">
-        Blue<span>STEAM</span>
+        Blue <span>STEAM Hub</span>
       </span>
 
       {showTagline && (
@@ -57,7 +58,7 @@ export function BlueSteamLogo({
           className={`font-sans font-bold uppercase text-center block ${taglineSizes[size]}`}
           style={{ color: taglineColor }}
         >
-          Học cùng đại dương
+          {tagline}
         </span>
       )}
     </div>

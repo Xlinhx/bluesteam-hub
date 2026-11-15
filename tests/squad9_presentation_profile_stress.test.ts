@@ -144,8 +144,8 @@ describe('Squad 9 Empirical Stress Test Suite (M5 Challenger 2)', () => {
       expect(html).toContain('bg-[#041624]');
 
       // Fullscreen shell top presentation bar
-      expect(html).toContain('Blue<span');
-      expect(html).toContain('STEAM</span>');
+      expect(html).toContain('Blue <span');
+      expect(html).toContain('STEAM Hub</span>');
       expect(html).not.toContain('482915'); // default joinCode
       expect(html).toContain('Rùa Biển &amp; Nơi Sinh Sống Diệu Kỳ');
     });
@@ -226,7 +226,8 @@ describe('Squad 9 Empirical Stress Test Suite (M5 Challenger 2)', () => {
 
     it('shows the local artwork workspace without fictional learning history', () => {
       const html = renderWithProviders(React.createElement(LearnerProfilePage), '/profile');
-      expect(html).toContain('Tác phẩm trên thiết bị');
+      expect(html).toContain('Sản phẩm đã tạo');
+      expect(html).toContain('Trên thiết bị này');
       expect(html).toContain('Bắt đầu sáng tạo');
       expect(html).not.toContain('Vẽ tranh mới');
       expect(html).not.toContain('Gặp gỡ rùa biển');

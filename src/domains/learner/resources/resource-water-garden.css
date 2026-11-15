@@ -1,0 +1,90 @@
+.resource-water-garden {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.resource-water-garden__frame {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  max-height: 100%;
+  overflow: clip;
+}
+
+.resource-water-garden__art {
+  position: absolute;
+  bottom: -9px;
+  width: clamp(160px, 18vw, 295px);
+  height: auto;
+  opacity: .64;
+}
+
+.resource-water-garden__art--left {
+  left: -12px;
+  transform-origin: 12% 100%;
+  animation: resource-frond-sway 12s ease-in-out -2s infinite alternate;
+}
+
+.resource-water-garden__art--right {
+  right: -12px;
+  transform-origin: 87% 100%;
+  opacity: .58;
+  animation: resource-reef-drift 17s ease-in-out -8s infinite alternate;
+}
+
+.resource-water-garden__glints {
+  position: absolute;
+  inset: 0;
+}
+
+.resource-water-garden__glints span {
+  position: absolute;
+  left: 2%;
+  top: 46%;
+  width: 13px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #fff 0%, #e9fbf4b3 42%, transparent 75%);
+  opacity: .4;
+  animation: resource-glint-drift 13s linear -1s infinite;
+}
+
+.resource-water-garden__glints span:nth-child(2) { top: 63%; left: 4%; width: 20px; animation-delay: -5s; }
+.resource-water-garden__glints span:nth-child(3) { top: 79%; left: 1%; animation-delay: -9s; }
+.resource-water-garden__glints span:nth-child(4) { top: 40%; left: 94%; width: 18px; animation-delay: -4s; animation-duration: 16s; }
+.resource-water-garden__glints span:nth-child(5) { top: 59%; left: 96%; animation-delay: -7s; animation-duration: 16s; }
+.resource-water-garden__glints span:nth-child(6) { top: 77%; left: 92%; width: 22px; animation-delay: -13s; animation-duration: 16s; }
+
+@keyframes resource-frond-sway {
+  from { transform: rotate(-1.5deg) skewX(-1deg); }
+  to { transform: rotate(2deg) skewX(1.5deg); }
+}
+
+@keyframes resource-reef-drift {
+  from { transform: translate(0, 3px) scaleX(.98); }
+  to { transform: translate(-6px, 0) scaleX(1.02); }
+}
+
+@keyframes resource-glint-drift {
+  0% { transform: translate(-10px, 9px) scaleX(.8); opacity: 0; }
+  28% { opacity: .72; }
+  65% { opacity: .42; }
+  100% { transform: translate(36px, -15px) scaleX(1.2); opacity: 0; }
+}
+
+.resource-water-garden[data-motion-sleep=true] *,
+body:has(dialog[open]) .resource-water-garden *,
+#root[inert] .resource-water-garden * { animation-play-state: paused; }
+
+@media (max-width: 600px) {
+  .resource-water-garden__art { width: 132px; opacity: .35; }
+  .resource-water-garden__art--left { left: -48px; }
+  .resource-water-garden__art--right { right: -44px; }
+  .resource-water-garden__glints span:nth-child(even) { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resource-water-garden * { animation: none; }
+}

@@ -1,4 +1,5 @@
-import { Box, Gamepad2, Waves, GitBranch, Check } from 'lucide-react';
+import { oceanAudio } from '../../audio/oceanAudio';
+import { Box, Gamepad2, FlaskConical, MessageCircleQuestion, Check, Volume2 } from 'lucide-react';
 import { useLayoutEffect, useRef } from 'react';
 import { useInteractiveMotionScope } from '../motion/useInteractiveMotion';
 import { interactiveMotion } from '../motion/interactiveMotion';
@@ -10,8 +11,8 @@ import {InteractiveWorldArtwork} from './InteractiveWorldArtwork';
 export const INTERACTIVE_WORLDS = [
   { kind: 'model3d', label: 'Khám phá 3D', Icon: Box },
   { kind: 'game', label: 'Trò chơi', Icon: Gamepad2 },
-  { kind: 'simulation', label: 'Mô phỏng', Icon: Waves },
-  { kind: 'scenario', label: 'Tình huống', Icon: GitBranch },
+  { kind: 'simulation', label: 'Mô phỏng', Icon: FlaskConical },
+  { kind: 'scenario', label: 'Tình huống', Icon: MessageCircleQuestion },
 ] as const;
 
 export function resolveInteractiveKind(raw?: string): InteractiveCategoryKind {
@@ -21,10 +22,11 @@ export function resolveInteractiveKind(raw?: string): InteractiveCategoryKind {
   return 'game';
 }
 
-export function InteractiveWorlds({ value, onChange, compact = false }: {
+export function InteractiveWorlds({ value, onChange, compact = false, listen = false }: {
   value: InteractiveCategoryKind;
   onChange: (kind: InteractiveCategoryKind) => void;
   compact?: boolean;
+  listen?: boolean;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const pointer = useRef(false), previous = useRef(value);
@@ -45,12 +47,12 @@ export function InteractiveWorlds({ value, onChange, compact = false }: {
   }, [value, compact, scope]);
   return <div ref={root} onPointerDownCapture={() => { pointer.current = true; }} onKeyDownCapture={() => { pointer.current = false; }} className={`interactive-worlds ${compact ? 'interactive-worlds--compact' : ''}`} role="group" aria-label="Loại hoạt động tương tác">
     {INTERACTIVE_WORLDS.map(({ kind, label, Icon }) => {
-      return <button key={kind} type="button" aria-pressed={value === kind} onClick={() => onChange(kind)} className={`interactive-world interactive-world--${kind}`} data-testid={`interactive-tab-${kind}`}>
+      return <div className="interactive-world-entry" key={kind}><button type="button" aria-pressed={value === kind} onClick={() => onChange(kind)} className={`interactive-world interactive-world--${kind}`} data-testid={`interactive-tab-${kind}`}>
         <span className="interactive-world__light" aria-hidden="true" />
         {!compact && <span className="interactive-world__art"><img className="interactive-world__creature interactive-world__fallback" src={INTERACTIVE_ARTWORK[kind]} width="520" height="360" alt="" /><InteractiveWorldArtwork kind={kind}/></span>}
         <span className="interactive-world__label"><Icon size={24} /><span>{label}</span></span>
         {value === kind && <span className="interactive-world__selected" aria-hidden="true"><Check size={15} /></span>}
-      </button>;
+      </button>{listen && <button type="button" className="interactive-world-listen" aria-label={"Nghe " + label} onClick={() => oceanAudio.speak(label)}><Volume2 size={19}/></button>}</div>;
     })}
   </div>;
 }

@@ -1,3 +1,4 @@
+import { SearchField } from '@/shared/ui/controls/SearchField';
 import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from '../../../app/router';
 import { LearnerShell } from '../../../shared/shells/LearnerShell';
@@ -12,7 +13,6 @@ import {
   OrganicWaveDivider,
   DragToRotateBadge,
 } from '../../../shared/ui/visuals/Ocean3DSvgs';
-import { Search } from 'lucide-react';
 
 interface CreatureItem {
   id: string;
@@ -155,16 +155,7 @@ export function Ocean3DExplorePage() {
             </div>
 
             {/* Search Input */}
-            <div className="relative w-full sm:w-64">
-              <Search className="w-4 h-4 text-[#8A9BA8] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm sinh vật..."
-                className="w-full pl-9 pr-4 py-2 rounded-full bg-white border border-[#E2E8ED] text-xs sm:text-sm font-semibold text-[#0E2942] placeholder-[#8A9BA8] focus:outline-none focus:ring-2 focus:ring-[#17657A]/40 focus:border-[#17657A] shadow-[0_1px_3px_rgba(16,42,56,0.04)] transition-all"
-              />
-            </div>
+            <SearchField className="w-full sm:w-64 text-sm" label="Tìm sinh vật" placeholder="Tìm sinh vật…" value={searchQuery} onChange={setSearchQuery}/>
           </div>
 
           {/* Creature Cards Grid */}
