@@ -1,0 +1,55 @@
+BlueSTEAM Source-Available Evaluation License (All Rights Reserved)
+
+Copyright (c) 2026 BlueSTEAM Team (University of Science and Education - The University of Danang / UED).
+All rights reserved.
+
+-------------------------------------------------------------------------------
+ENGLISH TERMS
+-------------------------------------------------------------------------------
+
+1. Ownership
+   This repository, including its source code, architecture, database migrations,
+   UI/UX designs, documentation, and original educational/creative assets
+   (collectively, the "Software"), is the proprietary intellectual property of
+   the BlueSTEAM Team.
+
+2. Limited Permission (Evaluation Only)
+   Permission is hereby granted, solely for non-commercial inspection, academic
+   review, and competition judging, to view, clone, build, and execute the
+   Software locally for the exclusive purpose of evaluating this project.
+
+3. Restrictions
+   Except as expressly permitted in Section 2, you may NOT, without prior
+   written permission from the copyright holders:
+   - Copy, reproduce, distribute, publish, or sublicense the Software or any
+     substantial portion of it;
+   - Modify, adapt, or create derivative works based on the Software;
+   - Reuse, extract, or redistribute included visual, audio, 3D, or educational
+     assets outside the scope of project evaluation;
+   - Use the Software for any commercial, production, or competitive purpose,
+     or submit any part of it as another party's work.
+
+4. Third-Party Components and Assets
+   Open-source software dependencies and third-party media assets attributed in
+   project metadata remain subject to their respective original licenses (such
+   as MIT, Apache-2.0, or Creative Commons licenses).
+
+5. Disclaimer of Warranty
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+
+-------------------------------------------------------------------------------
+TÓM TẮT ĐIỀU KHOẢN (TIẾNG VIỆT)
+-------------------------------------------------------------------------------
+
+Bản quyền (c) 2026 thuộc về Nhóm phát triển BlueSTEAM (Trường Đại học Sư phạm -
+Đại học Đà Nẵng / UED). Bảo lưu mọi quyền (All Rights Reserved).
+
+- Được phép: Xem mã nguồn, clone về chạy thử cục bộ phục vụ duy nhất mục đích
+  thẩm định, chấm giải, phản biện học thuật và đánh giá dự án phi thương mại.
+- Nghiêm cấm: Sao chép, chỉnh sửa, phân phối lại, khai thác thương mại, tách
+  tài sản hình ảnh/3D/học liệu gốc để tái sử dụng hoặc nộp lại dưới danh nghĩa
+  khác khi chưa có sự đồng ý bằng văn bản của nhóm tác giả.
+- Các thư viện mã nguồn mở và học liệu bên thứ ba có ghi nguồn giữ nguyên theo
+  giấy phép gốc tương ứng.

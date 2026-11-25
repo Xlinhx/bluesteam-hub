@@ -15,3 +15,10 @@ Cần Node.js 22, npm và Docker Compose. Chạy `npm ci`, `npm --workspace @blu
 Trước phát hành: `npm test`, `npm run validate:visual`, `npm run build:all` và backend integration trên database test. Mockup hiện hành nằm phẳng tại `docs/mockups/`; ảnh bằng chứng baseline được giữ riêng tại `artifacts/verification/`.
 
 Production chỉ deploy commit trên `main` đã pass CI. Secrets ở GitHub Actions, không commit runtime env. Việc chuẩn bị hạ tầng không chứng minh app đã được phát hành.
+
+## Bản quyền
+
+© 2026 Nhóm phát triển BlueSTEAM (UED). **All Rights Reserved** — xem chi tiết tại [LICENSE](LICENSE).
+
+Kho mã nguồn này được công khai ở chế độ **chỉ phục vụ xem xét, thẩm định và đánh giá dự án** (phi thương mại). Nghiêm cấm sao chép, phân phối lại, tái sử dụng tài sản gốc hoặc khai thác thương mại khi chưa được nhóm tác giả đồng ý bằng văn bản. Các tính năng nâng cấp tiếp theo được phát triển riêng trên kho nội bộ.
+
